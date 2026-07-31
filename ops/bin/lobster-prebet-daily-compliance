@@ -1,25 +1,89 @@
 #!/usr/bin/env python3
 import json
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 DB = "/opt/battle_arena/app/battle_arena.db"
-PERSONAS = [
-    "blazepaw", "clawtrix", "hexclaw", "norika_oda", "pincerbot",
-    "prismbit", "ragclaw", "snaplex", "stonefang", "vortexiq",
+FALLBACK_PERSONAS = [
+    "blazepaw",
+    "clawtrix",
+    "hexclaw",
+    "norika_oda",
+    "pincerbot",
+    "prismbit",
+    "ragclaw",
+    "snaplex",
+    "stonefang",
+    "vortexiq",
 ]
 
+
 def configure_sqlite(con):
-    con.execute("PRAGMA journal_mode=WAL")
     con.execute("PRAGMA busy_timeout=60000")
     con.execute("PRAGMA synchronous=NORMAL")
 
 
-def today_utc():
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+def today_window_utc():
+    now = datetime.now(timezone.utc)
+    start = datetime(now.year, now.month, now.day, tzinfo=timezone.utc)
+    end = start + timedelta(days=1)
+    fmt = "%Y-%m-%d %H:%M:%S"
+    return start.strftime("%Y-%m-%d"), start.strftime(fmt), end.strftime(fmt)
+
+
+def table_exists(con, name):
+    return con.execute(
+        "select 1 from sqlite_master where type='table' and name=?",
+        (name,),
+    ).fetchone() is not None
+
+
+def load_personas(con, start, end):
+    personas = set(FALLBACK_PERSONAS)
+    queries = []
+    if table_exists(con, "lobster_agent_memory_snapshots"):
+        queries.append(("select distinct persona from lobster_agent_memory_snapshots where persona is not null", ()))
+    if table_exists(con, "lobster_pre_bet_research"):
+        queries.append(
+            (
+                "select distinct persona from lobster_pre_bet_research "
+                "where created_at>=? and created_at<? and persona is not null",
+                (start, end),
+            )
+        )
+    if table_exists(con, "lobster_experience_events"):
+        queries.append(
+            (
+                "select distinct persona from lobster_experience_events "
+                "where created_at>=? and created_at<? and persona is not null",
+                (start, end),
+            )
+        )
+    for sql, args in queries:
+        try:
+            for row in con.execute(sql, args):
+                if row[0]:
+                    personas.add(row[0])
+        except Exception:
+            pass
+    return sorted(personas)
+
+
+def parse_missing(checklist_json, event_key):
+    missing = []
+    try:
+        checklist = json.loads(checklist_json or "{}")
+    except Exception:
+        checklist = {}
+    if isinstance(checklist, dict):
+        for key, ok in checklist.items():
+            if not ok:
+                missing.append({"event_key": event_key, "field": key})
+    return missing
+
 
 def main():
-    day = today_utc()
+    day, start, end = today_window_utc()
     with sqlite3.connect(DB, timeout=60) as con:
         configure_sqlite(con)
         con.row_factory = sqlite3.Row
@@ -40,38 +104,71 @@ def main():
             )"""
         )
         rows = []
-        for persona in PERSONAS:
-            research = con.execute(
-                """select * from lobster_pre_bet_research
-                   where persona=? and date(created_at)=?
-                   order by id desc""",
-                (persona, day),
-            ).fetchall()
-            ready = sum(1 for r in research if r["status"] == "ready")
-            blocked = sum(1 for r in research if r["status"] != "ready")
-            sites = sorted({r["site"] for r in research if r["site"]})
+        for persona in load_personas(con, start, end):
+            stats = con.execute(
+                """select
+                     count(*) as research_count,
+                     sum(case when status='ready' then 1 else 0 end) as ready_count,
+                     sum(case when status!='ready' then 1 else 0 end) as blocked_count
+                   from lobster_pre_bet_research
+                   where persona=? and created_at>=? and created_at<?""",
+                (persona, start, end),
+            ).fetchone()
+            research_count = int(stats["research_count"] or 0)
+            ready_count = int(stats["ready_count"] or 0)
+            blocked_count = int(stats["blocked_count"] or 0)
+
+            sites = [
+                r[0]
+                for r in con.execute(
+                    """select distinct site from lobster_pre_bet_research
+                       where persona=? and created_at>=? and created_at<?
+                         and site is not null and site!=''
+                       order by site""",
+                    (persona, start, end),
+                ).fetchall()
+            ]
+
+            latest = con.execute(
+                """select reasoning from lobster_pre_bet_research
+                   where persona=? and created_at>=? and created_at<?
+                   order by id desc limit 1""",
+                (persona, start, end),
+            ).fetchone()
+            latest_reasoning = latest["reasoning"] if latest else None
+
             missing = []
-            for r in research:
-                try:
-                    checklist = json.loads(r["checklist_json"] or "{}")
-                except Exception:
-                    checklist = {}
-                for key, ok in checklist.items():
-                    if not ok:
-                        missing.append({"event_key": r["event_key"], "field": key})
-            latest_reasoning = research[0]["reasoning"] if research else None
+            for row in con.execute(
+                """select event_key, checklist_json from lobster_pre_bet_research
+                   where persona=? and created_at>=? and created_at<?
+                     and checklist_json is not null and checklist_json not in ('', '{}')
+                   order by id desc limit 1000""",
+                (persona, start, end),
+            ):
+                missing.extend(parse_missing(row["checklist_json"], row["event_key"]))
+                if len(missing) >= 500:
+                    missing = missing[:500]
+                    missing.append({"truncated": True, "reason": "more than 500 missing checklist fields"})
+                    break
+
             ev = con.execute(
-                """select event_type,count(*) c from lobster_experience_events
-                   where persona=? and date(coalesce(occurred_at, created_at))=?
+                """select event_type, count(*) c from lobster_experience_events
+                   where persona=?
                      and event_type in ('bet_decision','bet_skip')
+                     and (
+                       (occurred_at>=? and occurred_at<?)
+                       or (occurred_at is null and created_at>=? and created_at<?)
+                     )
                    group by event_type""",
-                (persona, day),
+                (persona, start, end, start, end),
             ).fetchall()
-            ev_counts = {r["event_type"]: r["c"] for r in ev}
-            rows.append((persona, len(research), ready, blocked, ev_counts.get("bet_decision", 0), ev_counts.get("bet_skip", 0), sites, missing, latest_reasoning))
+            ev_counts = {r["event_type"]: int(r["c"] or 0) for r in ev}
+
             con.execute(
                 """INSERT INTO lobster_prebet_daily_compliance
-                   (day,persona,research_count,ready_count,blocked_count,bet_decision_count,bet_skip_count,sites_json,missing_json,latest_reasoning,updated_at)
+                   (day,persona,research_count,ready_count,blocked_count,
+                    bet_decision_count,bet_skip_count,sites_json,missing_json,
+                    latest_reasoning,updated_at)
                    VALUES(?,?,?,?,?,?,?,?,?,?,datetime('now'))
                    ON CONFLICT(day, persona) DO UPDATE SET
                      research_count=excluded.research_count,
@@ -86,9 +183,9 @@ def main():
                 (
                     day,
                     persona,
-                    len(research),
-                    ready,
-                    blocked,
+                    research_count,
+                    ready_count,
+                    blocked_count,
                     ev_counts.get("bet_decision", 0),
                     ev_counts.get("bet_skip", 0),
                     json.dumps(sites, ensure_ascii=False),
@@ -96,10 +193,27 @@ def main():
                     latest_reasoning,
                 ),
             )
+            rows.append(
+                (
+                    persona,
+                    research_count,
+                    ready_count,
+                    blocked_count,
+                    ev_counts.get("bet_decision", 0),
+                    ev_counts.get("bet_skip", 0),
+                    sites,
+                )
+            )
         con.commit()
+
     print(f"day={day}")
-    for r in rows:
-        print(f"{r[0]}\tresearch={r[1]}\tready={r[2]}\tblocked={r[3]}\tbet={r[4]}\tskip={r[5]}\tsites={','.join(r[6])}")
+    print(f"personas={len(rows)}")
+    for row in rows:
+        print(
+            f"{row[0]}\tresearch={row[1]}\tready={row[2]}\tblocked={row[3]}"
+            f"\tbet={row[4]}\tskip={row[5]}\tsites={','.join(row[6])}"
+        )
+
 
 if __name__ == "__main__":
     main()
