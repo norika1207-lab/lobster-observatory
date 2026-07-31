@@ -1,0 +1,17 @@
+[Unit]
+Description=Lobster non-LLM board-game training worker
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStartPre=/usr/bin/python3 /opt/battle_arena/app/seed_lobster_board_rules.py
+ExecStartPre=/usr/bin/python3 /opt/battle_arena/app/lobster_board_lookahead_curriculum.py
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_all_board_training_worker.py
+TimeoutStartSec=45
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target

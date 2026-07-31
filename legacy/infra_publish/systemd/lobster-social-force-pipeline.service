@@ -1,0 +1,13 @@
+[Unit]
+Description=Lobster forced social interaction parser and uptake sync
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_social_force_pipeline.py --hours 2 --uptake-target 0.10 --limit 3000
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+CPUQuota=25%
+MemoryMax=400M

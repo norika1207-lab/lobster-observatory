@@ -1,0 +1,18 @@
+[Unit]
+Description=Lobster local LLM report worker
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+Environment=LOBSTER_REPORT_LLM_URL=http://127.0.0.1:18044
+Environment=LOBSTER_REPORT_LLM_MODEL=lobster-zh-q2k
+Environment=LOBSTER_REPORTS_PER_RUN=3
+Environment=LOBSTER_REPORTS_PER_PERSONA_PER_DAY=6
+Environment=LOBSTER_REPORT_STALE_HOURS=24
+Environment=LOBSTER_REPORT_QUEUE_RETRY_HOURS=6
+Environment=LOBSTER_REPORT_MIN_TOTAL_CHARS=2200
+Environment=LOBSTER_REPORT_TIMEOUT_MS=45000
+ExecStart=/usr/bin/node /root/lobster-report-worker.js
+StandardOutput=append:/root/lobster-report-worker.log
+StandardError=append:/root/lobster-report-worker.log

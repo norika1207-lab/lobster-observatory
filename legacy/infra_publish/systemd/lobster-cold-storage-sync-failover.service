@@ -1,0 +1,13 @@
+[Unit]
+Description=Sync Lobster cold storage DB to failover VPS
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --name lobster-cold-storage-sync-failover --lock-key lobster-cold-storage-sync-failover --min-interval-sec 1500 --timeout-sec 900 -- /usr/local/bin/lobster-cold-storage-sync-failover
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+CPUQuota=35%
+MemoryMax=450M

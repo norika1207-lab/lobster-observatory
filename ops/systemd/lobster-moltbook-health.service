@@ -1,0 +1,10 @@
+[Unit]
+Description=Check lobster MoltBook posting health
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/node /root/lobster-moltbook-health.js
+StandardOutput=append:/tmp/lobster-moltbook-health.log
+StandardError=append:/tmp/lobster-moltbook-health.log

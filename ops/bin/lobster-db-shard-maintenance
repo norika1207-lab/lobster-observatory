@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sqlite3
+import time
+from datetime import datetime, timezone
+
+MAIN_DB = "/opt/battle_arena/app/battle_arena.db"
+COLD_DB = "/opt/battle_arena/app/lobster_cold_storage.db"
+
+SHARD_PERSONAS = [
+    "norika_oda", "clawtrix", "pincerbot", "ragclaw", "snaplex",
+    "hexclaw", "vortexiq", "prismbit", "blazepaw", "stonefang",
+    "emberling", "sparkrill", "gauntlet", "rushfin", "nullpinch",
+    "brineledger", "omenwake", "mirrorcalm", "flarecub", "basaltrook",
+    "ashveil", "tidehook", "mirebyte", "cindersnap", "glintmaw",
+    "reefblade", "quartzclaw", "stormledger", "silkbarb", "riftpinch",
+    "elder",
+]
+
+BACKUP_TABLES = [
+    "lounge_messages_bak_20260506_template_cleanup",
+    "lounge_messages_data_cleanup_20260508",
+    "lounge_messages_quality_autopatrol_backup",
+    "lounge_messages_template_purge_20260507",
+]
+
+ARCHIVE_TABLES = [
+    "lobster_experience_events",
+    "lobster_cognitive_events",
+]
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+def qident(name: str) -> str:
+    return '"' + name.replace('"', '""') + '"'
+
+def connect(path: str) -> sqlite3.Connection:
+    con = sqlite3.connect(path, timeout=90)
+    con.row_factory = sqlite3.Row
+    con.execute("PRAGMA busy_timeout=90000")
+    con.execute("PRAGMA journal_mode=WAL")
+    return con
+
+def table_exists(con: sqlite3.Connection, table: str, schema: str = "main") -> bool:
+    row = con.execute(
+        f"SELECT 1 FROM {schema}.sqlite_master WHERE type='table' AND name=? LIMIT 1",
+        (table,),
+    ).fetchone()
+    return bool(row)
+
+def table_sql(con: sqlite3.Connection, table: str) -> str:
+    row = con.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone()
+    if not row or not row["sql"]:
+        raise RuntimeError(f"missing source table schema: {table}")
+    return row["sql"]
+
+def ensure_meta(con: sqlite3.Connection) -> None:
+    con.execute(f"ATTACH DATABASE ? AS cold", (COLD_DB,))
+    con.execute("""
+      CREATE TABLE IF NOT EXISTS cold.lobster_shard_archive_runs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        started_at TEXT NOT NULL,
+        finished_at TEXT,
+        status TEXT NOT NULL,
+        main_db TEXT NOT NULL,
+        cold_db TEXT NOT NULL,
+        shard_personas_json TEXT NOT NULL,
+        moved_json TEXT NOT NULL DEFAULT '{}',
+        message TEXT
+      )
+    """)
+    con.execute("""
+      CREATE TABLE IF NOT EXISTS cold.lobster_shard_manifest (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    """)
+    con.execute(
+        "INSERT OR REPLACE INTO cold.lobster_shard_manifest(key,value,updated_at) VALUES(?,?,?)",
+        ("shard_personas", json.dumps(SHARD_PERSONAS, ensure_ascii=False), utc_now()),
+    )
+    con.execute(
+        "INSERT OR REPLACE INTO cold.lobster_shard_manifest(key,value,updated_at) VALUES(?,?,?)",
+        ("main_db", MAIN_DB, utc_now()),
+    )
+    con.commit()
+
+def ensure_cold_table(con: sqlite3.Connection, table: str) -> None:
+    if table_exists(con, table, "cold"):
+        return
+    sql = table_sql(con, table)
+    con.execute(sql.replace("CREATE TABLE ", "CREATE TABLE IF NOT EXISTS cold.", 1))
+    if table == "lobster_experience_events":
+        con.execute("CREATE INDEX IF NOT EXISTS cold.idx_cold_exp_persona_time ON lobster_experience_events(persona, occurred_at)")
+        con.execute("CREATE INDEX IF NOT EXISTS cold.idx_cold_exp_type_time ON lobster_experience_events(event_type, occurred_at)")
+        con.execute("CREATE INDEX IF NOT EXISTS cold.idx_cold_exp_created ON lobster_experience_events(created_at)")
+    elif table == "lobster_cognitive_events":
+        con.execute("CREATE INDEX IF NOT EXISTS cold.idx_cold_cog_persona_time ON lobster_cognitive_events(persona, occurred_at)")
+        con.execute("CREATE INDEX IF NOT EXISTS cold.idx_cold_cog_created ON lobster_cognitive_events(created_at)")
+    elif table.startswith("lounge_messages"):
+        con.execute(f"CREATE INDEX IF NOT EXISTS cold.idx_cold_{table}_name_time ON {qident(table)}(name, created_at)")
+
+def create_run(con: sqlite3.Connection) -> int:
+    cur = con.execute(
+        """INSERT INTO cold.lobster_shard_archive_runs
+           (started_at,status,main_db,cold_db,shard_personas_json,moved_json)
+           VALUES(?,?,?,?,?,?)""",
+        (utc_now(), "running", MAIN_DB, COLD_DB, json.dumps(SHARD_PERSONAS, ensure_ascii=False), "{}"),
+    )
+    con.commit()
+    return int(cur.lastrowid)
+
+def finish_run(con: sqlite3.Connection, run_id: int, status: str, moved: dict, message: str = "") -> None:
+    con.execute(
+        "UPDATE cold.lobster_shard_archive_runs SET finished_at=?, status=?, moved_json=?, message=? WHERE id=?",
+        (utc_now(), status, json.dumps(moved, ensure_ascii=False), message, run_id),
+    )
+    con.commit()
+
+def archive_backup_tables(con: sqlite3.Connection, dry_run: bool = False) -> dict:
+    moved = {}
+    for table in BACKUP_TABLES:
+        if not table_exists(con, table, "main"):
+            moved[table] = {"status": "missing_main"}
+            continue
+        ensure_cold_table(con, table)
+        count = con.execute(f"SELECT COUNT(*) AS n FROM main.{qident(table)}").fetchone()["n"]
+        cold_count = con.execute(f"SELECT COUNT(*) AS n FROM cold.{qident(table)}").fetchone()["n"]
+        if dry_run:
+            moved[table] = {"would_copy": count, "cold_existing": cold_count, "would_drop_main": True}
+            continue
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            con.execute(f"INSERT INTO cold.{qident(table)} SELECT * FROM main.{qident(table)}")
+            con.execute(f"DROP TABLE main.{qident(table)}")
+            con.commit()
+        except Exception:
+            con.rollback()
+            raise
+        moved[table] = {"copied": count, "cold_before": cold_count, "main_dropped": True}
+    return moved
+
+def archive_persona_rows(con: sqlite3.Connection, table: str, older_hours: int, limit: int, dry_run: bool = False) -> dict:
+    ensure_cold_table(con, table)
+    cutoff_expr = f"datetime('now','-{int(older_hours)} hours')"
+    persona_marks = ",".join("?" for _ in SHARD_PERSONAS)
+    time_col = "COALESCE(occurred_at, created_at)"
+    rows = con.execute(
+        f"""SELECT id FROM main.{qident(table)}
+            WHERE persona IN ({persona_marks})
+              AND datetime({time_col}) < {cutoff_expr}
+            ORDER BY id ASC
+            LIMIT ?""",
+        (*SHARD_PERSONAS, int(limit)),
+    ).fetchall()
+    ids = [int(r["id"]) for r in rows]
+    if dry_run or not ids:
+        return {"eligible_in_batch": len(ids), "moved": 0, "dry_run": dry_run}
+    marks = ",".join("?" for _ in ids)
+    con.execute("BEGIN IMMEDIATE")
+    try:
+        con.execute(f"INSERT OR IGNORE INTO cold.{qident(table)} SELECT * FROM main.{qident(table)} WHERE id IN ({marks})", ids)
+        copied = con.execute(f"SELECT changes() AS n").fetchone()["n"]
+        con.execute(f"DELETE FROM main.{qident(table)} WHERE id IN ({marks})", ids)
+        deleted = con.execute("SELECT changes() AS n").fetchone()["n"]
+        con.commit()
+    except Exception:
+        con.rollback()
+        raise
+    return {"eligible_in_batch": len(ids), "copied": copied, "deleted": deleted, "min_id": min(ids), "max_id": max(ids)}
+
+def counts(con: sqlite3.Connection) -> dict:
+    out = {}
+    for table in ARCHIVE_TABLES:
+        if not table_exists(con, table, "main"):
+            continue
+        ensure_cold_table(con, table)
+        persona_marks = ",".join("?" for _ in SHARD_PERSONAS)
+        main_n = con.execute(f"SELECT COUNT(*) AS n FROM main.{qident(table)} WHERE persona IN ({persona_marks})", SHARD_PERSONAS).fetchone()["n"]
+        cold_n = con.execute(f"SELECT COUNT(*) AS n FROM cold.{qident(table)} WHERE persona IN ({persona_marks})", SHARD_PERSONAS).fetchone()["n"]
+        out[table] = {"main_shard_persona_rows": main_n, "cold_shard_persona_rows": cold_n}
+    for table in BACKUP_TABLES:
+        out[table] = {
+            "main_exists": table_exists(con, table, "main"),
+            "cold_exists": table_exists(con, table, "cold"),
+        }
+        if table_exists(con, table, "cold"):
+            out[table]["cold_rows"] = con.execute(f"SELECT COUNT(*) AS n FROM cold.{qident(table)}").fetchone()["n"]
+        if table_exists(con, table, "main"):
+            out[table]["main_rows"] = con.execute(f"SELECT COUNT(*) AS n FROM main.{qident(table)}").fetchone()["n"]
+    return out
+
+def main() -> int:
+    global MAIN_DB, COLD_DB
+    ap = argparse.ArgumentParser(description="Move cold Lobster rows into a second SQLite DB and keep a manifest.")
+    ap.add_argument("--main-db", default=MAIN_DB)
+    ap.add_argument("--cold-db", default=COLD_DB)
+    ap.add_argument("--older-hours", type=int, default=6)
+    ap.add_argument("--limit", type=int, default=10000)
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--no-backup-tables", action="store_true")
+    ap.add_argument("--counts", action="store_true")
+    args = ap.parse_args()
+
+    MAIN_DB = args.main_db
+    COLD_DB = args.cold_db
+
+    con = connect(MAIN_DB)
+    ensure_meta(con)
+    if args.counts:
+        print(json.dumps({"ok": True, "counts": counts(con)}, ensure_ascii=False))
+        return 0
+
+    run_id = create_run(con)
+    moved = {}
+    try:
+        if not args.no_backup_tables:
+            moved["backup_tables"] = archive_backup_tables(con, args.dry_run)
+        moved["persona_tables"] = {}
+        for table in ARCHIVE_TABLES:
+            if table_exists(con, table, "main"):
+                moved["persona_tables"][table] = archive_persona_rows(con, table, args.older_hours, args.limit, args.dry_run)
+        status = "dry_run" if args.dry_run else "ok"
+        finish_run(con, run_id, status, moved)
+        print(json.dumps({"ok": True, "run_id": run_id, "status": status, "moved": moved}, ensure_ascii=False))
+        return 0
+    except Exception as e:
+        finish_run(con, run_id, "failed", moved, repr(e))
+        raise
+    finally:
+        con.close()
+
+if __name__ == "__main__":
+    raise SystemExit(main())

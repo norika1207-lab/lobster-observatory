@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Lobster detail dashboard cache when DB sources change
+After=network.target charenix-dashboard.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/battle_arena/app/refresh_lobster_detail_cache.py
+Nice=10
+CPUQuota=25%
+MemoryMax=350M
+

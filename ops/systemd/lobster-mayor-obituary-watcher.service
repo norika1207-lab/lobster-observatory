@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor: obituary-watcher
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/obituary_watcher.py
+StandardOutput=append:/root/lobster-memory/_town/logs/obituary-watcher.log
+StandardError=append:/root/lobster-memory/_town/logs/obituary-watcher.log
+TimeoutSec=300

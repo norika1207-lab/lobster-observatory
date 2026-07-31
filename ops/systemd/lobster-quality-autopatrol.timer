@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Lobster quality autopatrol every 30 minutes
+
+[Timer]
+OnBootSec=8min
+OnUnitActiveSec=30min
+RandomizedDelaySec=3min
+Persistent=true
+Unit=lobster-quality-autopatrol.service
+
+[Install]
+WantedBy=timers.target

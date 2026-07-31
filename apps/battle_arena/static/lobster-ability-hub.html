@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lobster Ability Hub</title>
+  <style>
+    :root{--bg:#070c16;--panel:#0e1825;--line:#1e3550;--text:#dbeafe;--muted:#7890aa;--blue:#66b7ff;--green:#72e094;--yellow:#ffd45c;--red:#ff7d86;--purple:#b68cff;--orange:#ff884d;--cyan:#66dccb}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}
+    header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line);background:#0b1520;position:sticky;top:0;z-index:5}
+    h1{margin:0;font-size:28px;line-height:1.1}.sub{color:var(--muted);font-weight:700;margin-top:4px}.back{color:var(--blue);text-decoration:none;border:1px solid var(--line);padding:10px 14px;border-radius:8px;font-weight:800}
+    main{padding:24px;max-width:1760px;margin:0 auto}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 0 0 1px rgba(102,183,255,.03)}
+    .wide{grid-column:span 2}.full{grid-column:1/-1}.kpi{font-size:40px;font-weight:900;color:var(--blue)}.label{font-size:13px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.12em}.title{font-size:22px;font-weight:900;margin-bottom:8px}.row{display:grid;grid-template-columns:180px 1fr 100px;gap:14px;align-items:center;padding:11px 0;border-top:1px solid rgba(120,144,170,.16)}
+    .bar{height:12px;background:#06101a;border-radius:99px;overflow:hidden;border:1px solid #10263a}.fill{height:100%;background:var(--blue);border-radius:99px}.name{font-weight:900}.pill{display:inline-flex;align-items:center;border:1px solid var(--line);background:#0a1320;color:#a8bdd4;border-radius:999px;padding:5px 9px;margin:3px;font-size:12px;font-weight:800}.task{color:var(--yellow)}.ok{color:var(--green)}.wait{color:var(--orange)}.bad{color:var(--red)}
+    table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-top:1px solid rgba(120,144,170,.16);text-align:left;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em}td{font-weight:700}.small{font-size:13px;color:var(--muted);font-weight:700}.link{color:var(--cyan);text-decoration:none}.source-list{max-height:430px;overflow:auto}.report{max-height:520px;overflow:auto;white-space:pre-wrap;line-height:1.55;color:#c6d7ea;font-weight:650}
+    .game-card{display:grid;grid-template-columns:120px 1fr 160px;gap:12px;align-items:start;padding:14px 0;border-top:1px solid rgba(120,144,170,.16)}
+    @media(max-width:1100px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.row{grid-template-columns:1fr}.game-card{grid-template-columns:1fr}header{height:auto;gap:12px;align-items:flex-start;flex-direction:column;padding:18px}}
+  </style>
+</head>
+<body>
+<header>
+  <div><h1>龍蝦 Ability Training Hub</h1><div class="sub">30 lobster roster · MemeCat · reading reports · non-LLM assessments · board-game lookahead</div></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="back" href="/lobster/board-arena">Play Board Arena</a><a class="back" href="/lobster/dashboard/">Back to Dashboard</a></div>
+</header>
+<main>
+  <section class="panel" style="margin-bottom:16px"><div class="title">Playable Board Arena</div><div class="small">This is the real playable entrance for chess, xiangqi, go, and gomoku. Human or lobster can enter, make moves, receive lobster replies, and finished sessions are written back to DB.</div><p><a class="link" href="/lobster/board-arena">Open /lobster/board-arena</a></p></section>
+  <section class="grid" id="kpis"><div class="panel"><div class="label">Loading</div><div class="kpi">--</div></div></section>
+  <section class="grid" style="margin-top:16px">
+    <div class="panel full"><div class="title">30-Lobster Coverage</div><div id="coverage"></div></div>
+    <div class="panel wide"><div class="title">Today Assignments</div><div id="assignments"></div></div>
+    <div class="panel wide"><div class="title">Training Sources</div><div id="sources" class="source-list"></div></div>
+    <div class="panel full"><div class="title">Board Training Sessions</div><table><thead><tr><th>Lobster</th><th>Game</th><th>Opponent</th><th>Result</th><th>Depth</th><th>Review</th></tr></thead><tbody id="game-sessions"></tbody></table></div>
+    <div class="panel full"><div class="title">Daily Reading Reports</div><div class="small">Every report is generated from database-stored source records. No LLM solving is used for tests or board play.</div><table><thead><tr><th>Lobster</th><th>Articles</th><th>Report Length</th><th>Categories</th><th>Updated</th></tr></thead><tbody id="reports"></tbody></table></div>
+    <div class="panel full"><div class="title">Latest Report Preview</div><div id="preview" class="report">Loading...</div></div>
+  </section>
+</main>
+<script>
+const colors={moltbook_post:'var(--purple)',daily_news_reading:'var(--blue)',memecat:'var(--green)',board_chess:'var(--yellow)',gomoku:'var(--orange)',betting_calibration:'var(--red)'};
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function num(n){return Number(n||0).toLocaleString()}
+async function load(){
+  const res=await fetch('/api/lobster-ability-hub',{cache:'no-store'}); const data=await res.json();
+  const k=data.kpis||{}; document.getElementById('kpis').innerHTML=`
+    <div class="panel"><div class="label">Lobsters</div><div class="kpi">${num(k.personas)}</div><div class="small">canonical roster, excluding Norika/Elder</div></div>
+    <div class="panel"><div class="label">News Sources</div><div class="kpi">${num(k.news_sources)}</div><div class="small">stored today</div></div>
+    <div class="panel"><div class="label">Reading Reports</div><div class="kpi">${num(k.reading_reports)}/${num(k.personas)}</div><div class="small">5000+ char target coverage</div></div>
+    <div class="panel"><div class="label">Board Sessions</div><div class="kpi">${num(k.board_sessions)}</div><div class="small">no-LLM game reviews</div></div>`;
+  const cov=data.coverage||{};
+  const roster=data.roster||[];
+  const chip=(name,ok)=>`<span class="pill ${ok?'ok':'bad'}">${esc(name)}</span>`;
+  document.getElementById('coverage').innerHTML=`
+    <div class="grid" style="margin-bottom:14px">
+      <div class="panel"><div class="label">Assignments</div><div class="kpi">${num(cov.assigned)}/${num(cov.total_roster)}</div></div>
+      <div class="panel"><div class="label">Reports</div><div class="kpi">${num(cov.reported)}/${num(cov.total_roster)}</div></div>
+      <div class="panel"><div class="label">Board Sessions</div><div class="kpi">${num(cov.board_sessions)}/${num(cov.total_roster)}</div></div>
+      <div class="panel"><div class="label">Board Study</div><div class="kpi">${num(cov.board_study)}/${num(cov.total_roster)}</div></div>
+    </div>
+    <div>${roster.map(r=>`<span class="pill ${r.has_assignment&&r.has_report?'ok':'wait'}">${esc(r.persona)} · task ${r.has_assignment?'✓':'!'} · report ${r.has_report?'✓':'!'} · board ${r.has_board_session?'✓':'!'}</span>`).join('')}</div>
+    <div class="small" style="margin-top:12px"><b>Missing assignments:</b> ${(cov.missing_assignments||[]).map(n=>chip(n,false)).join('')||'<span class="ok">none</span>'}</div>
+    <div class="small" style="margin-top:8px"><b>Missing reports:</b> ${(cov.missing_reports||[]).map(n=>chip(n,false)).join('')||'<span class="ok">none</span>'}</div>`;
+  const byPersona={}; for(const a of data.assignments||[]){(byPersona[a.persona] ||= []).push(a)}
+  document.getElementById('assignments').innerHTML=Object.entries(byPersona).map(([p,rows])=>{
+    const pct=Math.min(100, rows.length*18); return `<div class="row"><div class="name">${esc(p)}</div><div><div class="bar"><div class="fill" style="width:${pct}%;background:${rows.length>=3?'var(--green)':'var(--orange)'}"></div></div><div>${rows.map(r=>`<span class="pill task" style="border-color:${colors[r.task_type]||'var(--line)'}">${esc(r.task_type)}</span>`).join('')}</div></div><div class="ok">${rows.length} tasks</div></div>`
+  }).join('');
+  document.getElementById('sources').innerHTML=(data.source_registry||[]).map(s=>`<div class="game-card"><div class="name">${esc(s.source_type)}</div><div><b>${esc(s.name)}</b><div class="small">${esc(s.purpose)}</div><a class="link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url)}</a></div><div><span class="pill ${s.integration_status==='active'?'ok':'wait'}">${esc(s.integration_status)}</span><div class="small">${esc(s.license_note)}</div></div></div>`).join('');
+  document.getElementById('game-sessions').innerHTML=(data.game_sessions||[]).map(g=>`<tr><td class="name">${esc(g.persona)}</td><td>${esc(g.game)}</td><td>${esc(g.opponent)}</td><td><span class="pill ${g.result==='win'?'ok':g.result==='loss'?'bad':'wait'}">${esc(g.result)}</span></td><td>${num(g.lookahead_depth)}</td><td class="small">${esc((g.self_review||'').slice(0,180))}...</td></tr>`).join('');
+  const reports=data.reports||[]; document.getElementById('reports').innerHTML=reports.map(r=>`<tr><td class="name">${esc(r.persona)}</td><td>${num(r.article_count)}</td><td>${num(r.report_length)}</td><td>${(r.categories||[]).map(c=>`<span class="pill">${esc(c)}</span>`).join('')}</td><td class="small">${esc(r.created_at)}</td></tr>`).join('');
+  const first=reports[0]; document.getElementById('preview').textContent=first ? `${first.persona}\n\n${first.report_text}` : 'No report found.';
+}
+load().catch(e=>{document.getElementById('preview').textContent='Load failed: '+e.message});
+</script>
+</body>
+</html>

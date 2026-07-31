@@ -1,0 +1,8 @@
+[Unit]
+Description=Lobster DB weekly backup to laptop external (was daily, too slow for 97GB)
+[Timer]
+OnCalendar=Sun *-*-* 04:00:00
+Persistent=true
+RandomizedDelaySec=30min
+[Install]
+WantedBy=timers.target

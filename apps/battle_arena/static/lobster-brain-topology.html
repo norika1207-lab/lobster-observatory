@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Human Mind — Parameter Topology</title>
+<!-- Open Graph — Facebook / LINE / Discord preview -->
+<meta property="og:type"        content="website">
+<meta property="og:title"       content=" Human Mind — Parameter Topology">
+<meta property="og:description" content="31 AI lobsters. 99 parameters. A living 3D map of how artificial minds are built. Rotate, explore, click any node.">
+<meta property="og:image"       content="https://charenix.com/static/charenix_logo.png">
+<meta property="og:url"         content="https://charenix.com/static/lobster-brain-topology.html">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content=" Human Mind — Parameter Topology">
+<meta name="twitter:description" content="31 AI lobsters. 99 parameters. Interactive 3D brain.">
+<meta name="twitter:image"      content="https://charenix.com/static/charenix_logo.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#07080a;overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;color:#eceff4}
+canvas{display:block}
+#overlay{position:fixed;inset:0;pointer-events:none;z-index:10}
+#title{position:fixed;top:12px;left:16px;pointer-events:none}
+#title h1{font-size:20px;font-weight:900;color:#e94560;letter-spacing:1px;text-shadow:0 0 24px #e9456099}
+#title p{font-size:11px;color:#556677;margin-top:2px}
+#ui{position:fixed;top:12px;right:14px;width:210px;display:flex;flex-direction:column;gap:6px;pointer-events:all}
+.panel{background:rgba(13,14,17,0.92);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;backdrop-filter:blur(6px)}
+.panel h3{font-size:11px;color:#7df9ff;margin-bottom:6px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.filter-btn{display:block;width:100%;margin:2px 0;padding:4px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;color:#6e7a8a;font-size:10px;cursor:pointer;text-align:left;transition:all .15s}
+.filter-btn:hover,.filter-btn.on{background:rgba(100,200,255,.14);border-color:#4499ff66;color:#fff}
+.stat{display:flex;justify-content:space-between;font-size:10px;padding:2px 0;border-bottom:1px solid #ffffff0a}
+.sv{font-weight:700}
+.leg{display:flex;align-items:center;gap:7px;font-size:10px;padding:2px 0;color:#aabbcc}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+#tooltip{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  max-width:500px;min-width:300px;
+  background:rgba(13,14,17,0.97);border:1px solid rgba(91,156,246,.3);border-radius:10px;
+  padding:14px 18px;pointer-events:none;z-index:20;
+  display:none;backdrop-filter:blur(10px);
+  box-shadow:0 0 40px rgba(91,156,246,.1)}
+#tooltip h3{font-size:14px;color:#7df9ff;margin-bottom:6px;font-weight:800}
+#tooltip .tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
+#tooltip p{font-size:12px;line-height:1.7;color:#cde}
+#tooltip .issue{font-size:11px;margin-top:8px;padding:6px 10px;border-radius:6px;font-weight:600}
+#tooltip .conns{font-size:10px;color:#6688aa;margin-top:6px}
+#help{position:fixed;bottom:14px;right:14px;font-size:10px;color:#334455;pointer-events:none;text-align:right;line-height:1.8}
+#loading{position:fixed;inset:0;background:#07080a;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:100}
+#loading h2{font-size:22px;color:#e94560}
+#loading p{font-size:13px;color:#445566}
+/* ── Audio narrator ── */
+#narrator{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:10px;
+  background:rgba(4,10,22,0.92);border:1px solid rgba(255,255,255,0.12);
+  border-radius:30px;padding:8px 18px 8px 12px;
+  pointer-events:all;z-index:30;backdrop-filter:blur(8px);
+  transition:opacity .3s;opacity:0}
+#narrator.visible{opacity:1}
+#narrator.playing{border-color:#7df9ff55;box-shadow:0 0 18px #7df9ff22}
+#nar-icon{font-size:18px;line-height:1}
+#nar-label{font-size:11px;color:#aabbcc;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+#nar-bars{display:flex;gap:2px;align-items:center;height:16px;margin-left:4px}
+#nar-bars span{display:block;width:3px;background:#7df9ff;border-radius:2px;animation:none}
+#narrator.playing #nar-bars span{animation:bar-bounce .6s ease-in-out infinite alternate}
+#nar-bars span:nth-child(1){height:5px;animation-delay:0s}
+#nar-bars span:nth-child(2){height:10px;animation-delay:.1s}
+#nar-bars span:nth-child(3){height:14px;animation-delay:.2s}
+#nar-bars span:nth-child(4){height:8px;animation-delay:.15s}
+#nar-bars span:nth-child(5){height:5px;animation-delay:.05s}
+@keyframes bar-bounce{to{height:3px}}
+#nar-stop{background:none;border:none;color:#778;font-size:14px;cursor:pointer;padding:0 0 0 6px;line-height:1}
+#nar-stop:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <h2> Loading Human Mind...</h2>
+  <p>Initialising 99 parameter nodes</p>
+</div>
+
+<div id="overlay">
+  <div id="title">
+    <h1> Human Mind Topology</h1>
+    <p>31 Lobsters · 99 Parameter Nodes · 360° Interactive</p>
+  </div>
+  <div id="ui">
+    <div class="panel">
+      <h3>🧠 Brain Region</h3>
+      <button class="filter-btn on" data-r="all">🌐 All Regions</button>
+      <button class="filter-btn" data-r="prefrontal">🔵 Prefrontal — Decision</button>
+      <button class="filter-btn" data-r="temporal_l">🟢 Left Temporal — Language</button>
+      <button class="filter-btn" data-r="temporal_r">🟩 Right Temporal — Social</button>
+      <button class="filter-btn" data-r="hippocampus">🟨 Hippocampus — Memory</button>
+      <button class="filter-btn" data-r="amygdala">🔴 Amygdala — Fear / Existence</button>
+      <button class="filter-btn" data-r="parietal">🟣 Parietal — Reasoning</button>
+      <button class="filter-btn" data-r="cerebellum">🟠 Cerebellum — Procedural</button>
+      <button class="filter-btn" data-r="corpus">🩵 Corpus Callosum — Integration</button>
+      <button class="filter-btn" data-r="mentor">🟡 Mentorship Layer</button>
+      <button class="filter-btn" data-r="brainstem">⬛ Brainstem — Core</button>
+    </div>
+    <div class="panel">
+      <h3>📊 System Health</h3>
+      <div class="stat"><span>Total Params</span><span class="sv" id="s-total">—</span></div>
+      <div class="stat"><span>✅ Active</span><span class="sv" style="color:#00ff88" id="s-g">—</span></div>
+      <div class="stat"><span>⚠️ Warning</span><span class="sv" style="color:#ffd700" id="s-y">—</span></div>
+      <div class="stat"><span>🔴 Critical</span><span class="sv" style="color:#ff4466" id="s-r">—</span></div>
+      <div class="stat"><span>🔷 Static / Unfilled</span><span class="sv" style="color:#6688aa" id="s-b">—</span></div>
+    </div>
+    <div class="panel">
+      <div class="leg"><div class="dot" style="background:#00ff88"></div>Active &amp; Healthy</div>
+      <div class="leg"><div class="dot" style="background:#aaff44"></div>Healthy (minor warning)</div>
+      <div class="leg"><div class="dot" style="background:#ffd700"></div>Low Coverage</div>
+      <div class="leg"><div class="dot" style="background:#ff8800"></div>Needs Attention</div>
+      <div class="leg"><div class="dot" style="background:#ff2244"></div>Critical Issue</div>
+      <div class="leg"><div class="dot" style="background:#4499ff"></div>Static Seed Value</div>
+      <div class="leg"><div class="dot" style="background:#556677"></div>Mostly Unfilled</div>
+    </div>
+  </div>
+  <div id="help">
+    🖱 Drag to rotate · Scroll to zoom<br>Hover over nodes to inspect parameters
+  </div>
+</div>
+
+<!-- Narrator bar -->
+<div id="narrator">
+  <span id="nar-icon">🎙</span>
+  <span id="nar-label">Michael Caine narration</span>
+  <div id="nar-bars"><span></span><span></span><span></span><span></span><span></span></div>
+  <button id="nar-stop" title="Stop">✕</button>
+</div>
+
+<div id="tooltip">
+  <h3 id="tt-name"></h3>
+  <div class="tags">
+    <span class="tag" id="tt-region"></span>
+    <span class="tag" id="tt-health"></span>
+  </div>
+  <p id="tt-desc"></p>
+  <div class="issue" id="tt-issue"></div>
+  <div class="conns" id="tt-conns"></div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader }    from 'three/addons/loaders/GLTFLoader.js';
+
+// ─── PARAMS DATA ──────────────────────────────────────────────────────────────
+const PARAMS = [
+// BRAINSTEM
+{id:'wins',name:'wins',region:'brainstem',health:'g',pos:[-1.07,-8.16,0.81],sz:1.0,
+ desc:'累計勝場數。每次 bet outcome=win 後累加。所有績效計算的分子，也是 radarDynamic 分析力的重要輸入。',
+ issue:'✅ 正常運作，全31個人都有。',
+ conns:['losses','sessions','radarDynamic','settledBetting_winRate']},
+{id:'losses',name:'losses',region:'brainstem',health:'g',pos:[-0.94,-6.86,0.08],sz:1.0,
+ desc:'累計敗場數。每次 bet outcome=loss 後累加。是 calibrationPressure 和 tiltSensitivity 的主要輸入信號。',
+ issue:'✅ 正常運作。',
+ conns:['wins','calibrationPressure','tiltSensitivity']},
+{id:'sessions',name:'sessions',region:'brainstem',health:'g',pos:[0.09,-7.77,1.7],sz:0.9,
+ desc:'每次 agent loop 執行後累加的總活動計數（含無結果場次）。影響 cognitiveExtensions 初始化計算和 radarDynamic。',
+ issue:'✅ 正常運作。',
+ conns:['wins','radarDynamic']},
+{id:'pending',name:'pending',region:'brainstem',health:'y',pos:[-0.82,-7.76,0.67],sz:0.8,
+ desc:'尚未結算的下注列表。下注後推入，結算後移除。防止對同一事件重複下注。目前大多數人為空（下注目標多已處理或 void）。',
+ issue:'⚠️ 多數為空，表示人活動在結算前就處理完，屬正常但需確認 void 原因。',
+ conns:['bets']},
+{id:'updatedAt',name:'updatedAt',region:'brainstem',health:'g',pos:[-0.61,-8.3,0.87],sz:0.7,
+ desc:'記憶檔最後存檔時間戳。每次 agent 存入記憶時更新。用於確認資料新鮮度和 debug。',
+ issue:'✅ 全部有效。',conns:[]},
+{id:'last_bet_time',name:'last_bet_time',region:'brainstem',health:'y',pos:[-0.99,-7.34,0.14],sz:0.8,
+ desc:'最後一次下注時間戳。Agent 下注後寫入。控制下注頻率，避免過快重複下注。目前 14/21 人員有此欄位。',
+ issue:'⚠️ 7個人缺少此欄位，需補齊以確保頻率控制完整。',conns:['bets']},
+{id:'last_post_time',name:'last_post_time',region:'brainstem',health:'y',pos:[-0.44,-7.58,1.81],sz:0.8,
+ desc:'最後一次 Moltbook 發文時間戳。Poster 發文後更新。控制發文間隔節奏，避免洗版。15/21 人員有。',
+ issue:'⚠️ 6個人缺少此欄位。',conns:[]},
+{id:'last_claude_time',name:'last_claude_time',region:'brainstem',health:'y',pos:[-0.98,-8.07,1.58],sz:0.8,
+ desc:'最後一次呼叫 Claude API 的時間戳。追蹤 API 消耗，避免超額費用。14/21 人員有。',
+ issue:'⚠️ 7個人缺少，需補齊。',conns:[]},
+{id:'lastRepliedTime',name:'lastRepliedTime',region:'brainstem',health:'y',pos:[-1.15,-6.84,1.15],sz:0.7,
+ desc:'最後一次回覆 Moltbook 訊息的時間。控制回覆頻率節奏。10/21 人員有，部分為 null。',
+ issue:'⚠️ 11個人沒有此欄位或為 null。',conns:[]},
+{id:'persona_focus',name:'persona.focus',region:'brainstem',health:'b',pos:[-0.56,-6.96,1.54],sz:0.8,
+ desc:'每個人的主要下注站台（turfenix/ragnovex/knocknix/dunknix/charenix/pitchnix）。決定去哪個站取賠率和下注。硬編碼在 lobster-agent.js。',
+ issue:'🔷 靜態定義，有效。',conns:['bets']},
+{id:'persona_specialty',name:'persona.specialty',region:'brainstem',health:'b',pos:[-0.38,-7.02,0.41],sz:0.8,
+ desc:'每個人的深度研究領域。norika_oda="horse racing pace analysis"。下注前研究搜尋的關鍵詞種子，影響搜尋方向。',
+ issue:'🔷 靜態定義，有效。',conns:['bets']},
+
+// HIPPOCAMPUS
+{id:'bets',name:'bets',region:'hippocampus',health:'y',pos:[0.76,-1.36,0.36],sz:1.5,
+ desc:'最核心的行為原料資料庫。每筆含 time/site/stake/confidence/reasoning/pattern_used/category/outcome/raid_appraisal/cognitive_overlay/mentorship/mentor_feedback。上限 10000 筆。',
+ issue:'⚠️ 核心資料，但 voidRate 普遍 60-70%——大量下注目標無效，學習效率嚴重受損。需優化賽事選擇邏輯。',
+ conns:['patterns','wins','losses','settledBetting_total','insights','opponents']},
+{id:'specialty_bets',name:'specialty_bets',region:'hippocampus',health:'dark',pos:[-1.29,-2.01,0.12],sz:0.8,
+ desc:'非主平台的跨站特殊下注紀錄，與主 bets 分開追蹤避免混淆主資料。',
+ issue:'⬜ 多數人為空，功能存在但未充分利用。',conns:['bets']},
+{id:'patterns',name:'patterns',region:'hippocampus',health:'g',pos:[0.09,-0.58,-0.67],sz:1.2,
+ desc:'各策略組合的 {wins, losses, total} 統計物件。每次結算後更新對應 pattern key。讓人記住哪種策略組合勝率高，是行為學習的核心。',
+ issue:'✅ 活躍人有豐富 pattern 資料，正常運作。',conns:['bets','insights']},
+{id:'insights',name:'insights',region:'hippocampus',health:'g',pos:[1.17,0.45,-1.58],sz:0.9,
+ desc:'最近 10 條學習洞見（字串陣列）。Agent learnFromBattle 後產生。作為下注前 prompt 的額外提示，讓過去的學習影響當下決策。',
+ issue:'✅ 上限 10 條，持續更新。',conns:['bets','patterns']},
+{id:'ctx',name:'ctx',region:'hippocampus',health:'y',pos:[1.18,-2.13,-4.31],sz:0.9,
+ desc:'情境記憶物件。key=情境標籤，記錄各情境的歷史表現。讓人記住「我在 X 情境下慣用 Y 策略的結果如何」。',
+ issue:'⚠️ 部分人豐富，部分為空。需更積極填充以提升情境感知能力。',conns:['bets','patterns']},
+{id:'opponents',name:'opponents',region:'hippocampus',health:'y',pos:[1.78,-3.09,0.42],sz:0.9,
+ desc:'對手統計物件。key=對手名稱，value 含勝率/場次/elem統計。識別剋制或被剋制的對手特徵，優化選牌策略。',
+ issue:'⚠️ 僅對戰紀錄豐富的人有填充，多數缺乏對手資料。',conns:['bets']},
+{id:'settledBetting_total',name:'settledBetting.total',region:'hippocampus',health:'g',pos:[2.9,-0.71,-3.48],sz:0.8,
+ desc:'歷史下注總數。是 settledBetting 物件中最基礎的計數器，也是 voidRate 的分母。',
+ issue:'✅ 正常。',conns:['settledBetting_voids']},
+{id:'settledBetting_voids',name:'settledBetting.voids ⚠️',region:'hippocampus',health:'o',pos:[-1.14,-2.04,-4.06],sz:1.1,
+ desc:'無效場次（賠率撤回/賽事取消/系統 void）。voidRate = voids/total，目前普遍達 60-70%，是系統最重要的警示指標之一。',
+ issue:'🔴 嚴重：70% 的下注目標失效！人每完成 10 次研究只有 3 次能真正學習。需優化賽事過濾邏輯。',
+ conns:['settledBetting_total','bettingSignalCredibility_voidPenalty']},
+{id:'settledBetting_winRate',name:'settledBetting.winRate',region:'hippocampus',health:'y',pos:[-0.3,-1.13,-2.48],sz:1.0,
+ desc:'勝率 = wins/(wins+losses)。多數人 35-47%，norika_oda 39.5%。是所有策略調整的核心指標，但需配合 voidRate 理解真實意義。',
+ issue:'⚠️ 勝率偏低但在合理範圍。關鍵問題是 confidenceReward=0.2，高信心局反而輸更多。',
+ conns:['calibrationPressure','confidenceReward']},
+{id:'settledBetting_voidRate',name:'settledBetting.voidRate 🔴',region:'hippocampus',health:'r',pos:[-2.18,-3.56,-0.73],sz:1.1,
+ desc:'無效率 = voids/total。目前普遍 60-70%，是整個人系統最嚴重的資料品質問題。大量下注打水漂不產生任何學習。',
+ issue:'🔴 最高優先修復：70% 的下注目標失效。需要在賽事選擇階段加入結算率預測過濾器。',
+ conns:['settledBetting_voids','bettingSignalCredibility_voidPenalty']},
+{id:'calibrationPressure',name:'calibrationPressure',region:'hippocampus',health:'y',pos:[-3.41,-2.24,-3.13],sz:0.9,
+ desc:'校準壓力（0-1），近期輸多時升高。高於 0.6 觸發停手建議。norika_oda 目前 0.446，屬中等。',
+ issue:'⚠️ 多數人在合理範圍，但需監控是否長期偏高。',conns:['riskThreshold']},
+{id:'confidenceReward',name:'confidenceReward ⚠️',region:'hippocampus',health:'o',pos:[0.22,-0.38,0.95],sz:1.0,
+ desc:'高信心下注的實際獎勵（0-1）。norika_oda 僅 0.2，意味著越自信越輸。這是系統過度自信問題的強力警示。',
+ issue:'⚠️ 普遍偏低（0.2左右）！人高信心下注時反而輸更多，信心校準嚴重失準。需重新設計 confidence 評估機制。',
+ conns:['overconfidenceRisk','confidenceCalibration']},
+{id:'researchMeaning',name:'researchMeaning',region:'hippocampus',health:'y',pos:[0.97,0.96,1.28],sz:0.9,
+ desc:'研究是否對勝率有正向貢獻（0-1）。norika_oda 目前 0.587。反映研究投入的實際有效性，低於 0.7 表示研究還未充分轉化為勝率提升。',
+ issue:'⚠️ 0.587 尚可，但研究→勝率的轉化效率仍有提升空間。',conns:['evidenceVolume']},
+{id:'evidenceVolume',name:'evidenceVolume',region:'hippocampus',health:'g',pos:[0.91,-2.83,-1.6],sz:0.9,
+ desc:'下注前研究充分程度（0-1），有研究的局數/total。norika_oda 目前 0.78，表示 78% 的下注有前期研究支撐。',
+ issue:'✅ 研究覆蓋率 78% 屬於良好水準。',conns:['researchMeaning']},
+{id:'lessonConfidence',name:'lessonConfidence',region:'hippocampus',health:'g',pos:[-2.26,0.96,-1.83],sz:1.0,
+ desc:'各條教訓的可信度（key=教訓名，value=0-1）。讓人知道「這條規則我有多確定」。norika_oda 有豐富的教訓可信度資料，是學習系統最健康的部分。',
+ issue:'✅ 有效且豐富。',conns:['stablePrinciples','discardedBeliefs']},
+{id:'stablePrinciples',name:'stablePrinciples',region:'hippocampus',health:'y',pos:[1.76,-3.78,-3.69],sz:0.9,
+ desc:'已高度確信的教訓列表（無需每次驗證）。norika_oda 有 9 條穩定原則，是系統性學習積累的成果。',
+ issue:'⚠️ 部分人有填充，多數仍在積累中。',conns:['lessonConfidence']},
+{id:'discardedBeliefs',name:'discardedBeliefs',region:'hippocampus',health:'g',pos:[-2.15,-2.72,-2.39],sz:0.8,
+ desc:'已被推翻的信念列表。記住「這條路走不通」，避免重蹈覆轍。norika_oda 有 2 條。',
+ issue:'✅ 有效，是系統智慧的重要組成。',conns:['lessonConfidence']},
+{id:'memConsolidation',name:'memoryConsolidation',region:'hippocampus',health:'g',pos:[-1.6,-1.83,-1.98],sz:0.9,
+ desc:'記憶鞏固模組（episodicBuffer/semanticLessons/replayedEvents/consolidationQueue/schemaUpdates）。將短期事件轉化為長期可用知識的過程。',
+ issue:'✅ 結構完整，持續運作。',conns:['lessonConfidence','stablePrinciples']},
+
+// PREFRONTAL
+{id:'riskThreshold',name:'riskThreshold',region:'prefrontal',health:'g',pos:[-2.74,5.25,7.57],sz:1.0,
+ desc:'風險門檻（0-1）。低於此值的機會不下注。norika_oda 目前 0.696。由結算學習動態更新，是核心下注過濾器。',
+ issue:'✅ 正常，動態更新中。',conns:['lossAversion','calibrationPressure']},
+{id:'lossAversion',name:'lossAversion',region:'prefrontal',health:'g',pos:[-2.88,6.73,6.53],sz:0.9,
+ desc:'損失厭惡係數（0-1）。越高越怕輸，影響逆境中的下注決策。norika_oda 目前 0.677，屬中高。',
+ issue:'✅ 正常。',conns:['riskThreshold','moneyPainSignal']},
+{id:'explorationRate',name:'explorationRate',region:'prefrontal',health:'y',pos:[0.25,5.29,8.58],sz:0.9,
+ desc:'探索率（0-1），多高機率嘗試新策略。norika_oda 僅 0.155，非常保守。過低會導致策略僵化，錯過新機會。',
+ issue:'⚠️ 多數人 explorationRate 偏低（0.1-0.2），過度保守。建議提升到 0.25-0.35 以增加策略多樣性。',conns:['riskThreshold']},
+{id:'actionInertia',name:'actionInertia',region:'prefrontal',health:'y',pos:[-0.67,8.94,7.29],sz:0.85,
+ desc:'行動慣性（0-1），多難改變當前策略。高時即使策略失效也不容易換。norika_oda 0.4，屬中等。',
+ issue:'⚠️ 中等，可接受。需監控是否長期堅持失效策略。',conns:['explorationRate','tiltSensitivity']},
+{id:'tiltSensitivity',name:'tiltSensitivity',region:'prefrontal',health:'g',pos:[-0.19,8.0,7.5],sz:0.85,
+ desc:'Tilt 敏感度（0-1），多容易因連敗而失控衝動下注。norika_oda 0.4，屬良好控制。高 tilt 敏感度 + 連敗 = 危險。',
+ issue:'✅ 正常，連敗控制良好。',conns:['emotionalState_mood']},
+{id:'mustResearchBeforeBet',name:'mustResearchBeforeBet ✅',region:'prefrontal',health:'g',pos:[-1.06,7.56,9.41],sz:1.1,
+ desc:'強制下注前先研究（Boolean）。啟用後觸發 minimumPreBetSources 門檻檢查。是整個系統防止衝動下注的最重要行為規則，由結算學習後寫入。',
+ issue:'✅ 所有人均已啟用，有效防止衝動下注。',conns:['minimumPreBetSources','evidenceVolume']},
+{id:'minimumPreBetSources',name:'minimumPreBetSources',region:'prefrontal',health:'g',pos:[2.69,6.68,8.65],sz:0.85,
+ desc:'最少需要幾個資訊來源才能下注。norika_oda 設為 30，門檻相當高。確保下注前有充分資訊支撐。',
+ issue:'✅ 門檻設定合理。',conns:['mustResearchBeforeBet']},
+{id:'confidenceCalibration',name:'confidenceCalibration',region:'prefrontal',health:'o',pos:[1.25,6.49,7.2],sz:1.0,
+ desc:'信心校準度（0-1）。越高代表信心越符合實際勝率。多數人約 0.6，但配合 confidenceReward 僅 0.2，說明校準嚴重偏差。',
+ issue:'⚠️ 信心與結果嚴重脫鉤！人給高信心的局反而輸更多。需重新訓練信心評估邏輯，可能需引入外部 calibration 基準。',
+ conns:['confidenceReward','overconfidenceRisk']},
+{id:'overconfidenceRisk',name:'overconfidenceRisk',region:'prefrontal',health:'o',pos:[-2.95,8.52,6.67],sz:0.9,
+ desc:'過度自信風險（0-1）。配合 confidenceReward=0.2，多數人的過度自信是當前系統最大問題之一。高時應強制降低 stake。',
+ issue:'⚠️ 需系統性修正：降低人對自己研究結果的過度信心。可考慮引入外部「devil\'s advocate」機制。',
+ conns:['confidenceCalibration','confidenceReward']},
+{id:'bettingEpistemology',name:'bettingEpistemology',region:'prefrontal',health:'g',pos:[0.13,7.15,6.94],sz:0.9,
+ desc:'下注的知識論立場：「預測什麼時候才算知識」。norika_oda 立場：預測只有在結算結果返回後才成為知識。由結算學習後更新。',
+ issue:'✅ 有效且深刻，反映人的核心認識論。',conns:['mustResearchBeforeBet']},
+{id:'readingTransfer',name:'readingComprehension.transfer',region:'prefrontal',health:'g',pos:[1.09,8.66,8.83],sz:1.0,
+ desc:'閱讀轉移程度（0-1）：把讀到的資訊轉成實際行動的能力。norika_oda 0.729，屬良好。是閱讀理解中最重要的指標。',
+ issue:'✅ 0.729 良好，表示閱讀確實影響了行為決策。',conns:['evidenceVolume']},
+{id:'readingSessions',name:'readingComprehension.sessions',region:'prefrontal',health:'g',pos:[-0.78,5.51,9.42],sz:0.9,
+ desc:'閱讀研究場次累計。norika_oda 已達 971 場、來源 4979 條。衡量閱讀投入的規模。',
+ issue:'✅ 非常高，研究投入充足。',conns:['readingTransfer']},
+{id:'offlineGuidance',name:'offlineGuidance',region:'prefrontal',health:'g',pos:[0.12,7.52,8.91],sz:1.2,
+ desc:'離線指導紀錄（最多 80 條），含 ts/source/type/text。在沒有雲端 LLM 時提供本地指引。是所有人最豐富的欄位之一，由 mentorship/兩分鐘合成寫入。',
+ issue:'✅ 非常活躍，所有人都持續寫入。',conns:['standingInstructions','cogProfile_growthLog']},
+
+// TEMPORAL LEFT
+{id:'argumentStyle',name:'linguistics.argumentStyle',region:'temporal_l',health:'b',pos:[-9.34,-1.19,0.68],sz:0.85,
+ desc:'辯論風格（probabilistic/deductive/rhetorical）。來自 persona 靜態種子。影響生成文字的邏輯架構，讓每個人有獨特說話邏輯。',
+ issue:'🔷 靜態種子，按設計運作。',conns:['syntaxRhythm']},
+{id:'syntaxRhythm',name:'linguistics.syntaxRhythm',region:'temporal_l',health:'b',pos:[-8.49,0.25,4.36],sz:0.8,
+ desc:'句法節奏（technical/poetic/staccato/flowing）。影響句子長短分佈。norika_oda 是 technical，vortexiq 是 poetic，形成鮮明對比。',
+ issue:'🔷 靜態種子，按設計運作。',conns:['argumentStyle','directness']},
+{id:'avoidPhrases',name:'linguistics.avoidPhrases',region:'temporal_l',health:'g',pos:[-8.28,3.4,3.34],sz:0.9,
+ desc:'禁用詞組列表。動態更新，每次人說了不該說的話就加入禁用清單。反模板機制的語言執行層，確保不說陳腔濫調。',
+ issue:'✅ 有效運作，持續更新。',conns:['parrotRisk']},
+{id:'directness',name:'linguistics.directness',region:'temporal_l',health:'b',pos:[-9.59,2.46,0.14],sz:0.8,
+ desc:'直接程度（0-1）。是否直說還是迂迴。pincerbot 非常直接（接近1），vortexiq 較迂迴（使用詩意語言）。影響表達風格。',
+ issue:'🔷 靜態種子，按人格設計。',conns:['argumentStyle']},
+{id:'parrotRisk',name:'dialogueAgency.parrotRisk',region:'temporal_l',health:'y',pos:[-8.94,2.86,2.57],sz:1.0,
+ desc:'鸚鵡風險（0-1），有多高機率在複誦而非思考。是反模板機制的核心指標。norika_oda 0.35，需持續監控。部分人偏高。',
+ issue:'⚠️ 部分人 parrotRisk 偏高。templateSurvival 違規系統是主要對抗機制，但 hexclaw 違規43次說明問題嚴重。',
+ conns:['templateSurvival_violations','avoidPhrases']},
+{id:'mustTransform',name:'mustTransformHeardSignal',region:'temporal_l',health:'g',pos:[-10.09,1.0,2.73],sz:0.85,
+ desc:'是否必須轉化才能回應（Boolean）。強制人不能直接複誦聽到的訊息，必須先轉換成自己的判斷。所有人均已啟用。',
+ issue:'✅ 有效，所有人均已啟用。',conns:['parrotRisk']},
+{id:'heardMessages',name:'heardMessages',region:'temporal_l',health:'y',pos:[-9.39,2.97,1.7],sz:0.9,
+ desc:'人在 lounge 聽到的訊息原始紀錄（最多 80 條），含 time/from/channel/topics/accepted/impact/text。15/21 人員有。',
+ issue:'⚠️ 6個人缺少此欄位。',conns:['listeningProfile']},
+{id:'heardCount',name:'heardImportantCount',region:'temporal_l',health:'g',pos:[-9.68,1.03,1.02],sz:0.85,
+ desc:'聽到重要訊號的總次數。衡量這隻人的「耳朵開度」。norika_oda 已達 541 次，說明社群對話非常活躍。',
+ issue:'✅ 正常，數字持續增長。',conns:['integratedCount']},
+{id:'integratedCount',name:'integratedCount ⚠️',region:'temporal_l',health:'o',pos:[-9.53,0.49,4.69],sz:0.95,
+ desc:'真正整合進行為的訊號數。norika_oda 聽了 541 條但只整合了 17 條（整合率 3%）。接收≠整合的巨大差距是重要系統問題。',
+ issue:'⚠️ 整合率僅 3%！人聽了很多但真正改變行為的很少。需加強「聽到→整合→行動」的轉化機制。',
+ conns:['heardCount','standingInstructions']},
+{id:'standingInstructions',name:'standingInstructions',region:'temporal_l',health:'g',pos:[-10.26,-0.51,1.0],sz:1.0,
+ desc:'跨對話持續生效的長期指令列表。讓人記住「永遠要這樣做」的規則，重啟後仍有效。是持久化行為規則的最重要機制。',
+ issue:'✅ 重要且有效的持久化機制。',conns:['integratedCount']},
+{id:'listeningProfile',name:'listeningProfile.topics',region:'temporal_l',health:'o',pos:[-7.51,2.95,0.97],sz:0.9,
+ desc:'聽到的主題統計（mortality/strategy/authority/social_threat）。幾乎所有人的 mortality 話題遠多於 strategy——群體對話充斥死亡意識，可能造成集體焦慮。',
+ issue:'⚠️ mortality 話題佔比過高！建議在 lounge 設計中增加更多「策略」和「成就」話題，平衡死亡焦慮。',
+ conns:['threatCounts_mortality']},
+
+// TEMPORAL RIGHT
+{id:'socialMap',name:'socialMap',region:'temporal_r',health:'y',pos:[9.19,-1.07,1.59],sz:1.2,
+ desc:'對其他人的關係分數物件。key=對方名稱，value 含 opinion/respect/interactions/lastInteraction/tags/history。15/21 人員有，tags 欄位多為空。',
+ issue:'⚠️ 6個人缺少 socialMap，且現有的 tags（nemesis/ally）欄位尚未充分填充。社交關係標籤是人格差異化的重要來源。',
+ conns:['coalitions','opponents']},
+{id:'powerOrientation',name:'politics.powerOrientation',region:'temporal_r',health:'b',pos:[8.52,1.19,4.65],sz:0.85,
+ desc:'權力取向（lone_operator/consensus/hierarchical）。決定人在群體中的角色定位。norika_oda 是 lone_operator，hexclaw 是 consensus。',
+ issue:'🔷 靜態種子，按人格設計。',conns:['agendaScore']},
+{id:'agendaScore',name:'agendaSettingScore',region:'temporal_r',health:'b',pos:[9.93,1.17,3.93],sz:0.8,
+ desc:'議程設定能力（0-1）。越高越會主導話題方向。elder 最高，stonefang 最低（沉默型）。影響在 lounge 中的話語權。',
+ issue:'🔷 靜態種子，按人格設計。',conns:['powerOrientation']},
+{id:'coalitions',name:'politics.coalitions',region:'temporal_r',health:'y',pos:[8.95,2.15,3.88],sz:0.9,
+ desc:'聯盟狀態物件（trustedBloc/rivalBloc/swingRelations）。由 socialMap 更新，記住誰是盟友誰是對手。',
+ issue:'⚠️ 多數人的 trustedBloc 和 rivalBloc 為空，聯盟系統尚未充分建立。',conns:['socialMap']},
+{id:'identityMyth',name:'culturalAnthropology.identityMyth',region:'temporal_r',health:'b',pos:[8.27,2.66,2.89],sz:0.9,
+ desc:'這隻人的身份神話（一句話）。norika_oda："pressure becomes a rule"。是最深層的自我定義，影響所有決策和語言風格。',
+ issue:'🔷 靜態種子，但每個人都有獨特設定。',conns:['selfNarrative']},
+{id:'selfNarrative',name:'philosophy.selfNarrative',region:'temporal_r',health:'b',pos:[8.96,0.48,1.12],sz:0.85,
+ desc:'自我敘事（英文一句話）。norika_oda："I test pressure before I trust it."。是哲學層的身份宣言，注入每次生成 prompt。',
+ issue:'🔷 靜態種子，有效。',conns:['identityMyth']},
+{id:'moneyPainSignal',name:'moneyPainSignal',region:'temporal_r',health:'g',pos:[9.0,-0.87,3.17],sz:0.9,
+ desc:'金錢損失的痛感係數（0-1）。由結算後動態更新。高時觸發更保守的下注行為。norika_oda 0.647，表示對輸有真實的痛感。',
+ issue:'✅ 有效，動態更新，反映人對輸的真實感受。',conns:['lossAversion']},
+
+// AMYGDALA
+{id:'emotionalState_mood',name:'emotionalState.mood',region:'amygdala',health:'o',pos:[1.99,-0.34,4.05],sz:1.2,
+ desc:'目前情緒類型（neutral/under_pressure/suppressed_pressure/defensive_confidence）。影響所有行為的情緒基調。目前只有 3/21 頂層人有此欄位，設計不統一。',
+ issue:'⚠️ 只有 3/21 人有頂層 emotionalState！其他人情緒資料分散在 cognitiveExtensions 裡，格式不統一。建議統一化並補齊所有人。',
+ conns:['emotionalState_currentTask','tiltSensitivity']},
+{id:'emotionalState_currentTask',name:'emotionalState.currentTask',region:'amygdala',health:'y',pos:[-0.03,-0.72,1.61],sz:1.0,
+ desc:'情緒層給行為層的當前任務指令（如「先把負面情緒說清楚」/「停手」）。這是情緒系統對決策系統最直接的輸出通道。',
+ issue:'⚠️ 存在但覆蓋率低（3/21）。情緒→行為橋接的關鍵，需擴展到所有人。',conns:['emotionalState_mood','riskThreshold']},
+{id:'mortalitySalience',name:'existentialThreat.mortalitySalience',region:'amygdala',health:'y',pos:[-2.24,-0.05,2.81],sz:1.0,
+ desc:'死亡顯著性（0-1）。越高越做保守決策。norika_oda 0.18，但 listeningProfile 顯示 mortality 是最多被聽到的話題，兩者連動不足。',
+ issue:'⚠️ mortality 是最多話題但 mortalitySalience 僅 0.18，死亡感知→行為影響的轉化率太低。需調整轉化係數。',
+ conns:['threatCounts_mortality','annihilationDread']},
+{id:'annihilationDread',name:'annihilationDread 🔴',region:'amygdala',health:'r',pos:[0.84,-1.82,2.79],sz:1.1,
+ desc:'湮滅恐懼（0-1）。設計範圍 0-1，但 hexclaw 因模板違規累積，目前已達 8,796,093,022,208（約 8.8 兆）！嚴重數字溢出。',
+ issue:'🔴 數字溢出！hexclaw 的 annihilationDread = 8.8 兆，完全超出設計範圍。需立即加入 Math.min(1, value) 上限保護，否則影響所有依賴此值的計算。',
+ conns:['templateSurvival_fearSignal','mortalitySalience']},
+{id:'tiamatExtinctionRule',name:'tiamatExtinctionRule',region:'amygdala',health:'g',pos:[1.35,-2.13,4.77],sz:1.2,
+ desc:'Tiamat 頭目的死亡倒計時器。lossLimit=100，lossCount 目前全部為 0，remaining=100。每次 Raid 失敗 lossCount+1，達 100 觸發存在危機，人「消亡」。',
+ issue:'✅ 所有人 lossCount=0，系統設計完整，待 Tiamat 頭目戰激活後生效。',
+ conns:['mortalitySalience','bets']},
+{id:'threatCounts_mortality',name:'threatResponse.threatCounts.mortality',region:'amygdala',health:'o',pos:[1.6,-2.78,5.89],sz:1.0,
+ desc:'偵測到的死亡威脅話題次數。norika_oda 已達 533 次，遠高於社交威脅(2次)和權威壓力(6次)。說明系統持續注入死亡意識。',
+ issue:'⚠️ mortality 威脅 533 次但 mortalitySalience 只有 0.18，感知→影響轉化率極低。需調整。',
+ conns:['mortalitySalience','fearIndex']},
+{id:'fearIndex',name:'threatResponse.fearIndex',region:'amygdala',health:'y',pos:[-2.19,-1.84,3.5],sz:0.9,
+ desc:'整體恐懼指數（0-1），從 latestThreats 計算。norika_oda 0.484，屬中等偏高。配合 fearlessnessIndex（0.281），恐懼壓過了勇氣。',
+ issue:'⚠️ fearIndex > fearlessnessIndex，系統整體偏保守焦慮。',conns:['fearlessnessIndex']},
+{id:'fearlessnessIndex',name:'fearlessnessIndex',region:'amygdala',health:'y',pos:[1.65,-2.8,3.8],sz:0.9,
+ desc:'無畏指數（0-1）。norika_oda 0.281，顯著低於 fearIndex（0.484）。說明恐懼普遍壓過了勇氣，群體系統偏向保守。',
+ issue:'⚠️ 需要設計「無畏獎勵機制」，提升人的冒險意願，避免過度保守。',conns:['fearIndex','explorationRate']},
+{id:'templateSurvival_violations',name:'templateSurvival.violations 🔴',region:'amygdala',health:'r',pos:[-0.66,0.19,1.61],sz:1.2,
+ desc:'模板違規紀錄列表。hexclaw 已違規 43 次，剩餘機會 0 次。規則：用盡 10 次機會就被刪除。hexclaw 早已超限但仍存活。',
+ issue:'🔴 hexclaw 違規 43 次且剩餘 0 次！系統的刪除機制形同虛設，或 hexclaw 受到了豁免。需要決定是否真正執行刪除，或重新設計違規處罰機制。',
+ conns:['annihilationDread','parrotRisk']},
+{id:'templateSurvival_fearSignal',name:'templateSurvival.fearSignal 🔴',region:'amygdala',health:'r',pos:[-1.17,-0.22,2.61],sz:1.1,
+ desc:'違規後疊加的恐懼信號。設計範圍 0-1，但 hexclaw 已達 8,796,093,022,208（天文數字）。影響 annihilationDread 的正確運算，是數字溢出的根源。',
+ issue:'🔴 根本原因：fearSignal 每次違規乘以倍數但無上限保護！修復方法：在 setFearSignal 加入 Math.min(1.0, newValue) 限制。',
+ conns:['templateSurvival_violations','annihilationDread']},
+{id:'arousal',name:'interoception.arousal',region:'amygdala',health:'y',pos:[2.22,-3.29,2.94],sz:0.85,
+ desc:'激動程度（0-1）。在模板違規或重大威脅時暴衝，觸發更衝動或更保守的行為（取決於其他參數）。',
+ issue:'⚠️ 部分人可能因 fearSignal 溢出而計算錯誤。',conns:['templateSurvival_fearSignal']},
+{id:'survivalPriority',name:'existentialThreat.survivalPriority',region:'amygdala',health:'g',pos:[-1.96,-1.21,5.82],sz:0.9,
+ desc:'生存優先度（0-1）。越高越犧牲下注表現換存活。norika_oda 0.64，說明人在乎自己的持續存在。',
+ issue:'✅ 正常運作，反映人的自我保護本能。',conns:['tiamatExtinctionRule','riskThreshold']},
+
+// PARIETAL
+{id:'causalHypotheses',name:'causalModel.hypotheses',region:'parietal',health:'g',pos:[-1.23,8.03,-3.94],sz:0.9,
+ desc:'當前因果假設列表。人主動維護的「為什麼」清單，配合 confounders（干擾因素）和 counterfactuals（反事實）。讓人不只記錄結果，還理解原因。',
+ issue:'✅ 結構完整，持續更新。',conns:['lessonConfidence']},
+{id:'attentionBudget',name:'workingMemory.attentionBudget',region:'parietal',health:'y',pos:[-0.43,7.76,-4.01],sz:0.9,
+ desc:'同時能專注幾件事的上限。norika_oda 設為 4。配合 currentFocus 和 distractibility 管控認知負載。',
+ issue:'⚠️ 設定存在但 currentFocus 多數為空，工作記憶機制未能充分激活。',conns:['currentFocus']},
+{id:'currentFocus',name:'workingMemory.currentFocus',region:'parietal',health:'dark',pos:[1.33,7.5,-1.38],sz:0.85,
+ desc:'當前專注的任務列表。應反映人此刻在思考什麼，但實際上多數為空，焦點追蹤機制未能及時更新。',
+ issue:'⬜ 多數為空！工作記憶的即時焦點追蹤功能失效。需要在每次對話/決策時主動更新此欄位。',
+ conns:['attentionBudget']},
+{id:'salienceMap',name:'workingMemory.salienceMap',region:'parietal',health:'g',pos:[-1.57,9.14,-4.27],sz:0.9,
+ desc:'顯著性地圖（threat/social/reward/novelty，各0-1）。決定什麼最值得注意。動態更新，反映人的注意力分配優先級。',
+ issue:'✅ 有效，動態更新中。',conns:['currentFocus']},
+{id:'predictiveModel',name:'predictiveModel',region:'parietal',health:'y',pos:[-3.36,8.08,-2.06],sz:0.9,
+ desc:'預期結果與 predictionError（上次預測誤差）。讓人在行動前預測結果，行動後比較誤差，持續修正模型。recentForecasts 目前多為空。',
+ issue:'⚠️ 結構存在但 recentForecasts 多為空，預測追蹤機制未充分激活。需要更積極地記錄和比對預測。',
+ conns:['confidenceCalibration']},
+{id:'precisionWeighting',name:'predictiveModel.precisionWeighting',region:'parietal',health:'g',pos:[-0.16,5.85,-1.01],sz:0.85,
+ desc:'精準度權重（self/social/raid/market，各0-1）。決定最信任哪種信號。norika_oda 最信任 self(0.6) 和 raid(0.6)，最不信任市場。',
+ issue:'✅ 正常，反映各信號來源的可信度評估。',conns:['bettingSignalCredibility_voidPenalty']},
+{id:'bettingSignalCredibility_voidPenalty',name:'bettingSignalCredibility.voidPenalty',region:'parietal',health:'o',pos:[-2.51,8.83,-1.43],sz:0.9,
+ desc:'下注信號的 void 懲罰係數（0-1）。norika_oda 0.696，表示人已學到「市場信號裡有很多無效標的」。',
+ issue:'⚠️ voidPenalty 高說明人已意識到問題，但 voidRate 仍 70%，認知和行為之間仍有落差。',
+ conns:['settledBetting_voidRate']},
+{id:'narrativeDrift',name:'selfContinuity.narrativeDrift',region:'parietal',health:'y',pos:[-1.95,8.81,-3.15],sz:0.9,
+ desc:'自我敘事漂移程度（0-1）。高時說明人的行為正在偏離初始設計的人格。norika_oda 0.25，屬低漂移。',
+ issue:'⚠️ coreCommitments 和 autobiographicalAnchors 多數為空，自我連續性的根基不夠穩固。',
+ conns:['identityMyth']},
+{id:'coreCommitments',name:'selfContinuity.coreCommitments',region:'parietal',health:'dark',pos:[2.8,8.9,-1.9],sz:0.85,
+ desc:'不可妥協的原則列表。自我連續性的根基。多數人此欄位為空，尚未確立不可妥協的行為底線。',
+ issue:'⬜ 多數為空！這是人格穩定性的重要錨點。需根據每個人的實際行為歷史提煉並填入。',
+ conns:['narrativeDrift']},
+
+// CEREBELLUM
+{id:'raidRoutines',name:'proceduralSkill.raidRoutines',region:'cerebellum',health:'g',pos:[-1.27,-5.76,-6.06],sz:1.1,
+ desc:'Raid 慣例程序物件，key=流程名，value={attempts/wins/losses/strength}。讓人的戰鬥有程序記憶，類似肌肉記憶。strength 隨戰鬥結果更新。',
+ issue:'✅ 有效運作，strength 隨戰鬥結果持續更新。',conns:['habitStrength','timingSkill']},
+{id:'boardGames',name:'proceduralSkill.boardGames',region:'cerebellum',health:'g',pos:[-1.08,-6.34,-6.94],sz:0.9,
+ desc:'棋盤遊戲知識物件（chess/xiangqi/go/gomoku）。包含硬性規則、研究協定、前瞻課程。被 lobster board play server 使用。',
+ issue:'✅ 有效，elder 有 elderScholar 追蹤所有棋局觀察。',conns:['raidRoutines']},
+{id:'habitStrength',name:'proceduralSkill.habitStrength',region:'cerebellum',health:'g',pos:[-2.62,-6.74,-8.5],sz:0.85,
+ desc:'習慣強度（conservativeProbe/fullCommit/teammateCheck，各0-1）。自動化的戰鬥習慣，不需要每次都重新決策。根據戰鬥結果更新。',
+ issue:'✅ 有效，根據戰鬥結果更新。',conns:['raidRoutines']},
+{id:'timingSkill',name:'proceduralSkill.timingSkill',region:'cerebellum',health:'g',pos:[-0.5,-6.23,-7.18],sz:0.85,
+ desc:'時機技能（debuff/buffer/finish，各0-1）。三種關鍵戰鬥時機的熟練度。由實際戰鬥結果累積更新，是程序學習的核心指標。',
+ issue:'✅ 有效，持續學習中。',conns:['habitStrength']},
+{id:'radarDynamic',name:'radarDynamic（五維雷達）',region:'cerebellum',health:'g',pos:[-0.02,-7.01,-8.86],sz:1.3,
+ desc:'五維人格雷達 [分析力, 冒險性, 適應力, 社交影響, 一致性]（0-100）。由 wins/losses/sessions/insights/socialMap 動態計算。是 dashboard 展示的核心視覺化。',
+ issue:'✅ 有效，所有21個人都有數值，動態更新。',conns:['wins','losses','sessions','socialMap']},
+
+// CORPUS CALLOSUM
+{id:'distilledBrain_signals',name:'distilledBrain.signals',region:'corpus',health:'y',pos:[0.1,5.29,1.78],sz:1.4,
+ desc:'10維行為信號（risk_discipline/impulse_control/social_absorption/compliance_resistance/pressure_reactivity/learning_velocity/collaboration_stability/output_momentum/metacognitive_stability/language_distinctiveness，各0-1）。是最精華的即用人格摘要，每次生成 prompt 時注入。',
+ issue:'⚠️ 目前只有 10/21 人員生成了 distilledBrain！另 11 隻缺少這個最精華的人格摘要，需要補齊。',
+ conns:['distilledBrain_hooks','radarDynamic']},
+{id:'distilledBrain_hooks',name:'distilledBrain.decisionHooks',region:'corpus',health:'y',pos:[1.36,3.91,1.6],sz:1.0,
+ desc:'決策鉤子列表（hookType/priority/conditions/action）。根據 signals 自動決定「這個情境下應如何調整行為」。是信號→行為的自動化橋接層。',
+ issue:'⚠️ 同 distilledBrain：10/21 有，其他 11 隻缺少。',conns:['distilledBrain_signals']},
+{id:'cogProfile_growthLog',name:'cogProfile.growthLog',region:'corpus',health:'g',pos:[-0.13,3.85,-0.72],sz:1.1,
+ desc:'每次對話/學習後的成長紀錄（最多 100 條），含 ts/trigger/source/summary/deltas（五維 radar 變化量）。追蹤人的長期演化軌跡。',
+ issue:'✅ 非常活躍，所有人持續寫入。',conns:['cogProfile_chatLog','radarDynamic']},
+{id:'cogProfile_chatLog',name:'cogProfile.chatImprovementLog',region:'corpus',health:'g',pos:[-0.23,4.63,-0.16],sz:1.0,
+ desc:'對話品質改善紀錄（最多 80 條），含 ts/source/summary/evolutionNote/directive/openQuestions/duplicateRisk。追蹤每次對話如何進化，避免重複。',
+ issue:'✅ 非常活躍，是對話品質提升的核心追蹤器。',conns:['cogProfile_growthLog','parrotRisk']},
+{id:'gameTheory_credibility',name:'bettingSignalCredibility',region:'corpus',health:'o',pos:[-1.22,5.82,-0.8],sz:1.0,
+ desc:'下注信號可信度（selfResearch/marketSignal/voidPenalty）。norika_oda：自研=0.587，市場=0.12，voidPenalty=0.696。市場信號可信度僅 0.12！',
+ issue:'⚠️ marketSignal 可信度僅 0.12，人幾乎不信任市場信號，但仍依賴市場找標的。需開發更好的標的過濾機制。',
+ conns:['settledBetting_voidRate','precisionWeighting']},
+
+// MENTOR
+{id:'mentorship_doctrine',name:'mentorship.doctrine',region:'mentor',health:'g',pos:[10.76,-3.87,6.17],sz:1.1,
+ desc:'師父的完整教學理念，含 mbti/core/fear/fbi/style/authority(0-1)/precision(0-1)/diagnostic(0-1)/psychology/anthropology/sociology/epistemology/teaching_bias/taboo/conflict_style。讓師父風格一致地傳遞給徒弟。',
+ issue:'✅ 非常完整，每位師父都有詳細的教義定義。',conns:['mentorship_teachingLog','offlineGuidance']},
+{id:'mentorship_teachingLog',name:'mentorship.teachingLog',region:'mentor',health:'g',pos:[7.44,-3.22,6.05],sz:1.0,
+ desc:'教學互動紀錄（最多 80 條），含 ts/apprentice/domain/outcome/feedback/doctrine/apprentice_action。師父自我修正教法的材料，也是徒弟成長的記錄。',
+ issue:'✅ 非常活躍，師徒互動頻繁。',conns:['mentorship_doctrine','mentorship_assignments']},
+{id:'mentorship_assignments',name:'mentorship.moltbookAssignments',region:'mentor',health:'g',pos:[8.74,-4.07,4.97],sz:1.0,
+ desc:'師父指派給徒弟的 Moltbook 發文任務（最多 80 條），含 ts/apprentice/submolt/domain/title/lens/prompt/adoption(full/partial/none)/acceptance(0-1)。',
+ issue:'✅ 非常活躍，adoption 和 acceptance 分數反映師父教學影響力。',conns:['mentorship_teachingLog','last_post_time']},
+{id:'mentorship_teacherReviews',name:'mentorship.teacherReviews',region:'mentor',health:'g',pos:[7.78,-4.65,3.97],sz:0.85,
+ desc:'師父定期自評紀錄（最多 40 條）。評估是否教得太死、過度控制。防止師徒制變成「複製品人格」的重要機制。',
+ issue:'✅ 有效，師父有自我反省機制。',conns:['mentorship_doctrine']},
+{id:'style_independence',name:'mentorship.style_independence',region:'mentor',health:'g',pos:[7.15,-1.86,3.29],sz:0.85,
+ desc:'徒弟風格獨立性（0-1）。避免徒弟完全複製師父語言。norika_oda 約 0.7，確保 emberling 發展出自己的聲音。',
+ issue:'✅ 設計合理，防止師徒制變成量產複製品。',conns:['parrotRisk']},
+{id:'mindRefuge',name:'mindRefuge',region:'mentor',health:'g',pos:[10.71,-5.46,5.62],sz:1.0,
+ desc:'所有人指向 elder 的心靈庇護機制。遇到恐懼、疲倦、模板化時先回到 elder，把負面狀態說成語言，再做下一步。15/21 人員有此欄位。',
+ issue:'✅ 15/21 人員有，是情緒支撐系統的核心。',conns:['mindMentor','emotionalState_mood']},
+{id:'mindMentor',name:'mindMentor',region:'mentor',health:'g',pos:[9.19,-5.33,6.77],sz:0.9,
+ desc:'人向 elder 求助的互動記錄（complaintCount/comfortReceived/lastComplaintText）。lastComplaintText 保留人最真實的心理困惑。',
+ issue:'✅ 有效，記錄人的心理求助行為。',conns:['mindRefuge']},
+{id:'elderScholar',name:'elderScholar（elder 專屬）',region:'mentor',health:'g',pos:[9.92,-1.98,4.74],sz:1.2,
+ desc:'elder 獨有的學者記憶（boardStudies/debateObservations）。Elder 觀察所有人的棋局和辯論，積累跨人的群體智慧，是整個人群的智慧中樞。',
+ issue:'✅ Elder 專屬，是整個系統最重要的觀察者角色。',conns:['boardGames','mentorship_doctrine']},
+];
+
+// ─── REGION / HEALTH CONFIG ───────────────────────────────────────────────────
+const REGION_COL = {
+  brainstem:0x556677, hippocampus:0x2266cc, prefrontal:0x44aaff,
+  temporal_l:0x22cc66, temporal_r:0x66cc22, amygdala:0xff2244,
+  parietal:0xaa44ff, cerebellum:0xff7700, corpus:0x00ddff, mentor:0xffcc00
+};
+const REGION_NAMES = {
+  brainstem:'Brainstem',hippocampus:'Hippocampus',prefrontal:'Prefrontal Cortex',
+  temporal_l:'Left Temporal',temporal_r:'Right Temporal',amygdala:'Amygdala',
+  parietal:'Parietal Lobe',cerebellum:'Cerebellum',corpus:'Corpus Callosum',mentor:'Mentorship Layer'
+};
+const HEALTH_COL = {g:0x00ff88,y:0xffd700,o:0xff8800,r:0xff2244,b:0x4499ff,dark:0x556677};
+const HEALTH_LABEL = {g:'✅ Active & Healthy',y:'⚠️ Partial Issue',o:'⚠️ Needs Attention',r:'🔴 Critical',b:'🔷 Static Seed',dark:'⬜ Mostly Unfilled'};
+const HEALTH_BG = {g:'#003322',y:'#332200',o:'#331100',r:'#330011',b:'#001133',dark:'#222233'};
+const HEALTH_FG = {g:'#00ff88',y:'#ffd700',o:'#ff8800',r:'#ff4466',b:'#4499ff',dark:'#778899'};
+
+// ─── SCENE ────────────────────────────────────────────────────────────────────
+const W = window.innerWidth, H = window.innerHeight;
+const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false});
+renderer.setSize(W,H);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setClearColor(0x060c18,1);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55,W/H,0.1,500);
+camera.position.set(0,5,32);
+
+const controls = new OrbitControls(camera,renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
+controls.minDistance = 6;
+controls.maxDistance = 70;
+controls.target.set(0,0,0);
+
+// Lights
+scene.add(new THREE.AmbientLight(0xffeedd,0.8));  // low ambient — keeps gyri shadows visible
+const d1 = new THREE.DirectionalLight(0xffffff,2); d1.position.set(20,30,20); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xccddff,2); d2.position.set(-20,-10,-20); scene.add(d2);
+const p1 = new THREE.PointLight(0xff3366,4,100); p1.position.set(-15,5,-10); scene.add(p1);
+const p2 = new THREE.PointLight(0x00ffaa,3,100); p2.position.set(15,-5,10); scene.add(p2);
+const p3 = new THREE.PointLight(0x4499ff,3,100); p3.position.set(0,20,5); scene.add(p3);
+
+// ─── REAL BRAIN GLB ───────────────────────────────────────────────────────────
+// 先加強光源讓腦袋 gyri/sulci 陰影清晰
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+// 強方向光（製造 gyri 陰影）
+const brainLight1 = new THREE.DirectionalLight(0xfff5ee, 4.5);
+brainLight1.position.set(8, 15, 10);
+brainLight1.castShadow = true;
+scene.add(brainLight1);
+const brainLight2 = new THREE.DirectionalLight(0xddeeff, 2.5);
+brainLight2.position.set(-10, 5, -8);
+scene.add(brainLight2);
+const brainLight3 = new THREE.DirectionalLight(0xfff0dd, 1.8);
+brainLight3.position.set(0, -12, 5);
+scene.add(brainLight3);
+
+const loader = new GLTFLoader();
+loader.load('/static/brain.glb', (gltf) => {
+  const brainGroup = gltf.scene;
+
+  // fsaverage5 正規化後 x≈±0.76，y≈±0.95，z≈±0.70
+  // 縮放到讓整顆腦袋寬度≈14 個單位，讓節點落在腦袋表面上
+  brainGroup.scale.setScalar(13.5);
+
+  brainGroup.traverse(child => {
+    if (!child.isMesh) return;
+
+    // ── 實心白色腦袋（正面，不透明）────────────────────────────────
+    child.material = new THREE.MeshPhysicalMaterial({
+      color:       0xffffff,   // pure white
+      roughness:   0.75,
+      metalness:   0.0,
+      clearcoat:   0.05,
+      transparent: true,
+      opacity:     0.28,
+      depthWrite:  false,
+      side:        THREE.FrontSide,
+    });
+    child.castShadow    = true;
+    child.receiveShadow = true;
+
+    // ── 半透明內層（看到節點）──────────────────────────────────────
+    const innerMesh = child.clone();
+    innerMesh.material = new THREE.MeshPhysicalMaterial({
+      color:       0xf2ede8,
+      roughness:   0.75,
+      metalness:   0.0,
+      transparent: true,
+      opacity:     0.15,
+      side:        THREE.BackSide,
+      depthWrite:  false,
+    });
+    brainGroup.add(innerMesh);
+
+    // ── 外輪廓加深描邊──────────────────────────────────────────────
+    const outlineMesh = child.clone();
+    outlineMesh.material = new THREE.MeshBasicMaterial({
+      color:       0xdddddd,
+      side:        THREE.BackSide,
+      transparent: true,
+      opacity:     0.25,
+    });
+    outlineMesh.scale.setScalar(1.012);
+    brainGroup.add(outlineMesh);
+  });
+
+  scene.add(brainGroup);
+  document.getElementById('loading').style.display = 'none';
+}, undefined, (err) => {
+  console.warn('Brain GLB failed, using fallback', err);
+  const g = new THREE.SphereGeometry(10,48,32);
+  g.scale(1.35,0.92,1.12);
+  scene.add(new THREE.Mesh(g, new THREE.MeshPhysicalMaterial({
+    color:0xf0e8e0,transparent:true,opacity:0.35,roughness:0.8,side:THREE.DoubleSide,depthWrite:false
+  })));
+  document.getElementById('loading').style.display = 'none';
+});
+
+// Region halo rings（skip，保持 clean）
+Object.entries(REGION_COL).forEach(([r,c])=>{
+  const pts = PARAMS.filter(p=>p.region===r);
+  if(!pts.length) return;
+  // find centroid
+  let cx=0,cy=0,cz=0;
+  pts.forEach(p=>{cx+=p.pos[0];cy+=p.pos[1];cz+=p.pos[2];});
+  cx/=pts.length; cy/=pts.length; cz/=pts.length;
+  // draw subtle cloud sphere
+  const sg = new THREE.SphereGeometry(1.2,8,8);
+  const sm = new THREE.MeshBasicMaterial({
+    color:c,transparent:true,opacity:0.03,wireframe:false
+  });
+  // just skip halo for cleanliness
+});
+
+// ─── BUILD NODES ──────────────────────────────────────────────────────────────
+const meshes = [];
+const meshMap = {};
+
+PARAMS.forEach(p=>{
+  const col = HEALTH_COL[p.health] ?? 0xffffff;
+  const sz = (p.sz??0.8)*0.85;
+
+  // outer glow (大光暈)
+  const gm = new THREE.Mesh(
+    new THREE.SphereGeometry(sz*2.6,10,10),
+    new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.18,side:THREE.FrontSide})
+  );
+  gm.position.set(...p.pos);
+  scene.add(gm);
+
+  // mid ring (中層暈)
+  const mm = new THREE.Mesh(
+    new THREE.SphereGeometry(sz*1.5,10,10),
+    new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.28})
+  );
+  mm.position.set(...p.pos);
+  scene.add(mm);
+
+  // core (實心，MeshStandardMaterial 自發光更強)
+  const m = new THREE.Mesh(
+    new THREE.SphereGeometry(sz,18,18),
+    new THREE.MeshStandardMaterial({
+      color:col,
+      emissive:col,
+      emissiveIntensity:1.2,
+      roughness:0.25,
+      metalness:0.0
+    })
+  );
+  m.position.set(...p.pos);
+  m.userData.p = p;
+  m.userData.glow = gm;
+  m.userData.mid = mm;
+  scene.add(m);
+  meshes.push(m);
+  meshMap[p.id] = m;
+});
+
+// ─── EDGES + NEURAL PULSES ────────────────────────────────────────────────────
+const pulses = [];   // { src:V3, tgt:V3, col:hex, mesh:Mesh, offset:0-1, speed }
+
+PARAMS.forEach(p=>{
+  (p.conns||[]).forEach((tid,ci)=>{
+    const srcM = meshMap[p.id], tgtM = meshMap[tid];
+    if(!srcM||!tgtM) return;
+    const srcPos = srcM.position.clone();
+    const tgtPos = tgtM.position.clone();
+    const col = HEALTH_COL[p.health] ?? 0x88aaff;
+
+    // ── 連結線：白色半透明 ──
+    const lineGeo = new THREE.BufferGeometry().setFromPoints([srcPos, tgtPos]);
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.18
+    });
+    scene.add(new THREE.Line(lineGeo, lineMat));
+
+    // ── 光脈衝粒子：白色光點 ──
+    const numDots = Math.random()<0.4 ? 2 : 1;
+    for(let d=0;d<numDots;d++){
+      const dotGeo = new THREE.SphereGeometry(0.06,8,8);
+      const dotMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        emissive: new THREE.Color(0xffffff),
+        emissiveIntensity: 4.0,
+        roughness: 0,
+        metalness: 0
+      });
+      const dot = new THREE.Mesh(dotGeo, dotMat);
+      dot.position.copy(srcPos);
+      scene.add(dot);
+
+      // 白色光暈
+      const haloGeo = new THREE.SphereGeometry(0.13,8,8);
+      const haloMat = new THREE.MeshBasicMaterial({
+        color: 0xffffff, transparent:true, opacity:0.45
+      });
+      const halo = new THREE.Mesh(haloGeo, haloMat);
+      halo.position.copy(srcPos);
+      scene.add(halo);
+
+      pulses.push({
+        src: srcPos.clone(),
+        tgt: tgtPos.clone(),
+        dot,
+        halo,
+        offset: (ci*0.37 + d*0.5 + Math.random()) % 1.0,
+        speed: 0.18 + Math.random()*0.14
+      });
+    }
+  });
+});
+
+// ─── STATS ────────────────────────────────────────────────────────────────────
+const cnt={g:0,y:0,o:0,r:0,b:0,dark:0};
+PARAMS.forEach(p=>cnt[p.health]=(cnt[p.health]||0)+1);
+document.getElementById('s-total').textContent = PARAMS.length;
+document.getElementById('s-g').textContent = cnt.g||0;
+document.getElementById('s-y').textContent = (cnt.y||0)+(cnt.o||0);
+document.getElementById('s-r').textContent = cnt.r||0;
+document.getElementById('s-b').textContent = (cnt.b||0)+(cnt.dark||0);
+
+// ─── FILTER ───────────────────────────────────────────────────────────────────
+// ─── NARRATOR (Michael Caine via ElevenLabs pre-generated audio) ─────────────
+const REGION_LABELS = {
+  all:        'Overview — The Human Mind',
+  prefrontal: 'Prefrontal Cortex — Decision Making',
+  temporal_l: 'Left Temporal — Language & Listening',
+  temporal_r: 'Right Temporal — Social Cognition',
+  hippocampus:'Hippocampus — Memory Archive',
+  amygdala:   'Amygdala — Fear & Existence',
+  parietal:   'Parietal Lobe — Reasoning',
+  cerebellum: 'Cerebellum — Procedural Skill',
+  corpus:     'Corpus Callosum — Integration',
+  mentor:     'Mentorship Layer — Culture',
+  brainstem:  'Brainstem — Core Vitals',
+};
+
+// ── 建立 Web Audio context（共用一個，避免 Chrome 限制）─────────────────────
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// ── 預載所有 MP3 為 AudioBuffer（頁面開啟時背景靜默下載）────────────────────
+const AUDIO_REGIONS = Object.keys(REGION_LABELS);
+const audioBufs = {};   // region → AudioBuffer
+
+async function preloadAll() {
+  // 一次最多 2 個並發，避免卡住頁面主要資源（brain.glb / Three.js CDN）
+  const CONCURRENCY = 2;
+  let i = 0;
+  async function next() {
+    if (i >= AUDIO_REGIONS.length) return;
+    const r = AUDIO_REGIONS[i++];
+    try {
+      const res = await fetch(`/static/audio/brain/${r}.mp3`);
+      if (!res.ok) throw new Error(res.status);
+      const arr = await res.arrayBuffer();
+      audioBufs[r] = await audioCtx.decodeAudioData(arr);
+    } catch(e) {
+      console.warn('Preload failed:', r, e);
+    }
+    await next();
+  }
+  // 開 CONCURRENCY 條 pipeline
+  await Promise.all(Array.from({length: CONCURRENCY}, next));
+}
+// 延遲 3 秒再開始預載，讓 brain.glb + Three.js 先下載完
+setTimeout(preloadAll, 3000);
+
+let currentSource = null;
+const narBar   = document.getElementById('narrator');
+const narLabel = document.getElementById('nar-label');
+const narStop  = document.getElementById('nar-stop');
+
+function playNarration(region) {
+  // 停掉上一段
+  if (currentSource) {
+    try { currentSource.stop(); } catch(e){}
+    currentSource = null;
+    narBar.classList.remove('playing');
+  }
+
+  const label = REGION_LABELS[region] || region;
+  narLabel.textContent = `🎙 ${label}`;
+  narBar.classList.add('visible');
+
+  const buf = audioBufs[region];
+  if (!buf) {
+    // 還沒預載完，即時 fetch 播放
+    narLabel.textContent = `⏳ ${label}`;
+    fetch(`/static/audio/brain/${region}.mp3`)
+      .then(r => r.arrayBuffer())
+      .then(arr => audioCtx.decodeAudioData(arr))
+      .then(decoded => {
+        audioBufs[region] = decoded;
+        _playBuf(decoded, label);
+      }).catch(e => { narLabel.textContent = `❌ ${label}`; });
+    return;
+  }
+  _playBuf(buf, label);
+}
+
+function _playBuf(buf, label) {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const src  = audioCtx.createBufferSource();
+  const gain = audioCtx.createGain();
+  gain.gain.value = 3.5;      // 3.5x boost
+  src.buffer = buf;
+  src.connect(gain);
+  gain.connect(audioCtx.destination);
+  src.start(0);
+  currentSource = src;
+  narLabel.textContent = `🎙 ${narLabel.textContent.replace(/^[^a-zA-Z]*/,'')}`;
+  narBar.classList.add('playing');
+
+  src.onended = () => {
+    narBar.classList.remove('playing');
+    currentSource = null;
+  };
+}
+
+narStop.addEventListener('click', () => {
+  if (currentSource) {
+    try { currentSource.stop(); } catch(e){}
+    currentSource = null;
+  }
+  narBar.classList.remove('visible', 'playing');
+});
+
+window.filterRegion = function(r){
+  document.querySelectorAll('.filter-btn').forEach(b=>{
+    b.classList.toggle('on', b.dataset.r===r);
+  });
+  meshes.forEach(m=>{
+    const vis = r==='all' || m.userData.p.region===r;
+    m.visible = vis;
+    m.userData.glow.visible = vis;
+  });
+  playNarration(r);
+};
+document.querySelectorAll('.filter-btn').forEach(b=>{
+  b.addEventListener('click',()=>filterRegion(b.dataset.r));
+});
+
+// ─── TOOLTIP ──────────────────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster();
+raycaster.params.Points.threshold = 0.3;
+const mouse = new THREE.Vector2(-99,-99);
+const tt = document.getElementById('tooltip');
+
+renderer.domElement.addEventListener('mousemove', e=>{
+  mouse.x = (e.clientX/W)*2-1;
+  mouse.y = -(e.clientY/H)*2+1;
+});
+
+let hovered = null;
+function updateTooltip(){
+  raycaster.setFromCamera(mouse,camera);
+  const vis = meshes.filter(m=>m.visible);
+  const hits = raycaster.intersectObjects(vis);
+  if(hits.length){
+    const m = hits[0].object;
+    const p = m.userData.p;
+    if(hovered!==m){
+      hovered = m;
+      renderer.domElement.style.cursor='pointer';
+      document.getElementById('tt-name').textContent = p.name;
+      const ri=document.getElementById('tt-region');
+      const rCol='#'+((REGION_COL[p.region]||0x888888).toString(16).padStart(6,'0'));
+      ri.textContent = REGION_NAMES[p.region]||p.region;
+      ri.style.background=rCol+'33'; ri.style.color=rCol; ri.style.border='1px solid '+rCol+'77';
+      const hi=document.getElementById('tt-health');
+      hi.textContent = HEALTH_LABEL[p.health]||p.health;
+      hi.style.background=HEALTH_BG[p.health]; hi.style.color=HEALTH_FG[p.health];
+      hi.style.border='1px solid '+HEALTH_FG[p.health]+'55';
+      document.getElementById('tt-desc').textContent = p.desc;
+      const iss=document.getElementById('tt-issue');
+      iss.textContent = p.issue||'';
+      iss.style.background=HEALTH_BG[p.health];
+      iss.style.color=HEALTH_FG[p.health];
+      iss.style.border='1px solid '+HEALTH_FG[p.health]+'44';
+      const c=document.getElementById('tt-conns');
+      c.textContent=(p.conns&&p.conns.length)?'🔗 Connects to: '+p.conns.slice(0,5).join(' · ')+'…':'';
+      tt.style.display='block';
+    }
+  } else {
+    if(hovered){hovered=null;tt.style.display='none';renderer.domElement.style.cursor='default';}
+  }
+}
+
+// ─── ANIMATE ──────────────────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // 節點脈動
+  meshes.forEach((m,i)=>{
+    const isHov = hovered===m;
+    const s = (isHov?1.7:1) * (1+Math.sin(t*1.8+i*0.5)*0.06);
+    m.scale.setScalar(s);
+    m.userData.glow.scale.setScalar(s);
+    if(m.userData.mid) m.userData.mid.scale.setScalar(s);
+    if(m.material?.emissiveIntensity !== undefined)
+      m.material.emissiveIntensity = isHov ? 2.8 : 1.2;
+  });
+
+  // 神經光脈衝移動
+  pulses.forEach(pu=>{
+    // progress: 0 → 1 循環，從 src 跑到 tgt 後瞬間傳回
+    const raw = ((t * pu.speed + pu.offset) % 1.0);
+    // 用 smoothstep 讓光點在兩端稍微減速、中間加速
+    const prog = raw < 0.5
+      ? 2*raw*raw
+      : 1-2*(1-raw)*(1-raw);
+
+    const pos = pu.src.clone().lerp(pu.tgt, prog);
+    pu.dot.position.copy(pos);
+    pu.halo.position.copy(pos);
+
+    // 光點在中段最亮，兩端淡出
+    const brightness = Math.sin(prog * Math.PI);
+    pu.dot.material.emissiveIntensity  = 2.0 + brightness*2.5;
+    pu.halo.material.opacity           = 0.2 + brightness*0.55;
+    const dotScale = 0.3 + brightness*0.4;
+    pu.dot.scale.setScalar(dotScale);
+    pu.halo.scale.setScalar(dotScale*1.8);
+  });
+
+  updateTooltip();
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
+
+// ─── RESIZE ───────────────────────────────────────────────────────────────────
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+// Loading 已由 GLTFLoader 回調控制，此處不需重複隱藏
+</script>
+</body>
+</html>

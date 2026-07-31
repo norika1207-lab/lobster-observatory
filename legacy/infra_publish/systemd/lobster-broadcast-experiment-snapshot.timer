@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodic Tiamat mortality broadcast experiment snapshots
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+AccuracySec=20s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

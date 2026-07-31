@@ -1,0 +1,13 @@
+[Unit]
+Description=Charenix Raid Boss (port 8015)
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/raid_boss
+EnvironmentFile=-/opt/raid_boss/.env
+ExecStart=/opt/raid_boss/venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8015 --log-level info
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

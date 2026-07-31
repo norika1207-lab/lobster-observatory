@@ -1,0 +1,11 @@
+[Unit]
+Description=Lobster Taiwan Stock Market Open - 09:00 CST daily
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/bin/bash /root/lobster-tw-open.sh
+User=root
+StandardOutput=append:/tmp/lobster-tw-open.log
+StandardError=append:/tmp/lobster-tw-open.log
+TimeoutSec=1800

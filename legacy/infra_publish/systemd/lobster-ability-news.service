@@ -1,0 +1,16 @@
+[Unit]
+Description=Lobster daily ability/news reading and training assignment worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_ability_news_worker.py --per-persona 100 --time-budget 55
+TimeoutStartSec=90
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target

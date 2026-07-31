@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster brain mirror inhibition monitor (anti-template skeleton + word ban)
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-brain-mirror-monitor --lock-key lobster-brain-mirror-monitor --min-interval-sec 240 --timeout-sec 60 -- /usr/bin/python3 /root/lobster-brain-mirror-monitor.py
+Nice=8
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+CPUQuota=25%
+MemoryMax=300M

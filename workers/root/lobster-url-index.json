@@ -1,0 +1,14 @@
+{
+  "updated_at": "2026-05-04T03:02:04.779356+00:00",
+  "rule": "When user asks for URL/網址/link, return clickable Markdown links from this index immediately, especially dashboard_home and the most recently created sandbox URL.",
+  "latest_user_requested_url": "conversation_sandbox",
+  "urls": {
+    "dashboard_home": "https://charenix.com/lobster/dashboard/",
+    "conversation_sandbox": "https://charenix.com/lobster/dashboard/conversation-sandbox",
+    "conversation_api": "https://charenix.com/api/lobster-conversation-interactions-dashboard?limit=140",
+    "raid_boss_sandbox": "https://charenix.com/lobster/dashboard/raid-boss-sandbox",
+    "cognitive_sandbox": "https://charenix.com/lobster/dashboard/cognitive-sandbox",
+    "integrated_cognitive_sandbox": "https://charenix.com/lobster/dashboard/integrated-cognitive-sandbox",
+    "lounge": "https://charenix.com/lounge"
+  }
+}

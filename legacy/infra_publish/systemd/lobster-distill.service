@@ -1,0 +1,13 @@
+[Unit]
+Description=Lobster raw-data distillation pipeline
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-distill --lock-key lobster-distill --min-interval-sec 1200 --timeout-sec 900 -- /root/lobster-distill.py
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+CPUQuota=45%
+MemoryMax=700M

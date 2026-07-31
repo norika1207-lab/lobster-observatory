@@ -1,0 +1,15 @@
+[Unit]
+Description=Lobster 5-10 ply board lookahead curriculum
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_board_lookahead_curriculum.py
+TimeoutStartSec=90
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target

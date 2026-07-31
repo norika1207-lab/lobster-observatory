@@ -1,0 +1,21 @@
+{
+  "day": "2026-07-31",
+  "personaCounts": {},
+  "lastJob": {
+    "name": "brineledger",
+    "type": "emotion",
+    "priority": 496840.4761233333,
+    "reason": "dirty",
+    "at": "2026-07-22T16:29:08.545Z",
+    "model": "lobster-zh-chat-v2"
+  },
+  "lastError": {
+    "name": "omenwake",
+    "type": "emotion",
+    "priority": 315.26546861111115,
+    "reason": "stale",
+    "at": "2026-07-31T06:41:56.017Z",
+    "model": "lobster-zh-chat-v2",
+    "message": "empty local LLM response"
+  }
+}

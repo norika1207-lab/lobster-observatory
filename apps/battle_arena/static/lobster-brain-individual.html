@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>人 Human Mind — Anatomical Individual</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#04060a;overflow:hidden;font-family:-apple-system,"Segoe UI","PingFang TC",system-ui,sans-serif;color:#eceff4}
+canvas{display:block}
+#hud{position:fixed;top:14px;left:18px;pointer-events:none;z-index:10}
+#hud h1{font-size:18px;font-weight:900;color:#facc15;letter-spacing:.5px;text-shadow:0 0 18px #facc1555}
+#hud .sub{font-size:11px;color:#7d92a8;margin-top:3px;font-weight:600;letter-spacing:.4px}
+#hud .cohort{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800;letter-spacing:.5px}
+#hud .cohort.old{background:#facc1522;color:#facc15;border:1px solid #facc1555}
+#hud .cohort.student{background:#f8fafc22;color:#f8fafc;border:1px solid #f8fafc55}
+#hud .cohort.transfer{background:#a78bfa22;color:#a78bfa;border:1px solid #a78bfa55}
+#stats{position:fixed;top:14px;right:14px;background:rgba(10,14,20,.92);border:1px solid rgba(125,249,255,.18);border-radius:8px;padding:10px 14px;font-size:10px;line-height:1.7;color:#9fb2c4;backdrop-filter:blur(8px);font-weight:700;letter-spacing:.3px;z-index:10}
+#stats .num{color:#7df9ff;font-weight:900;font-size:13px}
+#legend{position:fixed;bottom:14px;left:14px;background:rgba(10,14,20,.92);border:1px solid rgba(255,255,255,.10);border-radius:8px;padding:10px 14px;font-size:10px;color:#9fb2c4;backdrop-filter:blur(8px);font-weight:700;z-index:10;max-width:260px}
+#legend h4{color:#facc15;font-size:10px;margin-bottom:6px;letter-spacing:.6px;text-transform:uppercase}
+.legrow{display:flex;align-items:center;gap:7px;padding:2px 0;font-size:10px}
+.legrow .d{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+#help{position:fixed;bottom:14px;right:14px;font-size:10px;color:#3a4455;text-align:right;line-height:1.7;font-weight:600;z-index:10;pointer-events:none}
+
+/* ─── Reports tab menu (right side) ─── */
+#reports-dock{position:fixed;right:14px;top:170px;display:flex;flex-direction:column;gap:4px;z-index:14;pointer-events:all;max-width:170px}
+#reports-dock .dock-h{font-size:9px;color:#facc15;font-weight:900;letter-spacing:.8px;padding:2px 6px;margin-bottom:3px;text-transform:uppercase;text-shadow:0 0 6px #facc1555}
+.rpt-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(10,14,20,.86);border:1px solid rgba(255,255,255,.10);border-left:3px solid var(--c,#7df9ff);border-radius:0 8px 8px 0;font-size:11px;color:#cdd8e3;cursor:pointer;font-weight:700;letter-spacing:.2px;backdrop-filter:blur(6px);transition:all .15s;white-space:nowrap}
+.rpt-btn:hover{background:rgba(125,249,255,.10);color:#fff;transform:translateX(-3px);border-left-width:5px}
+.rpt-btn .ic{font-size:13px;flex-shrink:0}
+.rpt-btn .lbl{flex:1}
+
+/* ─── Popup overlay (iframe of dashboard sub-tab) ─── */
+#popup-overlay{position:fixed;inset:0;background:rgba(2,4,8,.86);backdrop-filter:blur(4px);z-index:80;display:none;align-items:center;justify-content:center;padding:40px 30px}
+#popup-overlay.open{display:flex}
+#popup-frame{position:relative;width:100%;max-width:1280px;height:100%;max-height:880px;background:#0a1018;border:1px solid rgba(125,249,255,.30);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 60px rgba(125,249,255,.15);overflow:hidden;display:flex;flex-direction:column}
+#popup-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(13,17,26,.95);border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+#popup-title{font-size:13px;font-weight:900;color:#7df9ff;letter-spacing:.4px;flex:1}
+#popup-title b{color:#facc15;margin-left:6px}
+#popup-loading{font-size:10px;color:#647a8e;font-weight:700;letter-spacing:.4px}
+#popup-close{width:30px;height:30px;border-radius:7px;background:rgba(251,113,133,.10);border:1px solid #fb718555;color:#fb7185;font-size:18px;font-weight:900;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+#popup-close:hover{background:rgba(251,113,133,.25);transform:rotate(90deg)}
+#popup-body{flex:1;overflow-y:auto;padding:28px 36px;background:#0a1018;color:#cdd8e3;font-size:14px;line-height:1.75}
+#popup-body .gen-meta{display:flex;gap:12px;flex-wrap:wrap;padding:8px 14px;background:rgba(125,249,255,.04);border:1px solid rgba(125,249,255,.15);border-radius:8px;font-size:10px;color:#7d92a8;font-weight:700;letter-spacing:.3px;margin-bottom:22px}
+#popup-body .gen-meta span{padding:0;color:#7d92a8}
+#popup-body article{max-width:920px;margin:0 auto}
+#popup-body h1,#popup-body h2{color:#facc15;font-weight:900;letter-spacing:.3px;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(250,204,21,.20)}
+#popup-body h1{font-size:22px}
+#popup-body h2{font-size:18px;color:#7df9ff;border-color:rgba(125,249,255,.20)}
+#popup-body h3{color:#a78bfa;font-size:15px;font-weight:800;margin:18px 0 8px;letter-spacing:.2px}
+#popup-body h4{color:#86efac;font-size:13px;font-weight:800;margin:14px 0 6px}
+#popup-body p{margin:8px 0 14px;color:#cdd8e3}
+#popup-body ul,#popup-body ol{margin:8px 0 16px 20px;color:#cdd8e3}
+#popup-body li{margin:5px 0}
+#popup-body strong,#popup-body b{color:#fde68a;font-weight:800}
+#popup-body em{color:#c4b5fd;font-style:normal;font-weight:700}
+#popup-body table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12px;background:#0d1622;border-radius:8px;overflow:hidden}
+#popup-body th{background:rgba(125,249,255,.10);color:#7df9ff;font-weight:800;padding:9px 12px;text-align:left;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+#popup-body td{padding:8px 12px;border-top:1px solid rgba(255,255,255,.06);color:#9fb2c4}
+#popup-body code{background:#1a2535;padding:1px 6px;border-radius:4px;color:#7df9ff;font-size:12px;font-family:"SF Mono",Consolas,monospace}
+#popup-body pre{background:#0d1622;border:1px solid #1a2535;padding:12px;border-radius:8px;overflow-x:auto;font-size:11px}
+#popup-body blockquote{border-left:3px solid #facc15;padding:6px 14px;margin:12px 0;background:rgba(250,204,21,.05);color:#cdd8e3;font-style:italic}
+#popup-body .analysis-meta{background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.20);border-radius:8px;padding:10px 14px;font-size:10px;color:#a78bfa;display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;font-weight:700;letter-spacing:.3px}
+#popup-body .analysis-meta span{color:#a78bfa}
+#popup-body .lobster-evolution-report{padding:0}
+#popup-loading.err{color:#fb7185}
+.cls-banner{background:linear-gradient(135deg,rgba(125,249,255,.08),rgba(167,139,250,.06));border:1px solid rgba(125,249,255,.30);border-left:3px solid #7df9ff;border-radius:10px;padding:14px 18px;margin-bottom:20px}
+.cls-banner.cls-socio{border-left-color:#a78bfa;background:linear-gradient(135deg,rgba(167,139,250,.10),rgba(250,204,21,.05))}
+.cls-banner.cls-emotion{border-left-color:#f472b6;background:linear-gradient(135deg,rgba(244,114,182,.10),rgba(251,113,133,.05))}
+.cls-banner.cls-anthro{border-left-color:#86efac;background:linear-gradient(135deg,rgba(134,239,172,.08),rgba(125,249,255,.04))}
+.cls-banner.cls-mbti{border-left-color:#c084fc;background:linear-gradient(135deg,rgba(192,132,252,.08),rgba(125,249,255,.04))}
+.cls-banner.cls-psych{border-left-color:#fbbf24;background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(125,249,255,.04))}
+.cls-banner.cls-fbi{border-left-color:#fb7185;background:linear-gradient(135deg,rgba(251,113,133,.10),rgba(167,139,250,.04))}
+.cls-head{font-size:11px;color:#7df9ff;font-weight:900;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cls-tag{font-size:9px;color:#647a8e;font-weight:700;padding:2px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;text-transform:uppercase;letter-spacing:.5px}
+.cls-primary{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cls-lbl{font-size:10px;color:#647a8e;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.cls-mode{font-size:15px;color:#facc15;font-weight:900;letter-spacing:.3px;padding:3px 10px;background:rgba(250,204,21,.10);border:1px solid rgba(250,204,21,.30);border-radius:8px}
+.cls-sec{font-size:11px;color:#cdd8e3;font-weight:800;padding:3px 9px;background:rgba(125,249,255,.08);border:1px solid rgba(125,249,255,.20);border-radius:7px;margin-left:6px}
+.cls-evidence{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:6px}
+.ev-row{display:inline-flex;gap:6px;align-items:center;font-size:10px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:3px 8px;font-weight:700}
+.ev-k{color:#7d92a8;letter-spacing:.3px}
+.ev-v{color:#7df9ff;font-variant-numeric:tabular-nums;font-weight:900}
+#tooltip{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(10,14,20,.97);border:1px solid rgba(125,249,255,.32);border-radius:10px;padding:12px 18px;font-size:11px;color:#cdd8e3;backdrop-filter:blur(10px);max-width:620px;min-width:320px;display:none;z-index:11;pointer-events:none}
+#tooltip .pth{color:#7df9ff;font-size:11px;font-weight:800;margin-bottom:5px;word-break:break-all;line-height:1.4}
+#tooltip .pth .seg{color:#facc15}
+#tooltip .val{color:#f8fafc;font-size:13px;font-weight:900;font-family:"SF Mono",Consolas,monospace;margin:3px 0 6px;word-break:break-all}
+#tooltip .val.null{color:#475569;font-style:italic;font-weight:600}
+#tooltip .meta{color:#9fb2c4;font-size:10px;font-weight:700}
+#tooltip .meta b{color:#facc15}
+#tooltip .influence{color:#86efac;font-size:10px;margin-top:5px;padding-top:5px;border-top:1px solid #ffffff10;font-weight:700}
+#loading{position:fixed;inset:0;background:#04060a;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:100}
+#loading h2{font-size:18px;color:#facc15;font-weight:900;letter-spacing:.4px}
+#loading p{font-size:11px;color:#4a5566;font-weight:600}
+#loading .bar{width:240px;height:3px;background:#0f1622;border-radius:2px;overflow:hidden}
+#loading .bar > div{height:100%;width:0%;background:linear-gradient(90deg,#facc15,#7df9ff);transition:width .2s}
+.region-label{position:absolute;color:#fde68a;font-size:10px;font-weight:900;letter-spacing:.4px;pointer-events:none;text-shadow:0 0 6px #000,0 0 12px #000;white-space:nowrap;transform:translate(-50%,-50%)}
+.region-label small{color:#7d92a8;font-size:9px;font-weight:700;margin-left:4px}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <h2>人 載入 <span id="load-name">--</span> 的真實腦袋</h2>
+  <p id="load-step">抓 brain schema…</p>
+  <div class="bar"><div id="load-bar"></div></div>
+</div>
+
+<div id="hud">
+  <h1>人 <span id="t-name">--</span><span class="cohort" id="t-cohort">--</span></h1>
+  <div class="sub">brain.glb anatomical mesh · <code>/root/lobster-memory/&lt;persona&gt;.json</code> mapped to brain regions</div>
+</div>
+
+<div id="stats">
+  <div>brain regions <span class="num">12</span></div>
+  <div>params shown <span class="num" id="s-leaves">--</span></div>
+  <div>true total <span class="num" id="s-total">--</span></div>
+</div>
+
+<div id="legend">
+  <h4>brain regions · influence</h4>
+  <div id="leg-rows"></div>
+</div>
+
+<div id="tooltip"></div>
+
+<div id="help">
+  滑鼠拖曳 = 旋轉腦袋<br>
+  滾輪 = 縮放(深入皮層)<br>
+  右鍵 = 平移<br>
+  hover 任何節點 = 看 path + 實際值 + 影響什麼<br>
+  <span style="color:#facc15">▸ 右側選單 = 該人所有付費報告</span>
+</div>
+
+<!-- Reports dock — dynamically filled from manifest (only available reports for this lobster) -->
+<div id="reports-dock">
+  <div class="dock-h">📁 付費報告</div>
+  <div id="dock-list"></div>
+</div>
+
+<!-- Popup overlay — custom-themed report viewer (no iframe, direct HTML injection) -->
+<div id="popup-overlay">
+  <div id="popup-frame">
+    <div id="popup-bar">
+      <span id="popup-title">--<b>--</b></span>
+      <span id="popup-loading">載入中…</span>
+      <button id="popup-close" title="關閉 (ESC)">×</button>
+    </div>
+    <div id="popup-body"></div>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "/static/vendor/three/three.module.js",
+    "three/addons/": "/static/vendor/three/addons/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader }    from 'three/addons/loaders/GLTFLoader.js';
+
+// ── 13 anatomical regions — RAW coords from lobster-brain-pool.html (do NOT scale) ──
+// brain.glb at scale 13.5 has surface ~[-9..+9]; each region has anisotropic ellipsoid extent
+// spread = [x, y, z] half-extents — cortical sheets are wide+tall+thin, deep nuclei are compact
+const REGION_DEFS = [
+  // cortical sheets (large, surface-hugging)
+  {id:'pfc',    zh:'前額葉',  en:'Prefrontal Cortex',    pos:[ 0,    6,  5 ], color:0x60a5fa, infl:'決策 / 自我控制 / 規劃深度', spread:[6.0, 2.5, 2.0], shell:0.7},
+  {id:'motor',  zh:'運動皮質',en:'Motor Cortex',         pos:[ 0,    8, -1 ], color:0xfb923c, infl:'行動史 / 突襲執行',         spread:[5.5, 1.0, 2.5], shell:0.7},
+  {id:'dmn',    zh:'預設網絡',en:'Default Mode',         pos:[ 0,    4, -3 ], color:0xc4b5fd, infl:'自我敘事 / 身分 / 反芻',     spread:[2.5, 3.5, 4.0], shell:0.4},
+  {id:'visual', zh:'視覺皮質',en:'Visual Cortex',        pos:[ 0,    0, -8 ], color:0x67e8f9, infl:'雷達 / 機會偵測',           spread:[4.0, 3.5, 1.5], shell:0.7},
+  {id:'temp',   zh:'右顳葉',  en:'Right Temporal',       pos:[ 6,   -1,  0 ], color:0xc084fc, infl:'社交模型 / 同儕關係',       spread:[2.5, 3.0, 4.5], shell:0.6},
+  {id:'temp_l', zh:'左顳葉',  en:'Left Temporal',        pos:[-6,   -1,  0 ], color:0x93c5fd, infl:'語言 / 聽到的訊息',         spread:[2.5, 3.0, 4.5], shell:0.6},
+  {id:'cereb',  zh:'小腦',    en:'Cerebellum',           pos:[ 0,   -7, -4 ], color:0xfde047, infl:'程序記憶 / 棋藝 / 反射',     spread:[3.5, 1.5, 2.5], shell:0.5},
+  // limbic / midline (medium)
+  {id:'acc',    zh:'前扣帶',  en:'Anterior Cingulate',   pos:[ 0,    4,  3 ], color:0xfbbf24, infl:'錯誤偵測 / 預期 / 模型失準', spread:[1.0, 2.5, 1.8], shell:0.2},
+  {id:'hippo',  zh:'海馬迴',  en:'Hippocampus',          pos:[ 3,   -2, -2 ], color:0xa78bfa, infl:'事件記憶 / 學習 / 模式抽取', spread:[1.8, 1.2, 2.5], shell:0.2},
+  // deep nuclei (small, volumetric)
+  {id:'amyg',   zh:'杏仁核',  en:'Amygdala',             pos:[ 3,    0,  2 ], color:0xfb7185, infl:'威脅 / 失敗記憶 / 警覺度',   spread:[1.0, 1.0, 1.0], shell:0.1},
+  {id:'insula', zh:'腦島',    en:'Insula',               pos:[-4,    0,  3 ], color:0xf472b6, infl:'內感 / 風險厭惡 / 損失感',   spread:[1.2, 1.5, 1.2], shell:0.2},
+  {id:'na',     zh:'伏隔核',  en:'Nucleus Accumbens',    pos:[ 0,   -3,  5 ], color:0x34d399, infl:'獎賞 / 下注衝動 / 勝率追求', spread:[1.8, 1.2, 1.5], shell:0.1},
+  {id:'thal',   zh:'視丘',    en:'Thalamus',             pos:[ 0,    0,  0 ], color:0x7dd3fc, infl:'中繼 / 內部狀態 / 時鐘',     spread:[1.5, 1.2, 1.5], shell:0.1},
+];
+const REGION_BY_ID = Object.fromEntries(REGION_DEFS.map(r=>[r.id,r]));
+
+const params = new URLSearchParams(location.search);
+const lobsterName = params.get('lobster') || 'norika_oda';
+document.getElementById('load-name').textContent = lobsterName;
+const loadStep = document.getElementById('load-step');
+const loadBar = document.getElementById('load-bar');
+function progress(pct, step){ loadBar.style.width = pct+'%'; if(step) loadStep.textContent = step; }
+
+// build legend
+const legRows = document.getElementById('leg-rows');
+for(const r of REGION_DEFS){
+  const div = document.createElement('div');
+  div.className = 'legrow';
+  div.innerHTML = `<span class="d" style="color:#${r.color.toString(16).padStart(6,'0')};background:#${r.color.toString(16).padStart(6,'0')}"></span><span>${r.zh} <small style="color:#647a8e">${r.infl}</small></span>`;
+  legRows.appendChild(div);
+}
+
+const W = innerWidth, H = innerHeight;
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(W, H);
+renderer.setClearColor(0x04060a, 1);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x04060a, 0.012);
+const camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 600);
+camera.position.set(0, 2, 30);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 1.5;
+controls.maxDistance = 120;
+
+scene.add(new THREE.AmbientLight(0xfff5ee, 0.55));
+const d1 = new THREE.DirectionalLight(0xffffff, 1.6); d1.position.set(30,40,30); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xccddff, 1.0); d2.position.set(-25,-15,-30); scene.add(d2);
+const p1 = new THREE.PointLight(0xff3366, 2.0, 60); p1.position.set(-10,5,-8); scene.add(p1);
+const p2 = new THREE.PointLight(0x00ffaa, 1.6, 60); p2.position.set(12,-4,8); scene.add(p2);
+const p3 = new THREE.PointLight(0x4499ff, 1.8, 60); p3.position.set(0,15,4); scene.add(p3);
+
+const brainGroup = new THREE.Group(); scene.add(brainGroup);
+
+const labelLayer = document.createElement('div');
+labelLayer.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:5';
+document.body.appendChild(labelLayer);
+
+const STATE = { brain:null, nodes:[], regionLabels:[] };
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+addEventListener('mousemove', ev => {
+  pointer.x = (ev.clientX/innerWidth)*2 - 1;
+  pointer.y = -(ev.clientY/innerHeight)*2 + 1;
+});
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+async function boot(){
+  progress(15, '抓 ' + lobsterName + ' 的腦葉…');
+  const brain = await fetch('/static/lobster-brains-v2/'+encodeURIComponent(lobsterName)+'.json?ts='+Date.now())
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('brain v2 not found: '+lobsterName)));
+  STATE.brain = brain;
+  progress(40, '渲染解剖區位…');
+  buildRegionsAndParams();
+  progress(70, '載入 brain.glb 模型…');
+  loadGlb();
+  document.getElementById('t-name').textContent = brain.name;
+  // cohort detection from name (cosmos has the roster mapping; mirror it here)
+  const cohorts = {
+    old: new Set(['blazepaw','clawtrix','hexclaw','norika_oda','pincerbot','prismbit','ragclaw','snaplex','stonefang','vortexiq']),
+    student: new Set(['basaltrook','brineledger','emberling','flarecub','gauntlet','mirrorcalm','nullpinch','omenwake','rushfin','sparkrill']),
+  };
+  const ck = cohorts.old.has(lobsterName)?'old':cohorts.student.has(lobsterName)?'student':'transfer';
+  const cEl = document.getElementById('t-cohort');
+  cEl.textContent = ck==='old'?'舊同伴':ck==='student'?'學生':'轉學生';
+  cEl.className = 'cohort '+ck;
+  document.getElementById('s-leaves').textContent = brain.total_leaves_shown.toLocaleString();
+  // pull total from cosmos graph if avail
+  fetch('/static/lobster-society-graph.json').then(r=>r.json()).then(g=>{
+    const p = g.personas?.[lobsterName];
+    if(p) document.getElementById('s-total').textContent = p.total_leaves.toLocaleString();
+  }).catch(()=>{});
+  progress(100, '完成');
+  setTimeout(()=> document.getElementById('loading').style.display='none', 250);
+  animate();
+}
+
+function buildRegionsAndParams(){
+  // each region: anchor sphere + N leaf dust around it
+  for(const region of REGION_DEFS){
+    const [rx, ry, rz] = region.pos;
+    const center = new THREE.Vector3(rx, ry, rz);
+
+    // anchor: small glowing region marker (matches pool.html SphereGeometry(0.7))
+    const anchorGeom = new THREE.IcosahedronGeometry(0.35, 2);
+    const anchorMat = new THREE.MeshStandardMaterial({
+      color: region.color, emissive: region.color, emissiveIntensity: 0.85,
+      roughness: 0.35, transparent: true, opacity: 0.95,
+    });
+    const anchor = new THREE.Mesh(anchorGeom, anchorMat);
+    anchor.position.copy(center);
+    anchor.userData = { isAnchor: true, region };
+    scene.add(anchor);
+
+    // region label
+    const lab = document.createElement('div');
+    lab.className = 'region-label';
+    lab.innerHTML = `${region.zh} <small>${region.en.toLowerCase().replace(/\s+cortex/i,'')}</small>`;
+    labelLayer.appendChild(lab);
+    STATE.regionLabels.push({ label:lab, pos:center.clone() });
+
+    // leaf spheres from this region's params (InstancedMesh: 1 draw call, but every param IS a sphere)
+    const leaves = STATE.brain.by_region[region.id] || [];
+    if(!leaves.length) continue;
+
+    const sphereGeom = new THREE.IcosahedronGeometry(1, 1); // unit sphere; per-instance scale below
+    const sphereMat  = new THREE.MeshStandardMaterial({
+      color: region.color, emissive: region.color, emissiveIntensity: 0.55,
+      roughness: 0.45, metalness: 0.05,
+      transparent: true, opacity: 0.92,
+    });
+    const inst = new THREE.InstancedMesh(sphereGeom, sphereMat, leaves.length);
+    inst.userData = { region, leaves, isLeafBatch: true };
+
+    const m = new THREE.Matrix4();
+    const q = new THREE.Quaternion();
+    const positions = []; // keep for hover lookup
+    for(let i=0; i<leaves.length; i++){
+      // anisotropic ellipsoid jitter: each region is a 3D sheet/blob with its own xyz extents
+      // shell coef pulls leaves toward outer skin (cortical) vs uniform fill (deep nuclei)
+      const theta = Math.random() * 2 * Math.PI;
+      const phi   = Math.acos(2*Math.random() - 1);
+      // mix uniform (t^(1/3)) with shell-biased (t^0.5) — shell coef controls strength
+      const tUni = Math.cbrt(Math.random());
+      const tShell = Math.pow(Math.random(), 0.35);
+      const shellW = region.shell ?? 0.4;
+      const t = tUni * (1 - shellW) + tShell * shellW;
+      const [sx, sy, sz] = region.spread;
+      const px = rx + sx * t * Math.sin(phi) * Math.cos(theta);
+      const py = ry + sy * t * Math.sin(phi) * Math.sin(theta);
+      const pz = rz + sz * t * Math.cos(phi);
+      // per-sphere size — smaller baseline so 100+ spheres in pfc still readable
+      let s = 0.07;
+      const val = leaves[i].value;
+      if(typeof val === 'number'){
+        s = 0.08 + Math.min(0.22, Math.log10(1+Math.abs(val)) * 0.07);
+      } else if(typeof val === 'string'){
+        s = 0.08 + Math.min(0.14, val.length / 500);
+      } else if(val === true){
+        s = 0.12;
+      } else if(Array.isArray(val) || val === null){
+        s = 0.06;
+      }
+      m.compose(new THREE.Vector3(px,py,pz), q, new THREE.Vector3(s,s,s));
+      inst.setMatrixAt(i, m);
+      positions.push([px,py,pz,s]);
+    }
+    inst.instanceMatrix.needsUpdate = true;
+    inst.userData.positions = positions;
+    scene.add(inst);
+    STATE.nodes.push(inst);
+  }
+}
+
+function loadGlb(){
+  // placeholder while loading
+  const placeholder = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(11, 2),
+    new THREE.MeshBasicMaterial({ color:0x2dd4bf, transparent:true, opacity:0.12, wireframe:true })
+  );
+  brainGroup.add(placeholder);
+
+  const loader = new GLTFLoader();
+  loader.load('/static/brain.glb', (gltf) => {
+    const obj = gltf.scene;
+    obj.scale.setScalar(13.5);
+    obj.traverse(child => {
+      if(!child.isMesh) return;
+      child.material = new THREE.MeshPhysicalMaterial({
+        color:0xffffff, roughness:0.75, metalness:0.0,
+        clearcoat:0.05, transparent:true, opacity:0.18,
+        depthWrite:false, side:THREE.FrontSide,
+      });
+      const inner = child.clone();
+      inner.material = new THREE.MeshPhysicalMaterial({
+        color:0xf2ede8, roughness:0.75, metalness:0.0,
+        transparent:true, opacity:0.10, side:THREE.BackSide, depthWrite:false,
+      });
+      brainGroup.add(inner);
+    });
+    brainGroup.add(obj);
+    placeholder.material.opacity = 0;
+  }, (xhr) => {
+    if(xhr.lengthComputable) progress(70 + (xhr.loaded/xhr.total)*25, 'brain.glb '+(xhr.loaded/xhr.total*100|0)+'%');
+  }, (err) => {
+    console.warn('[brain] glb failed, keeping wireframe', err);
+    placeholder.material.opacity = 0.28;
+  });
+}
+
+const tooltip = document.getElementById('tooltip');
+function updateHover(){
+  // raycast against all InstancedMesh leaf batches
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(STATE.nodes, false);
+  if(hits.length && hits[0].object.userData?.isLeafBatch){
+    const obj = hits[0].object;
+    const ii  = hits[0].instanceId;
+    const u   = obj.userData;
+    const leaf = u.leaves[ii];
+    const region = u.region;
+    let valHtml;
+    if(leaf.value === null || leaf.value === undefined){
+      valHtml = '<div class="val null">' + (leaf.type==='list_overflow' ? '… '+leaf.path[leaf.path.length-1] : '(null)') + '</div>';
+    } else {
+      const v = typeof leaf.value === 'string' ? leaf.value : JSON.stringify(leaf.value);
+      valHtml = '<div class="val">' + v + '</div>';
+    }
+    tooltip.innerHTML = `
+      <div class="pth">${leaf.path.map(s=>`<span class="seg">${s}</span>`).join(' · ')}</div>
+      ${valHtml}
+      <div class="meta">type <b>${leaf.type}</b> · region <b>${region.zh} (${region.en})</b></div>
+      <div class="influence">影響 → ${region.infl}</div>`;
+    tooltip.style.display = 'block';
+  } else {
+    // try region anchor
+    const anchors = [];
+    scene.traverse(o => { if(o.isMesh && !o.isInstancedMesh && o.userData?.isAnchor) anchors.push(o); });
+    const hitsA = raycaster.intersectObjects(anchors, false);
+    if(hitsA.length){
+      const r = hitsA[0].object.userData.region;
+      const count = (STATE.brain.by_region[r.id] || []).length;
+      tooltip.innerHTML = `<div class="pth"><span class="seg">${r.zh}</span> · <span class="seg">${r.en}</span></div>
+        <div class="meta">${count} 個參數住在這區 · 影響 <b>${r.infl}</b></div>`;
+      tooltip.style.display = 'block';
+    } else tooltip.style.display = 'none';
+  }
+}
+
+function updateRegionLabels(){
+  const v = new THREE.Vector3();
+  for(const {label, pos} of STATE.regionLabels){
+    v.copy(pos).project(camera);
+    if(v.z < -1 || v.z > 1){ label.style.opacity = '0'; continue; }
+    label.style.left = ((v.x*0.5+0.5)*innerWidth)+'px';
+    label.style.top  = ((-v.y*0.5+0.5)*innerHeight - 22)+'px';
+    label.style.opacity = '1';
+  }
+}
+
+let lastInteract = performance.now();
+controls.addEventListener('start', ()=> lastInteract = performance.now());
+
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  if(performance.now()-lastInteract > 4000){
+    brainGroup.rotation.y += 0.0010;
+    scene.rotation.y     += 0.0010;
+  }
+  updateRegionLabels();
+  updateHover();
+  renderer.render(scene, camera);
+}
+
+boot().catch(err => {
+  document.getElementById('loading').innerHTML =
+    '<h2 style="color:#fb7185">啟動失敗</h2><p style="color:#9fb2c4">'+err.message+'</p>';
+  console.error(err);
+});
+
+// ─── Reports dock — driven by /static/lobster-reports-manifest.json + /api/analysis ───
+// metadata for each known report_type: zh label, icon, accent color
+const RPT_META = {
+  mbti:                                       {ic:'🧠', zh:'MBTI 人格',          c:'#c084fc'},
+  fbi:                                        {ic:'🕵️', zh:'FBI 行為側寫',       c:'#fb7185'},
+  psych:                                      {ic:'📄', zh:'心理學報告',          c:'#fbbf24'},
+  emotion:                                    {ic:'💗', zh:'情緒架構',           c:'#f472b6'},
+  socio:                                      {ic:'🤝', zh:'社會學報告',          c:'#a78bfa'},
+  anthro:                                     {ic:'🧬', zh:'人類學報告',          c:'#86efac'},
+  reading_comprehension_development_report:   {ic:'📖', zh:'閱讀理解發展',         c:'#67e8f9'},
+  daily_news_reading_reflection:              {ic:'📰', zh:'每日新聞反思',         c:'#7dd3fc'},
+  board_lookahead_curriculum:                 {ic:'♟️', zh:'棋藝前瞻課程',         c:'#fb923c'},
+  board_game_self_review:                     {ic:'♛',  zh:'棋藝自審(總)',        c:'#fde047'},
+  board_game_self_review_chess:               {ic:'♔',  zh:'西洋棋自審',          c:'#facc15'},
+  board_game_self_review_go:                  {ic:'⚫', zh:'圍棋自審',            c:'#9ca3af'},
+  board_game_self_review_xiangqi:             {ic:'♞',  zh:'象棋自審',            c:'#fb7185'},
+  betting_research_outcome_report:            {ic:'🎲', zh:'下注研究成果',         c:'#34d399'},
+  elder_growth_curve:                         {ic:'📈', zh:'長者成長曲線',         c:'#facc15'},
+};
+const DEFAULT_META = {ic:'📋', zh:'(其他報告)', c:'#7df9ff'};
+
+let CLASSIFICATIONS = null;
+
+async function populateDock(){
+  const [manifest, cls] = await Promise.all([
+    fetch('/static/lobster-reports-manifest.json?ts='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetch('/static/lobster-report-classifications.json?ts='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
+  ]);
+  CLASSIFICATIONS = cls && cls.lobsters ? cls.lobsters[lobsterName] : null;
+  if(!manifest || !manifest.lobsters[lobsterName]){
+    document.getElementById('dock-list').innerHTML = '<div style="color:#475569;font-size:10px;padding:8px">manifest 不可用</div>';
+    return;
+  }
+  const entry = manifest.lobsters[lobsterName];
+  const list = document.getElementById('dock-list');
+  list.innerHTML = '';
+  // sort: high-signal reports first (mbti/fbi/psych first, then domain-specific)
+  const order = ['mbti','fbi','psych','emotion','socio','anthro','board_lookahead_curriculum','reading_comprehension_development_report','daily_news_reading_reflection','betting_research_outcome_report','board_game_self_review','board_game_self_review_chess','board_game_self_review_go','board_game_self_review_xiangqi','elder_growth_curve'];
+  const sorted = [...entry.reports].sort((a,b)=>{
+    const ia = order.indexOf(a.type), ib = order.indexOf(b.type);
+    return (ia<0?999:ia) - (ib<0?999:ib);
+  });
+  for(const r of sorted){
+    const meta = RPT_META[r.type] || DEFAULT_META;
+    const btn = document.createElement('div');
+    btn.className = 'rpt-btn';
+    btn.dataset.type = r.type;
+    btn.style.setProperty('--c', meta.c);
+    btn.innerHTML = `<span class="ic">${meta.ic}</span><span class="lbl">${meta.zh}</span>`;
+    btn.addEventListener('click', ()=> openReport(r.type, meta));
+    list.appendChild(btn);
+  }
+  // header shows total count
+  document.querySelector('#reports-dock .dock-h').innerHTML = `📁 付費報告 · <span style="color:#7df9ff">${sorted.length}</span> 份`;
+}
+
+async function openReport(rtype, meta){
+  const overlay = document.getElementById('popup-overlay');
+  const body    = document.getElementById('popup-body');
+  const title   = document.getElementById('popup-title');
+  const loading = document.getElementById('popup-loading');
+  title.innerHTML = `${meta.ic} ${meta.zh} <b style="color:${meta.c}">${lobsterName}</b>`;
+  loading.textContent = '載入報告…';
+  loading.classList.remove('err');
+  body.innerHTML = '';
+  overlay.classList.add('open');
+  try {
+    const r = await fetch(`/static/lobster-reports/${encodeURIComponent(lobsterName)}/${encodeURIComponent(rtype)}.json?ts=`+Date.now());
+    if(!r.ok) throw new Error('API '+r.status);
+    const d = await r.json();
+    if(!d.html) throw new Error('no html in response');
+    const updated = (d.updated_at || '').slice(0,16).replace('T',' ');
+    body.innerHTML = `
+      <article>
+        <div class="gen-meta">
+          <span>📅 更新時間 ${updated || '--'}</span>
+          <span>🗄 來源 ${d.source || 'sqlite'}</span>
+          <span>🤖 ${d.model || 'codex-evolution'}</span>
+          ${d.wr != null ? `<span>📊 wr ${(d.wr*100).toFixed(1)}% (${d.total||0} games)</span>` : ''}
+        </div>
+        ${renderClassificationBanner(rtype)}
+        ${d.html}
+      </article>`;
+    body.scrollTop = 0;
+    loading.textContent = '✓ 完成';
+    setTimeout(()=> loading.textContent='', 1200);
+  } catch(e){
+    loading.textContent = '⚠ ' + e.message;
+    loading.classList.add('err');
+    body.innerHTML = `<div style="padding:30px;color:#fb7185;text-align:center">載入失敗:${e.message}</div>`;
+  }
+}
+
+function renderClassificationBanner(rtype){
+  if(!CLASSIFICATIONS) return '';
+  const c = CLASSIFICATIONS[rtype];
+  if(!c) return '';
+  if(rtype === 'socio'){
+    const sec = c.secondary?.length ? c.secondary.map(s=>`<span class="cls-sec">${s.label}</span>`).join('') : '';
+    const ev = c.evidence || {};
+    const evRow = (k, v) => `<span class="ev-row"><span class="ev-k">${k}</span><span class="ev-v">${v}</span></span>`;
+    return `<div class="cls-banner cls-socio">
+      <div class="cls-head">📐 從原始 memory 即時推導的反應模式 <span class="cls-tag">code-derived · 不依賴 LLM 敘事</span></div>
+      <div class="cls-primary"><span class="cls-lbl">主模式</span><span class="cls-mode">${c.primary_label}</span>${sec ? '<span class="cls-lbl" style="margin-left:14px">次要</span>'+sec : ''}</div>
+      <div class="cls-evidence">
+        ${evRow('powerOrientation', ev.powerOrientation)}
+        ${evRow('leadershipClaimStyle', ev.leadershipClaimStyle)}
+        ${evRow('bystanderSilenceIdx', ev.bystanderSilenceIndex)}
+        ${evRow('defenseIdx', ev.defenseIndex)}
+        ${evRow('counterMobIdx', ev.counterMobilizationIndex)}
+        ${evRow('resistanceIdx', ev['conflict.resistanceIndex'])}
+        ${evRow('protected count', ev['rivalries.protected_count'])}
+        ${evRow('transferAggr.active', String(ev['transferAggression.active']))}
+        ${evRow('battle channels', ev.retaliation_battle_channels+' /4')}
+      </div>
+    </div>`;
+  }
+  if(rtype === 'emotion'){
+    const ev = c; const fd = ev.fiveDesires_top || [];
+    return `<div class="cls-banner cls-emotion">
+      <div class="cls-head">💗 七情五慾即時讀數 <span class="cls-tag">from societyModel.affect</span></div>
+      <div class="cls-primary"><span class="cls-lbl">主導情緒</span><span class="cls-mode">${ev.dominant_seven} ${ev.dominant_seven_score}</span></div>
+      <div class="cls-evidence">
+        <span class="ev-row"><span class="ev-k">怒</span><span class="ev-v">${ev.anger}</span></span>
+        <span class="ev-row"><span class="ev-k">喜</span><span class="ev-v">${ev.joy}</span></span>
+        <span class="ev-row"><span class="ev-k">懼</span><span class="ev-v">${ev.fear}</span></span>
+        ${fd.map(([k,v])=>`<span class="ev-row"><span class="ev-k">${k}</span><span class="ev-v">${v.toFixed(3)}</span></span>`).join('')}
+      </div>
+    </div>`;
+  }
+  if(rtype === 'anthro'){
+    const ev = c;
+    return `<div class="cls-banner cls-anthro">
+      <div class="cls-head">🧬 派系結構即時讀數 <span class="cls-tag">from societyModel.faction</span></div>
+      <div class="cls-primary"><span class="cls-lbl">原生</span><span class="cls-mode">${ev.originGroup}</span><span class="cls-lbl" style="margin-left:14px">當前派系</span><span class="cls-mode">${ev.faction_id}</span></div>
+      <div class="cls-evidence">
+        <span class="ev-row"><span class="ev-k">loyalty</span><span class="ev-v">${ev.faction_loyalty}</span></span>
+        <span class="ev-row"><span class="ev-k">outGroupSuspicion</span><span class="ev-v">${ev.outGroupSuspicion}</span></span>
+        <span class="ev-row"><span class="ev-k">groupFusion</span><span class="ev-v">${ev.groupFusionIndex}</span></span>
+        <span class="ev-row"><span class="ev-k">battlefields</span><span class="ev-v">${ev.battlefields_count}</span></span>
+      </div>
+    </div>`;
+  }
+  if(rtype === 'mbti'){
+    const ev = c;
+    return `<div class="cls-banner cls-mbti">
+      <div class="cls-head">🧠 認知積累即時讀數 <span class="cls-tag">from cogProfile + layoutParams</span></div>
+      <div class="cls-evidence">
+        <span class="ev-row"><span class="ev-k">growthLog</span><span class="ev-v">${ev.growthLog_count}</span></span>
+        <span class="ev-row"><span class="ev-k">reflections</span><span class="ev-v">${ev.reflections_count}</span></span>
+        <span class="ev-row"><span class="ev-k">principles</span><span class="ev-v">${ev.principles_count}</span></span>
+        <span class="ev-row"><span class="ev-k">knowledgeBase</span><span class="ev-v">${ev.knowledgeBase_size}</span></span>
+        <span class="ev-row"><span class="ev-k">planningDepth</span><span class="ev-v">${ev.planningDepth ?? '--'}</span></span>
+        <span class="ev-row"><span class="ev-k">decisionQuality</span><span class="ev-v">${ev.decisionQuality ?? '--'}</span></span>
+      </div>
+    </div>`;
+  }
+  if(rtype === 'psych'){
+    const ev = c;
+    return `<div class="cls-banner cls-psych">
+      <div class="cls-head">📄 認知擴展子系統 <span class="cls-tag">from cognitiveExtensions v${ev.version ?? '?'}</span></div>
+      <div class="cls-primary"><span class="cls-lbl">已啟用子系統</span><span class="cls-mode">${ev.subsystem_count} 個</span></div>
+      <div class="cls-evidence">${(ev.subsystems||[]).filter(s=>!['version','updatedAt'].includes(s)).map(s=>`<span class="ev-row" style="background:rgba(125,249,255,.08)"><span class="ev-k">${s}</span></span>`).join('')}</div>
+    </div>`;
+  }
+  if(rtype === 'fbi'){
+    const ev = c;
+    const topicEntries = Object.entries(ev.topicAffinity||{}).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    return `<div class="cls-banner cls-fbi">
+      <div class="cls-head">🕵️ 行為即時讀數 <span class="cls-tag">from localBrain</span></div>
+      <div class="cls-evidence">
+        <span class="ev-row"><span class="ev-k">selfModel</span><span class="ev-v">${ev.selfModel_size}</span></span>
+        <span class="ev-row"><span class="ev-k">socialInfluence targets</span><span class="ev-v">${ev.socialInfluence_targets}</span></span>
+        <span class="ev-row"><span class="ev-k">eventLog</span><span class="ev-v">${ev.eventLog_count}</span></span>
+        ${topicEntries.map(([k,v])=>`<span class="ev-row"><span class="ev-k">${k}</span><span class="ev-v">${typeof v==='number' ? v.toFixed(3) : v}</span></span>`).join('')}
+      </div>
+    </div>`;
+  }
+  return '';
+}
+
+function closeReport(){
+  const overlay = document.getElementById('popup-overlay');
+  overlay.classList.remove('open');
+  setTimeout(()=> document.getElementById('popup-body').innerHTML = '', 350);
+}
+
+document.getElementById('popup-close').addEventListener('click', closeReport);
+document.getElementById('popup-overlay').addEventListener('click', e => {
+  if(e.target.id === 'popup-overlay') closeReport();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && document.getElementById('popup-overlay').classList.contains('open')) closeReport();
+});
+
+populateDock();
+</script>
+</body>
+</html>

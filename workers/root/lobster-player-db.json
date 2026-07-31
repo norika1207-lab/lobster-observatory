@@ -1,0 +1,4895 @@
+{
+  "teams": {
+    "cs2:vp-prodigy-cs-go": {
+      "name": "VP.Prodigy",
+      "slug": "vp-prodigy-cs-go",
+      "location": "RU",
+      "players": [
+        {
+          "name": "TriBorgg1",
+          "role": null,
+          "nationality": "RU",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:prestige": {
+      "name": "Prestige",
+      "slug": "prestige",
+      "location": "DK",
+      "players": [
+        {
+          "name": "fejtZ",
+          "role": null,
+          "nationality": "EE",
+          "age": 28
+        },
+        {
+          "name": "Few",
+          "role": null,
+          "nationality": "DK",
+          "age": 21
+        },
+        {
+          "name": "Folke",
+          "role": null,
+          "nationality": "DK",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:heroic": {
+      "name": "Heroic",
+      "slug": "heroic",
+      "location": "DK",
+      "players": [
+        {
+          "name": "xfl0ud",
+          "role": null,
+          "nationality": "TR",
+          "age": 23
+        },
+        {
+          "name": "nilo",
+          "role": null,
+          "nationality": "SE",
+          "age": 21
+        },
+        {
+          "name": "susp",
+          "role": null,
+          "nationality": "SE",
+          "age": 21
+        },
+        {
+          "name": "Yxngstxr",
+          "role": null,
+          "nationality": "SE",
+          "age": 21
+        },
+        {
+          "name": "Chr1zN",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "alkarenn",
+          "role": null,
+          "nationality": "KZ",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:eternal-premium": {
+      "name": "eternal premium",
+      "slug": "eternal-premium",
+      "location": "RU",
+      "players": [
+        {
+          "name": "skept1K",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "smith",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "dazzy_y",
+          "role": null,
+          "nationality": "BY",
+          "age": null
+        },
+        {
+          "name": "P1kan0",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "fynchojka ",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        }
+      ]
+    },
+    "cs2:sashi-academy": {
+      "name": "Sashi Academy",
+      "slug": "sashi-academy",
+      "location": "DK",
+      "players": [
+        {
+          "name": "Mol011",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "Mizi",
+          "role": null,
+          "nationality": "DK",
+          "age": 18
+        },
+        {
+          "name": "Damsi",
+          "role": null,
+          "nationality": "DK",
+          "age": 21
+        },
+        {
+          "name": "bl4ze",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "Patchi",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "Thom",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        }
+      ]
+    },
+    "cs2:ex-ruby": {
+      "name": "ex-RUBY",
+      "slug": "ex-ruby",
+      "location": "RU",
+      "players": [
+        {
+          "name": "YumsaN",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        },
+        {
+          "name": "H4SAN4TOR",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "Kaide",
+          "role": null,
+          "nationality": "RU",
+          "age": 26
+        },
+        {
+          "name": "sh1nejezzz",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:nebula-in-chaox": {
+      "name": "Nebula In Chaox",
+      "slug": "nebula-in-chaox",
+      "location": "",
+      "players": [
+        {
+          "name": "CHANKY",
+          "role": null,
+          "nationality": "RO",
+          "age": 26
+        },
+        {
+          "name": "waZz",
+          "role": null,
+          "nationality": "RO",
+          "age": 22
+        },
+        {
+          "name": "FinchY",
+          "role": null,
+          "nationality": "GB",
+          "age": 24
+        },
+        {
+          "name": "Temny Prince",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "Qushue",
+          "role": null,
+          "nationality": null,
+          "age": null
+        }
+      ]
+    },
+    "cs2:aab-esport": {
+      "name": "AaB Esport",
+      "slug": "aab-esport",
+      "location": "DK",
+      "players": [
+        {
+          "name": "Maze",
+          "role": null,
+          "nationality": "DK",
+          "age": 24
+        },
+        {
+          "name": "N1XEN",
+          "role": null,
+          "nationality": "DK",
+          "age": 22
+        },
+        {
+          "name": "anber",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "sSen",
+          "role": null,
+          "nationality": "DK",
+          "age": 18
+        },
+        {
+          "name": "bekker",
+          "role": null,
+          "nationality": "DK",
+          "age": 20
+        },
+        {
+          "name": "qx",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:algo": {
+      "name": "ALGO Esports",
+      "slug": "algo",
+      "location": "UA",
+      "players": [
+        {
+          "name": "nukkye",
+          "role": null,
+          "nationality": "LT",
+          "age": 28
+        },
+        {
+          "name": "szejn",
+          "role": null,
+          "nationality": "PL",
+          "age": 24
+        },
+        {
+          "name": "aNdu",
+          "role": null,
+          "nationality": "EE",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:l-g": {
+      "name": "Leo Team",
+      "slug": "l-g",
+      "location": "UA",
+      "players": [
+        {
+          "name": "amster",
+          "role": null,
+          "nationality": "UA",
+          "age": 24
+        },
+        {
+          "name": "leri511",
+          "role": null,
+          "nationality": "UA",
+          "age": 21
+        },
+        {
+          "name": "Leen",
+          "role": null,
+          "nationality": "UA",
+          "age": 21
+        },
+        {
+          "name": "Malkiss",
+          "role": null,
+          "nationality": "UA",
+          "age": 24
+        },
+        {
+          "name": "marat2k",
+          "role": null,
+          "nationality": "UA",
+          "age": 22
+        },
+        {
+          "name": "OneUn1que",
+          "role": null,
+          "nationality": "UA",
+          "age": 23
+        },
+        {
+          "name": "kL1o",
+          "role": null,
+          "nationality": "UA",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:big-academy": {
+      "name": "BIG Academy",
+      "slug": "big-academy",
+      "location": "DE",
+      "players": [
+        {
+          "name": "prosus",
+          "role": null,
+          "nationality": "DE",
+          "age": 23
+        },
+        {
+          "name": "JBOEN",
+          "role": null,
+          "nationality": "DK",
+          "age": 20
+        },
+        {
+          "name": "w1doww",
+          "role": null,
+          "nationality": "DE",
+          "age": 18
+        },
+        {
+          "name": "D0nii",
+          "role": null,
+          "nationality": "UA",
+          "age": 18
+        },
+        {
+          "name": "tripex17",
+          "role": null,
+          "nationality": "UA",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:misa-esports-cs-go": {
+      "name": "Misa Esports",
+      "slug": "misa-esports-cs-go",
+      "location": "TR",
+      "players": [
+        {
+          "name": "ckanic",
+          "role": null,
+          "nationality": "TR",
+          "age": 20
+        },
+        {
+          "name": "rim3",
+          "role": null,
+          "nationality": "TR",
+          "age": 19
+        },
+        {
+          "name": "Zuedsta",
+          "role": null,
+          "nationality": "TR",
+          "age": 22
+        },
+        {
+          "name": "Mertovsk1",
+          "role": null,
+          "nationality": "TR",
+          "age": 24
+        },
+        {
+          "name": "souv",
+          "role": null,
+          "nationality": "TR",
+          "age": 21
+        },
+        {
+          "name": "Faz",
+          "role": null,
+          "nationality": "TR",
+          "age": 21
+        },
+        {
+          "name": "Obyj",
+          "role": null,
+          "nationality": "TR",
+          "age": 28
+        }
+      ]
+    },
+    "cs2:empire-cs-go": {
+      "name": "EMPIRE",
+      "slug": "empire-cs-go",
+      "location": "US",
+      "players": [
+        {
+          "name": "KmZ",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "twigs",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "BAGEL",
+          "role": null,
+          "nationality": "CA",
+          "age": 21
+        },
+        {
+          "name": "no1nx",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        },
+        {
+          "name": "C0C0",
+          "role": null,
+          "nationality": "LB",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:partizan-esport": {
+      "name": "Partizan Esport",
+      "slug": "partizan-esport",
+      "location": "RS",
+      "players": [
+        {
+          "name": "zecco",
+          "role": null,
+          "nationality": "RS",
+          "age": 19
+        },
+        {
+          "name": "dyrod",
+          "role": null,
+          "nationality": "HR",
+          "age": null
+        },
+        {
+          "name": "DotlA",
+          "role": null,
+          "nationality": "HR",
+          "age": null
+        },
+        {
+          "name": "rajkeza",
+          "role": null,
+          "nationality": "BA",
+          "age": 19
+        },
+        {
+          "name": "m1traa",
+          "role": null,
+          "nationality": "BA",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:big": {
+      "name": "BIG",
+      "slug": "big",
+      "location": "DE",
+      "players": [
+        {
+          "name": "tabseN",
+          "role": null,
+          "nationality": "DE",
+          "age": 31
+        },
+        {
+          "name": "faveN",
+          "role": null,
+          "nationality": "DE",
+          "age": 26
+        },
+        {
+          "name": "blameF",
+          "role": null,
+          "nationality": "DK",
+          "age": 28
+        },
+        {
+          "name": "JDC",
+          "role": null,
+          "nationality": "DE",
+          "age": 26
+        },
+        {
+          "name": "Krimbo",
+          "role": null,
+          "nationality": "DE",
+          "age": 23
+        },
+        {
+          "name": "gr1ks",
+          "role": null,
+          "nationality": "BY",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:nip": {
+      "name": "NIP",
+      "slug": "nip",
+      "location": "SE",
+      "players": [
+        {
+          "name": "Snappi",
+          "role": null,
+          "nationality": "DK",
+          "age": 35
+        },
+        {
+          "name": "stavn",
+          "role": null,
+          "nationality": "DK",
+          "age": 24
+        },
+        {
+          "name": "sjuush",
+          "role": null,
+          "nationality": "DK",
+          "age": 27
+        },
+        {
+          "name": "ewjerkz",
+          "role": null,
+          "nationality": "PT",
+          "age": 25
+        },
+        {
+          "name": "r1nkle",
+          "role": null,
+          "nationality": "UA",
+          "age": 21
+        },
+        {
+          "name": "xKacpersky",
+          "role": null,
+          "nationality": "PL",
+          "age": 19
+        },
+        {
+          "name": "cairne",
+          "role": null,
+          "nationality": "UA",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:33": {
+      "name": "BET-M 33",
+      "slug": "33",
+      "location": "RU",
+      "players": [
+        {
+          "name": "kinqie",
+          "role": null,
+          "nationality": "RU",
+          "age": 34
+        },
+        {
+          "name": "Kiro",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "Z1Nny",
+          "role": null,
+          "nationality": "RU",
+          "age": 22
+        },
+        {
+          "name": "bluewh1te",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        },
+        {
+          "name": "executor",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:9z": {
+      "name": "9z",
+      "slug": "9z",
+      "location": "AR",
+      "players": [
+        {
+          "name": "meyern",
+          "role": null,
+          "nationality": "AR",
+          "age": 23
+        },
+        {
+          "name": "max",
+          "role": null,
+          "nationality": "UY",
+          "age": 26
+        },
+        {
+          "name": "luchov",
+          "role": null,
+          "nationality": "AR",
+          "age": 24
+        },
+        {
+          "name": "dgt",
+          "role": null,
+          "nationality": "UY",
+          "age": 24
+        },
+        {
+          "name": "HUASOPEEK",
+          "role": null,
+          "nationality": "CL",
+          "age": 22
+        },
+        {
+          "name": "urban0",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:vasco-esports-cs-go": {
+      "name": "Vasco Esports",
+      "slug": "vasco-esports-cs-go",
+      "location": "BR",
+      "players": [
+        {
+          "name": "tatazin",
+          "role": null,
+          "nationality": "BR",
+          "age": 32
+        },
+        {
+          "name": "mawth",
+          "role": null,
+          "nationality": "BR",
+          "age": 27
+        },
+        {
+          "name": "RenanZin",
+          "role": null,
+          "nationality": "BR",
+          "age": 19
+        },
+        {
+          "name": "lukiz",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "n1cks",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:sparta-cs-go": {
+      "name": "SPARTA",
+      "slug": "sparta-cs-go",
+      "location": "RU",
+      "players": [
+        {
+          "name": "NickelBack",
+          "role": null,
+          "nationality": "RU",
+          "age": 28
+        },
+        {
+          "name": "El1an",
+          "role": null,
+          "nationality": "RU",
+          "age": 26
+        },
+        {
+          "name": "Lack1",
+          "role": null,
+          "nationality": "KZ",
+          "age": 26
+        },
+        {
+          "name": "TRAVIS",
+          "role": null,
+          "nationality": "RU",
+          "age": 28
+        },
+        {
+          "name": "Forester",
+          "role": null,
+          "nationality": "RU",
+          "age": 26
+        }
+      ]
+    },
+    "cs2:xi-esport": {
+      "name": "XI Esport",
+      "slug": "xi-esport",
+      "location": "DK",
+      "players": [
+        {
+          "name": "Jiace",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "emili0",
+          "role": null,
+          "nationality": "DK",
+          "age": 24
+        },
+        {
+          "name": "Egelund",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "Bakorino",
+          "role": null,
+          "nationality": "DK",
+          "age": 23
+        },
+        {
+          "name": "ETYYY",
+          "role": null,
+          "nationality": "DK",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:lag-gaming": {
+      "name": "LAG Gaming",
+      "slug": "lag-gaming",
+      "location": "US",
+      "players": [
+        {
+          "name": "djay",
+          "role": null,
+          "nationality": "CA",
+          "age": 32
+        },
+        {
+          "name": "consti",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "Cryptic",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "kmrn",
+          "role": null,
+          "nationality": "US",
+          "age": 23
+        },
+        {
+          "name": "Sandman",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        }
+      ]
+    },
+    "cs2:kuusamo-gg": {
+      "name": "KUUSAMO.gg",
+      "slug": "kuusamo-gg",
+      "location": "FI",
+      "players": [
+        {
+          "name": "Rbm",
+          "role": null,
+          "nationality": "FI",
+          "age": 23
+        },
+        {
+          "name": "Orava",
+          "role": null,
+          "nationality": "FI",
+          "age": 22
+        },
+        {
+          "name": "epik",
+          "role": null,
+          "nationality": "FI",
+          "age": null
+        },
+        {
+          "name": "osku",
+          "role": null,
+          "nationality": "FI",
+          "age": 32
+        },
+        {
+          "name": "Keksimage",
+          "role": null,
+          "nationality": "FI",
+          "age": null
+        }
+      ]
+    },
+    "cs2:state": {
+      "name": "STATE",
+      "slug": "state",
+      "location": "DK",
+      "players": [
+        {
+          "name": "kwezz",
+          "role": null,
+          "nationality": "DK",
+          "age": 25
+        },
+        {
+          "name": "thamlike",
+          "role": null,
+          "nationality": "DK",
+          "age": 28
+        },
+        {
+          "name": "Patti",
+          "role": null,
+          "nationality": "DK",
+          "age": 28
+        },
+        {
+          "name": "Zanto",
+          "role": null,
+          "nationality": "DK",
+          "age": 20
+        },
+        {
+          "name": "sL1m3",
+          "role": null,
+          "nationality": "DK",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:wazabi": {
+      "name": "WAZABI",
+      "slug": "wazabi",
+      "location": "DK",
+      "players": [
+        {
+          "name": "VireZ",
+          "role": null,
+          "nationality": "DK",
+          "age": 25
+        },
+        {
+          "name": "m0vski",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "BangBang",
+          "role": null,
+          "nationality": "DK",
+          "age": 18
+        },
+        {
+          "name": "BacH",
+          "role": null,
+          "nationality": "DK",
+          "age": 20
+        },
+        {
+          "name": "Laykinn",
+          "role": null,
+          "nationality": "DK",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:masonic": {
+      "name": "MASONIC",
+      "slug": "masonic",
+      "location": "DK",
+      "players": [
+        {
+          "name": "b0RUP",
+          "role": null,
+          "nationality": "DK",
+          "age": 26
+        },
+        {
+          "name": "fr0slev",
+          "role": null,
+          "nationality": "DK",
+          "age": 28
+        },
+        {
+          "name": "grumpyMonk",
+          "role": null,
+          "nationality": "DK",
+          "age": 26
+        },
+        {
+          "name": "Noruyp",
+          "role": null,
+          "nationality": "DK",
+          "age": 25
+        },
+        {
+          "name": "Botman",
+          "role": null,
+          "nationality": "DK",
+          "age": 23
+        },
+        {
+          "name": "Avou",
+          "role": null,
+          "nationality": "DK",
+          "age": 24
+        },
+        {
+          "name": "KralleJ",
+          "role": null,
+          "nationality": "DK",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:brute": {
+      "name": "Brute",
+      "slug": "brute",
+      "location": "CZ",
+      "players": [
+        {
+          "name": "nbqq",
+          "role": null,
+          "nationality": "CZ",
+          "age": 29
+        },
+        {
+          "name": "majky",
+          "role": null,
+          "nationality": "CZ",
+          "age": 23
+        },
+        {
+          "name": "KAD1M",
+          "role": null,
+          "nationality": "CZ",
+          "age": 23
+        },
+        {
+          "name": "mASKED",
+          "role": null,
+          "nationality": "PL",
+          "age": 25
+        },
+        {
+          "name": "SiKO",
+          "role": null,
+          "nationality": "SK",
+          "age": 19
+        },
+        {
+          "name": "realzen",
+          "role": null,
+          "nationality": "SK",
+          "age": 21
+        },
+        {
+          "name": "hfah",
+          "role": null,
+          "nationality": "PL",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:rustec": {
+      "name": "RUSTEC",
+      "slug": "rustec",
+      "location": "RU",
+      "players": [
+        {
+          "name": "Sanji",
+          "role": null,
+          "nationality": "UZ",
+          "age": 27
+        },
+        {
+          "name": "supra",
+          "role": null,
+          "nationality": "EE",
+          "age": 25
+        },
+        {
+          "name": "Brilliance",
+          "role": null,
+          "nationality": "BY",
+          "age": 23
+        },
+        {
+          "name": "nitzie",
+          "role": null,
+          "nationality": "RU",
+          "age": 24
+        },
+        {
+          "name": "anttzz",
+          "role": null,
+          "nationality": "RU",
+          "age": 24
+        },
+        {
+          "name": "jakekeS",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        },
+        {
+          "name": "youka",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:ursa-cs-go": {
+      "name": "Ursa",
+      "slug": "ursa-cs-go",
+      "location": "",
+      "players": [
+        {
+          "name": "torox",
+          "role": null,
+          "nationality": "RU",
+          "age": 22
+        },
+        {
+          "name": "4X1s",
+          "role": null,
+          "nationality": "LV",
+          "age": 21
+        },
+        {
+          "name": "KaRnez",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "Alv",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "deeN",
+          "role": null,
+          "nationality": "LV",
+          "age": 17
+        },
+        {
+          "name": "salazar",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:monte": {
+      "name": "Monte",
+      "slug": "monte",
+      "location": "UA",
+      "players": [
+        {
+          "name": "Rainwaker",
+          "role": null,
+          "nationality": "BG",
+          "age": 24
+        },
+        {
+          "name": "afro",
+          "role": null,
+          "nationality": "FR",
+          "age": 26
+        },
+        {
+          "name": "Bymas",
+          "role": null,
+          "nationality": "LT",
+          "age": 22
+        },
+        {
+          "name": "Gizmy",
+          "role": null,
+          "nationality": "GB",
+          "age": 22
+        },
+        {
+          "name": "AZUWU",
+          "role": null,
+          "nationality": "GB",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:mana-esports": {
+      "name": "MANA eSports",
+      "slug": "mana-esports",
+      "location": "",
+      "players": [
+        {
+          "name": "SENER1",
+          "role": null,
+          "nationality": "XK",
+          "age": 29
+        },
+        {
+          "name": "BledarD",
+          "role": null,
+          "nationality": "XK",
+          "age": 24
+        },
+        {
+          "name": "cerber",
+          "role": null,
+          "nationality": "XK",
+          "age": 27
+        },
+        {
+          "name": "Caleyy",
+          "role": null,
+          "nationality": "XK",
+          "age": 24
+        },
+        {
+          "name": "ammar",
+          "role": null,
+          "nationality": "XK",
+          "age": 22
+        },
+        {
+          "name": "Malware",
+          "role": null,
+          "nationality": "AL",
+          "age": 28
+        },
+        {
+          "name": "LunaticYF",
+          "role": null,
+          "nationality": null,
+          "age": null
+        }
+      ]
+    },
+    "cs2:the-qube-esports": {
+      "name": "The QUBE Esports",
+      "slug": "the-qube-esports",
+      "location": "MN",
+      "players": [
+        {
+          "name": "soloooS",
+          "role": null,
+          "nationality": "MN",
+          "age": 23
+        },
+        {
+          "name": "Paranormal",
+          "role": null,
+          "nationality": "MN",
+          "age": 24
+        },
+        {
+          "name": "Cozen",
+          "role": null,
+          "nationality": "MN",
+          "age": 21
+        },
+        {
+          "name": "Kamui",
+          "role": null,
+          "nationality": "MN",
+          "age": 24
+        },
+        {
+          "name": "bkzcurs3d",
+          "role": null,
+          "nationality": "MN",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:tyloo-cs-go": {
+      "name": "TYLOO",
+      "slug": "tyloo-cs-go",
+      "location": "CN",
+      "players": [
+        {
+          "name": "JamYoung",
+          "role": null,
+          "nationality": "CN",
+          "age": 24
+        },
+        {
+          "name": "Jee",
+          "role": null,
+          "nationality": "CN",
+          "age": 21
+        },
+        {
+          "name": "Mercury",
+          "role": null,
+          "nationality": "CN",
+          "age": 25
+        },
+        {
+          "name": "Moseyuh",
+          "role": null,
+          "nationality": "CN",
+          "age": 21
+        },
+        {
+          "name": "zero",
+          "role": null,
+          "nationality": "CN",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:just-swing-50989ff5-c5c2-48bb-bc2c-49e98573129a": {
+      "name": "Just Swing",
+      "slug": "just-swing-50989ff5-c5c2-48bb-bc2c-49e98573129a",
+      "location": "CN",
+      "players": [
+        {
+          "name": "gas",
+          "role": null,
+          "nationality": "CN",
+          "age": 30
+        },
+        {
+          "name": "Purely",
+          "role": null,
+          "nationality": "CN",
+          "age": 22
+        },
+        {
+          "name": "qqGOD",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "HiNa",
+          "role": null,
+          "nationality": "CN",
+          "age": 21
+        },
+        {
+          "name": "sATOR1",
+          "role": null,
+          "nationality": "CN",
+          "age": 20
+        },
+        {
+          "name": "skrr",
+          "role": null,
+          "nationality": "CN",
+          "age": 24
+        },
+        {
+          "name": "Honkai",
+          "role": null,
+          "nationality": "CN",
+          "age": 25
+        }
+      ]
+    },
+    "cs2:rare-atom-cs-go": {
+      "name": "Rare Atom",
+      "slug": "rare-atom-cs-go",
+      "location": "CN",
+      "players": [
+        {
+          "name": "Summer",
+          "role": null,
+          "nationality": "CN",
+          "age": 28
+        },
+        {
+          "name": "Kaze",
+          "role": null,
+          "nationality": "MY",
+          "age": 31
+        },
+        {
+          "name": "ChildKing",
+          "role": null,
+          "nationality": "CN",
+          "age": 26
+        },
+        {
+          "name": "L1haNg",
+          "role": null,
+          "nationality": "CN",
+          "age": 22
+        },
+        {
+          "name": "Tiger",
+          "role": null,
+          "nationality": "CN",
+          "age": 22
+        },
+        {
+          "name": "chengking",
+          "role": null,
+          "nationality": "CN",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:alter-ego-cs-go": {
+      "name": "Alter Ego",
+      "slug": "alter-ego-cs-go",
+      "location": "CN",
+      "players": [
+        {
+          "name": "BnTeT",
+          "role": null,
+          "nationality": "ID",
+          "age": 30
+        },
+        {
+          "name": "Gratisfaction",
+          "role": null,
+          "nationality": "NZ",
+          "age": 30
+        },
+        {
+          "name": "b1lal",
+          "role": null,
+          "nationality": "LB",
+          "age": 25
+        },
+        {
+          "name": "BOROS",
+          "role": null,
+          "nationality": "JO",
+          "age": 21
+        },
+        {
+          "name": "Polbandana",
+          "role": null,
+          "nationality": "UA",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:chinggis-warriors": {
+      "name": "Chinggis Warriors",
+      "slug": "chinggis-warriors",
+      "location": "MN",
+      "players": [
+        {
+          "name": "yAmi",
+          "role": null,
+          "nationality": "MN",
+          "age": 21
+        },
+        {
+          "name": "cool4st",
+          "role": null,
+          "nationality": "MN",
+          "age": 23
+        },
+        {
+          "name": "ROUX",
+          "role": null,
+          "nationality": "MN",
+          "age": 25
+        },
+        {
+          "name": "ariucle",
+          "role": null,
+          "nationality": "MN",
+          "age": 21
+        },
+        {
+          "name": "efire",
+          "role": null,
+          "nationality": "MN",
+          "age": 20
+        },
+        {
+          "name": "tikuak",
+          "role": null,
+          "nationality": "MN",
+          "age": 16
+        }
+      ]
+    },
+    "cs2:spirit-academy": {
+      "name": "Spirit Academy",
+      "slug": "spirit-academy",
+      "location": "RU",
+      "players": [
+        {
+          "name": "S0tF1k",
+          "role": null,
+          "nationality": "RU",
+          "age": 31
+        },
+        {
+          "name": "VILBy",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "mazay",
+          "role": null,
+          "nationality": "UA",
+          "age": 16
+        },
+        {
+          "name": "kurosse",
+          "role": null,
+          "nationality": "RU",
+          "age": 17
+        },
+        {
+          "name": "Kiryasoo",
+          "role": null,
+          "nationality": "RU",
+          "age": 16
+        },
+        {
+          "name": "kidofpain",
+          "role": null,
+          "nationality": "BY",
+          "age": null
+        },
+        {
+          "name": "s1nside",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        }
+      ]
+    },
+    "cs2:sensation-cs-go": {
+      "name": "Sensation",
+      "slug": "sensation-cs-go",
+      "location": "MN",
+      "players": []
+    },
+    "cs2:legion-cs-go": {
+      "name": "Legion",
+      "slug": "legion-cs-go",
+      "location": "SA",
+      "players": [
+        {
+          "name": "HZI",
+          "role": null,
+          "nationality": "PK",
+          "age": 18
+        },
+        {
+          "name": "BulleT",
+          "role": null,
+          "nationality": "PK",
+          "age": 23
+        },
+        {
+          "name": "Bloody",
+          "role": null,
+          "nationality": "PK",
+          "age": 20
+        },
+        {
+          "name": "hf",
+          "role": null,
+          "nationality": "PK",
+          "age": 20
+        },
+        {
+          "name": "pavast4r",
+          "role": null,
+          "nationality": "PK",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:ence": {
+      "name": "ENCE",
+      "slug": "ence",
+      "location": "FI",
+      "players": [
+        {
+          "name": "sdy",
+          "role": null,
+          "nationality": "UA",
+          "age": 29
+        },
+        {
+          "name": "F1KU",
+          "role": null,
+          "nationality": "PL",
+          "age": 22
+        },
+        {
+          "name": "HENU",
+          "role": null,
+          "nationality": "FI",
+          "age": 23
+        },
+        {
+          "name": "Whitey",
+          "role": null,
+          "nationality": "GB",
+          "age": 28
+        },
+        {
+          "name": "kRaSnaL",
+          "role": null,
+          "nationality": "PL",
+          "age": 23
+        },
+        {
+          "name": "Neityu",
+          "role": null,
+          "nationality": "FR",
+          "age": 20
+        },
+        {
+          "name": "podi",
+          "role": null,
+          "nationality": "FI",
+          "age": 22
+        },
+        {
+          "name": "Millert",
+          "role": null,
+          "nationality": "FI",
+          "age": 18
+        },
+        {
+          "name": "teme",
+          "role": null,
+          "nationality": "FI",
+          "age": 19
+        },
+        {
+          "name": "Cliqq",
+          "role": null,
+          "nationality": "FI",
+          "age": 17
+        },
+        {
+          "name": "Schwarz",
+          "role": null,
+          "nationality": "GE",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:lilmix": {
+      "name": "Lilmix",
+      "slug": "lilmix",
+      "location": "SE",
+      "players": [
+        {
+          "name": "quix",
+          "role": null,
+          "nationality": "SE",
+          "age": 33
+        },
+        {
+          "name": "Bsover",
+          "role": null,
+          "nationality": "SE",
+          "age": 20
+        },
+        {
+          "name": "Doobs",
+          "role": null,
+          "nationality": "SE",
+          "age": 22
+        },
+        {
+          "name": "walleN",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        }
+      ]
+    },
+    "cs2:kolesie": {
+      "name": "KOLESIE",
+      "slug": "kolesie",
+      "location": "PL",
+      "players": [
+        {
+          "name": "innocent",
+          "role": null,
+          "nationality": "PL",
+          "age": 32
+        },
+        {
+          "name": "fr3nd",
+          "role": null,
+          "nationality": "PL",
+          "age": 23
+        },
+        {
+          "name": "b1elany",
+          "role": null,
+          "nationality": "PL",
+          "age": 24
+        },
+        {
+          "name": "Ex1st",
+          "role": null,
+          "nationality": "PL",
+          "age": 21
+        },
+        {
+          "name": "Qlocuu",
+          "role": null,
+          "nationality": "PL",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:nemiga": {
+      "name": "Nemiga",
+      "slug": "nemiga",
+      "location": "BY",
+      "players": [
+        {
+          "name": "KaiR0N",
+          "role": null,
+          "nationality": "RU",
+          "age": 22
+        },
+        {
+          "name": "1eeR",
+          "role": null,
+          "nationality": "BY",
+          "age": 24
+        },
+        {
+          "name": "riskyb0b",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "khaN",
+          "role": null,
+          "nationality": "KZ",
+          "age": 22
+        },
+        {
+          "name": "sowalio",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        },
+        {
+          "name": "syph0",
+          "role": null,
+          "nationality": "KZ",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:nuclear-tigres": {
+      "name": "Nuclear TigeRES",
+      "slug": "nuclear-tigres",
+      "location": "RU",
+      "players": [
+        {
+          "name": "z1k4",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "senka",
+          "role": null,
+          "nationality": "BY",
+          "age": 20
+        },
+        {
+          "name": "m1QUSE",
+          "role": null,
+          "nationality": "BY",
+          "age": 18
+        },
+        {
+          "name": "flouzer",
+          "role": null,
+          "nationality": "RU",
+          "age": 18
+        },
+        {
+          "name": "ayuki",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        }
+      ]
+    },
+    "cs2:mibr-academy": {
+      "name": "MIBR Academy",
+      "slug": "mibr-academy",
+      "location": "BR",
+      "players": [
+        {
+          "name": "brn$",
+          "role": null,
+          "nationality": "BR",
+          "age": 19
+        },
+        {
+          "name": "stormzin",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        },
+        {
+          "name": "Jerr1",
+          "role": null,
+          "nationality": "BR",
+          "age": null
+        },
+        {
+          "name": "Flash",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        },
+        {
+          "name": "Lkz",
+          "role": null,
+          "nationality": "BR",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:rune-eaters-cs-go": {
+      "name": "Rune Eaters",
+      "slug": "rune-eaters-cs-go",
+      "location": "",
+      "players": [
+        {
+          "name": "fitch",
+          "role": null,
+          "nationality": "KZ",
+          "age": 33
+        },
+        {
+          "name": "her1tage",
+          "role": null,
+          "nationality": "KZ",
+          "age": 19
+        },
+        {
+          "name": "forkyz",
+          "role": null,
+          "nationality": "KZ",
+          "age": 22
+        },
+        {
+          "name": "demente",
+          "role": null,
+          "nationality": "KZ",
+          "age": 22
+        },
+        {
+          "name": "dako",
+          "role": null,
+          "nationality": "KZ",
+          "age": 21
+        },
+        {
+          "name": "noni",
+          "role": null,
+          "nationality": "KZ",
+          "age": 19
+        },
+        {
+          "name": "kumao",
+          "role": null,
+          "nationality": "KZ",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:oldboys-cs-go": {
+      "name": "Oldboys",
+      "slug": "oldboys-cs-go",
+      "location": "PL",
+      "players": []
+    },
+    "cs2:imperial-cs-go": {
+      "name": "Imperial",
+      "slug": "imperial-cs-go",
+      "location": "BR",
+      "players": [
+        {
+          "name": "boltz",
+          "role": null,
+          "nationality": "BR",
+          "age": 29
+        },
+        {
+          "name": "chelo",
+          "role": null,
+          "nationality": "BR",
+          "age": 27
+        },
+        {
+          "name": "VINI",
+          "role": null,
+          "nationality": "BR",
+          "age": 26
+        },
+        {
+          "name": "skullz",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "decenty",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        },
+        {
+          "name": "levi",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        },
+        {
+          "name": "noway",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:phantom": {
+      "name": "Phantom",
+      "slug": "phantom",
+      "location": "PL",
+      "players": [
+        {
+          "name": "mynio",
+          "role": null,
+          "nationality": "PL",
+          "age": 30
+        },
+        {
+          "name": "KEi",
+          "role": null,
+          "nationality": "PL",
+          "age": 25
+        },
+        {
+          "name": "Kylar",
+          "role": null,
+          "nationality": "PL",
+          "age": 26
+        },
+        {
+          "name": "DGL",
+          "role": null,
+          "nationality": "PL",
+          "age": 28
+        },
+        {
+          "name": "MWLKY",
+          "role": null,
+          "nationality": "PL",
+          "age": 22
+        },
+        {
+          "name": "Kunai",
+          "role": null,
+          "nationality": "PL",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:eternal-fire": {
+      "name": "Eternal Fire",
+      "slug": "eternal-fire",
+      "location": "TR",
+      "players": [
+        {
+          "name": "MisteM",
+          "role": null,
+          "nationality": "ZA",
+          "age": 24
+        },
+        {
+          "name": "rigoN",
+          "role": null,
+          "nationality": "CH",
+          "age": 26
+        },
+        {
+          "name": "DemQQ",
+          "role": null,
+          "nationality": "UA",
+          "age": 24
+        },
+        {
+          "name": "regali",
+          "role": null,
+          "nationality": "RO",
+          "age": 23
+        },
+        {
+          "name": "Woro2k",
+          "role": null,
+          "nationality": "UA",
+          "age": 24
+        },
+        {
+          "name": "jottAAA",
+          "role": null,
+          "nationality": "TR",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:alliance-cs-go": {
+      "name": "Alliance",
+      "slug": "alliance-cs-go",
+      "location": "SE",
+      "players": [
+        {
+          "name": "twist",
+          "role": null,
+          "nationality": "SE",
+          "age": 31
+        },
+        {
+          "name": "eraa",
+          "role": null,
+          "nationality": "SE",
+          "age": 24
+        },
+        {
+          "name": "upE",
+          "role": null,
+          "nationality": "SE",
+          "age": 21
+        },
+        {
+          "name": "avid",
+          "role": null,
+          "nationality": "SE",
+          "age": 24
+        },
+        {
+          "name": "MaiL09",
+          "role": null,
+          "nationality": "SE",
+          "age": 16
+        }
+      ]
+    },
+    "cs2:unity-esports-cs-go": {
+      "name": "UNiTY esports",
+      "slug": "unity-esports-cs-go",
+      "location": "SK",
+      "players": [
+        {
+          "name": "NEOFRAG",
+          "role": null,
+          "nationality": "CZ",
+          "age": 24
+        },
+        {
+          "name": "MoriiSko",
+          "role": null,
+          "nationality": "CZ",
+          "age": 24
+        },
+        {
+          "name": "KWERTZZ",
+          "role": null,
+          "nationality": "CZ",
+          "age": 24
+        },
+        {
+          "name": "M1key",
+          "role": null,
+          "nationality": "SK",
+          "age": 22
+        },
+        {
+          "name": "woozzzi",
+          "role": null,
+          "nationality": "CZ",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:legacy-48cb0f61-07e7-4b0d-85a0-5f837e29c807": {
+      "name": "Legacy",
+      "slug": "legacy-48cb0f61-07e7-4b0d-85a0-5f837e29c807",
+      "location": "BR",
+      "players": [
+        {
+          "name": "arT",
+          "role": null,
+          "nationality": "BR",
+          "age": 30
+        },
+        {
+          "name": "latto",
+          "role": null,
+          "nationality": "BR",
+          "age": 23
+        },
+        {
+          "name": "dumau",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        },
+        {
+          "name": "n1ssim",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "lux",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "saadzin",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:quintessencia": {
+      "name": "QUINTESSÊNCIA",
+      "slug": "quintessencia",
+      "location": "BR",
+      "players": [
+        {
+          "name": "timid",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        },
+        {
+          "name": "n0page",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "edv",
+          "role": null,
+          "nationality": "BR",
+          "age": null
+        },
+        {
+          "name": "cz1k4",
+          "role": null,
+          "nationality": "BR",
+          "age": null
+        },
+        {
+          "name": "luffy",
+          "role": null,
+          "nationality": "BR",
+          "age": null
+        },
+        {
+          "name": "prozin",
+          "role": null,
+          "nationality": "BR",
+          "age": null
+        },
+        {
+          "name": "7171717171",
+          "role": null,
+          "nationality": "BR",
+          "age": null
+        }
+      ]
+    },
+    "cs2:fake-do-biru": {
+      "name": "Fake do Biru",
+      "slug": "fake-do-biru",
+      "location": "BR",
+      "players": [
+        {
+          "name": "PKL",
+          "role": null,
+          "nationality": "BR",
+          "age": 31
+        },
+        {
+          "name": "hardzao",
+          "role": null,
+          "nationality": "BR",
+          "age": 25
+        },
+        {
+          "name": "Tuurtle",
+          "role": null,
+          "nationality": "BR",
+          "age": 27
+        },
+        {
+          "name": "ckzao",
+          "role": null,
+          "nationality": "BR",
+          "age": 29
+        },
+        {
+          "name": "detr0ittJ",
+          "role": null,
+          "nationality": "BR",
+          "age": 25
+        }
+      ]
+    },
+    "cs2:largadosypelados": {
+      "name": "largadosypelados",
+      "slug": "largadosypelados",
+      "location": "BR",
+      "players": [
+        {
+          "name": "zmb",
+          "role": null,
+          "nationality": "BR",
+          "age": 27
+        },
+        {
+          "name": "Leomonster",
+          "role": null,
+          "nationality": "BR",
+          "age": 23
+        },
+        {
+          "name": "Alisson ",
+          "role": null,
+          "nationality": "BR",
+          "age": 23
+        },
+        {
+          "name": "happ",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "Divine",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:game-hunters": {
+      "name": "Game Hunters",
+      "slug": "game-hunters",
+      "location": "BR",
+      "players": [
+        {
+          "name": "RCF",
+          "role": null,
+          "nationality": "BR",
+          "age": 25
+        },
+        {
+          "name": "bnc",
+          "role": null,
+          "nationality": "BR",
+          "age": 26
+        },
+        {
+          "name": "abr",
+          "role": null,
+          "nationality": "BR",
+          "age": 27
+        },
+        {
+          "name": "bsd",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "nyezin",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        },
+        {
+          "name": "rock",
+          "role": null,
+          "nationality": "BR",
+          "age": 28
+        },
+        {
+          "name": "rkt",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:crashers": {
+      "name": "Crashers",
+      "slug": "crashers",
+      "location": "BR",
+      "players": [
+        {
+          "name": "reix",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "Straafer",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        },
+        {
+          "name": "machado",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        },
+        {
+          "name": "trindade",
+          "role": null,
+          "nationality": "BR",
+          "age": 19
+        },
+        {
+          "name": "nikz",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        },
+        {
+          "name": "Lacerda",
+          "role": null,
+          "nationality": "BR",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:fluxo-w7m-cs-go": {
+      "name": "Fluxo W7M",
+      "slug": "fluxo-w7m-cs-go",
+      "location": "BR",
+      "players": [
+        {
+          "name": "exit",
+          "role": null,
+          "nationality": "BR",
+          "age": 29
+        },
+        {
+          "name": "Lucaozy",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "zevy",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "Kye",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        },
+        {
+          "name": "mlhzin",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:yawara-esports": {
+      "name": "Yawara Esports",
+      "slug": "yawara-esports",
+      "location": "BR",
+      "players": [
+        {
+          "name": "j0w",
+          "role": null,
+          "nationality": "BR",
+          "age": 25
+        },
+        {
+          "name": "deemO",
+          "role": null,
+          "nationality": "BR",
+          "age": 18
+        },
+        {
+          "name": "revoltz",
+          "role": null,
+          "nationality": "BR",
+          "age": 18
+        },
+        {
+          "name": "teleD",
+          "role": null,
+          "nationality": "BR",
+          "age": 26
+        }
+      ]
+    },
+    "cs2:keyd-stars-cs-go": {
+      "name": "Keyd",
+      "slug": "keyd-stars-cs-go",
+      "location": "BR",
+      "players": [
+        {
+          "name": "delboNi",
+          "role": null,
+          "nationality": "BR",
+          "age": 28
+        },
+        {
+          "name": "CutzMeretz",
+          "role": null,
+          "nationality": "BR",
+          "age": 29
+        },
+        {
+          "name": "matios",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "zede",
+          "role": null,
+          "nationality": "BR",
+          "age": 23
+        },
+        {
+          "name": "xureba",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        },
+        {
+          "name": "lash",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:isurus-gaming-cs-go": {
+      "name": "Isurus",
+      "slug": "isurus-gaming-cs-go",
+      "location": "AR",
+      "players": [
+        {
+          "name": "deco",
+          "role": null,
+          "nationality": "AR",
+          "age": 28
+        },
+        {
+          "name": "BK1",
+          "role": null,
+          "nationality": "AR",
+          "age": 27
+        },
+        {
+          "name": "atarax1a",
+          "role": null,
+          "nationality": "AR",
+          "age": 24
+        },
+        {
+          "name": "Hezz",
+          "role": null,
+          "nationality": "AR",
+          "age": 25
+        },
+        {
+          "name": "dott1",
+          "role": null,
+          "nationality": "AR",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:procyon-gaming": {
+      "name": "Procyon Gaming",
+      "slug": "procyon-gaming",
+      "location": "AR",
+      "players": [
+        {
+          "name": "lenci",
+          "role": null,
+          "nationality": "AR",
+          "age": 26
+        },
+        {
+          "name": "pavv",
+          "role": null,
+          "nationality": "AR",
+          "age": 28
+        },
+        {
+          "name": "MaxOff",
+          "role": null,
+          "nationality": "AR",
+          "age": 21
+        },
+        {
+          "name": "AGL",
+          "role": null,
+          "nationality": "AR",
+          "age": 23
+        },
+        {
+          "name": "next",
+          "role": null,
+          "nationality": "AR",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:bounty-hunters-esports": {
+      "name": "Bounty Hunters Esports",
+      "slug": "bounty-hunters-esports",
+      "location": "BR",
+      "players": [
+        {
+          "name": "SHOOWTiME",
+          "role": null,
+          "nationality": "BR",
+          "age": 29
+        },
+        {
+          "name": "ponter",
+          "role": null,
+          "nationality": "BR",
+          "age": 25
+        },
+        {
+          "name": "ninjaZ",
+          "role": null,
+          "nationality": "BR",
+          "age": 23
+        },
+        {
+          "name": "KAISER",
+          "role": null,
+          "nationality": "AR",
+          "age": 25
+        },
+        {
+          "name": "fREQ",
+          "role": null,
+          "nationality": "BR",
+          "age": 24
+        },
+        {
+          "name": "zock",
+          "role": null,
+          "nationality": "UY",
+          "age": 24
+        },
+        {
+          "name": "pepe",
+          "role": null,
+          "nationality": "BR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:galorys": {
+      "name": "Galorys",
+      "slug": "galorys",
+      "location": "BR",
+      "players": [
+        {
+          "name": "destiny",
+          "role": null,
+          "nationality": "BR",
+          "age": 28
+        },
+        {
+          "name": "nython",
+          "role": null,
+          "nationality": "BR",
+          "age": 28
+        },
+        {
+          "name": "gbb",
+          "role": null,
+          "nationality": "BR",
+          "age": 23
+        },
+        {
+          "name": "tomate",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        },
+        {
+          "name": "K1not1",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:ex-red-canids": {
+      "name": "ex-RED Canids",
+      "slug": "ex-red-canids",
+      "location": "BR",
+      "players": []
+    },
+    "cs2:shinden": {
+      "name": "ShindeN",
+      "slug": "shinden",
+      "location": "AR",
+      "players": [
+        {
+          "name": "tom1jed",
+          "role": null,
+          "nationality": "AR",
+          "age": 23
+        },
+        {
+          "name": "abizz",
+          "role": null,
+          "nationality": "AR",
+          "age": 21
+        },
+        {
+          "name": "ivz",
+          "role": null,
+          "nationality": "AR",
+          "age": 23
+        },
+        {
+          "name": "naz",
+          "role": null,
+          "nationality": "AR",
+          "age": 25
+        },
+        {
+          "name": "FraGuTy",
+          "role": null,
+          "nationality": "AR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:f5-esports": {
+      "name": "F5 Esports",
+      "slug": "f5-esports",
+      "location": "",
+      "players": [
+        {
+          "name": "Kermi",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        },
+        {
+          "name": "neight",
+          "role": null,
+          "nationality": "US",
+          "age": 26
+        },
+        {
+          "name": "Signal",
+          "role": null,
+          "nationality": "US",
+          "age": 27
+        },
+        {
+          "name": "cmrn",
+          "role": null,
+          "nationality": "US",
+          "age": 23
+        },
+        {
+          "name": "bones",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        }
+      ]
+    },
+    "cs2:chicken-coop-esports": {
+      "name": "Chicken Coop Esports",
+      "slug": "chicken-coop-esports",
+      "location": "US",
+      "players": [
+        {
+          "name": "mds",
+          "role": null,
+          "nationality": "US",
+          "age": 33
+        },
+        {
+          "name": "Drop",
+          "role": null,
+          "nationality": "CA",
+          "age": 20
+        },
+        {
+          "name": "REKMEISTER",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        },
+        {
+          "name": "Crisp_cs",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        },
+        {
+          "name": "jared",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        }
+      ]
+    },
+    "cs2:regain": {
+      "name": "regain",
+      "slug": "regain",
+      "location": "US",
+      "players": [
+        {
+          "name": "dvrk",
+          "role": null,
+          "nationality": "US",
+          "age": 21
+        },
+        {
+          "name": "sasha",
+          "role": null,
+          "nationality": "US",
+          "age": 21
+        },
+        {
+          "name": "Zucar",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        },
+        {
+          "name": "fuzenko",
+          "role": null,
+          "nationality": "UA",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:boss": {
+      "name": "BOSS",
+      "slug": "boss",
+      "location": "US",
+      "players": [
+        {
+          "name": "Bwills",
+          "role": null,
+          "nationality": "US",
+          "age": 24
+        },
+        {
+          "name": "SLIGHT",
+          "role": null,
+          "nationality": "US",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:fisher-college": {
+      "name": "Fisher College",
+      "slug": "fisher-college",
+      "location": "US",
+      "players": [
+        {
+          "name": "ReFuZR",
+          "role": null,
+          "nationality": "NL",
+          "age": 22
+        },
+        {
+          "name": "AlekS",
+          "role": null,
+          "nationality": "SE",
+          "age": 24
+        },
+        {
+          "name": "CrePoW",
+          "role": null,
+          "nationality": "BE",
+          "age": 24
+        },
+        {
+          "name": "TH0R",
+          "role": null,
+          "nationality": "IS",
+          "age": 25
+        },
+        {
+          "name": "corn",
+          "role": null,
+          "nationality": "US",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:zomblers-cs-go": {
+      "name": "Zomblers",
+      "slug": "zomblers-cs-go",
+      "location": "US",
+      "players": [
+        {
+          "name": "CAJUN",
+          "role": null,
+          "nationality": "US",
+          "age": 28
+        },
+        {
+          "name": "PoseidoNN",
+          "role": null,
+          "nationality": "US",
+          "age": 23
+        },
+        {
+          "name": "FxRE",
+          "role": null,
+          "nationality": "US",
+          "age": 22
+        },
+        {
+          "name": "CoolComs",
+          "role": null,
+          "nationality": "GB",
+          "age": 27
+        },
+        {
+          "name": "hambooga",
+          "role": null,
+          "nationality": "US",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:wildcard": {
+      "name": "Wildcard",
+      "slug": "wildcard",
+      "location": "US",
+      "players": [
+        {
+          "name": "mhL",
+          "role": null,
+          "nationality": "PL",
+          "age": 24
+        },
+        {
+          "name": "nEMANHA",
+          "role": null,
+          "nationality": "RS",
+          "age": 28
+        },
+        {
+          "name": "cxzi",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "HexT",
+          "role": null,
+          "nationality": "CA",
+          "age": 24
+        },
+        {
+          "name": "reck",
+          "role": null,
+          "nationality": "US",
+          "age": 22
+        },
+        {
+          "name": "Peeping",
+          "role": null,
+          "nationality": "US",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:wanted-goons": {
+      "name": "Wanted Goons",
+      "slug": "wanted-goons",
+      "location": "US",
+      "players": []
+    },
+    "cs2:farmville": {
+      "name": "FarmVille",
+      "slug": "farmville",
+      "location": "",
+      "players": [
+        {
+          "name": "cJ",
+          "role": null,
+          "nationality": "US",
+          "age": 28
+        },
+        {
+          "name": "BeaKie",
+          "role": null,
+          "nationality": "CA",
+          "age": 24
+        },
+        {
+          "name": "calamity",
+          "role": null,
+          "nationality": "CA",
+          "age": 22
+        },
+        {
+          "name": "sleepz0rk",
+          "role": null,
+          "nationality": "KZ",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:insane-players": {
+      "name": "insane players",
+      "slug": "insane-players",
+      "location": "US",
+      "players": []
+    },
+    "cs2:team-aether": {
+      "name": "Team Aether",
+      "slug": "team-aether",
+      "location": "US",
+      "players": [
+        {
+          "name": "brett",
+          "role": null,
+          "nationality": "US",
+          "age": 27
+        },
+        {
+          "name": "Andrew",
+          "role": null,
+          "nationality": "US",
+          "age": 26
+        },
+        {
+          "name": "xaler",
+          "role": null,
+          "nationality": "US",
+          "age": 26
+        },
+        {
+          "name": "H0NeST",
+          "role": null,
+          "nationality": "UA",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:lph-gaming": {
+      "name": "LPH Gaming",
+      "slug": "lph-gaming",
+      "location": "CZ",
+      "players": [
+        {
+          "name": "N1KOLAJ",
+          "role": null,
+          "nationality": "SK",
+          "age": 24
+        },
+        {
+          "name": "Snaxieee",
+          "role": null,
+          "nationality": "CZ",
+          "age": 25
+        },
+        {
+          "name": "d0mZ1k",
+          "role": null,
+          "nationality": "CZ",
+          "age": 21
+        },
+        {
+          "name": "fajrness",
+          "role": null,
+          "nationality": "CZ",
+          "age": 21
+        },
+        {
+          "name": "lojzo",
+          "role": null,
+          "nationality": "SK",
+          "age": 25
+        }
+      ]
+    },
+    "cs2:thunder-downunder": {
+      "name": "THUNDER dOWNUNDER",
+      "slug": "thunder-downunder",
+      "location": "AU",
+      "players": [
+        {
+          "name": "dexter",
+          "role": null,
+          "nationality": "AU",
+          "age": 31
+        },
+        {
+          "name": "Liazz",
+          "role": null,
+          "nationality": "AU",
+          "age": 28
+        },
+        {
+          "name": "aliStair",
+          "role": null,
+          "nationality": "AU",
+          "age": 28
+        },
+        {
+          "name": "asap",
+          "role": null,
+          "nationality": "AU",
+          "age": 22
+        },
+        {
+          "name": " TjP",
+          "role": null,
+          "nationality": "AU",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:low-cortisol": {
+      "name": "low cortisol",
+      "slug": "low-cortisol",
+      "location": "AU",
+      "players": []
+    },
+    "cs2:sangal-alters": {
+      "name": "Sangal ALTERS",
+      "slug": "sangal-alters",
+      "location": "TR",
+      "players": [
+        {
+          "name": "tgN",
+          "role": null,
+          "nationality": "TR",
+          "age": 21
+        },
+        {
+          "name": "sh1pz09",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        },
+        {
+          "name": "hyp3rrrr",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        },
+        {
+          "name": "estrella",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        }
+      ]
+    },
+    "cs2:rooster": {
+      "name": "Rooster",
+      "slug": "rooster",
+      "location": "AU",
+      "players": [
+        {
+          "name": "chelleos",
+          "role": null,
+          "nationality": "NZ",
+          "age": 25
+        },
+        {
+          "name": "SkulL",
+          "role": null,
+          "nationality": "AU",
+          "age": 28
+        },
+        {
+          "name": "ADK",
+          "role": null,
+          "nationality": "AU",
+          "age": 25
+        },
+        {
+          "name": "ju1ces",
+          "role": null,
+          "nationality": "AU",
+          "age": 23
+        },
+        {
+          "name": "rekonz",
+          "role": null,
+          "nationality": "AU",
+          "age": 25
+        }
+      ]
+    },
+    "cs2:markandlarry": {
+      "name": "MARKandLARRY",
+      "slug": "markandlarry",
+      "location": null,
+      "players": []
+    },
+    "cs2:walczaki": {
+      "name": "Walczaki",
+      "slug": "walczaki",
+      "location": "PL",
+      "players": [
+        {
+          "name": "reiko",
+          "role": null,
+          "nationality": "PL",
+          "age": 26
+        },
+        {
+          "name": "SaMey",
+          "role": null,
+          "nationality": "PL",
+          "age": 26
+        },
+        {
+          "name": "OLIMP",
+          "role": null,
+          "nationality": "PL",
+          "age": 26
+        },
+        {
+          "name": "bajmi",
+          "role": null,
+          "nationality": "PL",
+          "age": 23
+        },
+        {
+          "name": "moonwalk",
+          "role": null,
+          "nationality": "PL",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:imperial-academy": {
+      "name": "Imperial Academy",
+      "slug": "imperial-academy",
+      "location": "BR",
+      "players": [
+        {
+          "name": "Aliot",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "Kragh",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "ta9z",
+          "role": null,
+          "nationality": "UA",
+          "age": 17
+        },
+        {
+          "name": "oNESTLY",
+          "role": null,
+          "nationality": "UA",
+          "age": null
+        },
+        {
+          "name": "sh1Fu",
+          "role": null,
+          "nationality": "DK",
+          "age": 17
+        },
+        {
+          "name": "aZe",
+          "role": null,
+          "nationality": "TM",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:bmz": {
+      "name": "BMZ",
+      "slug": "bmz",
+      "location": "MN",
+      "players": []
+    },
+    "cs2:the-huns-esports": {
+      "name": "The Huns Esports",
+      "slug": "the-huns-esports",
+      "location": "MN",
+      "players": [
+        {
+          "name": "nin9",
+          "role": null,
+          "nationality": "MN",
+          "age": 28
+        },
+        {
+          "name": "sk0R",
+          "role": null,
+          "nationality": "MN",
+          "age": 23
+        },
+        {
+          "name": "Bart4k",
+          "role": null,
+          "nationality": "MN",
+          "age": 21
+        },
+        {
+          "name": "xerolte",
+          "role": null,
+          "nationality": "MN",
+          "age": 22
+        },
+        {
+          "name": "controlez",
+          "role": null,
+          "nationality": "MN",
+          "age": 28
+        }
+      ]
+    },
+    "cs2:haunted-house": {
+      "name": "Haunted House",
+      "slug": "haunted-house",
+      "location": "UZ",
+      "players": [
+        {
+          "name": "shoma",
+          "role": null,
+          "nationality": "UZ",
+          "age": null
+        }
+      ]
+    },
+    "cs2:boring-players": {
+      "name": "Boring Players",
+      "slug": "boring-players",
+      "location": "CN",
+      "players": [
+        {
+          "name": "tutu",
+          "role": null,
+          "nationality": "CN",
+          "age": 24
+        },
+        {
+          "name": "karl",
+          "role": null,
+          "nationality": "CN",
+          "age": 38
+        },
+        {
+          "name": "zdr",
+          "role": null,
+          "nationality": "CN",
+          "age": 19
+        },
+        {
+          "name": "Jun7",
+          "role": null,
+          "nationality": "CN",
+          "age": 18
+        },
+        {
+          "name": "Miszary",
+          "role": null,
+          "nationality": "CN",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:team-arise": {
+      "name": "Team Arise",
+      "slug": "team-arise",
+      "location": "",
+      "players": [
+        {
+          "name": "clouda",
+          "role": null,
+          "nationality": "IN",
+          "age": null
+        },
+        {
+          "name": "reV3nn",
+          "role": null,
+          "nationality": "IN",
+          "age": 26
+        },
+        {
+          "name": "Ember ",
+          "role": null,
+          "nationality": "IN",
+          "age": 27
+        },
+        {
+          "name": "Bhavi",
+          "role": null,
+          "nationality": "IN",
+          "age": 22
+        },
+        {
+          "name": "Benzene",
+          "role": null,
+          "nationality": "IN",
+          "age": 24
+        }
+      ]
+    },
+    "cs2:last-bullut": {
+      "name": "Last Bullet",
+      "slug": "last-bullut",
+      "location": "CN",
+      "players": [
+        {
+          "name": "flying",
+          "role": null,
+          "nationality": "CN",
+          "age": 24
+        },
+        {
+          "name": "B1NGO",
+          "role": null,
+          "nationality": "CN",
+          "age": 26
+        },
+        {
+          "name": "lan",
+          "role": null,
+          "nationality": "CN",
+          "age": 24
+        },
+        {
+          "name": "Roninbaby",
+          "role": null,
+          "nationality": "CN",
+          "age": 22
+        },
+        {
+          "name": "Miami",
+          "role": null,
+          "nationality": "CN",
+          "age": 23
+        },
+        {
+          "name": "BZA",
+          "role": null,
+          "nationality": "CN",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:mouz-nxt": {
+      "name": "MOUZ NXT",
+      "slug": "mouz-nxt",
+      "location": "DE",
+      "players": [
+        {
+          "name": "opdust",
+          "role": null,
+          "nationality": "PT",
+          "age": 19
+        },
+        {
+          "name": "Ay0k",
+          "role": null,
+          "nationality": "LV",
+          "age": 17
+        },
+        {
+          "name": "Joey",
+          "role": null,
+          "nationality": "ES",
+          "age": 19
+        },
+        {
+          "name": "Nikodeon",
+          "role": null,
+          "nationality": "DK",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:aab-bulls": {
+      "name": "AaB Bulls",
+      "slug": "aab-bulls",
+      "location": "DK",
+      "players": [
+        {
+          "name": "Beddy",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "DJdamecykel",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "noike",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "wogib",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        }
+      ]
+    },
+    "cs2:flod": {
+      "name": "FLOD",
+      "slug": "flod",
+      "location": "DK",
+      "players": [
+        {
+          "name": "Frags",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "FEELIN-GOOD",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        }
+      ]
+    },
+    "cs2:enjoy": {
+      "name": "ENJOY",
+      "slug": "enjoy",
+      "location": "RU",
+      "players": []
+    },
+    "cs2:fortress": {
+      "name": "Fortress",
+      "slug": "fortress",
+      "location": "DK",
+      "players": [
+        {
+          "name": "Bukki",
+          "role": null,
+          "nationality": "DK",
+          "age": 30
+        },
+        {
+          "name": "GrEnNiE",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "K1ngShield",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "Brand",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "As_K",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        }
+      ]
+    },
+    "cs2:fnatic-cs-go": {
+      "name": "fnatic",
+      "slug": "fnatic-cs-go",
+      "location": "GB",
+      "players": [
+        {
+          "name": "KRIMZ",
+          "role": null,
+          "nationality": "SE",
+          "age": 32
+        },
+        {
+          "name": "fear",
+          "role": null,
+          "nationality": "UA",
+          "age": 25
+        },
+        {
+          "name": "Jambo",
+          "role": null,
+          "nationality": "UA",
+          "age": 21
+        },
+        {
+          "name": "jackasmo",
+          "role": null,
+          "nationality": "UA",
+          "age": 18
+        },
+        {
+          "name": "Br4tkO",
+          "role": null,
+          "nationality": "UA",
+          "age": null
+        }
+      ]
+    },
+    "cs2:clutchain-female": {
+      "name": "Clutchain Female",
+      "slug": "clutchain-female",
+      "location": "",
+      "players": [
+        {
+          "name": "zAAz",
+          "role": null,
+          "nationality": "SE",
+          "age": 34
+        },
+        {
+          "name": "tory",
+          "role": null,
+          "nationality": "RU",
+          "age": 27
+        },
+        {
+          "name": "twenty3",
+          "role": null,
+          "nationality": "RU",
+          "age": 24
+        },
+        {
+          "name": "vicuu",
+          "role": null,
+          "nationality": "PL",
+          "age": 23
+        },
+        {
+          "name": "Kat",
+          "role": null,
+          "nationality": "SK",
+          "age": 28
+        }
+      ]
+    },
+    "cs2:the-last-resort-cs-go": {
+      "name": "The Last Resort",
+      "slug": "the-last-resort-cs-go",
+      "location": "GB",
+      "players": [
+        {
+          "name": "Girafffe",
+          "role": null,
+          "nationality": "GB",
+          "age": 24
+        },
+        {
+          "name": "arTisT",
+          "role": null,
+          "nationality": "IE",
+          "age": 28
+        },
+        {
+          "name": "Extinct",
+          "role": null,
+          "nationality": "IE",
+          "age": 26
+        },
+        {
+          "name": "Vacancy",
+          "role": null,
+          "nationality": "GB",
+          "age": 22
+        },
+        {
+          "name": "bevve",
+          "role": null,
+          "nationality": "GB",
+          "age": 26
+        }
+      ]
+    },
+    "cs2:genone": {
+      "name": "GenOne",
+      "slug": "genone",
+      "location": "FR",
+      "players": [
+        {
+          "name": "Djoko",
+          "role": null,
+          "nationality": "FR",
+          "age": 29
+        },
+        {
+          "name": "Brooxsy",
+          "role": null,
+          "nationality": "FR",
+          "age": 23
+        },
+        {
+          "name": "Chucky",
+          "role": null,
+          "nationality": "BE",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:usst-esports": {
+      "name": "uust _esports",
+      "slug": "usst-esports",
+      "location": "RU",
+      "players": []
+    },
+    "cs2:rebels-gaming-cs-go": {
+      "name": "Rebels Gaming",
+      "slug": "rebels-gaming-cs-go",
+      "location": "PL",
+      "players": [
+        {
+          "name": "stadodo",
+          "role": null,
+          "nationality": "PT",
+          "age": 29
+        },
+        {
+          "name": "NOPEEJ",
+          "role": null,
+          "nationality": "PT",
+          "age": 24
+        },
+        {
+          "name": "Icarus",
+          "role": null,
+          "nationality": "PT",
+          "age": 23
+        },
+        {
+          "name": "snapy",
+          "role": null,
+          "nationality": "PT",
+          "age": 24
+        },
+        {
+          "name": "TMKj",
+          "role": null,
+          "nationality": "PT",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:against-all-authority": {
+      "name": "against All authority",
+      "slug": "against-all-authority",
+      "location": "FR",
+      "players": [
+        {
+          "name": "Saax",
+          "role": null,
+          "nationality": "FR",
+          "age": 25
+        },
+        {
+          "name": "AdaMmMm",
+          "role": null,
+          "nationality": "FR",
+          "age": 23
+        },
+        {
+          "name": "Tarkky",
+          "role": null,
+          "nationality": "FR",
+          "age": 20
+        },
+        {
+          "name": "AsI0K",
+          "role": null,
+          "nationality": "FR",
+          "age": null
+        },
+        {
+          "name": "SLIE9000",
+          "role": null,
+          "nationality": "FR",
+          "age": 22
+        },
+        {
+          "name": "rain240",
+          "role": null,
+          "nationality": "FR",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:138495": {
+      "name": "Clutchain",
+      "slug": "138495",
+      "location": "FR",
+      "players": [
+        {
+          "name": "ScreaM",
+          "role": null,
+          "nationality": "BE",
+          "age": 31
+        },
+        {
+          "name": "Nivera",
+          "role": null,
+          "nationality": "BE",
+          "age": 24
+        },
+        {
+          "name": "Kyojin",
+          "role": null,
+          "nationality": "FR",
+          "age": 27
+        },
+        {
+          "name": "Python",
+          "role": null,
+          "nationality": "FR",
+          "age": 24
+        },
+        {
+          "name": "SHOGU",
+          "role": null,
+          "nationality": "FR",
+          "age": null
+        }
+      ]
+    },
+    "cs2:inox-division": {
+      "name": "INOX Division",
+      "slug": "inox-division",
+      "location": "",
+      "players": [
+        {
+          "name": "K0s",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "Gooddeph",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "k1slll",
+          "role": null,
+          "nationality": "BY",
+          "age": 23
+        },
+        {
+          "name": "finW",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "FenomeN",
+          "role": null,
+          "nationality": "BY",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:bebop": {
+      "name": "Bebop",
+      "slug": "bebop",
+      "location": "RU",
+      "players": [
+        {
+          "name": "iDISBALANCE",
+          "role": null,
+          "nationality": "RU",
+          "age": 29
+        },
+        {
+          "name": "faydett",
+          "role": null,
+          "nationality": "RU",
+          "age": 27
+        },
+        {
+          "name": " lov1kus",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "Dwushka",
+          "role": null,
+          "nationality": "RU",
+          "age": 21
+        },
+        {
+          "name": "h1kan",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        }
+      ]
+    },
+    "cs2:boyband": {
+      "name": "BoyBand",
+      "slug": "boyband",
+      "location": "FI",
+      "players": [
+        {
+          "name": "Aerial",
+          "role": null,
+          "nationality": "FI",
+          "age": 32
+        },
+        {
+          "name": "sLowi",
+          "role": null,
+          "nationality": "FI",
+          "age": 30
+        },
+        {
+          "name": "Spargo",
+          "role": null,
+          "nationality": "FI",
+          "age": 24
+        },
+        {
+          "name": "Lapra",
+          "role": null,
+          "nationality": "FI",
+          "age": 21
+        },
+        {
+          "name": "Kossu72",
+          "role": null,
+          "nationality": "FI",
+          "age": 26
+        }
+      ]
+    },
+    "cs2:banger-gang": {
+      "name": "Banger Gang",
+      "slug": "banger-gang",
+      "location": "TR",
+      "players": [
+        {
+          "name": "gund1k",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        },
+        {
+          "name": "Jabbawockez",
+          "role": null,
+          "nationality": "TR",
+          "age": 29
+        },
+        {
+          "name": "berkriptepe",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        },
+        {
+          "name": "gAndhi",
+          "role": null,
+          "nationality": "TR",
+          "age": 32
+        },
+        {
+          "name": "Crix0N",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        },
+        {
+          "name": "Rip",
+          "role": null,
+          "nationality": "TR",
+          "age": null
+        }
+      ]
+    },
+    "cs2:zotix": {
+      "name": "ZOTIX",
+      "slug": "zotix",
+      "location": "UA",
+      "players": []
+    },
+    "cs2:roundsgg": {
+      "name": "ROUNDS",
+      "slug": "roundsgg",
+      "location": "FI",
+      "players": [
+        {
+          "name": "p12",
+          "role": null,
+          "nationality": "FI",
+          "age": 33
+        },
+        {
+          "name": "Jelo",
+          "role": null,
+          "nationality": "FI",
+          "age": 26
+        },
+        {
+          "name": "ykis",
+          "role": null,
+          "nationality": "FI",
+          "age": 25
+        },
+        {
+          "name": "Monoxx",
+          "role": null,
+          "nationality": "FI",
+          "age": 22
+        },
+        {
+          "name": "Kollo",
+          "role": null,
+          "nationality": "FI",
+          "age": 24
+        }
+      ]
+    },
+    "cs2:dgk-esports": {
+      "name": "DGK Esports",
+      "slug": "dgk-esports",
+      "location": "PT",
+      "players": []
+    },
+    "cs2:donstu-esports": {
+      "name": "Donstu Esports",
+      "slug": "donstu-esports",
+      "location": "RU",
+      "players": [
+        {
+          "name": "NeoLife",
+          "role": null,
+          "nationality": "RU",
+          "age": 24
+        },
+        {
+          "name": "maQuein",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "Due1yant",
+          "role": null,
+          "nationality": "RU",
+          "age": 25
+        },
+        {
+          "name": "gleb86rus",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "LAKSHERi",
+          "role": null,
+          "nationality": "RU",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:psychoface": {
+      "name": "PsychoFace",
+      "slug": "psychoface",
+      "location": "RU",
+      "players": [
+        {
+          "name": "facecrack",
+          "role": null,
+          "nationality": "RU",
+          "age": 32
+        },
+        {
+          "name": "eightz",
+          "role": null,
+          "nationality": "RU",
+          "age": 24
+        },
+        {
+          "name": "abiraju",
+          "role": null,
+          "nationality": "RU",
+          "age": 23
+        },
+        {
+          "name": "PsychoDoctor",
+          "role": null,
+          "nationality": "RU",
+          "age": 20
+        },
+        {
+          "name": "slaxejezzz",
+          "role": null,
+          "nationality": "RU",
+          "age": 18
+        }
+      ]
+    },
+    "cs2:tincan": {
+      "name": "tincan",
+      "slug": "tincan",
+      "location": "SE",
+      "players": []
+    },
+    "cs2:l-820": {
+      "name": "L.820",
+      "slug": "l-820",
+      "location": "",
+      "players": [
+        {
+          "name": "popechild",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "OJay",
+          "role": null,
+          "nationality": "DK",
+          "age": 21
+        },
+        {
+          "name": "TorNEX",
+          "role": null,
+          "nationality": "DK",
+          "age": 23
+        },
+        {
+          "name": "Kris1chili",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        },
+        {
+          "name": "coachdp",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        }
+      ]
+    },
+    "cs2:glitchtech-esports": {
+      "name": "Glitchtech Esports",
+      "slug": "glitchtech-esports",
+      "location": null,
+      "players": [
+        {
+          "name": "jonyzera",
+          "role": null,
+          "nationality": "IT",
+          "age": 27
+        },
+        {
+          "name": "Pata_Jones",
+          "role": null,
+          "nationality": "IT",
+          "age": 23
+        },
+        {
+          "name": "LTH",
+          "role": null,
+          "nationality": "IT",
+          "age": 24
+        },
+        {
+          "name": "ArcherAce",
+          "role": null,
+          "nationality": "GB",
+          "age": 26
+        },
+        {
+          "name": "JayTheRed",
+          "role": null,
+          "nationality": "GB",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:se7ens-esport": {
+      "name": "SE7ENS Esport",
+      "slug": "se7ens-esport",
+      "location": "PL",
+      "players": [
+        {
+          "name": "SLEVIN",
+          "role": null,
+          "nationality": "PL",
+          "age": null
+        },
+        {
+          "name": "Czajkaaa",
+          "role": null,
+          "nationality": "PL",
+          "age": null
+        },
+        {
+          "name": "Kulfon277",
+          "role": null,
+          "nationality": "PL",
+          "age": null
+        },
+        {
+          "name": "Biegacz",
+          "role": null,
+          "nationality": "PL",
+          "age": null
+        },
+        {
+          "name": "budi",
+          "role": null,
+          "nationality": "PL",
+          "age": null
+        }
+      ]
+    },
+    "cs2:masq": {
+      "name": "MASQ",
+      "slug": "masq",
+      "location": "DK",
+      "players": [
+        {
+          "name": "redeye",
+          "role": null,
+          "nationality": "DK",
+          "age": 24
+        },
+        {
+          "name": "BlocH",
+          "role": null,
+          "nationality": "DK",
+          "age": 22
+        },
+        {
+          "name": "Superflik",
+          "role": null,
+          "nationality": "RS",
+          "age": 22
+        },
+        {
+          "name": "koei",
+          "role": null,
+          "nationality": "DK",
+          "age": 19
+        },
+        {
+          "name": "Z1noz",
+          "role": null,
+          "nationality": "DK",
+          "age": 17
+        }
+      ]
+    },
+    "cs2:rethink": {
+      "name": "ReThink",
+      "slug": "rethink",
+      "location": "SE",
+      "players": [
+        {
+          "name": "zeak",
+          "role": null,
+          "nationality": "SE",
+          "age": 23
+        },
+        {
+          "name": "Rack",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        },
+        {
+          "name": "P1ke",
+          "role": null,
+          "nationality": "SE",
+          "age": 21
+        },
+        {
+          "name": "chucker",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        },
+        {
+          "name": "Macke",
+          "role": null,
+          "nationality": "SE",
+          "age": 21
+        }
+      ]
+    },
+    "cs2:huskies-esport": {
+      "name": "Huskies eSport",
+      "slug": "huskies-esport",
+      "location": "DE",
+      "players": [
+        {
+          "name": "kRYSTAL",
+          "role": null,
+          "nationality": "DE",
+          "age": 32
+        },
+        {
+          "name": "LapeX",
+          "role": null,
+          "nationality": "DE",
+          "age": 26
+        },
+        {
+          "name": "FoG",
+          "role": null,
+          "nationality": "DE",
+          "age": 22
+        },
+        {
+          "name": "Rulz",
+          "role": null,
+          "nationality": "DE",
+          "age": 24
+        },
+        {
+          "name": "BABAPWNY",
+          "role": null,
+          "nationality": "DK",
+          "age": null
+        }
+      ]
+    },
+    "cs2:oldboys": {
+      "name": "OldBoys",
+      "slug": "oldboys",
+      "location": "FR",
+      "players": []
+    },
+    "cs2:evo-novo": {
+      "name": "Evo Novo",
+      "slug": "evo-novo",
+      "location": "DK",
+      "players": []
+    },
+    "cs2:3dmax-academy": {
+      "name": "3DMAX Academy",
+      "slug": "3dmax-academy",
+      "location": "FR",
+      "players": [
+        {
+          "name": "flex0r",
+          "role": null,
+          "nationality": "FR",
+          "age": 37
+        },
+        {
+          "name": "bL4SEZ",
+          "role": null,
+          "nationality": "FR",
+          "age": 20
+        },
+        {
+          "name": "eSx",
+          "role": null,
+          "nationality": "FR",
+          "age": 16
+        },
+        {
+          "name": "Nico",
+          "role": null,
+          "nationality": "FR",
+          "age": 19
+        },
+        {
+          "name": "Ziviio",
+          "role": null,
+          "nationality": "FR",
+          "age": null
+        }
+      ]
+    },
+    "cs2:neverplay": {
+      "name": "NeverPlay",
+      "slug": "neverplay",
+      "location": "PT",
+      "players": [
+        {
+          "name": "Hinagi",
+          "role": null,
+          "nationality": "PT",
+          "age": null
+        },
+        {
+          "name": "sssass",
+          "role": null,
+          "nationality": "PT",
+          "age": null
+        },
+        {
+          "name": "kayzer666",
+          "role": null,
+          "nationality": "PT",
+          "age": null
+        },
+        {
+          "name": "under-",
+          "role": null,
+          "nationality": "PT",
+          "age": null
+        },
+        {
+          "name": "Toshi10",
+          "role": null,
+          "nationality": "PT",
+          "age": null
+        }
+      ]
+    },
+    "cs2:havens": {
+      "name": "HAVENs",
+      "slug": "havens",
+      "location": "LV",
+      "players": [
+        {
+          "name": "proxi",
+          "role": null,
+          "nationality": "LV",
+          "age": 19
+        },
+        {
+          "name": "WIPSKY",
+          "role": null,
+          "nationality": "LV",
+          "age": 20
+        },
+        {
+          "name": "yaankz",
+          "role": null,
+          "nationality": "LV",
+          "age": null
+        },
+        {
+          "name": "v1trage",
+          "role": null,
+          "nationality": "LV",
+          "age": 21
+        },
+        {
+          "name": "wekfjo",
+          "role": null,
+          "nationality": "LV",
+          "age": null
+        }
+      ]
+    },
+    "cs2:oddik": {
+      "name": "ODDIK",
+      "slug": "oddik",
+      "location": "BR",
+      "players": [
+        {
+          "name": "WOOD7",
+          "role": null,
+          "nationality": "BR",
+          "age": 30
+        },
+        {
+          "name": "naitte",
+          "role": null,
+          "nationality": "BR",
+          "age": 28
+        },
+        {
+          "name": "Ksloks",
+          "role": null,
+          "nationality": "BR",
+          "age": 21
+        },
+        {
+          "name": "diozera",
+          "role": null,
+          "nationality": "BR",
+          "age": 18
+        },
+        {
+          "name": "Nardes",
+          "role": null,
+          "nationality": "BR",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:shimmer": {
+      "name": "shimmer",
+      "slug": "shimmer",
+      "location": "US",
+      "players": [
+        {
+          "name": "empathy",
+          "role": null,
+          "nationality": "US",
+          "age": 21
+        },
+        {
+          "name": "Stx",
+          "role": null,
+          "nationality": "US",
+          "age": null
+        },
+        {
+          "name": "Serendipity",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "alicerawr",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "AVA174",
+          "role": null,
+          "nationality": "US",
+          "age": null
+        }
+      ]
+    },
+    "cs2:z7-esports": {
+      "name": "Z7 Esports",
+      "slug": "z7-esports",
+      "location": "SE",
+      "players": [
+        {
+          "name": "Gibsand",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        },
+        {
+          "name": "PornyBig",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        },
+        {
+          "name": "caravaggio",
+          "role": null,
+          "nationality": "SE",
+          "age": 19
+        },
+        {
+          "name": "Valtr1x",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        },
+        {
+          "name": "BestR1flerEu",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        },
+        {
+          "name": "Dobo",
+          "role": null,
+          "nationality": "SE",
+          "age": null
+        }
+      ]
+    },
+    "cs2:girl-kissers-cs-go": {
+      "name": "girl kissers",
+      "slug": "girl-kissers-cs-go",
+      "location": "US",
+      "players": []
+    },
+    "cs2:voca": {
+      "name": "Voca",
+      "slug": "voca",
+      "location": "US",
+      "players": [
+        {
+          "name": "Infinite",
+          "role": null,
+          "nationality": "US",
+          "age": 27
+        },
+        {
+          "name": "junior",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "nosraC",
+          "role": null,
+          "nationality": "US",
+          "age": 26
+        },
+        {
+          "name": "snav",
+          "role": null,
+          "nationality": "US",
+          "age": 25
+        },
+        {
+          "name": "Jeorge",
+          "role": null,
+          "nationality": "US",
+          "age": 23
+        }
+      ]
+    },
+    "cs2:incontrol": {
+      "name": "InControl",
+      "slug": "incontrol",
+      "location": "US",
+      "players": [
+        {
+          "name": "jsfeltner",
+          "role": null,
+          "nationality": "US",
+          "age": 26
+        },
+        {
+          "name": "TyRa",
+          "role": null,
+          "nationality": "US",
+          "age": 22
+        },
+        {
+          "name": "Scorchyy",
+          "role": null,
+          "nationality": "CA",
+          "age": 25
+        },
+        {
+          "name": "ayaneuu",
+          "role": null,
+          "nationality": "US",
+          "age": 22
+        },
+        {
+          "name": "aelor",
+          "role": null,
+          "nationality": "US",
+          "age": 22
+        }
+      ]
+    },
+    "cs2:natus-vincere-junior": {
+      "name": "NAVI Junior",
+      "slug": "natus-vincere-junior",
+      "location": "UA",
+      "players": [
+        {
+          "name": "MahaR",
+          "role": null,
+          "nationality": "CZ",
+          "age": 17
+        },
+        {
+          "name": "FAZERY",
+          "role": null,
+          "nationality": "CZ",
+          "age": 17
+        },
+        {
+          "name": "kodak",
+          "role": null,
+          "nationality": "UA",
+          "age": 17
+        },
+        {
+          "name": "Yoki",
+          "role": null,
+          "nationality": "UA",
+          "age": 16
+        },
+        {
+          "name": "skizzyee",
+          "role": null,
+          "nationality": "MK",
+          "age": null
+        }
+      ]
+    },
+    "cs2:ex-marsborne": {
+      "name": "ex-Marsborne",
+      "slug": "ex-marsborne",
+      "location": "US",
+      "players": []
+    },
+    "cs2:time-waves": {
+      "name": "Time Waves",
+      "slug": "time-waves",
+      "location": "AU",
+      "players": [
+        {
+          "name": "Harbor",
+          "role": null,
+          "nationality": "AU",
+          "age": 36
+        },
+        {
+          "name": "ElephanT",
+          "role": null,
+          "nationality": "AU",
+          "age": 24
+        },
+        {
+          "name": "Kezza",
+          "role": null,
+          "nationality": "AU",
+          "age": null
+        },
+        {
+          "name": "camille",
+          "role": null,
+          "nationality": "AU",
+          "age": null
+        },
+        {
+          "name": "lawlkay",
+          "role": null,
+          "nationality": "AU",
+          "age": null
+        }
+      ]
+    },
+    "cs2:kaleido": {
+      "name": "Kaleido Gaming",
+      "slug": "kaleido",
+      "location": "CN",
+      "players": []
+    },
+    "cs2:vp-future": {
+      "name": "VP.Future",
+      "slug": "vp-future",
+      "location": "RU",
+      "players": [
+        {
+          "name": "Redz1l",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "Rasyko",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "Pokeballx21",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "SQW",
+          "role": null,
+          "nationality": "RU",
+          "age": null
+        },
+        {
+          "name": "Isuzu",
+          "role": null,
+          "nationality": "KG",
+          "age": null
+        }
+      ]
+    },
+    "cs2:ctrl-alt-defeat": {
+      "name": "Ctrl Alt Defeat",
+      "slug": "ctrl-alt-defeat",
+      "location": "GB",
+      "players": [
+        {
+          "name": "BENJYMIN",
+          "role": null,
+          "nationality": "GB",
+          "age": null
+        }
+      ]
+    },
+    "cs2:heroic-academy": {
+      "name": "HEROIC Academy",
+      "slug": "heroic-academy",
+      "location": "NO",
+      "players": [
+        {
+          "name": "Muciek",
+          "role": null,
+          "nationality": "PL",
+          "age": 18
+        },
+        {
+          "name": "st0m4k",
+          "role": null,
+          "nationality": "UA",
+          "age": 18
+        },
+        {
+          "name": "Yoghi",
+          "role": null,
+          "nationality": "RO",
+          "age": 17
+        },
+        {
+          "name": "Hrdina",
+          "role": null,
+          "nationality": "SK",
+          "age": 15
+        },
+        {
+          "name": "HOLY",
+          "role": null,
+          "nationality": "RO",
+          "age": 16
+        }
+      ]
+    }
+  },
+  "players": {},
+  "updated": {
+    "cs2:vp-prodigy-cs-go": "2026-04-27T17:01:48.651Z",
+    "cs2:prestige": "2026-04-27T21:32:13.311Z",
+    "cs2:heroic": "2026-04-25T17:25:46.510Z",
+    "cs2:eternal-premium": "2026-04-27T17:01:59.834Z",
+    "cs2:sashi-academy": "2026-04-27T17:30:29.245Z",
+    "cs2:ex-ruby": "2026-04-25T17:55:51.828Z",
+    "cs2:nebula-in-chaox": "2026-04-25T18:25:03.123Z",
+    "cs2:aab-esport": "2026-04-27T06:32:56.691Z",
+    "cs2:algo": "2026-04-27T21:01:26.723Z",
+    "cs2:l-g": "2026-04-27T13:04:49.402Z",
+    "cs2:big-academy": "2026-04-28T01:01:56.584Z",
+    "cs2:misa-esports-cs-go": "2026-04-25T19:31:42.987Z",
+    "cs2:empire-cs-go": "2026-04-27T21:04:45.197Z",
+    "cs2:partizan-esport": "2026-04-25T20:53:53.473Z",
+    "cs2:big": "2026-04-27T09:13:42.564Z",
+    "cs2:nip": "2026-04-25T20:56:32.518Z",
+    "cs2:33": "2026-04-26T15:15:31.694Z",
+    "cs2:9z": "2026-04-26T17:41:21.143Z",
+    "cs2:vasco-esports-cs-go": "2026-04-25T21:59:11.285Z",
+    "cs2:sparta-cs-go": "2026-04-27T13:07:03.316Z",
+    "cs2:xi-esport": "2026-04-28T01:01:54.923Z",
+    "cs2:lag-gaming": "2026-04-26T00:02:38.900Z",
+    "cs2:kuusamo-gg": "2026-04-26T03:27:04.743Z",
+    "cs2:state": "2026-04-27T21:05:04.474Z",
+    "cs2:wazabi": "2026-04-27T11:33:59.937Z",
+    "cs2:masonic": "2026-04-26T07:52:22.089Z",
+    "cs2:brute": "2026-04-27T21:04:57.565Z",
+    "cs2:rustec": "2026-04-26T15:56:17.778Z",
+    "cs2:ursa-cs-go": "2026-04-27T07:04:48.263Z",
+    "cs2:monte": "2026-04-26T10:24:25.435Z",
+    "cs2:mana-esports": "2026-04-26T11:23:12.798Z",
+    "cs2:the-qube-esports": "2026-04-28T01:06:01.532Z",
+    "cs2:tyloo-cs-go": "2026-04-27T08:01:15.990Z",
+    "cs2:just-swing-50989ff5-c5c2-48bb-bc2c-49e98573129a": "2026-04-27T08:04:45.816Z",
+    "cs2:rare-atom-cs-go": "2026-04-28T01:01:51.385Z",
+    "cs2:alter-ego-cs-go": "2026-04-27T08:06:37.314Z",
+    "cs2:chinggis-warriors": "2026-04-27T08:01:12.521Z",
+    "cs2:spirit-academy": "2026-04-26T18:03:09.385Z",
+    "cs2:sensation-cs-go": "2026-04-27T08:02:34.195Z",
+    "cs2:legion-cs-go": "2026-04-27T09:08:37.863Z",
+    "cs2:ence": "2026-04-27T15:02:09.735Z",
+    "cs2:lilmix": "2026-04-27T03:08:46.846Z",
+    "cs2:kolesie": "2026-04-26T13:32:37.314Z",
+    "cs2:nemiga": "2026-04-27T09:19:10.385Z",
+    "cs2:nuclear-tigres": "2026-04-27T07:02:32.763Z",
+    "cs2:mibr-academy": "2026-04-27T18:04:02.849Z",
+    "cs2:rune-eaters-cs-go": "2026-04-26T14:34:21.409Z",
+    "cs2:oldboys-cs-go": "2026-04-27T13:03:43.495Z",
+    "cs2:imperial-cs-go": "2026-04-27T18:03:42.481Z",
+    "cs2:phantom": "2026-04-27T13:03:38.869Z",
+    "cs2:eternal-fire": "2026-04-26T15:35:09.527Z",
+    "cs2:alliance-cs-go": "2026-04-26T16:16:25.919Z",
+    "cs2:unity-esports-cs-go": "2026-04-27T11:01:19.187Z",
+    "cs2:legacy-48cb0f61-07e7-4b0d-85a0-5f837e29c807": "2026-04-26T17:00:16.352Z",
+    "cs2:quintessencia": "2026-04-26T17:00:18.698Z",
+    "cs2:fake-do-biru": "2026-04-27T18:03:53.189Z",
+    "cs2:largadosypelados": "2026-04-26T17:20:49.349Z",
+    "cs2:game-hunters": "2026-04-27T18:14:55.299Z",
+    "cs2:crashers": "2026-04-26T17:42:26.667Z",
+    "cs2:fluxo-w7m-cs-go": "2026-04-27T18:09:26.358Z",
+    "cs2:yawara-esports": "2026-04-27T18:01:16.615Z",
+    "cs2:keyd-stars-cs-go": "2026-04-27T18:06:33.719Z",
+    "cs2:isurus-gaming-cs-go": "2026-04-27T18:01:11.706Z",
+    "cs2:procyon-gaming": "2026-04-27T18:03:45.545Z",
+    "cs2:bounty-hunters-esports": "2026-04-27T18:04:07.546Z",
+    "cs2:galorys": "2026-04-27T18:03:59.313Z",
+    "cs2:ex-red-canids": "2026-04-27T18:04:07.223Z",
+    "cs2:shinden": "2026-04-27T18:04:45.269Z",
+    "cs2:f5-esports": "2026-04-27T00:03:58.425Z",
+    "cs2:chicken-coop-esports": "2026-04-28T00:32:57.259Z",
+    "cs2:regain": "2026-04-27T20:48:32.229Z",
+    "cs2:boss": "2026-04-27T21:01:41.028Z",
+    "cs2:fisher-college": "2026-04-27T21:01:14.331Z",
+    "cs2:zomblers-cs-go": "2026-04-27T20:50:34.319Z",
+    "cs2:wildcard": "2026-04-27T21:01:21.828Z",
+    "cs2:wanted-goons": "2026-04-27T21:07:08.280Z",
+    "cs2:farmville": "2026-04-26T21:04:08.663Z",
+    "cs2:insane-players": "2026-04-27T21:01:31.255Z",
+    "cs2:team-aether": "2026-04-28T00:04:29.335Z",
+    "cs2:lph-gaming": "2026-04-27T09:10:38.753Z",
+    "cs2:thunder-downunder": "2026-04-27T03:08:55.486Z",
+    "cs2:low-cortisol": "2026-04-28T00:32:53.731Z",
+    "cs2:sangal-alters": "2026-04-27T03:11:10.273Z",
+    "cs2:rooster": "2026-04-27T06:38:29.128Z",
+    "cs2:markandlarry": "2026-04-27T06:39:18.396Z",
+    "cs2:walczaki": "2026-04-27T15:02:07.859Z",
+    "cs2:imperial-academy": "2026-04-27T12:15:45.821Z",
+    "cs2:bmz": "2026-04-28T01:11:10.461Z",
+    "cs2:the-huns-esports": "2026-04-27T08:02:38.039Z",
+    "cs2:haunted-house": "2026-04-27T09:01:06.191Z",
+    "cs2:boring-players": "2026-04-27T09:02:20.751Z",
+    "cs2:team-arise": "2026-04-27T10:33:49.255Z",
+    "cs2:last-bullut": "2026-04-27T10:35:19.111Z",
+    "cs2:mouz-nxt": "2026-04-27T11:01:00.757Z",
+    "cs2:aab-bulls": "2026-04-27T11:35:09.828Z",
+    "cs2:flod": "2026-04-27T12:06:30.538Z",
+    "cs2:enjoy": "2026-04-27T12:06:40.807Z",
+    "cs2:fortress": "2026-04-27T12:08:05.473Z",
+    "cs2:fnatic-cs-go": "2026-04-27T13:01:02.987Z",
+    "cs2:clutchain-female": "2026-04-27T13:01:16.686Z",
+    "cs2:the-last-resort-cs-go": "2026-04-27T13:01:27.456Z",
+    "cs2:genone": "2026-04-27T13:06:39.761Z",
+    "cs2:usst-esports": "2026-04-27T13:06:56.062Z",
+    "cs2:rebels-gaming-cs-go": "2026-04-27T13:34:31.391Z",
+    "cs2:against-all-authority": "2026-04-27T13:34:52.342Z",
+    "cs2:138495": "2026-04-27T15:01:52.803Z",
+    "cs2:inox-division": "2026-04-27T15:02:00.974Z",
+    "cs2:bebop": "2026-04-28T01:11:18.290Z",
+    "cs2:boyband": "2026-04-27T15:07:27.421Z",
+    "cs2:banger-gang": "2026-04-27T16:02:23.848Z",
+    "cs2:zotix": "2026-04-27T16:02:43.926Z",
+    "cs2:roundsgg": "2026-04-27T16:02:56.234Z",
+    "cs2:dgk-esports": "2026-04-27T16:08:10.321Z",
+    "cs2:donstu-esports": "2026-04-27T17:01:52.082Z",
+    "cs2:psychoface": "2026-04-27T17:01:52.343Z",
+    "cs2:tincan": "2026-04-27T17:01:55.644Z",
+    "cs2:l-820": "2026-04-27T17:01:56.489Z",
+    "cs2:glitchtech-esports": "2026-04-27T17:02:00.222Z",
+    "cs2:se7ens-esport": "2026-04-27T17:03:03.719Z",
+    "cs2:masq": "2026-04-27T17:03:12.090Z",
+    "cs2:rethink": "2026-04-28T01:00:37.488Z",
+    "cs2:huskies-esport": "2026-04-27T17:03:14.598Z",
+    "cs2:oldboys": "2026-04-27T17:03:17.480Z",
+    "cs2:evo-novo": "2026-04-27T17:36:17.623Z",
+    "cs2:3dmax-academy": "2026-04-27T17:41:50.390Z",
+    "cs2:neverplay": "2026-04-27T17:47:19.566Z",
+    "cs2:havens": "2026-04-27T18:01:06.767Z",
+    "cs2:oddik": "2026-04-27T18:04:02.423Z",
+    "cs2:shimmer": "2026-04-27T18:06:41.875Z",
+    "cs2:z7-esports": "2026-04-27T18:09:41.196Z",
+    "cs2:girl-kissers-cs-go": "2026-04-27T18:31:14.352Z",
+    "cs2:voca": "2026-04-28T00:32:03.516Z",
+    "cs2:incontrol": "2026-04-27T18:31:37.806Z",
+    "cs2:natus-vincere-junior": "2026-04-27T21:04:52.308Z",
+    "cs2:ex-marsborne": "2026-04-27T21:04:53.517Z",
+    "cs2:time-waves": "2026-04-28T00:38:40.964Z",
+    "cs2:kaleido": "2026-04-28T01:00:27.685Z",
+    "cs2:vp-future": "2026-04-28T01:01:45.390Z",
+    "cs2:ctrl-alt-defeat": "2026-04-28T01:01:59.779Z",
+    "cs2:heroic-academy": "2026-04-28T01:05:56.629Z"
+  }
+}

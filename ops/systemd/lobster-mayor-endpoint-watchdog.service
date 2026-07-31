@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor watchdog: endpoint-watchdog
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/endpoint_watchdog.py
+StandardOutput=append:/root/lobster-memory/_town/alerts/endpoint-watchdog.systemd.log
+StandardError=append:/root/lobster-memory/_town/alerts/endpoint-watchdog.systemd.log
+TimeoutSec=120

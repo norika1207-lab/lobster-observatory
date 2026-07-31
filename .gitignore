@@ -1,0 +1,45 @@
+# Runtime databases and write-ahead logs
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.wal
+*.shm
+
+# Logs / generated files
+*.log
+*.out
+*.err
+*.tmp
+*.bak*
+*.old
+*.orig
+*~
+__pycache__/
+*.pyc
+.pytest_cache/
+.cache/
+
+# Dependencies and virtualenvs
+node_modules/
+venv/
+.venv/
+
+# Secrets
+.env
+*.key
+*secret*
+*token*
+*password*
+*credential*
+
+# Large runtime/public assets tracked by manifest only
+runtime-data/
+data/
+large-assets/
+private/
+apps/battle_arena/static/avatars/
+apps/battle_arena/static/cards/
+apps/battle_arena/static/town/
+apps/battle_arena/static/qwen3b-*/
+apps/battle_arena/static/Frankenstein/

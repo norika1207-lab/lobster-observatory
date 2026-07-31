@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 /root/lobster-mayor/growth_actions.py:*)",
+      "Read(/root/_town/growth/**)",
+      "Read(/root/lobster-authored-queue/**)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(systemctl:*)",
+      "Bash(curl:*)",
+      "WebFetch"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+[Unit]
+Description=Lobster daily detail parameter patrol and safe auto-repair
+After=charenix-dashboard.service
+Wants=charenix-dashboard.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-daily-detail-patrol --lock-key lobster-daily-detail-patrol --min-interval-sec 72000 --timeout-sec 420 -- /usr/local/bin/lobster-daily-detail-patrol
+WorkingDirectory=/opt/battle_arena/app
+CPUQuota=35%
+MemoryMax=500M
+TasksMax=80
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6

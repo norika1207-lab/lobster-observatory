@@ -1,0 +1,26 @@
+[Unit]
+Description=Charenix Lobster Dashboard API (port 8004)
+StartLimitIntervalSec=90
+StartLimitBurst=4
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/battle_arena
+EnvironmentFile=/opt/battle_arena/.env
+ExecStartPre=/bin/sh -c '/usr/bin/fuser -k -TERM -n tcp 8004 2>/dev/null || true; sleep 1; /usr/bin/fuser -k -KILL -n tcp 8004 2>/dev/null || true'
+ExecStart=/opt/battle_arena/venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8004 --log-level info
+Restart=always
+RestartSec=5
+KillMode=mixed
+TimeoutStopSec=60
+CPUQuota=65%
+MemoryMax=900M
+TasksMax=160
+Nice=5
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+
+[Install]
+WantedBy=multi-user.target

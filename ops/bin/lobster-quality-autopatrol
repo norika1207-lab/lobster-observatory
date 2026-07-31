@@ -1,0 +1,547 @@
+#!/usr/bin/env python3
+import hashlib
+import json
+import re
+import sqlite3
+import subprocess
+import sys
+import time
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+DB = "/opt/battle_arena/app/battle_arena.db"
+HANDOFF = Path("/root/LOBSTER_HANDOFF.md")
+README = Path("/root/LOBSTER_README.md")
+STATIC_DASHBOARD = Path("/opt/battle_arena/static/lobster-dynamic-dashboard-production.html")
+STATIC_DASHBOARD_LOBSTER_RESTORE = Path("/opt/battle_arena/static/lobster-dynamic-dashboard-production.html.bak_human_identity_20260523024150")
+NGINX_SITE = Path("/etc/nginx/sites-enabled/charenix.conf")
+NGINX_BACKUP_DIR = Path("/root/nginx-config-backups")
+
+ENDPOINTS = [
+    "/",
+    "/api/lobster-dashboard-sandbox-db",
+    "/api/lobster-mentorships",
+    "/api/lobster-social-intelligence-dashboard",
+    "/api/lobster-conversation-interactions-dashboard",
+    "/api/lobster-prebet-compliance",
+    "/api/lobster-detail-sandbox-db/stonefang",
+    "/lobster/chat-history?name=blazepaw&limit=1",
+]
+
+SERVICES = {
+    # 2026-07-08: alert-only for charenix-dashboard. Endpoint/DB stalls were
+    # being amplified into repeated restart loops by watchdog-style repair jobs.
+    # systemd already has Restart=always for real process crashes.
+    "charenix-dashboard.service": {"restart_if_inactive": False, "restart_mem_bytes": None, "auto_restart": False},
+    "lobster-agents.service": {"restart_if_inactive": True, "restart_mem_bytes": 1050 * 1024 * 1024},
+    # Do not auto-revive lobster-social-force-pipeline.timer here. It writes the
+    # main battle_arena SQLite DB and can starve the single charenix worker.
+    "lobster-betting-affect.timer": {"restart_if_inactive": True, "restart_mem_bytes": None},
+}
+
+INTERACTION_GAP = ("one_on_one", "chat_history_messages")
+KNOWN_SOURCE_ABSENT_GAPS = {
+    ("clawtrix", "one_on_one", "chat_history_messages"),
+    ("norika_oda", "moltbook", "posts"),
+    ("norika_oda", "moltbook", "events"),
+}
+REPAIR_COOLDOWN_SEC = 1800
+RECENT_WINDOW_SEC = 7200
+
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def run(cmd, timeout=30):
+    return subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
+
+
+def ensure_tables(con):
+    con.execute(
+        """
+        CREATE TABLE IF NOT EXISTS lobster_system_alerts(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          alert_type TEXT NOT NULL,
+          severity TEXT NOT NULL,
+          summary TEXT NOT NULL,
+          raw_json TEXT NOT NULL DEFAULT '{}',
+          created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        )
+        """
+    )
+    con.execute(
+        """
+        CREATE TABLE IF NOT EXISTS lounge_messages_quality_autopatrol_backup(
+          backup_at TEXT NOT NULL,
+          reason TEXT NOT NULL,
+          id INTEGER,
+          name TEXT,
+          text TEXT,
+          time TEXT,
+          elem TEXT,
+          result TEXT,
+          opponent TEXT,
+          hint TEXT,
+          reply_to TEXT,
+          sys INTEGER,
+          created_at INTEGER,
+          channel TEXT
+        )
+        """
+    )
+    con.execute(
+        """
+        CREATE TABLE IF NOT EXISTS lobster_system_state(
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL,
+          updated_at TEXT DEFAULT (datetime('now'))
+        )
+        """
+    )
+    con.commit()
+
+
+def write_alert(con, severity, summary, raw):
+    con.execute(
+        "INSERT INTO lobster_system_alerts(alert_type,severity,summary,raw_json) VALUES(?,?,?,?)",
+        ("lobster_quality_autopatrol", severity, summary, json.dumps(raw, ensure_ascii=False, sort_keys=True)),
+    )
+    con.commit()
+
+
+def state_get(con, key):
+    row = con.execute("SELECT value FROM lobster_system_state WHERE key=?", (key,)).fetchone()
+    return row[0] if row else None
+
+
+def state_set(con, key, value):
+    con.execute(
+        """INSERT INTO lobster_system_state(key,value,updated_at) VALUES(?,?,datetime('now'))
+           ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=datetime('now')""",
+        (key, value),
+    )
+    con.commit()
+
+
+def read_required_docs():
+    docs = {}
+    missing = []
+    for path in (HANDOFF, README):
+        try:
+            data = path.read_bytes()
+        except FileNotFoundError:
+            missing.append(str(path))
+            continue
+        stat = path.stat()
+        docs[str(path)] = {
+            "bytes": len(data),
+            "sha256": hashlib.sha256(data).hexdigest(),
+            "mtime": int(stat.st_mtime),
+            "tail_preview": data[-600:].decode("utf-8", "replace"),
+        }
+    return docs, missing
+
+
+def systemctl_show(unit):
+    proc = run(["systemctl", "show", unit, "-p", "ActiveState", "-p", "MemoryCurrent"], timeout=8)
+    out = {}
+    for line in proc.stdout.splitlines():
+        if "=" in line:
+            k, v = line.split("=", 1)
+            out[k] = v
+    return out, proc.returncode, proc.stderr.strip()
+
+
+def check_services():
+    results = {}
+    actions = []
+    for unit, cfg in SERVICES.items():
+        props, code, err = systemctl_show(unit)
+        active = props.get("ActiveState")
+        mem_raw = props.get("MemoryCurrent") or "0"
+        try:
+            mem = int(mem_raw)
+        except ValueError:
+            mem = 0
+        restarted = False
+        reason = None
+        if cfg.get("restart_if_inactive") and active not in ("active", "activating"):
+            reason = f"{unit} inactive ({active})"
+        elif cfg.get("restart_mem_bytes") and mem >= int(cfg["restart_mem_bytes"]):
+            reason = f"{unit} memory {mem} above threshold"
+        if reason:
+            if cfg.get("auto_restart", True):
+                restart = run(["systemctl", "restart", unit], timeout=45)
+                restarted = restart.returncode == 0
+                actions.append({"action": "restart_service", "unit": unit, "reason": reason, "ok": restarted, "stderr": restart.stderr.strip()[-500:]})
+            else:
+                actions.append({"action": "alert_only", "unit": unit, "reason": reason, "ok": False, "note": "auto-restart disabled"})
+        results[unit] = {"active": active, "memory_bytes": mem, "show_code": code, "show_error": err, "restarted": restarted}
+    return results, actions
+
+
+def fetch_endpoint(path):
+    url = "http://127.0.0.1:8004" + path
+    started = time.monotonic()
+    try:
+        with urllib.request.urlopen(url, timeout=25) as res:
+            body = res.read(256)
+            return {"path": path, "status": res.status, "ms": int((time.monotonic() - started) * 1000), "sample_bytes": len(body)}
+    except Exception as exc:
+        return {"path": path, "status": 0, "ms": int((time.monotonic() - started) * 1000), "error": str(exc)}
+
+
+def check_endpoints():
+    results = [fetch_endpoint(p) for p in ENDPOINTS]
+    actions = []
+    if any(r.get("status") != 200 for r in results):
+        actions.append({
+            "action": "alert_only",
+            "unit": "charenix-dashboard.service",
+            "reason": "endpoint_health_failed",
+            "ok": False,
+            "note": "auto-restart disabled; endpoint stalls are usually DB-lock/backlog, not process death",
+        })
+    return results, actions
+
+
+def check_one_on_one_route():
+    result = {"static_ok": False, "nginx_ok": False, "ok": False}
+    actions = []
+    epoch = int(time.time())
+
+    try:
+        static_text = STATIC_DASHBOARD.read_text(encoding="utf-8")
+        if "const CHAT_BASE = '/lobster-lounge';" in static_text:
+            backup = STATIC_DASHBOARD.with_name(f"{STATIC_DASHBOARD.name}.bak_autopatrol_{epoch}")
+            backup.write_text(static_text, encoding="utf-8")
+            static_text = static_text.replace("const CHAT_BASE = '/lobster-lounge';", "const CHAT_BASE = '/lobster';")
+            STATIC_DASHBOARD.write_text(static_text, encoding="utf-8")
+            actions.append({"action": "repair_one_on_one_static_chat_base", "backup": str(backup), "ok": True})
+        result["static_ok"] = "const CHAT_BASE = '/lobster';" in static_text
+    except Exception as exc:
+        result["static_error"] = str(exc)
+
+    try:
+        nginx_text = NGINX_SITE.read_text(encoding="utf-8")
+        nginx_changed = False
+        exact_chat = r"location\s*=\s*/lobster-lounge/chat\s*\{.*?\n\s*\}"
+        prefix_chat = r"location\s+\^~\s+/lobster-lounge/chat/\s*\{.*?\n\s*\}"
+
+        def repair_chat_block(match):
+            nonlocal nginx_changed
+            block = match.group(0)
+            if "proxy_pass http://127.0.0.1:8021;" not in block:
+                return block
+            nginx_changed = True
+            return block.replace("proxy_pass http://127.0.0.1:8021;", "proxy_pass http://127.0.0.1:8004/lobster/chat;")
+
+        repaired = re.sub(exact_chat, repair_chat_block, nginx_text, count=1, flags=re.S)
+        repaired = re.sub(prefix_chat, repair_chat_block, repaired, count=1, flags=re.S)
+        if nginx_changed:
+            NGINX_BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+            backup = NGINX_BACKUP_DIR / f"{NGINX_SITE.name}.bak_autopatrol_{epoch}"
+            backup.write_text(nginx_text, encoding="utf-8")
+            nginx_text = repaired
+            NGINX_SITE.write_text(repaired, encoding="utf-8")
+            actions.append({"action": "repair_one_on_one_nginx_proxy", "backup": str(backup), "ok": True})
+
+        exact_match = re.search(exact_chat, nginx_text, flags=re.S)
+        prefix_match = re.search(prefix_chat, nginx_text, flags=re.S)
+        exact_ok = bool(exact_match and "proxy_pass http://127.0.0.1:8004/lobster/chat;" in exact_match.group(0))
+        prefix_ok = bool((not prefix_match) or "proxy_pass http://127.0.0.1:8004/lobster/chat;" in prefix_match.group(0))
+        result["nginx_ok"] = exact_ok and prefix_ok
+        if nginx_changed:
+            test = run(["nginx", "-t"], timeout=15)
+            reload_ok = False
+            if test.returncode == 0:
+                reload = run(["systemctl", "reload", "nginx"], timeout=20)
+                reload_ok = reload.returncode == 0
+                actions.append({"action": "reload_nginx_after_one_on_one_route_repair", "ok": reload_ok, "stderr": reload.stderr.strip()[-500:]})
+            else:
+                actions.append({"action": "nginx_test_after_one_on_one_route_repair", "ok": False, "stderr": test.stderr.strip()[-500:]})
+                result["nginx_ok"] = False
+    except Exception as exc:
+        result["nginx_error"] = str(exc)
+
+    result["ok"] = bool(result["static_ok"] and result["nginx_ok"])
+    return result, actions
+
+
+def check_dashboard_identity():
+    result = {"ok": False, "restored": False}
+    actions = []
+    epoch = int(time.time())
+    try:
+        static_text = STATIC_DASHBOARD.read_text(encoding="utf-8")
+        bad_markers = (
+            "<title>Human Growth Observatory</title>",
+            '<div class="t-title">Human Growth Observatory</div>',
+            "Human Command Center",
+        )
+        needs_restore = any(marker in static_text for marker in bad_markers)
+        if needs_restore and STATIC_DASHBOARD_LOBSTER_RESTORE.exists():
+            backup = STATIC_DASHBOARD.with_name(f"{STATIC_DASHBOARD.name}.bak_autopatrol_dashboard_identity_{epoch}")
+            backup.write_text(static_text, encoding="utf-8")
+            restore_text = STATIC_DASHBOARD_LOBSTER_RESTORE.read_text(encoding="utf-8")
+            STATIC_DASHBOARD.write_text(restore_text, encoding="utf-8")
+            static_text = restore_text
+            result["restored"] = True
+            actions.append({"action": "restore_lobster_dashboard_identity", "backup": str(backup), "source": str(STATIC_DASHBOARD_LOBSTER_RESTORE), "ok": True})
+        result["ok"] = (
+            "<title>🦞 Lobster Growth Observatory</title>" in static_text
+            and "Lobster Command Center" in static_text
+            and not any(marker in static_text for marker in bad_markers)
+        )
+    except Exception as exc:
+        result["error"] = str(exc)
+    return result, actions
+
+
+def normalize_skip_text(name):
+    variants = [
+        "I am pausing this bet because the current evidence does not connect odds, recent form, and downside clearly enough.",
+        "I am holding the stake back until settlement history and event signals point in the same direction.",
+        "I am not entering here; the risk evidence is still thinner than the price signal.",
+        "I need one more concrete result signal before this becomes a responsible bet.",
+    ]
+    idx = sum(ord(c) for c in (name or "")) % len(variants)
+    return (
+        f"{name or 'lobster'}：我先暫停下注；目前賠率、近期狀態和可能損失還沒有互相驗證到可以負責任進場。\n"
+        f"EN: {variants[idx]}"
+    )
+
+
+def clean_dialogue_text(name, channel, text):
+    original = text or ""
+    out = original
+    out = out.replace("我的反例壓力", "我正在找會推翻它的條件")
+    out = out.replace("哲學深度", "前提檢查")
+    out = out.replace("辯論參數", "存在思考")
+    out = out.replace("美學準備度", "判斷準備")
+    out = re.sub(r"I am turning .*?claim into a debate test\.?", "I am testing what evidence would make this claim change.", out, flags=re.I)
+    out = re.sub(r"ontology note becomes debate parameter\.?", "I am checking the premise before accepting it.", out, flags=re.I)
+    if any(p in out for p in ("沒有找到清晰的 edge", "條件不足，跳過", "不夠穩，跳過")):
+        out = normalize_skip_text(name)
+    wrong_channel = (channel or "") not in ("Raid Boss", "Raid戰術室", "Tiamat", "tiamat")
+    if wrong_channel and any(p in out for p in ("Tiamat", "Raid", "手牌", "出牌", "元素")):
+        out = out.replace("Tiamat", "這個壓力問題")
+        out = out.replace("Raid", "實驗場")
+        out = out.replace("手牌", "選擇依據")
+        out = out.replace("出牌", "做出選擇")
+        out = out.replace("元素", "條件")
+    return out if out != original else original
+
+
+def clean_recent_lounge(con):
+    now_s = int(time.time())
+    rows = con.execute(
+        """
+        SELECT * FROM lounge_messages
+        WHERE created_at >= ?
+          AND (
+            text LIKE '%我的反例壓力%' OR text LIKE '%哲學深度%' OR text LIKE '%辯論參數%'
+            OR text LIKE '%I am turning%claim into a debate test%'
+            OR text LIKE '%ontology note becomes debate parameter%'
+            OR text LIKE '%沒有找到清晰的 edge%' OR text LIKE '%條件不足，跳過%' OR text LIKE '%不夠穩，跳過%'
+            OR ((coalesce(channel,'') NOT IN ('Raid Boss','Raid戰術室','Tiamat','tiamat'))
+                AND (text LIKE '%Tiamat%' OR text LIKE '%Raid%' OR text LIKE '%手牌%' OR text LIKE '%出牌%' OR text LIKE '%元素%'))
+          )
+        ORDER BY id
+        """,
+        (now_s - RECENT_WINDOW_SEC,),
+    ).fetchall()
+    changed = 0
+    for row in rows:
+        new_text = clean_dialogue_text(row["name"], row["channel"], row["text"])
+        if new_text == row["text"]:
+            continue
+        con.execute(
+            """
+            INSERT INTO lounge_messages_quality_autopatrol_backup
+            (backup_at,reason,id,name,text,time,elem,result,opponent,hint,reply_to,sys,created_at,channel)
+            VALUES(datetime('now'),?,?,?,?,?,?,?,?,?,?,?,?,?)
+            """,
+            (
+                "recent_dialogue_quality_cleanup",
+                row["id"],
+                row["name"],
+                row["text"],
+                row["time"],
+                row["elem"],
+                row["result"],
+                row["opponent"],
+                row["hint"],
+                row["reply_to"],
+                row["sys"],
+                row["created_at"],
+                row["channel"],
+            ),
+        )
+        con.execute("UPDATE lounge_messages SET text=? WHERE id=?", (new_text, row["id"]))
+        changed += 1
+    con.commit()
+    return {"scanned": len(rows), "updated": changed}
+
+
+def dialogue_counts(con, window_sec=3600):
+    now_s = int(time.time())
+    params = (now_s - window_sec,)
+    return {
+        "ontology_param": con.execute(
+            """SELECT COUNT(*) FROM lounge_messages WHERE created_at>=?
+               AND (text LIKE '%我的反例壓力%' OR text LIKE '%哲學深度%' OR text LIKE '%I am turning%claim into a debate test%')""",
+            params,
+        ).fetchone()[0],
+        "skip_template": con.execute(
+            """SELECT COUNT(*) FROM lounge_messages WHERE created_at>=?
+               AND (text LIKE '%沒有找到清晰的 edge%' OR text LIKE '%條件不足，跳過%' OR text LIKE '%不夠穩，跳過%')""",
+            params,
+        ).fetchone()[0],
+        "wrong_channel_raid_terms": con.execute(
+            """SELECT COUNT(*) FROM lounge_messages WHERE created_at>=?
+               AND coalesce(channel,'') NOT IN ('Raid Boss','Raid戰術室','Tiamat','tiamat')
+               AND (text LIKE '%Tiamat%' OR text LIKE '%Raid%' OR text LIKE '%手牌%' OR text LIKE '%出牌%' OR text LIKE '%元素%')""",
+            params,
+        ).fetchone()[0],
+    }
+
+
+def latest_detail_failures(con):
+    checked = con.execute("SELECT max(checked_at) FROM lobster_detail_parameter_audit").fetchone()[0]
+    if not checked:
+        return []
+    rows = con.execute(
+        """SELECT persona,page_key,param_key,source,metric_json
+           FROM lobster_detail_parameter_audit
+           WHERE checked_at=? AND ok=0
+           ORDER BY persona,page_key,param_key""",
+        (checked,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def only_real_interaction_gaps(failures):
+    return bool(failures) and all((f.get("page_key"), f.get("param_key")) == INTERACTION_GAP for f in failures)
+
+
+def only_known_source_absent_gaps(failures):
+    return bool(failures) and all(
+        (f.get("persona"), f.get("page_key"), f.get("param_key")) in KNOWN_SOURCE_ABSENT_GAPS
+        for f in failures
+    )
+
+
+def run_detail_patrol_and_repair(con):
+    patrol = run(["/usr/local/bin/lobster-detail-parameter-patrol"], timeout=120)
+    failures = latest_detail_failures(con)
+    actions = [{"action": "detail_parameter_patrol", "exit_code": patrol.returncode, "stdout_tail": patrol.stdout[-1200:], "stderr_tail": patrol.stderr[-800:]}]
+    if failures and not (only_real_interaction_gaps(failures) or only_known_source_absent_gaps(failures)):
+        last = state_get(con, "lobster_quality_autopatrol_last_detail_repair_epoch")
+        try:
+            last_i = int(last or "0")
+        except ValueError:
+            last_i = 0
+        if int(time.time()) - last_i >= REPAIR_COOLDOWN_SEC:
+            repair = run(["/usr/local/bin/lobster-daily-detail-patrol"], timeout=520)
+            state_set(con, "lobster_quality_autopatrol_last_detail_repair_epoch", str(int(time.time())))
+            actions.append({"action": "daily_detail_repair", "exit_code": repair.returncode, "stdout_tail": repair.stdout[-1600:], "stderr_tail": repair.stderr[-800:]})
+            failures = latest_detail_failures(con)
+        else:
+            actions.append({"action": "daily_detail_repair_skipped", "reason": "cooldown"})
+    return failures, actions
+
+
+def core_counts(con):
+    now_s = int(time.time())
+    out = {}
+    out["active_mentorships"] = con.execute("SELECT COUNT(*) FROM lobster_mentorships WHERE status='active'").fetchone()[0]
+    out["snapshots"] = con.execute("SELECT COUNT(*) FROM lobster_agent_memory_snapshots").fetchone()[0]
+    out["settlements"] = con.execute("SELECT COUNT(*) FROM lobster_bet_decision_settlements").fetchone()[0]
+    out["lounge_1h"] = con.execute("SELECT COUNT(*) FROM lounge_messages WHERE created_at>=?", (now_s - 3600,)).fetchone()[0]
+    out["interactions_1h"] = con.execute("SELECT COUNT(*) FROM lobster_conversation_interactions WHERE source_created_at>=?", (now_s - 3600,)).fetchone()[0]
+    out["uptake_1h"] = con.execute("SELECT COUNT(*) FROM lobster_message_uptake_signals WHERE datetime(created_at)>=datetime('now','-1 hour')").fetchone()[0]
+    out["prebet_1h"] = con.execute("SELECT COUNT(*) FROM lobster_pre_bet_research WHERE datetime(created_at)>=datetime('now','-1 hour')").fetchone()[0]
+    out["betting_affect_1h"] = con.execute("SELECT COUNT(*) FROM lobster_betting_affect_signals WHERE datetime(created_at)>=datetime('now','-1 hour')").fetchone()[0]
+    return out
+
+
+def configure_sqlite(con):
+    con.execute("PRAGMA journal_mode=WAL")
+    con.execute("PRAGMA busy_timeout=60000")
+    con.execute("PRAGMA synchronous=NORMAL")
+
+
+def main():
+    started = time.monotonic()
+    docs, missing_docs = read_required_docs()
+    severity = "info"
+    summary = "quality autopatrol ok"
+    raw = {"started_at": utc_now(), "docs_read": docs, "missing_docs": missing_docs, "actions": []}
+
+    with sqlite3.connect(DB, timeout=60) as con:
+        configure_sqlite(con)
+        con.row_factory = sqlite3.Row
+        ensure_tables(con)
+        if missing_docs:
+            severity = "critical"
+            summary = "required lobster docs missing"
+        service_results, service_actions = check_services()
+        raw["services"] = service_results
+        raw["actions"].extend(service_actions)
+
+        endpoint_results, endpoint_actions = check_endpoints()
+        raw["endpoints"] = endpoint_results
+        raw["actions"].extend(endpoint_actions)
+
+        one_on_one_route, one_on_one_actions = check_one_on_one_route()
+        raw["one_on_one_route"] = one_on_one_route
+        raw["actions"].extend(one_on_one_actions)
+
+        dashboard_identity, dashboard_identity_actions = check_dashboard_identity()
+        raw["dashboard_identity"] = dashboard_identity
+        raw["actions"].extend(dashboard_identity_actions)
+
+        before_counts = dialogue_counts(con)
+        cleanup = clean_recent_lounge(con)
+        after_counts = dialogue_counts(con)
+        raw["dialogue_counts_before"] = before_counts
+        raw["dialogue_cleanup"] = cleanup
+        raw["dialogue_counts_after"] = after_counts
+
+        failures, detail_actions = run_detail_patrol_and_repair(con)
+        raw["detail_failures"] = failures
+        raw["actions"].extend(detail_actions)
+        raw["core_counts"] = core_counts(con)
+
+        bad_endpoints = [r for r in raw["endpoints"] if r.get("status") != 200]
+        bad_one_on_one_route = not raw["one_on_one_route"].get("ok")
+        bad_dashboard_identity = not raw["dashboard_identity"].get("ok")
+        bad_dialogue = sum(after_counts.values())
+        known_source_absent_failures = failures and only_known_source_absent_gaps(failures)
+        non_interaction_failures = failures and not (only_real_interaction_gaps(failures) or known_source_absent_failures)
+        if missing_docs or bad_endpoints or bad_one_on_one_route or bad_dashboard_identity or bad_dialogue or non_interaction_failures:
+            severity = "critical"
+            summary = "quality autopatrol found unresolved failures"
+        elif known_source_absent_failures:
+            severity = "warning"
+            summary = "quality autopatrol ok; only known source-absent detail gaps remain"
+        elif failures and only_real_interaction_gaps(failures):
+            severity = "warning"
+            summary = "quality autopatrol ok; only real one-on-one gaps remain"
+        elif cleanup["updated"] or raw["actions"]:
+            severity = "warning"
+            summary = "quality autopatrol repaired issues"
+
+        raw["finished_at"] = utc_now()
+        raw["duration_sec"] = round(time.monotonic() - started, 2)
+        write_alert(con, severity, summary, raw)
+
+    print(json.dumps({"status": severity, "summary": summary, "duration_sec": raw["duration_sec"], "cleanup": cleanup, "detail_failures": len(failures)}, ensure_ascii=False))
+    return 0 if severity in ("info", "warning") else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

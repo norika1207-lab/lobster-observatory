@@ -1,0 +1,420 @@
+#!/usr/bin/env python3
+import argparse
+import hashlib
+import json
+import re
+import sqlite3
+import time
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+
+DB = "/opt/battle_arena/app/battle_arena.db"
+RUN_PREFIX = "template_watchdog"
+
+BANNED_FRAGMENTS = [
+    "如果大家都同意先防資料污染",
+    "先定義事故成本",
+    "我會先畫邊界圖",
+    "先別急著選幻覺或延遲",
+    "這句如果聽起來太順",
+    "我先定位層級",
+    "我想看它背後的週期",
+    "資料信任鏈",
+    "模型輸出責任",
+    "fallback 條件",
+    "先列能執行的檢查點",
+    "先把代價分格",
+    "沒有成本表，我不下結論",
+]
+
+TEMPLATE_META = re.compile(
+    r"(模板|應聲蟲|回音|反模板|蒸餾|hook|本地腦|硬規則|not a replay|parrot|template)",
+    re.I,
+)
+
+ASCII_HEADLINE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 ,.'’:“”\"!?$%&()/+\\-]{28,}")
+
+
+def utc_now():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def normalize(text):
+    text = re.sub(r"<[^>]+>", "", text or "")
+    text = re.sub(r"https?://\S+", "{url}", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def strip_prefix_noise(text):
+    text = normalize(text)
+    text = re.sub(r"^R\d+\s*[｜|]\s*", "", text)
+    text = re.sub(r"^@[A-Za-z0-9_]+\s*", "", text)
+    return text
+
+
+def opening(text):
+    text = strip_prefix_noise(text)
+    m = ASCII_HEADLINE.match(text)
+    if m:
+        return m.group(0).strip()[:120]
+    parts = re.split(r"(?<=[。！？；!?])", text, maxsplit=1)
+    first = (parts[0] if parts else text).strip()
+    return first[:140]
+
+
+def skeleton(text):
+    text = strip_prefix_noise(text)
+    text = re.sub(r"@[A-Za-z0-9_]+", "@{name}", text)
+    text = re.sub(r"\b[A-Z][A-Za-z0-9_\\-]{2,}\b", "{entity}", text)
+    text = re.sub(r"\d+(?:\.\d+)?%?", "{num}", text)
+    text = re.sub(r"「[^」]{1,80}」", "「{quote}」", text)
+    text = re.sub(r"『[^』]{1,80}』", "『{quote}』", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:260]
+
+
+def char_ngrams(text, n=3):
+    chars = re.sub(r"\s+", "", text)
+    if len(chars) < n:
+        return set()
+    return {chars[i : i + n] for i in range(len(chars) - n + 1)}
+
+
+def similarity(a, b):
+    aa = char_ngrams(a)
+    bb = char_ngrams(b)
+    if not aa or not bb:
+        return 0.0
+    return len(aa & bb) / max(1, len(aa | bb))
+
+
+def reason_hash(source_id, reason):
+    return hashlib.sha256(f"{source_id}|{reason}".encode("utf-8")).hexdigest()[:12]
+
+
+def ensure_schema(con):
+    con.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS lobster_template_quarantine (
+          run_id TEXT NOT NULL,
+          source_table TEXT NOT NULL,
+          source_id INTEGER NOT NULL,
+          persona TEXT,
+          channel TEXT,
+          text TEXT,
+          raw_json TEXT,
+          quarantined_at TEXT NOT NULL DEFAULT (datetime('now')),
+          PRIMARY KEY(run_id, source_table, source_id)
+        );
+        CREATE TABLE IF NOT EXISTS lobster_template_watchdog_state (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL,
+          updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+        CREATE TABLE IF NOT EXISTS lobster_template_watchdog_runs (
+          run_id TEXT PRIMARY KEY,
+          scan_since INTEGER NOT NULL,
+          max_seen_id INTEGER NOT NULL,
+          scanned INTEGER NOT NULL,
+          quarantined INTEGER NOT NULL,
+          deleted INTEGER NOT NULL,
+          soft_flags INTEGER NOT NULL,
+          raw_json TEXT NOT NULL DEFAULT '{}',
+          created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+        CREATE TABLE IF NOT EXISTS lobster_system_alerts (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          alert_type TEXT NOT NULL,
+          severity TEXT NOT NULL,
+          summary TEXT NOT NULL,
+          raw_json TEXT NOT NULL DEFAULT '{}',
+          created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+        """
+    )
+
+
+def state_int(con, key, default_value):
+    row = con.execute(
+        "SELECT value FROM lobster_template_watchdog_state WHERE key=?", (key,)
+    ).fetchone()
+    if not row:
+        return default_value
+    try:
+        return int(row["value"])
+    except Exception:
+        return default_value
+
+
+def set_state(con, key, value):
+    con.execute(
+        """
+        INSERT INTO lobster_template_watchdog_state(key,value,updated_at)
+        VALUES(?,?,datetime('now'))
+        ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=datetime('now')
+        """,
+        (key, str(value)),
+    )
+
+
+def detect(rows, protect_latest=0):
+    rows_by_id = {r["id"]: r for r in rows}
+    norm = {r["id"]: normalize(r["text"]) for r in rows}
+    openers = {r["id"]: opening(r["text"]) for r in rows}
+    skels = {r["id"]: skeleton(r["text"]) for r in rows}
+    ids_desc = sorted(rows_by_id, reverse=True)
+    protected = set(ids_desc[:protect_latest])
+
+    text_counts = Counter(v for v in norm.values() if len(v) >= 16)
+    opener_people = defaultdict(set)
+    opener_ids = defaultdict(list)
+    skel_people = defaultdict(set)
+    skel_ids = defaultdict(list)
+    for r in rows:
+        op = openers[r["id"]]
+        sk = skels[r["id"]]
+        if len(op) >= 18:
+            opener_people[op].add(r["name"] or "")
+            opener_ids[op].append(r["id"])
+        if len(sk) >= 26:
+            skel_people[sk].add(r["name"] or "")
+            skel_ids[sk].append(r["id"])
+
+    flags = {}
+    for r in rows:
+        rid = r["id"]
+        if rid in protected:
+            continue
+        text = norm[rid]
+        reasons = []
+        severity = "soft"
+        delete = False
+
+        banned = [frag for frag in BANNED_FRAGMENTS if frag in text]
+        if banned:
+            reasons.append({"rule": "banned_fragment", "fragments": banned[:4]})
+            severity = "high"
+            delete = True
+
+        if TEMPLATE_META.search(text):
+            reasons.append({"rule": "visible_template_meta"})
+            severity = "high"
+            delete = True
+
+        if text_counts[text] >= 2:
+            reasons.append({"rule": "exact_duplicate", "count": text_counts[text]})
+            severity = "high"
+            delete = True
+
+        op = openers[rid]
+        if len(op) >= 14 and len(opener_ids[op]) >= 2:
+            reasons.append(
+                {
+                    "rule": "repeated_opening",
+                    "count": len(opener_ids[op]),
+                    "people": sorted(opener_people[op])[:8],
+                    "opening": op,
+                }
+            )
+            severity = "high"
+            delete = True
+
+        sk = skels[rid]
+        if len(sk) >= 40 and len(skel_ids[sk]) >= 2:
+            reasons.append(
+                {
+                    "rule": "repeated_skeleton",
+                    "count": len(skel_ids[sk]),
+                    "people": sorted(skel_people[sk])[:8],
+                }
+            )
+            severity = "high"
+            delete = True
+
+        if len(text) >= 35 and not delete:
+            best = None
+            for other in rows:
+                oid = other["id"]
+                if oid == rid or oid in protected:
+                    continue
+                if other["name"] == r["name"] and other["channel"] == r["channel"]:
+                    continue
+                score = similarity(sk, skels[oid])
+                if score >= 0.86:
+                    best = {"message_id": oid, "score": round(score, 3)}
+                    break
+            if best:
+                reasons.append({"rule": "high_similarity", **best})
+                severity = "high"
+                delete = True
+
+        if reasons:
+            flags[rid] = {"severity": severity, "delete": delete, "reasons": reasons}
+    return flags
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--db", default=DB)
+    ap.add_argument("--lookback-minutes", type=int, default=360)
+    ap.add_argument("--bootstrap", action="store_true")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--protect-latest", type=int, default=0)
+    args = ap.parse_args()
+
+    run_id = f"{RUN_PREFIX}_{int(time.time())}"
+    now_epoch = int(time.time())
+    scan_since = now_epoch - args.lookback_minutes * 60
+
+    con = sqlite3.connect(args.db, timeout=30)
+    con.row_factory = sqlite3.Row
+    con.execute("PRAGMA busy_timeout=30000")
+    ensure_schema(con)
+
+    last_id = state_int(con, "last_seen_lounge_id", 0)
+    if args.bootstrap:
+        id_clause = ""
+        params = (scan_since,)
+    else:
+        id_clause = "AND id > ?"
+        params = (scan_since, last_id)
+
+    rows = con.execute(
+        f"""
+        SELECT id,name,channel,text,created_at,sys
+        FROM lounge_messages
+        WHERE COALESCE(sys,0)=0
+          AND created_at >= ?
+          {id_clause}
+        ORDER BY id DESC
+        LIMIT 2500
+        """,
+        params,
+    ).fetchall()
+
+    context_rows = con.execute(
+        """
+        SELECT id,name,channel,text,created_at,sys
+        FROM lounge_messages
+        WHERE COALESCE(sys,0)=0
+          AND created_at >= ?
+        ORDER BY id DESC
+        LIMIT 2500
+        """,
+        (scan_since,),
+    ).fetchall()
+
+    flags_all = detect(context_rows, protect_latest=args.protect_latest)
+    target_ids = {r["id"] for r in rows}
+    flags = {rid: flag for rid, flag in flags_all.items() if rid in target_ids}
+    context_by_id = {r["id"]: r for r in context_rows}
+
+    quarantined = 0
+    deleted = 0
+    soft = 0
+    samples = []
+    for rid, flag in sorted(flags.items()):
+        r = context_by_id[rid]
+        raw = {
+            "run_id": run_id,
+            "severity": flag["severity"],
+            "delete": flag["delete"],
+            "reasons": flag["reasons"],
+            "created_at": r["created_at"],
+        }
+        qid = f"{run_id}_{reason_hash(rid, json.dumps(flag['reasons'], ensure_ascii=False))}"
+        if flag["severity"] == "soft":
+            soft += 1
+        if not args.dry_run:
+            con.execute(
+                """
+                INSERT OR IGNORE INTO lobster_template_quarantine
+                  (run_id, source_table, source_id, persona, channel, text, raw_json)
+                VALUES(?,?,?,?,?,?,?)
+                """,
+                (
+                    qid,
+                    "lounge_messages",
+                    rid,
+                    r["name"],
+                    r["channel"],
+                    r["text"],
+                    json.dumps(raw, ensure_ascii=False),
+                ),
+            )
+            quarantined += con.total_changes > 0
+            if flag["delete"]:
+                cur = con.execute("DELETE FROM lounge_messages WHERE id=?", (rid,))
+                deleted += cur.rowcount
+        samples.append(
+            {
+                "id": rid,
+                "name": r["name"],
+                "channel": r["channel"],
+                "severity": flag["severity"],
+                "delete": flag["delete"],
+                "text": normalize(r["text"])[:160],
+                "reasons": flag["reasons"][:2],
+            }
+        )
+
+    max_seen = max([last_id] + [r["id"] for r in rows])
+    if not args.dry_run:
+        set_state(con, "last_seen_lounge_id", max_seen)
+        summary = (
+            f"Template watchdog scanned {len(rows)} new rows; "
+            f"quarantined {len(flags)}, deleted {deleted}, soft flags {soft}."
+        )
+        con.execute(
+            """
+            INSERT INTO lobster_template_watchdog_runs
+              (run_id, scan_since, max_seen_id, scanned, quarantined, deleted, soft_flags, raw_json)
+            VALUES(?,?,?,?,?,?,?,?)
+            """,
+            (
+                run_id,
+                scan_since,
+                max_seen,
+                len(rows),
+                len(flags),
+                deleted,
+                soft,
+                json.dumps({"samples": samples[:20], "dry_run": args.dry_run}, ensure_ascii=False),
+            ),
+        )
+        if flags:
+            con.execute(
+                """
+                INSERT INTO lobster_system_alerts(alert_type,severity,summary,raw_json)
+                VALUES('template_watchdog',?,?,?)
+                """,
+                (
+                    "warning" if deleted else "info",
+                    summary,
+                    json.dumps({"run_id": run_id, "samples": samples[:10]}, ensure_ascii=False),
+                ),
+            )
+        con.commit()
+
+    print(
+        json.dumps(
+            {
+                "run_id": run_id,
+                "scanned": len(rows),
+                "context_rows": len(context_rows),
+                "flagged": len(flags),
+                "deleted": deleted,
+                "soft_flags": soft,
+                "max_seen_id": max_seen,
+                "samples": samples[:10],
+                "dry_run": args.dry_run,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,13 @@
+[Unit]
+Description=Lobster minute-level hot brain parameter consolidator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-hot-brain-consolidator --lock-key lobster-hot-brain-consolidator --min-interval-sec 45 --timeout-sec 50 -- /root/lobster-hot-brain-consolidator.py
+Nice=8
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+CPUQuota=20%
+MemoryMax=256M

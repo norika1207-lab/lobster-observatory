@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor: andrew-audit
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/andrew_audit.py
+StandardOutput=append:/root/lobster-memory/_town/logs/andrew-audit.log
+StandardError=append:/root/lobster-memory/_town/logs/andrew-audit.log
+TimeoutSec=300

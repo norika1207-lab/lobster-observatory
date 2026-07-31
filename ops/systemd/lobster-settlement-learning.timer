@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster settlement learning writeback every 15 minutes
+
+[Timer]
+OnBootSec=6min
+OnUnitActiveSec=15min
+AccuracySec=2min
+Unit=lobster-settlement-learning.service
+
+[Install]
+WantedBy=timers.target

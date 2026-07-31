@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+import argparse
+import fcntl
+import json
+import os
+import resource
+import sqlite3
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
+
+def ensure_table(con):
+    con.execute("""
+    CREATE TABLE IF NOT EXISTS lobster_worker_runs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      worker_name TEXT NOT NULL,
+      lock_key TEXT NOT NULL,
+      started_at TEXT NOT NULL,
+      finished_at TEXT,
+      duration_ms INTEGER,
+      status TEXT NOT NULL,
+      exit_code INTEGER,
+      skipped_reason TEXT,
+      rows_read INTEGER DEFAULT 0,
+      rows_written INTEGER DEFAULT 0,
+      cpu_user_ms INTEGER,
+      cpu_system_ms INTEGER,
+      max_rss_kb INTEGER,
+      command_json TEXT NOT NULL DEFAULT '[]',
+      message TEXT
+    )
+    """)
+    con.execute("CREATE INDEX IF NOT EXISTS idx_lobster_worker_runs_name_time ON lobster_worker_runs(worker_name, started_at)")
+    con.commit()
+
+def insert_run(con, worker, lock_key, status, command, skipped_reason=None):
+    cur = con.execute(
+        """INSERT INTO lobster_worker_runs(worker_name,lock_key,started_at,status,command_json,skipped_reason)
+           VALUES(?,?,?,?,?,?)""",
+        (worker, lock_key, utc_now(), status, json.dumps(command), skipped_reason),
+    )
+    con.commit()
+    return cur.lastrowid
+
+def finish_run(con, run_id, status, start_monotonic, exit_code=None, message=None):
+    usage = resource.getrusage(resource.RUSAGE_CHILDREN)
+    duration = int((time.monotonic() - start_monotonic) * 1000)
+    con.execute(
+        """UPDATE lobster_worker_runs
+           SET finished_at=?, duration_ms=?, status=?, exit_code=?, message=?,
+               cpu_user_ms=?, cpu_system_ms=?, max_rss_kb=?
+           WHERE id=?""",
+        (
+            utc_now(), duration, status, exit_code, message,
+            int(usage.ru_utime * 1000), int(usage.ru_stime * 1000), int(usage.ru_maxrss), run_id
+        ),
+    )
+    con.commit()
+
+def latest_finished_age(con, worker):
+    row = con.execute(
+        """SELECT finished_at FROM lobster_worker_runs
+           WHERE worker_name=? AND status IN ('ok','failed','timeout')
+           ORDER BY id DESC LIMIT 1""",
+        (worker,),
+    ).fetchone()
+    if not row or not row[0]:
+        return None
+    try:
+        dt = datetime.fromisoformat(row[0])
+        return (datetime.now(timezone.utc) - dt).total_seconds()
+    except Exception:
+        return None
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--name", required=True)
+    ap.add_argument("--lock-key")
+    ap.add_argument("--db", default="/opt/battle_arena/app/lobster_worker_runs.db")
+    ap.add_argument("--min-interval-sec", type=int, default=0)
+    ap.add_argument("--timeout-sec", type=int, default=0)
+    ap.add_argument("command", nargs=argparse.REMAINDER)
+    args = ap.parse_args()
+    command = args.command
+    if command and command[0] == "--":
+        command = command[1:]
+    if not command:
+        print("lobster-worker-guard: command required", file=sys.stderr)
+        return 64
+    lock_key = args.lock_key or args.name
+    Path("/run/lobster-worker-guard").mkdir(parents=True, exist_ok=True)
+    lock_path = f"/run/lobster-worker-guard/{lock_key.replace('/', '_')}.lock"
+    con = sqlite3.connect(args.db, timeout=30)
+    con.execute("PRAGMA journal_mode=WAL")
+    con.execute("PRAGMA busy_timeout=30000")
+    con.execute("PRAGMA synchronous=NORMAL")
+    ensure_table(con)
+
+    lock_f = open(lock_path, "w")
+    try:
+        fcntl.flock(lock_f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        insert_run(con, args.name, lock_key, "skipped", command, "lock_busy")
+        print(f"lobster-worker-guard: skipped {args.name}, lock busy")
+        return 0
+
+    age = latest_finished_age(con, args.name)
+    if age is not None and args.min_interval_sec > 0 and age < args.min_interval_sec:
+        insert_run(con, args.name, lock_key, "skipped", command, f"min_interval:{int(age)}<{args.min_interval_sec}")
+        print(f"lobster-worker-guard: skipped {args.name}, min interval {int(age)}s < {args.min_interval_sec}s")
+        return 0
+
+    start = time.monotonic()
+    run_id = insert_run(con, args.name, lock_key, "running", command)
+    global_lock_f = None
+    try:
+        if os.environ.get("LOBSTER_WORKER_GUARD_GLOBAL_DB_LOCK", "0") == "1":
+            global_lock_path = "/run/lobster-worker-guard/global-db-writer.lock"
+            global_lock_f = open(global_lock_path, "w")
+            fcntl.flock(global_lock_f, fcntl.LOCK_EX)
+        proc = subprocess.run(command, timeout=(args.timeout_sec or None))
+        status = "ok" if proc.returncode == 0 else "failed"
+        finish_run(con, run_id, status, start, proc.returncode)
+        return proc.returncode
+    except subprocess.TimeoutExpired as e:
+        finish_run(con, run_id, "timeout", start, 124, f"timeout after {args.timeout_sec}s")
+        print(f"lobster-worker-guard: timeout {args.name} after {args.timeout_sec}s", file=sys.stderr)
+        return 124
+    except Exception as e:
+        finish_run(con, run_id, "failed", start, 1, repr(e))
+        raise
+    finally:
+        if global_lock_f is not None:
+            try:
+                fcntl.flock(global_lock_f, fcntl.LOCK_UN)
+            except Exception:
+                pass
+            try:
+                global_lock_f.close()
+            except Exception:
+                pass
+
+if __name__ == "__main__":
+    raise SystemExit(main())

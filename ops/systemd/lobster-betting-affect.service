@@ -1,0 +1,13 @@
+[Unit]
+Description=Lobster betting affect signal sync
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/install -d -m 0755 /run/lobster-worker-guard
+ExecStart=/usr/bin/flock -n -E 0 /run/lobster-worker-guard/global-db-writer.lock /usr/bin/python3 /opt/battle_arena/app/lobster_betting_affect_worker.py sync --hours 24 --limit 300
+TimeoutStartSec=240
+MemoryMax=900M
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6

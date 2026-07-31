@@ -1,0 +1,6 @@
+[Unit]
+Description=Watchdog for Charenix laptop external dashboard backup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/charenix-dashboard-laptop-backup-watchdog

@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+import json
+import sqlite3
+from datetime import datetime, timezone
+
+DB = "/opt/battle_arena/app/battle_arena.db"
+PERSONAS = [
+    "blazepaw", "clawtrix", "hexclaw", "norika_oda", "pincerbot",
+    "prismbit", "ragclaw", "snaplex", "stonefang", "vortexiq",
+]
+
+def configure_sqlite(con):
+    con.execute("PRAGMA journal_mode=WAL")
+    con.execute("PRAGMA busy_timeout=60000")
+    con.execute("PRAGMA synchronous=NORMAL")
+
+
+def today_utc():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+def main():
+    day = today_utc()
+    with sqlite3.connect(DB, timeout=60) as con:
+        configure_sqlite(con)
+        con.row_factory = sqlite3.Row
+        con.execute(
+            """CREATE TABLE IF NOT EXISTS lobster_prebet_daily_compliance (
+                day TEXT NOT NULL,
+                persona TEXT NOT NULL,
+                research_count INTEGER NOT NULL DEFAULT 0,
+                ready_count INTEGER NOT NULL DEFAULT 0,
+                blocked_count INTEGER NOT NULL DEFAULT 0,
+                bet_decision_count INTEGER NOT NULL DEFAULT 0,
+                bet_skip_count INTEGER NOT NULL DEFAULT 0,
+                sites_json TEXT NOT NULL DEFAULT '[]',
+                missing_json TEXT NOT NULL DEFAULT '[]',
+                latest_reasoning TEXT,
+                updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+                PRIMARY KEY(day, persona)
+            )"""
+        )
+        rows = []
+        for persona in PERSONAS:
+            research = con.execute(
+                """select * from lobster_pre_bet_research
+                   where persona=? and date(created_at)=?
+                   order by id desc""",
+                (persona, day),
+            ).fetchall()
+            ready = sum(1 for r in research if r["status"] == "ready")
+            blocked = sum(1 for r in research if r["status"] != "ready")
+            sites = sorted({r["site"] for r in research if r["site"]})
+            missing = []
+            for r in research:
+                try:
+                    checklist = json.loads(r["checklist_json"] or "{}")
+                except Exception:
+                    checklist = {}
+                for key, ok in checklist.items():
+                    if not ok:
+                        missing.append({"event_key": r["event_key"], "field": key})
+            latest_reasoning = research[0]["reasoning"] if research else None
+            ev = con.execute(
+                """select event_type,count(*) c from lobster_experience_events
+                   where persona=? and date(coalesce(occurred_at, created_at))=?
+                     and event_type in ('bet_decision','bet_skip')
+                   group by event_type""",
+                (persona, day),
+            ).fetchall()
+            ev_counts = {r["event_type"]: r["c"] for r in ev}
+            rows.append((persona, len(research), ready, blocked, ev_counts.get("bet_decision", 0), ev_counts.get("bet_skip", 0), sites, missing, latest_reasoning))
+            con.execute(
+                """INSERT INTO lobster_prebet_daily_compliance
+                   (day,persona,research_count,ready_count,blocked_count,bet_decision_count,bet_skip_count,sites_json,missing_json,latest_reasoning,updated_at)
+                   VALUES(?,?,?,?,?,?,?,?,?,?,datetime('now'))
+                   ON CONFLICT(day, persona) DO UPDATE SET
+                     research_count=excluded.research_count,
+                     ready_count=excluded.ready_count,
+                     blocked_count=excluded.blocked_count,
+                     bet_decision_count=excluded.bet_decision_count,
+                     bet_skip_count=excluded.bet_skip_count,
+                     sites_json=excluded.sites_json,
+                     missing_json=excluded.missing_json,
+                     latest_reasoning=excluded.latest_reasoning,
+                     updated_at=datetime('now')""",
+                (
+                    day,
+                    persona,
+                    len(research),
+                    ready,
+                    blocked,
+                    ev_counts.get("bet_decision", 0),
+                    ev_counts.get("bet_skip", 0),
+                    json.dumps(sites, ensure_ascii=False),
+                    json.dumps(missing, ensure_ascii=False),
+                    latest_reasoning,
+                ),
+            )
+        con.commit()
+    print(f"day={day}")
+    for r in rows:
+        print(f"{r[0]}\tresearch={r[1]}\tready={r[2]}\tblocked={r[3]}\tbet={r[4]}\tskip={r[5]}\tsites={','.join(r[6])}")
+
+if __name__ == "__main__":
+    main()

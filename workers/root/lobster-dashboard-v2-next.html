@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🦞 龍蝦觀察站 V2-NEXT</title>
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#0f1525; --surface:#141a2d; --surface2:#1a2138;
+  --border:#27314a; --border2:#384465;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#38bdf8; --accent2:#0ea5e9;
+  --green:#22c55e; --yellow:#eab308; --orange:#f97316; --red:#ef4444; --purple:#a855f7;
+  --gold:#fbbf24; --rose:#f43f5e; --teal:#14b8a6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,'Helvetica Neue','PingFang TC',sans-serif;
+  font-size:13px; line-height:1.5;
+  min-height:100vh;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent2)}
+
+/* ── Top bar ── */
+.topbar{
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg2) 100%);
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(8px);
+}
+.title{font-size:18px;font-weight:900;letter-spacing:0.5px}
+.title-zh{color:var(--text2);font-weight:400;font-size:13px;margin-left:8px}
+.meta-row{display:flex;gap:14px;align-items:center;font-size:11px;color:var(--text2)}
+.btn{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;
+  font-size:11px;font-family:inherit;transition:all .15s;
+}
+.btn:hover{background:var(--border);border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+
+/* ── Health bar ── */
+.health-bar{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:10px;padding:14px 20px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+}
+.hcard{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;
+  display:flex;flex-direction:column;gap:3px;
+}
+.hcard-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px}
+.hcard-value{font-size:22px;font-weight:900;color:var(--text)}
+.hcard-sub{font-size:10px;color:var(--text2)}
+.hcard.crisis{border-color:var(--red);background:linear-gradient(180deg,var(--surface) 0%,#2a0f10 100%)}
+.hcard.crisis .hcard-value{color:var(--red)}
+.hcard.warn{border-color:var(--orange)}
+.hcard.warn .hcard-value{color:var(--orange)}
+.hcard.good{border-color:var(--green)}
+.hcard.good .hcard-value{color:var(--green)}
+.hcard.brain{border-color:var(--accent)}
+.hcard.brain .hcard-value{color:var(--accent)}
+
+/* ── Layout grid ── */
+.main{
+  display:grid;
+  grid-template-columns:1fr 280px;
+  gap:14px;
+  padding:14px 20px;
+  max-width:1800px;margin:0 auto;
+}
+@media(max-width:1100px){ .main{grid-template-columns:1fr} }
+
+/* ── Filter bar ── */
+.filter-bar{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  padding:10px 12px;background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;
+  margin-bottom:12px;
+}
+.chip{
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text2);padding:5px 10px;border-radius:14px;
+  font-size:11px;cursor:pointer;font-family:inherit;
+  transition:all .12s;
+}
+.chip.on{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+.chip:hover{border-color:var(--accent)}
+.spacer{flex:1}
+.search-box{
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);padding:6px 10px;border-radius:6px;
+  font-family:inherit;font-size:11px;width:140px;
+}
+
+/* ── Lobster grid ── */
+.lob-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;
+}
+.lob-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:14px;
+  display:flex;flex-direction:column;gap:10px;
+  position:relative;overflow:hidden;
+  transition:transform .12s,border-color .12s;
+}
+.lob-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+
+/* health status border colors */
+.lob-card.normal{border-left:4px solid var(--green)}
+.lob-card.pressure{border-left:4px solid var(--yellow)}
+.lob-card.crisis{border-left:4px solid var(--red);background:linear-gradient(180deg,var(--surface) 0%,#1e0d14 100%)}
+.lob-card.deletion_candidate{border:1.5px solid var(--red);background:linear-gradient(135deg,var(--surface) 0%,#2a0d10 100%);animation:pulse 2s ease-in-out infinite}
+.lob-card.in_ritual{border:1.5px solid var(--purple);background:linear-gradient(135deg,var(--surface) 0%,#1a0d28 100%)}
+.lob-card.stale{border-left:4px solid var(--orange)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 rgba(239,68,68,0)}50%{box-shadow:0 0 16px rgba(239,68,68,0.25)}}
+
+.lob-head{display:flex;align-items:center;gap:8px}
+.status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.lob-name{font-size:14px;font-weight:900;color:var(--text)}
+.mbti-chip{
+  font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+}
+.occ-chip{
+  font-size:10px;font-weight:800;padding:3px 7px;border-radius:5px;margin-left:auto;
+}
+.occ-chip.teacher{background:#1e3a8a;color:#dbeafe;border:1px solid #3b82f6}
+.occ-chip.investigator{background:#581c87;color:#f3e8ff;border:1px solid #a855f7}
+.occ-chip.first-path::after{content:'✨';margin-left:3px}
+
+.rank-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text2)}
+.rank-sym{color:var(--gold);font-weight:900;font-size:13px}
+
+.tiamat-bar{display:flex;flex-direction:column;gap:3px}
+.tiamat-label{display:flex;justify-content:space-between;font-size:10px}
+.tiamat-track{height:5px;background:#0a1018;border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.tiamat-fill{height:100%;background:linear-gradient(90deg,var(--green) 0%,var(--yellow) 60%,var(--red) 90%);border-radius:3px;transition:width .3s}
+
+.stat-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;
+}
+.stat{
+  background:var(--bg2);border:1px solid var(--border);
+  padding:6px 8px;border-radius:6px;
+  display:flex;flex-direction:column;gap:1px;
+}
+.stat-label{font-size:9px;color:var(--text3)}
+.stat-val{font-size:13px;font-weight:800;color:var(--text)}
+.stat.warn .stat-val{color:var(--orange)}
+.stat.crisis .stat-val{color:var(--red)}
+.stat.good .stat-val{color:var(--green)}
+
+.tasks-row{display:flex;gap:6px;align-items:center;font-size:10px;color:var(--text3)}
+.task-dot{
+  width:14px;height:14px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:900;flex-shrink:0;
+  background:var(--bg2);border:1px solid var(--border);color:var(--text3);
+}
+.task-dot.done{background:var(--green);border-color:var(--green);color:#000}
+
+.meta-line{
+  font-size:10px;color:var(--text2);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.activity-stale{color:var(--orange)}
+.activity-very-stale{color:var(--red);font-weight:700}
+
+.mirror-info{
+  font-size:10px;color:var(--text2);
+  background:var(--bg2);padding:5px 8px;border-radius:5px;
+  border-left:2px solid var(--accent);
+}
+.mirror-info b{color:var(--accent2)}
+
+.soul-radar{display:flex;align-items:center;gap:8px}
+.soul-svg{flex-shrink:0}
+.soul-mini-labels{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;font-size:9px}
+.soul-mini-labels span{color:var(--text3)}
+.soul-mini-labels b{color:var(--text2);font-weight:700;float:right}
+
+.detail-link{
+  font-size:10px;color:var(--accent);text-align:center;
+  padding:5px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:5px;cursor:pointer;transition:all .12s;
+}
+.detail-link:hover{background:var(--border);border-color:var(--accent)}
+
+/* ── Sidebar ── */
+.sidebar{
+  display:flex;flex-direction:column;gap:12px;
+  position:sticky;top:120px;align-self:start;
+  max-height:calc(100vh - 140px);overflow-y:auto;
+}
+.panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:12px;
+}
+.panel-head{
+  font-size:11px;font-weight:900;text-transform:uppercase;
+  letter-spacing:0.5px;color:var(--text2);margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.panel-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:7px 10px;
+  margin-bottom:6px;font-size:11px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.panel-item.crit{border-color:var(--red);background:#2a0d10}
+.panel-item.warn{border-color:var(--orange)}
+.panel-item-name{font-weight:700;color:var(--text)}
+.panel-item-sub{color:var(--text2);font-size:10px}
+.divine-event{
+  background:var(--bg2);padding:7px 10px;border-radius:6px;
+  margin-bottom:5px;font-size:10px;color:var(--text2);
+  border-left:2px solid var(--purple);
+}
+.divine-event b{color:var(--gold)}
+
+#loading{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--surface);padding:20px 30px;border-radius:10px;
+  border:1px solid var(--border);color:var(--text);
+  display:flex;align-items:center;gap:12px;
+}
+.spinner{width:18px;height:18px;border:2px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hidden{display:none!important}
+
+/* Compact list for stale/crisis sidebar */
+.list-compact{font-size:10px;line-height:1.6;color:var(--text2)}
+.list-compact .name{color:var(--text);font-weight:700}
+
+.empty-msg{color:var(--text3);font-size:11px;text-align:center;padding:10px}
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div>
+    <span class="title">🦞 龍蝦觀察站 V2-NEXT</span>
+    <span class="title-zh">21 隻全景觀察 · brain-modeled state</span>
+  </div>
+  <div class="meta-row">
+    <span id="last-update">載入中...</span>
+    <button class="btn" onclick="loadData()">↻ 重新整理</button>
+    <a class="btn" href="/lobster/dashboard/" target="_blank">前往 V1</a>
+  </div>
+</div>
+
+<div class="health-bar" id="health-bar"></div>
+
+<div class="main">
+  <div>
+    <div class="filter-bar">
+      <button class="chip on" data-f="all">全部</button>
+      <button class="chip" data-f="crisis">🔴 危機</button>
+      <button class="chip" data-f="pressure">🟡 壓力</button>
+      <button class="chip" data-f="normal">🟢 正常</button>
+      <button class="chip" data-f="in_ritual">🟣 儀式中</button>
+      <button class="chip" data-f="stale">🟠 停滯 6h+</button>
+      <button class="chip" data-f="occupation">🎓 有職業</button>
+      <button class="chip" data-f="candidate">⚠️ 候選刪除</button>
+      <div class="spacer"></div>
+      <input type="search" class="search-box" placeholder="搜尋..." id="search-input" oninput="renderGrid()">
+      <select class="search-box" id="sort-select" onchange="renderGrid()" style="width:auto">
+        <option value="status">排序:健康狀態</option>
+        <option value="violations">違規 DESC</option>
+        <option value="rank">位階 DESC</option>
+        <option value="coins">金幣 DESC</option>
+        <option value="winRate">勝率 DESC</option>
+        <option value="recent">最近活動</option>
+        <option value="stale">最久停滯</option>
+        <option value="name">名稱</option>
+      </select>
+    </div>
+    <div class="lob-grid" id="lob-grid"></div>
+  </div>
+
+  <div class="sidebar">
+    <div class="panel" id="alerts-panel">
+      <div class="panel-head">⚠️ 警報</div>
+      <div id="alerts-content"><div class="empty-msg">載入中...</div></div>
+    </div>
+    <div class="panel" id="divine-panel">
+      <div class="panel-head">⚡ 最近神明事件</div>
+      <div id="divine-content"><div class="empty-msg">載入中...</div></div>
+    </div>
+    <div class="panel" id="freepath-panel">
+      <div class="panel-head">🎓 自由職業路徑</div>
+      <div id="freepath-content"><div class="empty-msg">載入中...</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">📊 系統指引</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.7">
+        🟢 <b>正常</b>:無壓力<br>
+        🟡 <b>壓力</b>:violation/dread/mortality 升高<br>
+        🔴 <b>危機</b>:dread≥0.7 或 extinction 壓力高<br>
+        🟣 <b>儀式中</b>:哈迪斯/宙斯 進行中<br>
+        🟠 <b>停滯</b>:>6h 無活動<br>
+        ⚠️ <b>候選刪除</b>:violation≥10 待手動儀式
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loading"><div class="spinner"></div><span>載入 21 隻龍蝦觀察資料...</span></div>
+
+<script>
+const COLOR={hexclaw:'#3ab4e8',pincerbot:'#f0882a',norika_oda:'#e8b84b',vortexiq:'#f06080',
+  snaplex:'#b067f5',prismbit:'#2dcfbb',clawtrix:'#7b82f0',ragclaw:'#7ec850',
+  blazepaw:'#fb923c',stonefang:'#8b6f4e',elder:'#e2c275',
+  emberling:'#fda4af',sparkrill:'#fde047',gauntlet:'#f43f5e',rushfin:'#fbbf24',
+  nullpinch:'#a78bfa',brineledger:'#67e8f9',omenwake:'#86efac',mirrorcalm:'#67e8f9',
+  flarecub:'#fb923c',basaltrook:'#a8a29e'};
+const STATUS_DOT={normal:'#22c55e',pressure:'#eab308',crisis:'#ef4444',
+  in_ritual:'#a855f7',deletion_candidate:'#ef4444',stale:'#f97316'};
+const STATUS_ZH={normal:'正常',pressure:'壓力',crisis:'危機',in_ritual:'儀式中',
+  deletion_candidate:'候選刪除',stale:'停滯'};
+const OCC_CHIP={teacher_scholar:{cls:'teacher',emoji:'🎓',label:'學者教師'},
+  investigator:{cls:'investigator',emoji:'🔍',label:'調查員'}};
+const SOUL_LABELS={benevolence:'慈',compassion:'憫',lifeWeight:'重',sacrifice:'犧',
+  existentialism:'存',messiah:'救',selfishness:'私',compassion2:''};
+const SOUL_COLORS={benevolence:'#22c55e',compassion:'#14b8a6',lifeWeight:'#a855f7',
+  sacrifice:'#f43f5e',existentialism:'#fbbf24',messiah:'#38bdf8',selfishness:'#94a3b8'};
+
+let allData=null;
+let currentFilter='all';
+let currentSort='status';
+
+async function loadData(){
+  document.getElementById('loading').classList.remove('hidden');
+  try{
+    const r=await fetch('/api/lobster-dashboard-v2-next-bundle');
+    allData=await r.json();
+    document.getElementById('last-update').textContent='更新:'+new Date().toLocaleString('zh-Hant',{hour12:false});
+    renderHealthBar();
+    renderSidebar();
+    renderGrid();
+  }catch(e){console.error(e);document.getElementById('last-update').textContent='載入失敗:'+e.message}
+  document.getElementById('loading').classList.add('hidden');
+}
+
+function renderHealthBar(){
+  const g=allData.global;
+  const t=g.today_tasks;
+  const bs=g.brain_speech_stats;
+  const totalSpeech=bs.ok+bs.fallback+bs.error||1;
+  const okPct=Math.round(100*bs.ok/totalSpeech);
+  const h=document.getElementById('health-bar');
+  const cards=[
+    {l:'活蝦',v:g.total_lobsters,sub:`${g.with_occupation} 自由路徑`,cls:'good'},
+    {l:'危機',v:g.in_crisis.length+g.deletion_candidates.length,sub:g.deletion_candidates.length+' 候選刪除',cls:(g.in_crisis.length+g.deletion_candidates.length>0?'crisis':'good')},
+    {l:'停滯 6h+',v:g.stale_lobsters.length,sub:'>6h 無活動',cls:(g.stale_lobsters.length>0?'warn':'good')},
+    {l:'儀式中',v:g.in_ritual.length,sub:'哈迪斯/宙斯 進行中'},
+    {l:'今日下注',v:`${t.bet.done}/${g.total_lobsters}`,sub:t.bet.pct+'%'},
+    {l:'今日 Moltbook',v:`${t.moltbook.done}/${g.total_lobsters}`,sub:t.moltbook.pct+'%'},
+    {l:'今日對戰',v:`${t.battle.done}/${g.total_lobsters}`,sub:t.battle.pct+'%'},
+    {l:'今日閱讀',v:`${t.reading.done}/${g.total_lobsters}`,sub:t.reading.pct+'%'},
+    {l:'今日棋類',v:`${t.board.done}/${g.total_lobsters}`,sub:t.board.pct+'%'},
+    {l:'Quarantine 24h',v:g.quarantine_24h,sub:'模板隔離增量'},
+    {l:'Brain.speak 24h',v:bs.ok,sub:`OK ${okPct}% · fb ${bs.fallback} · err ${bs.error}`,cls:'brain'},
+  ];
+  h.innerHTML=cards.map(c=>`<div class="hcard ${c.cls||''}">
+    <div class="hcard-label">${c.l}</div>
+    <div class="hcard-value">${c.v}</div>
+    <div class="hcard-sub">${c.sub||''}</div>
+  </div>`).join('');
+}
+
+function renderSidebar(){
+  const g=allData.global;
+  // alerts
+  let alerts='';
+  for(const c of g.deletion_candidates){
+    alerts+=`<div class="panel-item crit">
+      <div><div class="panel-item-name">${c.name}</div><div class="panel-item-sub">${c.violations} 違規 · 等手動儀式</div></div>
+      <span style="color:var(--red);font-weight:900">💀</span>
+    </div>`;
+  }
+  for(const s of g.stale_lobsters){
+    if(s.hours>=24){
+      alerts+=`<div class="panel-item warn">
+        <div><div class="panel-item-name">${s.name}</div><div class="panel-item-sub">停滯 ${s.hours}h</div></div>
+        <span style="color:var(--orange)">⏸</span>
+      </div>`;
+    }
+  }
+  if(!alerts) alerts='<div class="empty-msg">無警報 ✨</div>';
+  document.getElementById('alerts-content').innerHTML=alerts;
+  // divine events
+  const divine=g.recent_divine_events.map(d=>{
+    const ts=new Date(d.created_at*1000).toLocaleString('zh-Hant',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
+    const icon={hades:'🌑',zeus:'⚡',odin:'🌿','portent-hades':'🌑','portent-zeus':'⚡'}[d.type]||'✦';
+    return `<div class="divine-event">${icon} <b>${d.type}</b> → ${d.target||'—'}<br><span style="color:var(--text3)">${ts}</span></div>`;
+  }).join('');
+  document.getElementById('divine-content').innerHTML=divine||'<div class="empty-msg">無近期儀式</div>';
+  // free path
+  const fp=g.free_path_lobsters.map(n=>{
+    const l=allData.lobsters[n];
+    const o=l.occupation;
+    const cls=OCC_CHIP[o.title]?.cls||'teacher';
+    const emoji=OCC_CHIP[o.title]?.emoji||'🎓';
+    return `<div class="panel-item">
+      <div><div class="panel-item-name" style="color:${COLOR[n]||'#888'}">${n}</div>
+        <div class="panel-item-sub">${emoji} ${o.title_zh} · ${o.domains.length} 領域 · ${o.domains.reduce((s,d)=>s+d.theory_count,0)} 理論</div>
+      </div>
+      ${o.is_first_free_path?'<span title="第一隻自由路徑">✨</span>':''}
+    </div>`;
+  }).join('');
+  document.getElementById('freepath-content').innerHTML=fp||'<div class="empty-msg">尚無自由路徑龍蝦</div>';
+}
+
+function soulRadar(sp,size=64){
+  const r=size/2-3,cx=size/2,cy=size/2;
+  const keys=['benevolence','compassion','lifeWeight','sacrifice','existentialism','messiah'];
+  const n=keys.length;
+  const polygons=[0.33,0.66,1].map(s=>{
+    const pts=keys.map((k,i)=>{
+      const a=(Math.PI*2*i/n)-Math.PI/2;
+      return `${cx+r*s*Math.cos(a)},${cy+r*s*Math.sin(a)}`;
+    });
+    return `<polygon points="${pts.join(' ')}" fill="none" stroke="#27314a" stroke-width="0.5"/>`;
+  }).join('');
+  const dataPts=keys.map((k,i)=>{
+    const a=(Math.PI*2*i/n)-Math.PI/2;
+    const v=Math.max(0,Math.min(1,sp[k]||0));
+    return `${cx+r*v*Math.cos(a)},${cy+r*v*Math.sin(a)}`;
+  }).join(' ');
+  return `<svg class="soul-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    ${polygons}
+    <polygon points="${dataPts}" fill="rgba(56,189,248,0.25)" stroke="#38bdf8" stroke-width="1.3"/>
+  </svg>`;
+}
+
+function fmtActivity(h){
+  if(h==null) return '—';
+  if(h<1) return Math.round(h*60)+'min 前';
+  if(h<24) return h.toFixed(1)+'h 前';
+  return Math.floor(h/24)+'d 前';
+}
+
+function lobCard(l){
+  const c=COLOR[l.name]||'#888';
+  const oc=l.occupation;
+  const occChip=oc?`<span class="occ-chip ${OCC_CHIP[oc.title]?.cls||''}${oc.is_first_free_path?' first-path':''}">${OCC_CHIP[oc.title]?.emoji||'🎓'} ${oc.title_zh}</span>`:'';
+  const status=l.healthStatus;
+  const cardCls=status;
+  const ts=l.templateSurvival;
+  const ex=l.existential;
+  const sb=l.settledBetting;
+  const lc=l.lifecycle;
+  const mir=l.mirrorInhibition;
+
+  // tasks today
+  const tasks=allData.global.today_tasks;
+  // (note: per-lobster today task isn't in bundle yet — just show aggregate)
+
+  // tiamat bar
+  const tiamatPct=Math.round(100*(ex.tiamatRemaining/ex.tiamatLossLimit));
+  // violations stat color
+  const vCls=ts.violationCount>=500?'crisis':(ts.violationCount>=10?'warn':'good');
+  // void rate warning
+  const vrCls=sb.voidRate>0.5?'crisis':(sb.voidRate>0.3?'warn':'good');
+  // winrate
+  const wrCls=sb.winRate<0.4?'warn':(sb.winRate>0.55?'good':'');
+  // stale
+  const hs=lc.hours_since_activity;
+  const activityCls=hs>=24?'activity-very-stale':(hs>=6?'activity-stale':'');
+
+  return `<div class="lob-card ${cardCls}" onclick="openDetail('${l.name}')">
+    <div class="lob-head">
+      <span class="status-dot" style="background:${STATUS_DOT[status]||'#888'}"></span>
+      <span class="lob-name" style="color:${c}">${l.name}</span>
+      <span class="mbti-chip">${l.mbti}</span>
+      ${occChip}
+    </div>
+    <div class="rank-row">
+      <span><span class="rank-sym">${l.rank.symbol||'⬡'}</span> ${l.rank.current||'學徒'} · ${l.rank.score||0} 分</span>
+      <span style="color:var(--text3)">${STATUS_ZH[status]}</span>
+    </div>
+    <div class="tiamat-bar">
+      <div class="tiamat-label">
+        <span style="color:var(--text3)">⚔ Tiamat</span>
+        <span style="font-weight:700">${ex.tiamatRemaining}/${ex.tiamatLossLimit}</span>
+      </div>
+      <div class="tiamat-track"><div class="tiamat-fill" style="width:${tiamatPct}%"></div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><span class="stat-label">🪙 金幣</span><span class="stat-val">${l.godsCoin}</span></div>
+      <div class="stat ${vCls}"><span class="stat-label">⚠️ 違規</span><span class="stat-val">${ts.violationCount}</span></div>
+      <div class="stat"><span class="stat-label">🔥 連勝</span><span class="stat-val">${l.qualityStreak}/5</span></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat ${wrCls}"><span class="stat-label">勝率</span><span class="stat-val">${Math.round(sb.winRate*100)}%</span></div>
+      <div class="stat ${vrCls}"><span class="stat-label">void</span><span class="stat-val">${Math.round(sb.voidRate*100)}%</span></div>
+      <div class="stat ${sb.totalPnL>=0?'good':'crisis'}"><span class="stat-label">PnL</span><span class="stat-val">${sb.totalPnL>0?'+':''}${(sb.totalPnL/1000).toFixed(1)}k</span></div>
+    </div>
+    <div class="soul-radar">
+      ${soulRadar(l.soulParams,68)}
+      <div class="soul-mini-labels">
+        ${['benevolence','sacrifice','lifeWeight','existentialism'].map(k=>`<span style="color:var(--text3)">${SOUL_LABELS[k]}<b style="color:${SOUL_COLORS[k]}">${Math.round((l.soulParams[k]||0)*100)}</b></span>`).join('')}
+      </div>
+    </div>
+    ${mir.topPeer?`<div class="mirror-info">🪞 鏡像:<b>${mir.topPeer}</b> · jac ${(mir.topPeerJaccard*100).toFixed(0)}% · ban ${mir.banSize}</div>`:''}
+    <div class="meta-line">
+      <span class="${activityCls}">${activityCls?'⚠ ':''}${fmtActivity(hs)}</span>
+      <span>W ${lc.wins} / L ${lc.losses}</span>
+    </div>
+    <div class="detail-link" onclick="event.stopPropagation();openDetail('${l.name}')">📊 V1 完整報告 →</div>
+  </div>`;
+}
+
+function openDetail(name){
+  window.open(`/lobster/dashboard/?persona=${name}`,'_blank');
+}
+
+function renderGrid(){
+  const search=document.getElementById('search-input').value.toLowerCase().trim();
+  const sortKey=document.getElementById('sort-select').value;
+  let rows=Object.values(allData.lobsters);
+  // filter
+  if(currentFilter==='crisis') rows=rows.filter(l=>l.healthStatus==='crisis'||l.healthStatus==='deletion_candidate');
+  else if(currentFilter==='pressure') rows=rows.filter(l=>l.healthStatus==='pressure');
+  else if(currentFilter==='normal') rows=rows.filter(l=>l.healthStatus==='normal');
+  else if(currentFilter==='in_ritual') rows=rows.filter(l=>l.healthStatus==='in_ritual');
+  else if(currentFilter==='stale') rows=rows.filter(l=>l.lifecycle.is_stale_6h);
+  else if(currentFilter==='occupation') rows=rows.filter(l=>l.occupation);
+  else if(currentFilter==='candidate') rows=rows.filter(l=>l.templateSurvival.deletionCandidate);
+  if(search) rows=rows.filter(l=>l.name.includes(search)||(l.occupation&&l.occupation.title_zh.includes(search)));
+  // sort
+  const STATUS_ORDER={deletion_candidate:0,crisis:1,in_ritual:2,pressure:3,stale:4,normal:5};
+  rows.sort((a,b)=>{
+    switch(sortKey){
+      case 'violations': return b.templateSurvival.violationCount-a.templateSurvival.violationCount;
+      case 'rank': return (b.rank.score||0)-(a.rank.score||0);
+      case 'coins': return b.godsCoin-a.godsCoin;
+      case 'winRate': return b.settledBetting.winRate-a.settledBetting.winRate;
+      case 'recent': return (b.lifecycle.hours_since_activity==null?1e9:b.lifecycle.hours_since_activity)-(a.lifecycle.hours_since_activity==null?1e9:a.lifecycle.hours_since_activity);
+      case 'stale': return (b.lifecycle.hours_since_activity||0)-(a.lifecycle.hours_since_activity||0);
+      case 'name': return a.name.localeCompare(b.name);
+      default: return (STATUS_ORDER[a.healthStatus]||9)-(STATUS_ORDER[b.healthStatus]||9);
+    }
+  });
+  document.getElementById('lob-grid').innerHTML=rows.map(lobCard).join('')||'<div class="empty-msg" style="grid-column:1/-1">無符合的龍蝦</div>';
+}
+
+// filter chip clicks
+document.querySelectorAll('.chip').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+    c.classList.add('on');
+    currentFilter=c.dataset.f;
+    renderGrid();
+  };
+});
+
+// auto refresh every 60s
+setInterval(loadData,60000);
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[Unit]
+Description=Lobster DB shard maintenance
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-db-shard-maintenance --lock-key lobster-db-shard-maintenance --min-interval-sec 300 --timeout-sec 180 -- /usr/local/bin/lobster-db-shard-maintenance --older-hours 6 --limit 12000 --no-backup-tables

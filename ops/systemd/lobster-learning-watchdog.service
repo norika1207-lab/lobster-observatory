@@ -1,0 +1,11 @@
+[Unit]
+Description=Watchdog for lobster math/philosophy learning continuity
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster-learning-watchdog.py
+StandardOutput=append:/var/log/lobster-learning-watchdog.log
+StandardError=append:/var/log/lobster-learning-watchdog.log
+

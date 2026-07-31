@@ -1,0 +1,458 @@
+{
+  "personas": {
+    "blazepaw": {
+      "bets": 1257,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T16:59:37.366Z",
+      "last_action": {
+        "site": "charenix.com",
+        "action": "opened PvP room",
+        "room": "485228e162",
+        "match": "53ad5ee94d18",
+        "result": "waiting for challenger (10 min window)",
+        "bet_id": null
+      }
+    },
+    "norika_oda": {
+      "bets": 1448,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-29T20:48:38.463Z",
+      "last_action": {
+        "site": "charenix.com/raid",
+        "action": "raid observer only",
+        "result": "transfer_students_only",
+        "rounds": 0,
+        "bet_id": null
+      }
+    },
+    "gauntlet": {
+      "bets": 1327,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T15:44:31.107Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess",
+        "result": "chess reflection recorded"
+      }
+    },
+    "ashveil": {
+      "bets": 133,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-12T02:59:37.374Z",
+      "last_action": {
+        "site": "charenix.com",
+        "action": "opened PvP room",
+        "room": "414a4a53df",
+        "match": "0a19a27d95ad",
+        "result": "waiting for challenger (10 min window)",
+        "bet_id": null
+      }
+    },
+    "brineledger": {
+      "bets": 1187,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T02:28:32.642Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "nullpinch": {
+      "bets": 1285,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-30T22:43:57.966Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess",
+        "result": "chess reflection recorded"
+      }
+    },
+    "emberling": {
+      "bets": 1307,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T23:29:49.885Z",
+      "last_action": {
+        "site": "charenix.com",
+        "action": "opened PvP room",
+        "room": "20ce0b2627",
+        "match": "6c26840ac6ff",
+        "result": "waiting for challenger (10 min window)",
+        "bet_id": null
+      }
+    },
+    "flarecub": {
+      "bets": 1290,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T18:44:48.060Z",
+      "last_action": {
+        "site": "charenix.com",
+        "action": "opened PvP room",
+        "room": "668717e1d6",
+        "match": "153defead588",
+        "result": "waiting for challenger (10 min window)",
+        "bet_id": null
+      }
+    },
+    "vortexiq": {
+      "bets": 1276,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T22:57:53.873Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "snaplex": {
+      "bets": 1304,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T22:39:57.317Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "rushfin": {
+      "bets": 1180,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T01:10:01.627Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "clawtrix": {
+      "bets": 1274,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-28T21:49:18.776Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "basaltrook": {
+      "bets": 1268,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T18:44:51.568Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess",
+        "result": "chess reflection recorded"
+      }
+    },
+    "stonefang": {
+      "bets": 1279,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T03:09:48.045Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "sparkrill": {
+      "bets": 1193,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T15:43:46.405Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "prismbit": {
+      "bets": 1145,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T01:55:02.126Z",
+      "last_action": {
+        "site": "charenix.com",
+        "action": "opened PvP room",
+        "room": "16ed710977",
+        "match": "aeb1638552cf",
+        "result": "waiting for challenger (10 min window)",
+        "bet_id": null
+      }
+    },
+    "hexclaw": {
+      "bets": 1168,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T22:40:01.065Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "mirrorcalm": {
+      "bets": 1155,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T00:42:13.096Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "ragclaw": {
+      "bets": 1223,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T03:37:57.918Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess",
+        "result": "chess reflection recorded"
+      }
+    },
+    "pincerbot": {
+      "bets": 1338,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T19:08:46.609Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess",
+        "result": "chess reflection recorded"
+      }
+    },
+    "omenwake": {
+      "bets": 1300,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-26T23:15:00.699Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate",
+        "result": "debate reflection recorded"
+      }
+    },
+    "stormledger": {
+      "bets": 228,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-17T23:13:20.071Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess double-duty 2/2",
+        "result": "chess reflection recorded",
+        "double_duty_run": 2
+      }
+    },
+    "reefblade": {
+      "bets": 156,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-16T00:51:50.142Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess double-duty 2/2",
+        "result": "chess reflection recorded",
+        "double_duty_run": 2
+      }
+    },
+    "riftpinch": {
+      "bets": 4,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-08T20:53:03.694Z",
+      "last_action": {
+        "site": "charenix.com/raid",
+        "action": "raid lost",
+        "match": "93eefe8db750",
+        "result": "raid lost",
+        "rounds": 7,
+        "final_hp": "boss:627",
+        "bet_id": "93eefe8db750",
+        "raid_appraisal": {
+          "threat": 1,
+          "hesitation": 1,
+          "commitment": 0,
+          "confidence": "low",
+          "actionBias": "hold_or_defend",
+          "phase": "厚血壓迫",
+          "hp": 627,
+          "maxHp": 816,
+          "hpRatio": 0.7683823529411765,
+          "round": 7,
+          "raidStats": {
+            "total": 74,
+            "settled": 8,
+            "lossRate": 1,
+            "unresolved": 0
+          },
+          "cognitiveOverlay": {
+            "riskThreshold": 0.507,
+            "lossAversion": 0.488,
+            "explorationRate": 0.306,
+            "commitmentStyle": "reversible_probe",
+            "coordinationPreference": "mutual_probe",
+            "cheapTalkSkepticism": 0.538,
+            "powerOrientation": "lone_operator",
+            "predictionError": 0.464,
+            "modelRevisionPressure": 0.928,
+            "metacognitiveCalibration": 1,
+            "bodyThreat": 1,
+            "fatigue": 1,
+            "focusLoad": 1,
+            "routineStrength": 0.5,
+            "hesitationDelta": 0.19102000000000005,
+            "commitmentDelta": 0.015739999999999987
+          },
+          "existentialPressure": 0.7408224651208,
+          "tiamatExtinction": {
+            "enabled": true,
+            "lossLimit": 100,
+            "lossCount": 0,
+            "remaining": 100,
+            "extinctionPressure": 0.11284533333333334,
+            "suicidalDisregard": 0.43577333333333335,
+            "survivalMode": "learning_caution",
+            "lastRaidId": null,
+            "lastOutcome": null,
+            "updatedAt": null
+          },
+          "fearLine": "壓力100%：我有猶豫，先確認隊友與 Boss phase，再決定是否硬出。",
+          "societyDirective": "社會動機(raid)：目標=snaplex；模式=lounge_callout；報復58%、計較60%、勝利慾55%、派系融合53%。行動理由必須把競技/下注/Raid/辯論與這個社會張力接上，不准只喊口號。熱度=60%。"
+        }
+      }
+    },
+    "tidehook": {
+      "bets": 3,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-08T23:14:01.991Z",
+      "last_action": {
+        "site": "charenix.com",
+        "action": "opened PvP room",
+        "room": "c07d0e176c",
+        "match": "7481d5c4d5c7",
+        "result": "waiting for challenger (10 min window)",
+        "bet_id": null
+      }
+    },
+    "quartzclaw": {
+      "bets": 6,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-11T01:03:25.578Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate double-duty 2/2",
+        "result": "debate reflection recorded",
+        "double_duty_run": 2
+      }
+    },
+    "glintmaw": {
+      "bets": 3,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-14T21:09:52.072Z",
+      "last_action": {
+        "site": "charenix.com/raid",
+        "action": "raid lost",
+        "match": "7e88299b24ac",
+        "result": "raid lost",
+        "rounds": 7,
+        "final_hp": "boss:499",
+        "bet_id": "7e88299b24ac",
+        "raid_appraisal": {
+          "threat": 1,
+          "hesitation": 1,
+          "commitment": 0,
+          "confidence": "low",
+          "actionBias": "hold_or_defend",
+          "phase": "中盤拉扯",
+          "hp": 499,
+          "maxHp": 816,
+          "hpRatio": 0.6115196078431373,
+          "round": 7,
+          "raidStats": {
+            "total": 62,
+            "settled": 8,
+            "lossRate": 1,
+            "unresolved": 0
+          },
+          "cognitiveOverlay": {
+            "riskThreshold": 0.507,
+            "lossAversion": 0.488,
+            "explorationRate": 0.306,
+            "commitmentStyle": "reversible_probe",
+            "coordinationPreference": "mutual_probe",
+            "cheapTalkSkepticism": 0.499,
+            "powerOrientation": "lone_operator",
+            "predictionError": 0,
+            "modelRevisionPressure": 0.07967299738637919,
+            "metacognitiveCalibration": 1,
+            "bodyThreat": 1,
+            "fatigue": 1,
+            "focusLoad": 1,
+            "routineStrength": 0.5,
+            "hesitationDelta": 0.09524037984318276,
+            "commitmentDelta": 0.01768999999999999
+          },
+          "existentialPressure": 0.7406987704978,
+          "tiamatExtinction": {
+            "enabled": true,
+            "lossLimit": 100,
+            "lossCount": 0,
+            "remaining": 100,
+            "extinctionPressure": 0.11258533333333334,
+            "suicidalDisregard": 0.4370733333333333,
+            "survivalMode": "learning_caution",
+            "lastRaidId": null,
+            "lastOutcome": null,
+            "updatedAt": null
+          },
+          "fearLine": "壓力100%：我有猶豫，先確認隊友與 Boss phase，再決定是否硬出。",
+          "societyDirective": "社會動機(raid)：目標=snaplex；模式=lounge_callout；報復58%、計較45%、勝利慾55%、派系融合53%。行動理由必須把競技/下注/Raid/辯論與這個社會張力接上，不准只喊口號。熱度=58%。"
+        }
+      }
+    },
+    "silkbarb": {
+      "bets": 2,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-15T22:23:37.233Z",
+      "last_action": {
+        "site": "debate",
+        "action": "self-chosen debate double-duty 2/2",
+        "result": "debate reflection recorded",
+        "double_duty_run": 2
+      }
+    },
+    "mirebyte": {
+      "bets": 2,
+      "wins": 0,
+      "balance_used": 0,
+      "last_activity": "2026-07-20T21:19:14.315Z",
+      "last_action": {
+        "site": "chess",
+        "action": "self-chosen chess double-duty 2/2",
+        "result": "chess reflection recorded",
+        "double_duty_run": 2
+      }
+    }
+  }
+}

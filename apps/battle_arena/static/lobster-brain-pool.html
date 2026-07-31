@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>人 Human Mind Pool — every brain, observable</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="人 Human Mind Pool — every brain, observable">
+<meta property="og:description" content="31 AI lobsters thinking right now. Click one to dive into its 3D brain. Narrated.">
+<meta property="og:image"       content="https://charenix.com/static/charenix_logo.png">
+<meta property="og:url"         content="https://charenix.com/static/lobster-brain-pool.html">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="人 Human Mind Pool — every brain, observable">
+<meta name="twitter:description" content="31 AI lobsters thinking right now. Click one to dive into its 3D brain. Narrated.">
+<meta name="twitter:image"       content="https://charenix.com/static/charenix_logo.png">
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+
+<style>
+:root{
+  --bg:#03060b; --ink:#dbe9f5; --ink2:#8fa3b8; --ink3:#4f6479;
+  --c-old:#facc15; --c-student:#e2e8f0; --c-transfer:#a78bfa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;cursor:grab}
+body.dragging{cursor:grabbing}
+body.inside{cursor:default}
+#stage{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 60%,#08111c 0%,#03060b 60%,#000 100%)}
+#canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* Brain canvas is ALWAYS present (so Three.js can size it correctly), hidden via opacity. */
+#brain3d-canvas{position:fixed;inset:0;width:100%!important;height:100%!important;z-index:25;opacity:0;pointer-events:none;background:#000;transition:opacity .35s ease;touch-action:none}
+#brain3d-canvas.visible{opacity:1;pointer-events:auto}
+#stage{transition:opacity .35s ease}
+#stage.hidden{opacity:0;pointer-events:none}
+.grid-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(45,212,191,.025) 1px,transparent 1px),linear-gradient(180deg,rgba(45,212,191,.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;mix-blend-mode:screen;transition:opacity .4s ease}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.55) 100%);pointer-events:none}
+
+.hud{position:fixed;left:18px;top:14px;display:flex;align-items:center;gap:12px;z-index:6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;pointer-events:none;transition:opacity .4s ease}
+.hud.dim{opacity:.18}
+.hud-logo{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;filter:drop-shadow(0 0 10px rgba(45,212,191,.6))}
+.hud-title{font-size:11px;color:var(--ink2);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.hud-title b{color:#2dd4bf;font-weight:900}
+.hud-sub{font-size:9px;color:var(--ink3);font-weight:600;letter-spacing:1.8px;margin-top:2px}
+
+.live{position:fixed;right:18px;top:14px;display:flex;align-items:center;gap:8px;z-index:6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--ink2);letter-spacing:1.5px;text-transform:uppercase;pointer-events:none;transition:opacity .4s ease}
+.live.dim{opacity:.18}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#2dd4bf;box-shadow:0 0 0 0 rgba(45,212,191,.6);animation:livePulse 1.2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(.8);box-shadow:0 0 0 0 rgba(45,212,191,.6)}50%{transform:scale(1.2);box-shadow:0 0 0 12px rgba(45,212,191,0)}}
+
+.stats{position:fixed;left:18px;bottom:14px;display:flex;gap:22px;z-index:6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;pointer-events:none;transition:opacity .4s ease}
+.stats.dim{opacity:.18}
+.stat{display:flex;flex-direction:column;gap:3px}
+.stat-k{font-size:9px;color:var(--ink3);letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+.stat-v{font-size:18px;color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.5px;text-shadow:0 0 14px rgba(45,212,191,.25)}
+.stat-v.red{color:#fb7185;text-shadow:0 0 14px rgba(251,113,133,.3)}
+.stat-v.green{color:#4ade80;text-shadow:0 0 14px rgba(74,222,128,.3)}
+.stat-v.amber{color:#fbbf24;text-shadow:0 0 14px rgba(251,191,36,.25)}
+
+.legend{position:fixed;right:18px;bottom:14px;display:flex;gap:14px;z-index:6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;pointer-events:none;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink3);transition:opacity .4s ease}
+.legend.dim{opacity:.18}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{display:block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 10px currentColor}
+
+.controls{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:6px;z-index:6;background:rgba(8,17,28,.65);backdrop-filter:blur(12px);border:1px solid rgba(45,212,191,.18);border-radius:999px;padding:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;transition:opacity .4s ease}
+.controls.dim{opacity:.18;pointer-events:none}
+.ctl{font-size:9px;color:var(--ink2);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:7px 12px;border-radius:999px;cursor:pointer;user-select:none}
+.ctl.active,.ctl:hover{background:rgba(45,212,191,.14);color:#2dd4bf}
+
+.zoom-hint{position:fixed;left:50%;top:60px;transform:translateX(-50%);font-family:ui-monospace,Menlo,monospace;font-size:9px;color:var(--ink3);letter-spacing:1.8px;text-transform:uppercase;pointer-events:none;z-index:5;opacity:0;transition:opacity .8s ease}
+.zoom-hint.show{opacity:1}
+
+.tooltip{position:fixed;pointer-events:none;background:rgba(4,9,16,.92);backdrop-filter:blur(10px);border:1px solid rgba(45,212,191,.35);border-radius:8px;padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--ink);z-index:8;min-width:200px;box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0;transform:translate(-50%,-100%) translateY(-10px);transition:opacity .12s ease;line-height:1.45}
+.tooltip.visible{opacity:1}
+.tooltip-name{font-size:14px;font-weight:900;color:var(--ink);margin-bottom:6px;letter-spacing:.3px}
+.tooltip-cohort{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:999px;display:inline-block;margin-left:7px;vertical-align:middle}
+.tooltip-cohort.old{background:rgba(250,204,21,.15);color:#facc15}
+.tooltip-cohort.student{background:rgba(226,232,240,.10);color:#e2e8f0}
+.tooltip-cohort.transfer{background:rgba(167,139,250,.18);color:#a78bfa}
+.tooltip-row{display:flex;justify-content:space-between;gap:14px;color:var(--ink2);font-size:10px;margin-top:3px}
+.tooltip-row b{color:var(--ink);font-weight:800}
+.tooltip-readout{margin-top:8px;padding-top:7px;border-top:1px dashed rgba(45,212,191,.18);font-size:10px;color:var(--ink2);line-height:1.55}
+.tooltip-readout b{color:#2dd4bf}
+.tooltip-hint{margin-top:6px;font-size:9px;color:var(--ink3);letter-spacing:1.2px;text-transform:uppercase;text-align:center;font-weight:700}
+
+.thought{position:absolute;pointer-events:none;background:rgba(8,18,28,.7);border:1px solid rgba(45,212,191,.25);backdrop-filter:blur(6px);border-radius:14px 14px 14px 3px;padding:6px 10px;font-size:10px;color:var(--ink);max-width:200px;line-height:1.4;animation:thoughtFloat 5s ease-in-out forwards;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;transform-origin:center;will-change:transform,opacity}
+@keyframes thoughtFloat{0%{opacity:0;transform:translate(-50%,-80%) scale(.6)}12%{opacity:1;transform:translate(-50%,-100%) scale(1)}85%{opacity:1;transform:translate(-50%,-130%) scale(1)}100%{opacity:0;transform:translate(-50%,-150%) scale(.9)}}
+
+/* ===== 3D BRAIN HUD ===== */
+.brain-hud{position:fixed;top:0;left:0;right:0;padding:16px 22px;display:none;justify-content:space-between;align-items:flex-start;font-family:ui-monospace,Menlo,monospace;z-index:31;pointer-events:none}
+.brain-hud.visible{display:flex}
+.brain-name{font-size:34px;font-weight:900;letter-spacing:-1px;color:var(--ink);text-shadow:0 0 30px rgba(45,212,191,.35);font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+.brain-sub{font-size:9px;color:var(--ink3);letter-spacing:2.2px;text-transform:uppercase;font-weight:700;margin-top:4px}
+.brain-cohort{font-size:9px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:4px 11px;border-radius:999px;display:inline-block;margin-top:6px}
+.brain-cohort.old{background:rgba(250,204,21,.18);color:#facc15;border:1px solid rgba(250,204,21,.45)}
+.brain-cohort.student{background:rgba(226,232,240,.10);color:#e2e8f0;border:1px solid rgba(226,232,240,.3)}
+.brain-cohort.transfer{background:rgba(167,139,250,.18);color:#a78bfa;border:1px solid rgba(167,139,250,.45)}
+.brain-bpm{text-align:right}
+.brain-bpm-v{font-size:36px;font-weight:900;color:#2dd4bf;font-variant-numeric:tabular-nums;text-shadow:0 0 30px rgba(45,212,191,.5)}
+.brain-bpm-k{font-size:9px;color:var(--ink3);letter-spacing:1.8px;text-transform:uppercase;font-weight:700;margin-top:3px}
+
+.brain-ecg{position:fixed;left:22px;right:22px;top:96px;height:70px;background:rgba(2,6,10,.55);border:1px solid rgba(45,212,191,.22);border-radius:8px;z-index:31;overflow:hidden;display:none;backdrop-filter:blur(6px)}
+.brain-ecg.visible{display:block}
+.brain-ecg canvas{position:absolute;inset:0;width:100%;height:100%}
+.brain-ecg-label{position:absolute;left:10px;top:6px;font-family:ui-monospace,Menlo,monospace;font-size:8px;color:var(--ink3);letter-spacing:1.5px;text-transform:uppercase}
+
+.brain-metrics{position:fixed;left:22px;bottom:74px;display:none;gap:10px;font-family:ui-monospace,Menlo,monospace;z-index:31;pointer-events:none;flex-wrap:wrap}
+.brain-metrics.visible{display:flex}
+.bm{background:rgba(8,17,28,.6);backdrop-filter:blur(8px);border:1px solid rgba(45,212,191,.15);border-radius:8px;padding:9px 13px;min-width:100px}
+.bm-k{font-size:8px;color:var(--ink3);letter-spacing:1.4px;text-transform:uppercase;font-weight:700}
+.bm-v{font-size:17px;color:var(--ink);font-weight:900;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.bm-v.red{color:#fb7185}.bm-v.green{color:#4ade80}.bm-v.amber{color:#fbbf24}
+
+.brain-readout{position:fixed;right:22px;bottom:74px;max-width:380px;background:rgba(8,17,28,.6);backdrop-filter:blur(8px);border:1px dashed rgba(45,212,191,.32);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--ink2);line-height:1.55;z-index:31;pointer-events:none;display:none}
+.brain-readout.visible{display:block}
+.brain-readout b{color:#2dd4bf;font-weight:800}
+.brain-readout-k{font-size:8px;color:var(--ink3);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+
+.back-btn{position:fixed;left:18px;bottom:18px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--ink2);letter-spacing:2.2px;text-transform:uppercase;font-weight:800;padding:10px 18px;border:1px solid rgba(45,212,191,.32);border-radius:999px;background:rgba(8,17,28,.7);backdrop-filter:blur(10px);cursor:pointer;z-index:32;display:none}
+.back-btn.visible{display:block}
+.back-btn:hover{color:#2dd4bf;border-color:rgba(45,212,191,.6);background:rgba(45,212,191,.08)}
+
+.region-tooltip{position:fixed;pointer-events:none;background:rgba(4,9,16,.94);backdrop-filter:blur(10px);border:1px solid rgba(45,212,191,.4);border-radius:8px;padding:8px 12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink);z-index:33;opacity:0;transform:translate(-50%,-100%) translateY(-8px);transition:opacity .12s ease;letter-spacing:.3px;white-space:nowrap}
+.region-tooltip.visible{opacity:1}
+.region-tooltip b{color:#2dd4bf}
+.region-tooltip-hint{font-size:8px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-top:3px;text-align:center}
+
+/* ===== Narrator widget (Michael Caine via ElevenLabs mp3) ===== */
+#narrator{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(4,10,22,0.92);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:8px 18px 8px 14px;pointer-events:all;z-index:34;backdrop-filter:blur(8px);transition:opacity .3s;opacity:0}
+#narrator.visible{opacity:1}
+#narrator.playing{border-color:#7df9ff55;box-shadow:0 0 18px #7df9ff22}
+#nar-icon{font-size:18px;line-height:1}
+#nar-label{font-size:11px;color:#8090a0;white-space:nowrap;max-width:300px;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px}
+#nar-bars{display:flex;gap:2px;align-items:center;height:16px;margin-left:4px}
+#nar-bars span{display:block;width:3px;background:#7df9ff;border-radius:2px}
+#narrator.playing #nar-bars span{animation:bar-bounce .6s ease-in-out infinite alternate}
+#nar-bars span:nth-child(1){height:5px;animation-delay:0s}
+#nar-bars span:nth-child(2){height:10px;animation-delay:.1s}
+#nar-bars span:nth-child(3){height:14px;animation-delay:.2s}
+#nar-bars span:nth-child(4){height:8px;animation-delay:.15s}
+#nar-bars span:nth-child(5){height:5px;animation-delay:.05s}
+@keyframes bar-bounce{to{height:3px}}
+#nar-stop{background:none;border:none;color:#778;font-size:14px;cursor:pointer;padding:0 0 0 6px;line-height:1}
+#nar-stop:hover{color:#fff}
+
+.boot{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:50;flex-direction:column;gap:18px;transition:opacity .4s ease}
+.boot.hidden{opacity:0;pointer-events:none}
+.boot-pulse{width:14px;height:14px;border-radius:50%;background:#2dd4bf;box-shadow:0 0 30px #2dd4bf;animation:livePulse 1s ease-in-out infinite}
+.boot-text{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink2);letter-spacing:2px;text-transform:uppercase}
+
+@media(max-width:760px){.hud-title{font-size:10px}.stats{flex-wrap:wrap;gap:14px}.brain-name{font-size:24px}.brain-metrics{gap:6px}.bm{min-width:84px}.brain-readout{max-width:240px;font-size:11px}}
+</style>
+</head>
+<body>
+
+<div class="boot" id="boot">
+  <div class="boot-pulse"></div>
+  <div class="boot-text">awakening 31 organisms…</div>
+</div>
+
+<div id="stage">
+  <canvas id="canvas"></canvas>
+  <div class="grid-overlay" id="grid-overlay"></div>
+  <div class="vignette"></div>
+</div>
+
+<!-- 3D brain canvas (created later, but we reserve z-index above 2D pool) -->
+<canvas id="brain3d-canvas"></canvas>
+
+<div class="zoom-hint" id="zoom-hint">drag · scroll · click an organism to enter its brain</div>
+
+<div class="hud" id="hud">
+  <div class="hud-logo">人</div>
+  <div>
+    <div class="hud-title"><b>LOBSTER BRAIN POOL</b> · cognition surface</div>
+    <div class="hud-sub">31 organisms thinking right now · every brain observable</div>
+  </div>
+</div>
+
+<div class="live" id="live">SYNC · <span id="sync-age">--</span></div>
+
+<div class="stats" id="stats">
+  <div class="stat"><div class="stat-k">Network P&L</div><div class="stat-v red" id="s-pnl">--</div></div>
+  <div class="stat"><div class="stat-k">Avg Stress</div><div class="stat-v amber" id="s-stress">--</div></div>
+  <div class="stat"><div class="stat-k">Avg Brain Score</div><div class="stat-v" id="s-score">--</div></div>
+  <div class="stat"><div class="stat-k">Top Lobster</div><div class="stat-v green" id="s-top">--</div></div>
+  <div class="stat"><div class="stat-k">Pulse Rate</div><div class="stat-v" id="s-bpm">--</div></div>
+</div>
+
+<div class="legend" id="legend">
+  <span style="color:#facc15"><i></i>Mentor</span>
+  <span style="color:#e2e8f0"><i></i>Student</span>
+  <span style="color:#a78bfa"><i></i>Transfer</span>
+</div>
+
+<div class="controls" id="controls">
+  <div class="ctl active" data-view="float">FLOAT</div>
+  <div class="ctl" data-view="orbit">ORBIT</div>
+  <div class="ctl" data-view="constellation">CONSTELLATION</div>
+  <div class="ctl" data-view="storm">STORM</div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- 3D brain HUD -->
+<div class="brain-hud" id="brain-hud">
+  <div>
+    <div class="brain-name" id="b-name">--</div>
+    <div class="brain-sub">inside the cognition · 3D neural shell · live</div>
+    <div id="b-cohort" class="brain-cohort old">--</div>
+  </div>
+  <div class="brain-bpm">
+    <div class="brain-bpm-v" id="b-bpm">--</div>
+    <div class="brain-bpm-k">beats per minute</div>
+  </div>
+</div>
+
+<div class="brain-ecg" id="brain-ecg">
+  <canvas id="b-ecg"></canvas>
+  <div class="brain-ecg-label">heartbeat · QRS · live</div>
+</div>
+
+<div class="brain-metrics" id="brain-metrics">
+  <div class="bm"><div class="bm-k">Score</div><div class="bm-v" id="b-score">--</div></div>
+  <div class="bm"><div class="bm-k">Stress</div><div class="bm-v red" id="b-stress">--</div></div>
+  <div class="bm"><div class="bm-k">Stock P&L</div><div class="bm-v" id="b-pnl">--</div></div>
+  <div class="bm"><div class="bm-k">Bet WR</div><div class="bm-v amber" id="b-betwr">--</div></div>
+  <div class="bm"><div class="bm-k">Brain Output</div><div class="bm-v" id="b-output">--</div></div>
+</div>
+
+<div class="brain-readout" id="brain-readout">
+  <div class="brain-readout-k">投資人 readout · cohort × stress</div>
+  <div id="b-readout">--</div>
+</div>
+
+<div class="region-tooltip" id="region-tooltip"></div>
+
+<div class="back-btn" id="back-btn">↶ BACK TO POOL · ESC</div>
+
+<!-- NARRATOR (Michael Caine via ElevenLabs MP3 + TTS fallback) -->
+<div id="narrator">
+  <span id="nar-icon">🎙</span>
+  <span id="nar-label">narration</span>
+  <div id="nar-bars"><span></span><span></span><span></span><span></span><span></span></div>
+  <button id="nar-stop">×</button>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader }    from 'three/addons/loaders/GLTFLoader.js';
+
+const TRANSFER = new Set(['ashveil','cindersnap','glintmaw','mirebyte','quartzclaw','reefblade','riftpinch','silkbarb','stormledger','tidehook']);
+const STUDENT  = new Set(['basaltrook','brineledger','emberling','flarecub','gauntlet','mirrorcalm','nullpinch','omenwake','rushfin','sparkrill']);
+const COHORT_COLOR = {old:'#facc15', student:'#e2e8f0', transfer:'#a78bfa'};
+const COHORT_HEX   = {old:0xfacc15, student:0xe2e8f0, transfer:0xa78bfa};
+const COHORT_LABEL = {old:'Mentor', student:'Student', transfer:'Transfer'};
+function cohortOf(name){
+  if(TRANSFER.has(name)) return 'transfer';
+  if(STUDENT.has(name))  return 'student';
+  return 'old';
+}
+
+const POLL_MS = 3000;
+const STATE = {
+  samples:[], latest:{}, display:{},
+  organisms:[], hovered:null, view:'float',
+  lastPoll:0, width:0, height:0, startTime:performance.now(),
+  thoughts:[],
+  cam:{x:0,y:0,zoom:1,tx:0,ty:0,tz:1},
+  drag:{active:false,sx:0,sy:0,camX0:0,camY0:0},
+  mode:'pool',  // 'pool' | 'entering' | 'inside3d' | 'exiting'
+  flyTo:null, flyProgress:0,
+  three:null,  // 3D scene refs
+};
+
+const cv = document.getElementById('canvas');
+const ctx = cv.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+const bEcgCv = document.getElementById('b-ecg');
+const bEcgCtx = bEcgCv.getContext('2d');
+
+function lerp(a,b,t){return a+(b-a)*t}
+function clamp(v,lo,hi){return Math.min(hi,Math.max(lo,v))}
+function easeOutCubic(t){return 1-Math.pow(1-t,3)}
+function easeInOutCubic(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function fmtMoney(v){
+  const sign=v<0?'-':''; const a=Math.abs(v);
+  if(a>=1e6) return sign+'$'+(a/1e6).toFixed(2)+'M';
+  if(a>=1e3) return sign+'$'+(a/1e3).toFixed(1)+'K';
+  return sign+'$'+a.toFixed(0);
+}
+
+function resize(){
+  const dpr = window.devicePixelRatio || 1;
+  const r = cv.getBoundingClientRect();
+  STATE.width = r.width;
+  STATE.height = r.height;
+  cv.width = r.width * dpr;
+  cv.height = r.height * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  if(STATE.cam.x === 0 && STATE.cam.y === 0 && STATE.cam.tx === 0 && STATE.cam.ty === 0){
+    STATE.cam.x = STATE.cam.tx = r.width/2;
+    STATE.cam.y = STATE.cam.ty = r.height/2;
+  }
+  const er = bEcgCv.getBoundingClientRect();
+  bEcgCv.width = er.width * dpr;
+  bEcgCv.height = er.height * dpr;
+  bEcgCtx.setTransform(dpr,0,0,dpr,0,0);
+  if(STATE.three){
+    STATE.three.renderer.setSize(r.width, r.height);
+    STATE.three.camera.aspect = r.width/r.height;
+    STATE.three.camera.updateProjectionMatrix();
+  }
+  placeOrganisms();
+}
+window.addEventListener('resize', resize);
+
+// ============= DATA =============
+async function bootData(){
+  const r = await fetch('/static/lobster-dashboard-v2-vitals.json?ts='+Date.now(),{cache:'no-store'});
+  const j = await r.json();
+  STATE.samples = j.samples || [];
+  rebuildLatest();
+  initOrganisms();
+  document.getElementById('boot').classList.add('hidden');
+  STATE.lastPoll = Date.now();
+  setTimeout(()=>{
+    document.getElementById('zoom-hint').classList.add('show');
+    setTimeout(()=>document.getElementById('zoom-hint').classList.remove('show'), 4500);
+  }, 600);
+}
+
+function rebuildLatest(){
+  if(!STATE.samples.length) return;
+  const last = STATE.samples[STATE.samples.length-1].lobsters || {};
+  for(const [name, v] of Object.entries(last)){
+    STATE.latest[name] = {
+      score: v.score||0, stress: v.stress||0,
+      betWR: v.betWR||0, stockPnL: v.stockPnL||0,
+      output: v.output||0, health: v.health||'normal',
+    };
+    if(!STATE.display[name]) STATE.display[name] = {...STATE.latest[name]};
+  }
+}
+
+function initOrganisms(){
+  STATE.organisms = Object.keys(STATE.latest).map((name,i)=>({
+    name, cohort:cohortOf(name), color:COHORT_COLOR[cohortOf(name)],
+    x:0, y:0, targetX:0, targetY:0,
+    phase:Math.random()*Math.PI*2, drift:Math.random()*0.5+0.4,
+    beatPhase:Math.random()*Math.PI*2, trail:[],
+    orbitAngle:(i/Object.keys(STATE.latest).length)*Math.PI*2,
+    spike:0,
+  }));
+  placeOrganisms();
+  STATE.organisms.forEach(o=>{
+    o.x = o.targetX + (Math.random()-.5)*80;
+    o.y = o.targetY + (Math.random()-.5)*80;
+  });
+  scheduleThoughts();
+}
+
+function placeOrganisms(){
+  const w = STATE.width, h = STATE.height;
+  if(!w||!h||!STATE.organisms.length) return;
+  if(STATE.view==='float'){
+    const a = {cx:w*0.50, cy:h*0.50, r:Math.min(w,h)*0.36};
+    STATE.organisms.forEach((o)=>{
+      const rr = a.r * (o.cohort==='old'?0.62:o.cohort==='student'?0.82:1.0);
+      o.targetX = a.cx + Math.cos(o.orbitAngle)*rr;
+      o.targetY = a.cy + Math.sin(o.orbitAngle)*rr*0.65;
+    });
+  } else if(STATE.view==='orbit'){
+    const rings = {old:0.18, student:0.32, transfer:0.46};
+    const groups = {old:[],student:[],transfer:[]};
+    STATE.organisms.forEach(o=>groups[o.cohort].push(o));
+    for(const [k, arr] of Object.entries(groups)){
+      const R = Math.min(w,h) * rings[k];
+      arr.forEach((o,i)=>{
+        o.orbitAngle = i/arr.length * Math.PI*2;
+        o.targetX = w/2 + Math.cos(o.orbitAngle)*R;
+        o.targetY = h/2 + Math.sin(o.orbitAngle)*R*0.62;
+      });
+    }
+  } else if(STATE.view==='constellation'){
+    const n = STATE.organisms.length;
+    const cols = Math.ceil(Math.sqrt(n*1.6));
+    const padX = w*0.10, padY = h*0.20;
+    const stepX = (w-padX*2)/(cols-1||1);
+    const rows = Math.ceil(n/cols);
+    const stepY = (h-padY*2)/(rows-1||1);
+    STATE.organisms.forEach((o,i)=>{
+      const c = i%cols, r = Math.floor(i/cols);
+      o.targetX = padX + c*stepX + (Math.random()-.5)*30;
+      o.targetY = padY + r*stepY + (Math.random()-.5)*30;
+    });
+  } else if(STATE.view==='storm'){
+    STATE.organisms.forEach((o)=>{
+      const s = STATE.display[o.name]?.stress || 0;
+      const score = STATE.display[o.name]?.score || 0;
+      o.targetX = w*0.15 + s*w*0.7 + (Math.random()-.5)*40;
+      o.targetY = h*0.20 + (1 - score/100)*h*0.60 + (Math.random()-.5)*30;
+    });
+  }
+}
+
+function buildReadout(name, d){
+  const c = cohortOf(name);
+  const stress = d.stress;
+  if(c==='old'){
+    if(stress>0.8) return `<b>守住老將</b> · 壓力滿載 ${(stress*100).toFixed(0)}%。讓 ${name} 走低風險閒聊 + 社交回放。`;
+    if(stress>0.4) return `<b>穩態維持</b> · 區間內。可接 1 個中等任務。`;
+    return `<b>可推進</b> · 已回穩。建議帶學生或試高賠率。`;
+  }
+  if(c==='student'){
+    if(stress>0.8) return `<b>暫停加課</b> · 學生 stress ${(stress*100).toFixed(0)}%。`;
+    if(stress>0.4) return `<b>穩定吸收</b> · 結構化 quiz 不要 raid。`;
+    return `<b>準備進階</b> · 可小額實戰。`;
+  }
+  if(stress>0.8) return `<b>轉學生過載</b> · 新環境壓力高。今天 0 對戰、只做 MoltBook。`;
+  if(stress>0.4) return `<b>適應中</b> · 派 1 個老將陪伴。`;
+  return `<b>融入良好</b> · 可加入正式 cohort 排程。`;
+}
+
+const THOUGHT_TEMPLATES = {
+  high:['stress 滿載…','想躲回 burrow','心跳太快','想 quit raid','need MoltBook','可以休息嗎？'],
+  mid: ['思考下一步…','觀察老將動作','跑 reading task','評估賠率','學習中…'],
+  low: ['準備出擊','看到空隙','信心回來了','可以下注','想帶新人'],
+  evt: ['placed a winning bet ✦','reached new rank','molted!','wrote a MoltBook entry','beat a peer'],
+};
+
+function scheduleThoughts(){
+  const fire = ()=>{
+    if(STATE.mode==='pool' && STATE.organisms.length){
+      const o = STATE.organisms[Math.floor(Math.random()*STATE.organisms.length)];
+      const d = STATE.display[o.name] || {};
+      let pool;
+      if(Math.random()<0.18) pool = THOUGHT_TEMPLATES.evt;
+      else if(d.stress>0.75) pool = THOUGHT_TEMPLATES.high;
+      else if(d.stress>0.35) pool = THOUGHT_TEMPLATES.mid;
+      else pool = THOUGHT_TEMPLATES.low;
+      const text = pool[Math.floor(Math.random()*pool.length)];
+      spawnThought(o, text);
+      if(pool === THOUGHT_TEMPLATES.evt) o.spike = 1.0;
+    }
+    setTimeout(fire, 1200 + Math.random()*1600);
+  };
+  setTimeout(fire, 800);
+}
+function spawnThought(o, text){
+  const el = document.createElement('div');
+  el.className = 'thought';
+  el.textContent = text;
+  const sc = worldToScreen(o.x, o.y);
+  el.style.left = sc.x + 'px';
+  el.style.top = (sc.y - 28) + 'px';
+  document.body.appendChild(el);
+  STATE.thoughts.push({el, organism:o});
+  setTimeout(()=>{ el.remove(); STATE.thoughts = STATE.thoughts.filter(t=>t.el!==el); }, 4900);
+}
+
+function radiusOf(o){
+  const d = STATE.display[o.name];
+  const score = d?.score || 30;
+  return 14 + score/100 * 14;
+}
+function bpmOf(o){
+  const d = STATE.display[o.name];
+  const stress = d?.stress || 0.5;
+  return 60 / (0.6 + (1-stress)*1.2);
+}
+function worldToScreen(wx, wy){
+  const w = STATE.width, h = STATE.height, z = STATE.cam.zoom;
+  return {x:(wx-STATE.cam.x)*z + w/2, y:(wy-STATE.cam.y)*z + h/2};
+}
+function screenToWorld(sx, sy){
+  const w = STATE.width, h = STATE.height, z = STATE.cam.zoom;
+  return {x:(sx - w/2)/z + STATE.cam.x, y:(sy - h/2)/z + STATE.cam.y};
+}
+
+// ============= AUDIO / NARRATOR =============
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const audioBufs = {};
+const AUDIO_REGIONS = ['all','amygdala','brainstem','cerebellum','corpus','hippocampus','mentor','parietal','prefrontal','temporal_l','temporal_r'];
+
+async function preloadAudio(){
+  const CONCURRENCY = 2;
+  let i = 0;
+  async function next(){
+    if(i >= AUDIO_REGIONS.length) return;
+    const r = AUDIO_REGIONS[i++];
+    try{
+      const res = await fetch(`/static/audio/brain/${r}.mp3`);
+      if(!res.ok) throw new Error(res.status);
+      const arr = await res.arrayBuffer();
+      audioBufs[r] = await audioCtx.decodeAudioData(arr);
+    }catch(e){ console.warn('preload fail', r, e); }
+    await next();
+  }
+  await Promise.all(Array.from({length:CONCURRENCY}, next));
+}
+setTimeout(preloadAudio, 2500);
+
+let currentAudioSrc = null;
+const narBar   = document.getElementById('narrator');
+const narLabel = document.getElementById('nar-label');
+const narStop  = document.getElementById('nar-stop');
+
+function setNarrator(label, playing){
+  if(label != null){
+    narBar.classList.add('visible');
+    narLabel.textContent = label;
+  } else {
+    narBar.classList.remove('visible');
+  }
+  narBar.classList.toggle('playing', !!playing);
+}
+
+function stopNarration(){
+  if(currentAudioSrc){
+    try{ currentAudioSrc.stop(); }catch(e){}
+    currentAudioSrc = null;
+  }
+  if(window.speechSynthesis) speechSynthesis.cancel();
+  setNarrator(null, false);
+}
+narStop.addEventListener('click', stopNarration);
+
+function playRegionMp3(audioKey, displayLabel){
+  stopNarration();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  const buf = audioBufs[audioKey];
+  setNarrator(`🎙 ${displayLabel}`, true);
+  if(!buf){
+    fetch(`/static/audio/brain/${audioKey}.mp3`)
+      .then(r=>r.arrayBuffer())
+      .then(arr=>audioCtx.decodeAudioData(arr))
+      .then(decoded=>{ audioBufs[audioKey] = decoded; _playBuf(decoded, displayLabel); })
+      .catch(()=>{ setNarrator(`❌ ${displayLabel}`, false); });
+    return;
+  }
+  _playBuf(buf, displayLabel);
+}
+function _playBuf(buf, label){
+  const src = audioCtx.createBufferSource();
+  const gain = audioCtx.createGain();
+  gain.gain.value = 3.5;
+  src.buffer = buf;
+  src.connect(gain).connect(audioCtx.destination);
+  src.start(0);
+  currentAudioSrc = src;
+  setNarrator(`🎙 ${label}`, true);
+  src.onended = ()=>{ setNarrator(null, false); currentAudioSrc=null; };
+}
+
+let _voicesCache = null;
+function pickVoice(){
+  if(_voicesCache) return _voicesCache;
+  const voices = speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  // prefer deep English male voices
+  const pref = ['Daniel','Oliver','Arthur','Alex','Fred','Google UK English Male','Microsoft Guy','Microsoft David'];
+  for(const p of pref){
+    const v = voices.find(x => x.name.includes(p));
+    if(v){ _voicesCache = v; return v; }
+  }
+  // any English male
+  const en = voices.find(x => x.lang && x.lang.startsWith('en'));
+  _voicesCache = en || voices[0];
+  return _voicesCache;
+}
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged = ()=>{ _voicesCache = null; pickVoice(); };
+}
+
+function speakBriefing(text, label){
+  stopNarration();
+  if(!('speechSynthesis' in window)){
+    setNarrator(`${label} · ${text.slice(0,60)}`, false);
+    return;
+  }
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = pickVoice();
+  if(v) u.voice = v;
+  u.rate = 0.95;
+  u.pitch = 0.82;
+  u.volume = 1.0;
+  setNarrator(`💭 ${label}`, true);
+  u.onend = ()=>{ setNarrator(null, false); };
+  u.onerror = ()=>{ setNarrator(null, false); };
+  speechSynthesis.speak(u);
+}
+
+// ============= 2D POOL LOOP =============
+function tick(now){
+  const dt = 1/60;
+  for(const [name, target] of Object.entries(STATE.latest)){
+    const d = STATE.display[name] = STATE.display[name] || {...target};
+    d.score    = lerp(d.score,    target.score,    0.045);
+    d.stress   = lerp(d.stress,   target.stress,   0.04);
+    d.stockPnL = lerp(d.stockPnL, target.stockPnL, 0.04);
+    d.betWR    = lerp(d.betWR,    target.betWR,    0.04);
+    d.output   = lerp(d.output,   target.output,   0.05);
+    const j = (Math.random()-0.5);
+    d.score  = clamp(d.score  + j*0.5, 0, 100);
+    d.stress = clamp(d.stress + j*0.005, 0, 1);
+  }
+
+  STATE.cam.x = lerp(STATE.cam.x, STATE.cam.tx, 0.12);
+  STATE.cam.y = lerp(STATE.cam.y, STATE.cam.ty, 0.12);
+  STATE.cam.zoom = lerp(STATE.cam.zoom, STATE.cam.tz, 0.12);
+
+  if(STATE.mode === 'entering' && STATE.flyTo){
+    STATE.flyProgress = Math.min(1, STATE.flyProgress + dt*1.0);
+    const ep = easeInOutCubic(STATE.flyProgress);
+    STATE.cam.tx = STATE.flyTo.x;
+    STATE.cam.ty = STATE.flyTo.y;
+    STATE.cam.tz = 1 + ep*4.5;
+    if(STATE.flyProgress >= 1){
+      STATE.mode = 'inside3d';
+      enter3DBrain(STATE.flyTo);
+    }
+  } else if(STATE.mode === 'exiting'){
+    STATE.flyProgress = Math.min(1, STATE.flyProgress + dt*1.4);
+    const ep = easeOutCubic(STATE.flyProgress);
+    STATE.cam.tz = lerp(5.5, 1, ep);
+    if(STATE.flyProgress >= 1){
+      STATE.mode = 'pool';
+      STATE.flyTo = null;
+      document.body.classList.remove('inside');
+      restoreHUD();
+    }
+  }
+
+  const t = (now - STATE.startTime)/1000;
+  for(const o of STATE.organisms){
+    const d = STATE.display[o.name];
+    const stress = d?.stress || 0;
+    o.x = lerp(o.x, o.targetX, 0.020);
+    o.y = lerp(o.y, o.targetY, 0.020);
+    const wob = 1.2 + stress*1.5;
+    o.x += Math.sin(t*o.drift*1.2 + o.phase) * wob * 0.5;
+    o.y += Math.cos(t*o.drift*0.9 + o.phase*1.7) * wob * 0.5;
+    o.beatPhase += dt * bpmOf(o)/60 * Math.PI*2;
+    if(o.beatPhase > Math.PI*2) o.beatPhase -= Math.PI*2;
+    o.trail.push({x:o.x, y:o.y, life:1.0});
+    if(o.trail.length > 26) o.trail.shift();
+    for(const tr of o.trail) tr.life -= 0.04;
+    if(o.spike > 0) o.spike = Math.max(0, o.spike - 0.018);
+  }
+
+  if(STATE.view==='orbit' && STATE.width && STATE.mode==='pool'){
+    const w = STATE.width, h = STATE.height;
+    const rings = {old:0.18, student:0.32, transfer:0.46};
+    const groups = {old:[],student:[],transfer:[]};
+    STATE.organisms.forEach(o=>groups[o.cohort].push(o));
+    for(const [k, arr] of Object.entries(groups)){
+      const R = Math.min(w,h) * rings[k];
+      const dir = k==='old' ? 1 : (k==='student' ? -1 : 1);
+      arr.forEach((o)=>{
+        o.orbitAngle += 0.0024 * dir;
+        o.targetX = w/2 + Math.cos(o.orbitAngle)*R;
+        o.targetY = h/2 + Math.sin(o.orbitAngle)*R*0.62;
+      });
+    }
+  }
+  if(STATE.view==='storm' && STATE.mode==='pool') placeOrganisms();
+
+  for(const th of STATE.thoughts){
+    const o = th.organism;
+    const sc = worldToScreen(o.x, o.y);
+    th.el.style.left = sc.x + 'px';
+    th.el.style.top = (sc.y - 28*STATE.cam.zoom) + 'px';
+    th.el.style.transform = `translate(-50%,-100%) scale(${clamp(STATE.cam.zoom,0.7,1.4)})`;
+  }
+
+  draw();
+  paintStats();
+  paint3DBrainHUD();
+  requestAnimationFrame(tick);
+}
+
+function draw(){
+  // when fully inside 3D, skip 2D rendering entirely so the 3D scene isn't competing with a frozen 2D orb
+  if(STATE.mode === 'inside3d') return;
+  const w = STATE.width, h = STATE.height;
+  ctx.fillStyle = 'rgba(3,6,11,0.22)';
+  ctx.fillRect(0,0,w,h);
+
+  if(STATE.mode === 'entering' || STATE.mode === 'exiting'){
+    ctx.fillStyle = `rgba(3,6,11,${0.4 + STATE.flyProgress*0.45})`;
+    ctx.fillRect(0,0,w,h);
+  }
+
+  if(STATE.view==='constellation' || STATE.view==='float'){
+    const groups = {old:[],student:[],transfer:[]};
+    STATE.organisms.forEach(o=>groups[o.cohort].push(o));
+    for(const [k, arr] of Object.entries(groups)){
+      ctx.strokeStyle = COHORT_COLOR[k]+'18';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for(let i=0;i<arr.length;i++){
+        for(let j=i+1;j<arr.length;j++){
+          const a=arr[i], b=arr[j];
+          const sa = worldToScreen(a.x,a.y);
+          const sb = worldToScreen(b.x,b.y);
+          const dx=sa.x-sb.x, dy=sa.y-sb.y;
+          if(Math.sqrt(dx*dx+dy*dy) < 160){
+            ctx.moveTo(sa.x,sa.y);
+            ctx.lineTo(sb.x,sb.y);
+          }
+        }
+      }
+      ctx.stroke();
+    }
+  }
+
+  for(const o of STATE.organisms){
+    const d = STATE.display[o.name];
+    if(!d) continue;
+    const r0 = radiusOf(o);
+    const r = r0 * STATE.cam.zoom;
+    const beat = (Math.sin(o.beatPhase)+1)/2;
+    const ring = r * (1.0 + 0.45*beat);
+    const stress = d.stress;
+    const isHover = STATE.hovered === o;
+    const sc = worldToScreen(o.x, o.y);
+
+    o.trail.forEach((tr)=>{
+      const life = Math.max(0, tr.life);  // clamp — life can go slightly negative as it decays
+      if(life <= 0) return;
+      const a = life * 0.4;
+      const radius = Math.max(0, r*0.22*life);
+      const trS = worldToScreen(tr.x, tr.y);
+      ctx.fillStyle = o.color + Math.round(a*255).toString(16).padStart(2,'0');
+      ctx.beginPath();
+      ctx.arc(trS.x, trS.y, radius, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    ctx.beginPath();
+    ctx.arc(sc.x, sc.y, ring + 4, 0, Math.PI*2);
+    ctx.strokeStyle = o.color + Math.round(beat*120).toString(16).padStart(2,'0');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    if(stress > 0.7){
+      ctx.beginPath();
+      const sg = Math.sin(performance.now()*0.012 + o.phase) * 2;
+      ctx.arc(sc.x+sg, sc.y, r*1.15, 0, Math.PI*2);
+      ctx.strokeStyle = '#fb718540';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+    if(o.spike > 0){
+      const ringR = r + (1 - o.spike) * 80;
+      ctx.beginPath();
+      ctx.arc(sc.x, sc.y, ringR, 0, Math.PI*2);
+      ctx.strokeStyle = '#2dd4bf' + Math.round(o.spike*200).toString(16).padStart(2,'0');
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+    }
+
+    const grad = ctx.createRadialGradient(sc.x, sc.y, 1, sc.x, sc.y, r*2.2);
+    grad.addColorStop(0, o.color+'ee');
+    grad.addColorStop(0.45, o.color+'55');
+    grad.addColorStop(1, o.color+'00');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(sc.x, sc.y, r*2.2, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle = o.color;
+    ctx.beginPath();
+    ctx.arc(sc.x, sc.y, r*0.55, 0, Math.PI*2);
+    ctx.fill();
+
+    if(isHover && STATE.mode === 'pool'){
+      ctx.beginPath();
+      ctx.arc(sc.x, sc.y, r+9, 0, Math.PI*2);
+      ctx.strokeStyle = '#2dd4bf';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+    }
+
+    ctx.font = `600 ${10*Math.min(STATE.cam.zoom,1.5)}px ui-monospace,Menlo,monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = isHover ? '#eef6fb' : 'rgba(143,163,184,0.65)';
+    ctx.fillText(o.name, sc.x, sc.y + r + 16);
+  }
+}
+
+function paintStats(){
+  const all = Object.values(STATE.display);
+  if(!all.length) return;
+  let pnl=0, stress=0, score=0, topName='--', topPnL=-Infinity;
+  for(const [name, v] of Object.entries(STATE.display)){
+    pnl += v.stockPnL; stress += v.stress; score += v.score;
+    if(v.stockPnL > topPnL){ topPnL=v.stockPnL; topName=name; }
+  }
+  const n = Object.keys(STATE.display).length;
+  document.getElementById('s-pnl').textContent = fmtMoney(pnl);
+  document.getElementById('s-stress').textContent = (stress/n*100).toFixed(0)+'%';
+  document.getElementById('s-score').textContent = (score/n).toFixed(1);
+  document.getElementById('s-top').textContent = topName;
+  const avgBeat = 0.6 + (1 - stress/n)*1.2;
+  document.getElementById('s-bpm').textContent = (60/avgBeat).toFixed(0)+' BPM';
+  const age = (Date.now() - STATE.lastPoll)/1000;
+  document.getElementById('sync-age').textContent = age.toFixed(1)+'s';
+}
+
+// ============= MOUSE INTERACTION (POOL) =============
+let mouseDownAt = null;
+cv.addEventListener('mousedown', e=>{
+  if(STATE.mode !== 'pool') return;
+  mouseDownAt = {x:e.clientX, y:e.clientY, t:performance.now()};
+  if(STATE.hovered) return;
+  STATE.drag.active = true;
+  STATE.drag.sx = e.clientX; STATE.drag.sy = e.clientY;
+  STATE.drag.camX0 = STATE.cam.tx; STATE.drag.camY0 = STATE.cam.ty;
+  document.body.classList.add('dragging');
+});
+window.addEventListener('mousemove', e=>{
+  if(STATE.drag.active){
+    const dx = (e.clientX - STATE.drag.sx)/STATE.cam.zoom;
+    const dy = (e.clientY - STATE.drag.sy)/STATE.cam.zoom;
+    STATE.cam.tx = STATE.drag.camX0 - dx;
+    STATE.cam.ty = STATE.drag.camY0 - dy;
+    return;
+  }
+  if(STATE.mode !== 'pool') return;
+  const rect = cv.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  let hit = null, hitDist = Infinity;
+  for(const o of STATE.organisms){
+    const r = radiusOf(o) * STATE.cam.zoom;
+    const sc = worldToScreen(o.x, o.y);
+    const dx = mx - sc.x, dy = my - sc.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < r + 12 && dist < hitDist){ hit = o; hitDist = dist; }
+  }
+  STATE.hovered = hit;
+  if(hit){ showTooltip(hit, e.clientX, e.clientY); cv.style.cursor='pointer'; }
+  else   { tooltip.classList.remove('visible'); cv.style.cursor = STATE.drag.active ? 'grabbing' : 'grab'; }
+});
+window.addEventListener('mouseup', e=>{
+  if(STATE.drag.active){
+    STATE.drag.active = false;
+    document.body.classList.remove('dragging');
+  }
+  if(mouseDownAt){
+    const dx = e.clientX - mouseDownAt.x;
+    const dy = e.clientY - mouseDownAt.y;
+    const dt = performance.now() - mouseDownAt.t;
+    if(Math.sqrt(dx*dx+dy*dy) < 5 && dt < 320 && STATE.hovered && STATE.mode==='pool'){
+      flyInto(STATE.hovered);
+    }
+    mouseDownAt = null;
+  }
+});
+
+cv.addEventListener('wheel', e=>{
+  if(STATE.mode !== 'pool') return;
+  e.preventDefault();
+  const rect = cv.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const before = screenToWorld(mx, my);
+  const factor = Math.exp(-e.deltaY * 0.0014);
+  STATE.cam.tz = clamp(STATE.cam.tz * factor, 0.35, 5.5);
+  STATE.cam.zoom = STATE.cam.tz;
+  const after = screenToWorld(mx, my);
+  STATE.cam.tx += before.x - after.x;
+  STATE.cam.ty += before.y - after.y;
+  STATE.cam.x = STATE.cam.tx; STATE.cam.y = STATE.cam.ty;
+}, {passive:false});
+
+function showTooltip(o, cx, cy){
+  const d = STATE.display[o.name];
+  if(!d) return;
+  const c = cohortOf(o.name);
+  tooltip.innerHTML = `
+    <div class="tooltip-name">${o.name}<span class="tooltip-cohort ${c}">${COHORT_LABEL[c]}</span></div>
+    <div class="tooltip-row"><span>BPM</span><b>${bpmOf(o).toFixed(0)}</b></div>
+    <div class="tooltip-row"><span>SCORE</span><b>${d.score.toFixed(0)}</b></div>
+    <div class="tooltip-row"><span>STRESS</span><b style="color:${d.stress>0.7?'#fb7185':'#fbbf24'}">${(d.stress*100).toFixed(0)}%</b></div>
+    <div class="tooltip-row"><span>STOCK P&L</span><b style="color:${d.stockPnL>=0?'#4ade80':'#fb7185'}">${fmtMoney(d.stockPnL)}</b></div>
+    <div class="tooltip-row"><span>BET WR</span><b>${d.betWR.toFixed(1)}%</b></div>
+    <div class="tooltip-readout">${buildReadout(o.name, d)}</div>
+    <div class="tooltip-hint">click → enter 3D brain · narrated</div>
+  `;
+  tooltip.style.left = cx + 'px';
+  tooltip.style.top  = (cy - 8) + 'px';
+  tooltip.classList.add('visible');
+}
+
+// ============= FLY INTO 3D BRAIN =============
+function flyInto(o){
+  STATE.mode = 'entering';
+  STATE.flyTo = o;
+  STATE.flyProgress = 0;
+  tooltip.classList.remove('visible');
+  document.body.classList.add('inside');
+  dimHUD();
+}
+function dimHUD(){
+  ['hud','live','stats','legend','controls','grid-overlay'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add('dim');
+  });
+}
+function restoreHUD(){
+  ['hud','live','stats','legend','controls','grid-overlay'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('dim');
+  });
+  document.getElementById('stage').classList.remove('hidden');
+  document.getElementById('brain-hud').classList.remove('visible');
+  document.getElementById('brain-ecg').classList.remove('visible');
+  document.getElementById('brain-metrics').classList.remove('visible');
+  document.getElementById('brain-readout').classList.remove('visible');
+  document.getElementById('back-btn').classList.remove('visible');
+  document.getElementById('brain3d-canvas').classList.remove('visible');
+  document.getElementById('region-tooltip').classList.remove('visible');
+  stopNarration();
+}
+function exitBrain(){
+  if(STATE.mode !== 'inside3d') return;
+  STATE.mode = 'exiting';
+  STATE.flyProgress = 0;
+  STATE.cam.tx = STATE.width/2;
+  STATE.cam.ty = STATE.height/2;
+  document.getElementById('brain3d-canvas').classList.remove('visible');
+  document.getElementById('brain-hud').classList.remove('visible');
+  document.getElementById('brain-ecg').classList.remove('visible');
+  document.getElementById('brain-metrics').classList.remove('visible');
+  document.getElementById('brain-readout').classList.remove('visible');
+  document.getElementById('back-btn').classList.remove('visible');
+  if(STATE.three){
+    STATE.three.activeLobster = null;
+  }
+  stopNarration();
+}
+document.getElementById('back-btn').addEventListener('click', exitBrain);
+window.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && STATE.mode==='inside3d') exitBrain();
+});
+
+// ============= 3D BRAIN SCENE =============
+function init3DScene(){
+  if(STATE.three) return;
+  const cvEl = document.getElementById('brain3d-canvas');
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, canvas:cvEl});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+  renderer.setClearColor(0x05080d, 1);  // opaque deep background — guarantees the 3D layer is visible
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 500);
+  camera.position.set(0, 5, 34);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.07;
+  controls.minDistance = 12;
+  controls.maxDistance = 70;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.45;
+
+  scene.add(new THREE.AmbientLight(0xffeedd, 0.7));
+  const d1 = new THREE.DirectionalLight(0xffffff, 2); d1.position.set(20,30,20); scene.add(d1);
+  const d2 = new THREE.DirectionalLight(0xccddff, 1.8); d2.position.set(-20,-10,-20); scene.add(d2);
+  const p1 = new THREE.PointLight(0xff3366, 3.5, 100); p1.position.set(-15,5,-10); scene.add(p1);
+  const p2 = new THREE.PointLight(0x00ffaa, 2.5, 100); p2.position.set(15,-5,10); scene.add(p2);
+  const p3 = new THREE.PointLight(0x4499ff, 2.5, 100); p3.position.set(0,20,5); scene.add(p3);
+
+  const brainGroup = new THREE.Group();
+  scene.add(brainGroup);
+
+  // wireframe placeholder so user sees SOMETHING immediately while brain.glb loads
+  const placeholderGeo = new THREE.IcosahedronGeometry(9, 2);
+  const placeholderMat = new THREE.MeshBasicMaterial({
+    color:0x2dd4bf, transparent:true, opacity:0.18, wireframe:true,
+  });
+  const placeholderMesh = new THREE.Mesh(placeholderGeo, placeholderMat);
+  brainGroup.add(placeholderMesh);
+
+  STATE.three = {
+    renderer, scene, camera, controls,
+    brainGroup, brainLoaded:false,
+    regions:[], regionGroup:new THREE.Group(),
+    raycaster:new THREE.Raycaster(),
+    mouse:new THREE.Vector2(),
+    activeLobster:null,
+    hoveredRegion:null,
+    placeholderMesh, placeholderMat,
+  };
+  scene.add(STATE.three.regionGroup);
+
+  // build regions IMMEDIATELY so user can interact even before glb loads
+  buildBrainRegions();
+
+  // load brain.glb (asynchronously enhances the scene)
+  const loader = new GLTFLoader();
+  loader.load('/static/brain.glb', (gltf) => {
+    const obj = gltf.scene;
+    obj.scale.setScalar(13.5);
+    obj.traverse(child=>{
+      if(!child.isMesh) return;
+      child.material = new THREE.MeshPhysicalMaterial({
+        color:0xffffff, roughness:0.75, metalness:0.0,
+        clearcoat:0.05, transparent:true, opacity:0.22,
+        depthWrite:false, side:THREE.FrontSide,
+      });
+      const inner = child.clone();
+      inner.material = new THREE.MeshPhysicalMaterial({
+        color:0xf2ede8, roughness:0.75, metalness:0.0,
+        transparent:true, opacity:0.12, side:THREE.BackSide, depthWrite:false,
+      });
+      brainGroup.add(inner);
+    });
+    brainGroup.add(obj);
+    STATE.three.brainLoaded = true;
+    // fade out placeholder once real brain is in
+    placeholderMat.opacity = 0.0;
+    console.log('[brain] glb loaded');
+  }, (xhr)=>{
+    if(xhr.lengthComputable) console.log('[brain] glb', (xhr.loaded/xhr.total*100|0)+'%');
+  }, (err)=>{
+    console.warn('[brain] glb load FAILED — keeping wireframe placeholder', err);
+    placeholderMat.opacity = 0.35;
+  });
+
+  renderer.domElement.addEventListener('pointermove', onBrain3DPointerMove);
+  renderer.domElement.addEventListener('click', onBrain3DClick);
+
+  // 3D render loop — runs always once init'd. controls.update() must run every frame for damping/inertia.
+  function loop3D(){
+    if(!STATE.three) return;
+    requestAnimationFrame(loop3D);
+    STATE.three.controls.update();
+    if(STATE.mode === 'inside3d'){
+      updateBrainRegions();
+    }
+    renderer.render(scene, camera);
+  }
+  loop3D();
+}
+
+// 12 regions mapped to 11 audio files (or TTS fallback)
+const REGION_DEFS = [
+  {id:'pfc',    zh:'前額葉',  en:'Prefrontal Cortex',    audio:'prefrontal', pos:[ 0,    7,  6 ], w:{score:0.6,stress:-0.3,betWR:0.3}},
+  {id:'acc',    zh:'前扣帶',  en:'Anterior Cingulate',   audio:'prefrontal', pos:[ 0,    4,  3 ], w:{stress:0.4,score:0.4}},
+  {id:'amyg',   zh:'杏仁核',  en:'Amygdala',             audio:'amygdala',   pos:[ 3,    0,  2 ], w:{stress:1.0,betWR:-0.1}},
+  {id:'hippo',  zh:'海馬迴',  en:'Hippocampus',          audio:'hippocampus',pos:[ 3,   -2, -2 ], w:{score:0.5,output:0.4}},
+  {id:'dmn',    zh:'預設網絡',en:'Default Mode',         audio:'parietal',   pos:[ 0,    5, -2 ], w:{score:0.4,stress:0.2}},
+  {id:'insula', zh:'腦島',    en:'Insula',               audio:'amygdala',   pos:[-4,    0,  3 ], w:{stress:0.7,stockPnL:-0.3}},
+  {id:'na',     zh:'伏隔核',  en:'Nucleus Accumbens',    audio:'mentor',     pos:[ 0,   -3,  5 ], w:{betWR:0.7,stockPnL:0.3}},
+  {id:'thal',   zh:'視丘',    en:'Thalamus',             audio:'brainstem',  pos:[ 0,    0,  0 ], w:{stress:0.3,score:0.5,output:0.3}},
+  {id:'visual', zh:'視覺皮質',en:'Visual Cortex',        audio:'temporal_l', pos:[ 0,    0, -8 ], w:{betWR:0.4,output:0.4}},
+  {id:'motor',  zh:'運動皮質',en:'Motor Cortex',         audio:'cerebellum', pos:[ 0,    8, -1 ], w:{output:0.5,betWR:0.3}},
+  {id:'temp',   zh:'顳葉',    en:'Temporal Cortex',      audio:'temporal_r', pos:[ 7,    0,  0 ], w:{score:0.5,output:0.3}},
+  {id:'cereb',  zh:'小腦',    en:'Cerebellum',           audio:'cerebellum', pos:[ 0,   -8, -3 ], w:{output:0.5,score:0.3}},
+];
+
+function buildBrainRegions(){
+  if(!STATE.three) return;
+  // clear old
+  while(STATE.three.regionGroup.children.length){
+    STATE.three.regionGroup.remove(STATE.three.regionGroup.children[0]);
+  }
+  STATE.three.regions = [];
+
+  // also keep mirrored regions on left side for amyg/hippo/temp/insula
+  const allDefs = [...REGION_DEFS];
+  // mirror lateral ones
+  for(const id of ['amyg','hippo','temp','insula']){
+    const def = REGION_DEFS.find(x=>x.id===id);
+    if(def){
+      allDefs.push({...def, id:def.id+'_L', pos:[-def.pos[0], def.pos[1], def.pos[2]]});
+    }
+  }
+
+  for(const def of allDefs){
+    const geo = new THREE.SphereGeometry(0.7, 32, 32);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x2dd4bf, emissive: 0x2dd4bf,
+      emissiveIntensity: 0.4, roughness: 0.3, metalness: 0.2,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(def.pos[0], def.pos[1], def.pos[2]);
+    mesh.userData = {def, baseScale:1, activity:0, lastFire:0};
+    STATE.three.regionGroup.add(mesh);
+
+    // halo
+    const haloGeo = new THREE.SphereGeometry(1.4, 32, 32);
+    const haloMat = new THREE.MeshBasicMaterial({
+      color:0x2dd4bf, transparent:true, opacity:0.10,
+      depthWrite:false, side:THREE.BackSide,
+    });
+    const halo = new THREE.Mesh(haloGeo, haloMat);
+    mesh.add(halo);
+
+    STATE.three.regions.push({mesh, halo, def, activity:0});
+  }
+
+  // edges as line segments — connect every region to thalamus and a few peers
+  const edgeMaterial = new THREE.LineBasicMaterial({color:0x2dd4bf, transparent:true, opacity:0.18});
+  const edgePts = [];
+  const thal = STATE.three.regions.find(r=>r.def.id==='thal');
+  if(thal){
+    for(const r of STATE.three.regions){
+      if(r === thal) continue;
+      edgePts.push(thal.mesh.position.x, thal.mesh.position.y, thal.mesh.position.z);
+      edgePts.push(r.mesh.position.x, r.mesh.position.y, r.mesh.position.z);
+    }
+  }
+  const edgeGeo = new THREE.BufferGeometry();
+  edgeGeo.setAttribute('position', new THREE.Float32BufferAttribute(edgePts, 3));
+  STATE.three.regionGroup.add(new THREE.LineSegments(edgeGeo, edgeMaterial));
+}
+
+function updateBrainRegions(){
+  if(!STATE.three || !STATE.three.activeLobster) return;
+  const o = STATE.three.activeLobster;
+  const d = STATE.display[o.name];
+  if(!d) return;
+  const color = COHORT_HEX[o.cohort];
+  const now = performance.now();
+  for(const r of STATE.three.regions){
+    let a = 0.05;
+    for(const [k, w] of Object.entries(r.def.w || {})){
+      let v = 0;
+      if(k==='score') v = (d.score||0)/100;
+      else if(k==='stress') v = d.stress||0;
+      else if(k==='betWR') v = (d.betWR||0)/100;
+      else if(k==='output') v = Math.min(1, (d.output||0)/10000);
+      else if(k==='stockPnL') v = clamp(0.5 + (d.stockPnL||0)/200000, 0, 1);
+      a += w * v;
+    }
+    a = clamp(a, 0, 1);
+    r.activity = lerp(r.activity, a, 0.05);
+    // pulse
+    const pulse = 1 + Math.sin(now*0.004 + r.mesh.position.x) * 0.06 * (0.5 + r.activity);
+    const targetScale = (0.6 + r.activity*0.9) * pulse;
+    r.mesh.scale.setScalar(lerp(r.mesh.scale.x, targetScale, 0.08));
+    r.mesh.material.color.setHex(color);
+    r.mesh.material.emissive.setHex(color);
+    r.mesh.material.emissiveIntensity = 0.3 + r.activity*0.8;
+    r.halo.material.color.setHex(color);
+    r.halo.material.opacity = 0.04 + r.activity*0.20;
+  }
+  // gentle pool rotation override is controlled by autoRotate
+}
+
+function paint3DBrainHUD(){
+  if(STATE.mode !== 'inside3d' || !STATE.three?.activeLobster) return;
+  const o = STATE.three.activeLobster;
+  const d = STATE.display[o.name]; if(!d) return;
+  document.getElementById('b-bpm').textContent   = bpmOf(o).toFixed(0);
+  document.getElementById('b-score').textContent = d.score.toFixed(0);
+  document.getElementById('b-stress').textContent= (d.stress*100).toFixed(0)+'%';
+  const pnlEl = document.getElementById('b-pnl');
+  pnlEl.textContent = fmtMoney(d.stockPnL);
+  pnlEl.className = 'bm-v ' + (d.stockPnL>=0?'green':'red');
+  document.getElementById('b-betwr').textContent = d.betWR.toFixed(1)+'%';
+  document.getElementById('b-output').textContent= Math.round(d.output).toLocaleString();
+  document.getElementById('b-readout').innerHTML = buildReadout(o.name, d);
+  drawBrainEcg(o);
+}
+
+function drawBrainEcg(o){
+  const W = bEcgCv.getBoundingClientRect().width;
+  const H = bEcgCv.getBoundingClientRect().height;
+  if(!STATE._ecgBuf) STATE._ecgBuf = new Array(Math.floor(W)).fill(H/2);
+  bEcgCtx.fillStyle = 'rgba(2,6,10,0.30)';
+  bEcgCtx.fillRect(0,0,W,H);
+  const bpm = bpmOf(o);
+  const beatDur = 60/bpm;
+  const t = performance.now()/1000;
+  const phase = ((t % beatDur)/beatDur);
+  let v = (Math.random()-0.5)*0.04;
+  if(phase < 0.10) v += 0.16*Math.sin(phase/0.10*Math.PI);
+  else if(phase < 0.18) v += -0.18*Math.sin((phase-0.10)/0.04*Math.PI);
+  else if(phase < 0.22) v += 0.92*Math.sin((phase-0.18)/0.04*Math.PI);
+  else if(phase < 0.27) v += -0.30*Math.sin((phase-0.22)/0.05*Math.PI);
+  else if(phase < 0.45) v += 0.22*Math.sin((phase-0.27)/0.18*Math.PI);
+  STATE._ecgBuf.shift();
+  STATE._ecgBuf.push(H/2 - v*H*0.45);
+  const buf = STATE._ecgBuf;
+  const step = W / buf.length;
+  bEcgCtx.beginPath();
+  for(let i=0;i<buf.length;i++){
+    const x = i*step;
+    if(i===0) bEcgCtx.moveTo(x, buf[i]); else bEcgCtx.lineTo(x, buf[i]);
+  }
+  bEcgCtx.strokeStyle = COHORT_COLOR[cohortOf(o.name)];
+  bEcgCtx.lineWidth = 1.6;
+  bEcgCtx.shadowBlur = 10;
+  bEcgCtx.shadowColor = COHORT_COLOR[cohortOf(o.name)];
+  bEcgCtx.stroke();
+  bEcgCtx.shadowBlur = 0;
+  bEcgCtx.beginPath();
+  bEcgCtx.arc(W-2, buf[buf.length-1], 3.5, 0, Math.PI*2);
+  bEcgCtx.fillStyle = COHORT_COLOR[cohortOf(o.name)];
+  bEcgCtx.fill();
+}
+
+function enter3DBrain(o){
+  init3DScene();
+  STATE.three.activeLobster = o;
+  // hide 2D stage so it doesn't peek behind 3D
+  document.getElementById('stage').classList.add('hidden');
+  document.getElementById('brain3d-canvas').classList.add('visible');
+  // force renderer to fit current viewport NOW that canvas is visible
+  STATE.three.renderer.setSize(window.innerWidth, window.innerHeight, false);
+  STATE.three.camera.aspect = window.innerWidth/window.innerHeight;
+  STATE.three.camera.updateProjectionMatrix();
+  document.getElementById('brain-hud').classList.add('visible');
+  document.getElementById('brain-ecg').classList.add('visible');
+  document.getElementById('brain-metrics').classList.add('visible');
+  document.getElementById('brain-readout').classList.add('visible');
+  document.getElementById('back-btn').classList.add('visible');
+
+  const c = cohortOf(o.name);
+  document.getElementById('b-name').textContent = o.name;
+  const ce = document.getElementById('b-cohort');
+  ce.textContent = COHORT_LABEL[c]+' Cohort';
+  ce.className = 'brain-cohort ' + c;
+
+  // reset camera
+  if(STATE.three){
+    STATE.three.camera.position.set(0, 5, 34);
+    STATE.three.controls.target.set(0,0,0);
+    STATE.three.controls.update();
+  }
+
+  // voice briefing (TTS) then optional overview MP3
+  const d = STATE.display[o.name] || {};
+  const cohortName = c==='old' ? 'Mentor' : c==='student' ? 'Student' : 'Transfer';
+  const stress = (d.stress*100).toFixed(0);
+  const bpm = bpmOf(o).toFixed(0);
+  const pnl = d.stockPnL>=0 ? `plus ${Math.abs(d.stockPnL/1000).toFixed(0)} thousand dollars` : `minus ${Math.abs(d.stockPnL/1000).toFixed(0)} thousand dollars`;
+  const wr = d.betWR.toFixed(0);
+  let stressVerdict;
+  if(d.stress > 0.8) stressVerdict = 'critically high. The amygdala and insula are firing hard.';
+  else if(d.stress > 0.4) stressVerdict = 'moderate. The prefrontal cortex is keeping balance.';
+  else stressVerdict = 'low. Ready for action.';
+  const text = `This is ${o.name}, a ${cohortName} cohort lobster. ` +
+               `Heart rate: ${bpm} beats per minute. ` +
+               `Stress level: ${stress} percent — ${stressVerdict} ` +
+               `Stock P and L: ${pnl}. Bet win rate: ${wr} percent. ` +
+               `Click any glowing region to hear what that part of the brain is doing.`;
+  speakBriefing(text, `${o.name} · briefing`);
+}
+
+// 3D pointer over regions
+function onBrain3DPointerMove(e){
+  if(STATE.mode !== 'inside3d' || !STATE.three) return;
+  const rect = STATE.three.renderer.domElement.getBoundingClientRect();
+  STATE.three.mouse.x =  ((e.clientX - rect.left)/rect.width)*2 - 1;
+  STATE.three.mouse.y = -((e.clientY - rect.top)/rect.height)*2 + 1;
+  STATE.three.raycaster.setFromCamera(STATE.three.mouse, STATE.three.camera);
+  const hits = STATE.three.raycaster.intersectObjects(STATE.three.regions.map(r=>r.mesh), false);
+  if(hits.length){
+    const m = hits[0].object;
+    STATE.three.hoveredRegion = m;
+    const def = m.userData.def;
+    const r = STATE.three.regions.find(x=>x.mesh===m);
+    const rt = document.getElementById('region-tooltip');
+    rt.innerHTML = `<div><b>${def.zh}</b> · ${def.en}</div>
+      <div style="margin-top:3px;color:var(--ink3)">activity ${(r.activity*100).toFixed(0)}%</div>
+      <div class="region-tooltip-hint">click to hear</div>`;
+    rt.style.left = e.clientX + 'px';
+    rt.style.top = (e.clientY - 10) + 'px';
+    rt.classList.add('visible');
+    STATE.three.renderer.domElement.style.cursor = 'pointer';
+  } else {
+    STATE.three.hoveredRegion = null;
+    document.getElementById('region-tooltip').classList.remove('visible');
+    STATE.three.renderer.domElement.style.cursor = 'grab';
+  }
+}
+function onBrain3DClick(e){
+  if(STATE.mode !== 'inside3d' || !STATE.three) return;
+  if(!STATE.three.hoveredRegion) return;
+  const def = STATE.three.hoveredRegion.userData.def;
+  // pause autorotate briefly
+  STATE.three.controls.autoRotate = false;
+  setTimeout(()=>{ if(STATE.three) STATE.three.controls.autoRotate = true; }, 5000);
+  // play her MP3 (or TTS fallback if missing)
+  playRegionMp3(def.audio, `${def.zh} · ${def.en}`);
+}
+
+document.querySelectorAll('.ctl[data-view]').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    if(STATE.mode !== 'pool') return;
+    document.querySelectorAll('.ctl[data-view]').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    STATE.view = el.dataset.view;
+    placeOrganisms();
+  });
+});
+
+async function poll(){
+  try{
+    const r = await fetch('/static/lobster-dashboard-v2-vitals.json?ts='+Date.now(),{cache:'no-store'});
+    const j = await r.json();
+    STATE.samples = j.samples || [];
+    rebuildLatest();
+    STATE.lastPoll = Date.now();
+    if(STATE.view==='storm' && STATE.mode==='pool') placeOrganisms();
+  }catch(e){ console.warn('poll fail', e); }
+}
+setInterval(poll, POLL_MS);
+
+resize();
+bootData().then(()=>{
+  requestAnimationFrame(tick);
+  // EAGER init of Three.js scene right after pool boots — so OrbitControls is wired up
+  // by the time the user clicks any lobster (avoids visibility/sizing issues from lazy init).
+  try { init3DScene(); } catch(e){ console.error('[3D] eager init failed', e); }
+}).catch(e=>{
+  document.getElementById('boot').querySelector('.boot-text').textContent = 'boot failed: '+e.message;
+  console.error(e);
+});
+
+// keep 3D renderer in sync with window size at all times
+window.addEventListener('resize', ()=>{
+  if(STATE.three){
+    STATE.three.renderer.setSize(window.innerWidth, window.innerHeight, false);
+    STATE.three.camera.aspect = window.innerWidth/window.innerHeight;
+    STATE.three.camera.updateProjectionMatrix();
+  }
+});
+</script>
+</body>
+</html>

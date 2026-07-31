@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster quality follow-up audit and intervention planner
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_quality_followup_worker.py
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+

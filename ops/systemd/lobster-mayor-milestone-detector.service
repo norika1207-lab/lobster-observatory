@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor: milestone-detector
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/milestone_detector.py
+StandardOutput=append:/root/lobster-memory/_town/logs/milestone-detector.log
+StandardError=append:/root/lobster-memory/_town/logs/milestone-detector.log
+TimeoutSec=300

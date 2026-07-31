@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+import subprocess, pathlib, time, sys
+CONF = pathlib.Path('/etc/nginx/sites-enabled/charenix.conf')
+LOG = pathlib.Path('/var/log/charenix-dashboard-failover-watchdog.log')
+PRIMARY_OK = 'server 127.0.0.1:8004 max_fails=1 fail_timeout=5s;'
+PRIMARY_DOWN = 'server 127.0.0.1:8004 down; # auto-failover-primary'
+BACKUP = 'http://167.88.45.137:8004/api/health'
+PRIMARY = 'http://127.0.0.1:8004/api/health'
+
+def log(msg):
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    with LOG.open('a', encoding='utf-8') as f:
+        f.write(time.strftime('%Y-%m-%dT%H:%M:%S%z ') + msg + '\n')
+
+def ok(url, timeout):
+    try:
+        r = subprocess.run(['curl','-fsS','--max-time',str(timeout),url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+def reload_nginx():
+    subprocess.check_call(['nginx','-t'], stdout=subprocess.DEVNULL)
+    subprocess.check_call(['systemctl','reload','nginx'])
+
+def main():
+    primary = ok(PRIMARY, 2)
+    backup = ok(BACKUP, 4)
+    s = CONF.read_text(encoding='utf-8')
+    changed = False
+    if primary:
+        if PRIMARY_DOWN in s:
+            s = s.replace(PRIMARY_DOWN, PRIMARY_OK)
+            changed = True
+            log('primary recovered; routing restored to primary')
+    else:
+        if backup and PRIMARY_OK in s:
+            s = s.replace(PRIMARY_OK, PRIMARY_DOWN)
+            changed = True
+            log('primary failed; forced routing to backup')
+        elif not backup:
+            log('primary failed but backup unhealthy; leaving nginx unchanged')
+    if changed:
+        CONF.write_text(s, encoding='utf-8')
+        reload_nginx()
+    else:
+        log(f'check primary={primary} backup={backup} no-change')
+
+if __name__ == '__main__':
+    main()

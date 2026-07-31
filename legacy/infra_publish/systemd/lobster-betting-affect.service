@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster betting affect signal sync
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_betting_affect_worker.py sync --hours 24 --limit 30000
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6

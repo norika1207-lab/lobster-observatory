@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor: petition-watcher
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/petition_watcher.py
+StandardOutput=append:/root/lobster-memory/_town/logs/petition-watcher.log
+StandardError=append:/root/lobster-memory/_town/logs/petition-watcher.log
+TimeoutSec=300

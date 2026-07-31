@@ -1,0 +1,8 @@
+[Unit]
+Description=Lobster nightly deep stock research (time-shared with lounge)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/root/lobster-stock-nightly.sh
+TimeoutSec=4200

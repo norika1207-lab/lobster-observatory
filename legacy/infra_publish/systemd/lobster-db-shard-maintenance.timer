@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster DB shard maintenance every 10 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=10min
+AccuracySec=45s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

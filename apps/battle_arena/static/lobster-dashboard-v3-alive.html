@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>人 Lobster Vital Stream — V3 Alive (sandbox)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#05080d; --panel:#0b121b; --panel2:#0d1622; --border:#1c2738;
+  --text:#eef6fb; --text2:#9fb2c4; --text3:#647a8e; --accent:#2dd4bf;
+  --green:#4ade80; --red:#fb7185; --amber:#fbbf24; --blue:#60a5fa; --violet:#a78bfa;
+  --gold:#facc15;
+  --c-old:#facc15; --c-student:#f8fafc; --c-transfer:#a78bfa;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:13px;line-height:1.5}
+a{color:var(--accent);text-decoration:none}
+.shell{max-width:1480px;margin:0 auto;padding:14px 18px 64px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px;background:linear-gradient(135deg,#0a121c,#070b12);border:1px solid var(--border);border-radius:12px;margin-bottom:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;border-radius:9px;background:radial-gradient(circle at 30% 30%,#2dd4bf,#0e7490 70%);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 22px rgba(45,212,191,.35)}
+.brand-name{font-size:18px;font-weight:950;letter-spacing:.3px}
+.brand-sub{font-size:10px;color:var(--text3);font-weight:850;text-transform:uppercase;letter-spacing:.8px}
+.live-pill{display:flex;align-items:center;gap:8px;padding:7px 12px;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.4);border-radius:999px;font-size:11px;font-weight:950;color:#b9fff4;text-transform:uppercase;letter-spacing:.6px}
+.live-pill::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(45,212,191,.55);animation:livePulse 1.1s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(.82);box-shadow:0 0 0 0 rgba(45,212,191,.6)}50%{transform:scale(1.18);box-shadow:0 0 0 11px rgba(45,212,191,0)}}
+.meta-pills{display:flex;gap:8px;flex-wrap:wrap}
+.meta-pill{padding:6px 10px;background:#0d1622;border:1px solid var(--border);border-radius:999px;font-size:11px;color:var(--text2);font-weight:850}
+.meta-pill b{color:var(--text);font-weight:950}
+
+/* global pulse */
+.pulse{background:linear-gradient(180deg,#08121d,#040810);border:1px solid #1d3145;border-radius:14px;padding:14px;display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.95fr);gap:14px;margin-bottom:14px;box-shadow:0 30px 70px rgba(0,0,0,.35),inset 0 0 80px rgba(45,212,191,.04)}
+.pulse-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}
+.pulse-title{font-size:11px;color:var(--accent);font-weight:950;text-transform:uppercase;letter-spacing:1.2px}
+.pulse-title small{color:var(--text3);font-size:10px;font-weight:850;margin-left:8px;letter-spacing:.6px}
+.pulse-rate{font-size:11px;color:var(--text3);font-weight:850}
+.pulse-rate b{color:var(--accent)}
+.ecg-wrap{position:relative;background:radial-gradient(circle at 50% 100%,rgba(45,212,191,.10),transparent 60%),#040910;border:1px solid #142537;border-radius:10px;overflow:hidden;height:240px}
+.ecg-wrap::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(45,212,191,.05) 1px,transparent 1px),linear-gradient(180deg,rgba(45,212,191,.04) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+.ecg-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ecg-overlay{position:absolute;left:14px;top:12px;font-size:10px;color:var(--text3);font-weight:850;letter-spacing:.6px;text-transform:uppercase}
+.ecg-overlay b{color:var(--accent)}
+.ecg-legend{position:absolute;right:14px;bottom:10px;display:flex;gap:14px;font-size:10px;color:var(--text2);font-weight:850}
+.ecg-legend span{display:flex;align-items:center;gap:6px}
+.ecg-legend i{display:block;width:10px;height:10px;border-radius:50%;box-shadow:0 0 8px currentColor}
+
+/* hero KPI */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start}
+.kpi{background:#0a1422;border:1px solid #1c2c40;border-radius:10px;padding:12px;position:relative;overflow:hidden}
+.kpi-k{font-size:9px;color:var(--text3);font-weight:950;text-transform:uppercase;letter-spacing:.8px}
+.kpi-v{font-size:26px;font-weight:950;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.kpi-s{font-size:10px;color:var(--text3);margin-top:6px;font-weight:850}
+.kpi.green .kpi-v{color:var(--green)}
+.kpi.red .kpi-v{color:var(--red)}
+.kpi.amber .kpi-v{color:var(--amber)}
+.kpi.blue .kpi-v{color:var(--blue)}
+.kpi::after{content:"";position:absolute;inset:auto -10px -10px auto;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,currentColor,transparent 60%);opacity:.06}
+.kpi.green::after{color:var(--green)}.kpi.red::after{color:var(--red)}.kpi.amber::after{color:var(--amber)}.kpi.blue::after{color:var(--blue)}
+
+/* cohort tabs */
+.cohort-tabs{display:flex;gap:8px;padding:10px 14px;background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.cohort-tabs-title{font-size:10px;color:var(--text3);font-weight:950;text-transform:uppercase;letter-spacing:.8px;margin-right:6px}
+.cohort-tab{padding:7px 12px;background:#0d1622;border:1px solid var(--border);border-radius:999px;font-size:11px;font-weight:950;color:var(--text2);cursor:pointer;letter-spacing:.3px;display:flex;align-items:center;gap:6px;transition:all .15s ease}
+.cohort-tab i{display:block;width:8px;height:8px;border-radius:50%;background:currentColor}
+.cohort-tab.old{color:var(--c-old)}
+.cohort-tab.student{color:var(--c-student)}
+.cohort-tab.transfer{color:var(--c-transfer)}
+.cohort-tab.all{color:var(--accent)}
+.cohort-tab.active,.cohort-tab:hover{background:rgba(45,212,191,.10);border-color:rgba(45,212,191,.5);box-shadow:0 0 0 1px rgba(45,212,191,.18) inset}
+
+/* lobster grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:11px}
+.card{background:linear-gradient(180deg,#0c1622,#070d16);border:1px solid var(--border);border-radius:11px;padding:12px;position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column;gap:9px}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cohort-color,#28313e);opacity:.9}
+.card.cohort-old{box-shadow:0 0 0 1px rgba(250,204,21,.18) inset}
+.card.cohort-student{box-shadow:0 0 0 1px rgba(248,250,252,.10) inset}
+.card.cohort-transfer{box-shadow:0 0 0 1px rgba(167,139,250,.20) inset}
+.card:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(0,0,0,.4),0 0 0 1px rgba(45,212,191,.20) inset}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card-name{font-size:15px;font-weight:950;color:var(--text);letter-spacing:.2px}
+.cohort-chip{font-size:9px;font-weight:950;padding:3px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;border:1px solid currentColor;color:var(--cohort-color)}
+.heartbeat{position:relative;display:flex;align-items:center;gap:8px}
+.heart{width:11px;height:11px;border-radius:50%;background:var(--cohort-color);box-shadow:0 0 14px var(--cohort-color);animation:heartbeat var(--beat-dur,1.2s) ease-in-out infinite}
+@keyframes heartbeat{0%,100%{transform:scale(.85);opacity:.5}40%{transform:scale(1.4);opacity:1}60%{transform:scale(1)}}
+.heart-bpm{font-size:9px;color:var(--text3);font-weight:850;letter-spacing:.4px}
+
+.card-spark{height:54px;background:#040910;border:1px solid #142537;border-radius:7px;position:relative;overflow:hidden}
+.card-spark canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.card-spark-label{position:absolute;left:6px;top:4px;font-size:8px;color:var(--text3);font-weight:850;letter-spacing:.5px;text-transform:uppercase}
+
+.card-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.m{background:#0a1322;border:1px solid #19273a;border-radius:7px;padding:7px 8px}
+.m-k{font-size:8px;color:var(--text3);font-weight:950;text-transform:uppercase;letter-spacing:.5px}
+.m-v{font-size:15px;font-weight:950;line-height:1.05;margin-top:4px;font-variant-numeric:tabular-nums}
+.m.green .m-v{color:var(--green)}
+.m.red .m-v{color:var(--red)}
+.m.amber .m-v{color:var(--amber)}
+.m.dim .m-v{color:var(--text2)}
+
+.card-bar{height:6px;background:#040910;border-radius:999px;overflow:hidden;border:1px solid #142537}
+.card-bar-fill{height:100%;background:linear-gradient(90deg,var(--green) 0%,var(--amber) 55%,var(--red) 100%);transition:width .3s ease}
+.card-foot{display:flex;justify-content:space-between;font-size:9px;color:var(--text3);font-weight:850}
+.card-foot b{color:var(--text2)}
+.card-readout{font-size:10px;line-height:1.45;color:var(--text2);padding:7px 8px;background:#06101c;border:1px dashed #1c2c40;border-radius:6px;min-height:36px}
+.card-readout b{color:var(--accent)}
+
+/* loading */
+.boot{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:300;transition:opacity .3s ease}
+.boot.hidden{opacity:0;pointer-events:none}
+.boot-spinner{width:44px;height:44px;border:3px solid #142537;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.boot-text{color:var(--text3);font-size:13px;font-weight:850;letter-spacing:.3px}
+
+/* footer */
+.footer{margin-top:16px;padding:14px;background:var(--panel);border:1px solid var(--border);border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--text3)}
+.footer b{color:var(--text2)}
+.footer code{background:#0d1622;border:1px solid var(--border);border-radius:5px;padding:2px 6px;color:var(--accent);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+@media(max-width:960px){.pulse{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="boot" id="boot">
+  <div class="boot-spinner"></div>
+  <div class="boot-text">啟動 31 隻人的生命腦波…</div>
+</div>
+
+<div class="shell">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">人</div>
+      <div>
+        <div class="brand-name">Lobster Vital Stream</div>
+        <div class="brand-sub">V3 Alive · sandbox</div>
+      </div>
+    </div>
+    <div class="live-pill">LIVE · <span id="last-beat">--</span></div>
+    <div class="meta-pills">
+      <div class="meta-pill">每 <b id="poll-int">3</b> 秒同步</div>
+      <div class="meta-pill">下一個錨點 <b id="next-sample">5min</b></div>
+      <div class="meta-pill"><b id="lobster-count">--</b> 隻活體</div>
+    </div>
+  </div>
+
+  <!-- GLOBAL PULSE -->
+  <div class="pulse">
+    <div>
+      <div class="pulse-head">
+        <div class="pulse-title">全網生命腦波 / Global Vital Stream <small>aggregate of 31 organisms</small></div>
+        <div class="pulse-rate">當前心率 <b id="bpm-global">--</b> · 緊張指數 <b id="tension">--</b></div>
+      </div>
+      <div class="ecg-wrap">
+        <canvas class="ecg-canvas" id="ecg"></canvas>
+        <div class="ecg-overlay">SAMPLED EVERY 5MIN · LIVE SMOOTHED · <b id="ecg-samples">0</b> 點</div>
+        <div class="ecg-legend">
+          <span style="color:#2dd4bf"><i></i>Brain Output</span>
+          <span style="color:#fb7185"><i></i>Stress Load</span>
+          <span style="color:#fbbf24"><i></i>Bet Reflex</span>
+        </div>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi green"><div class="kpi-k">Top P&L Lobster</div><div class="kpi-v" id="kpi-top-name">--</div><div class="kpi-s" id="kpi-top-pnl">--</div></div>
+      <div class="kpi red"><div class="kpi-k">Network Stock P&L</div><div class="kpi-v" id="kpi-pnl">--</div><div class="kpi-s" id="kpi-pnl-sub">USD · realtime</div></div>
+      <div class="kpi amber"><div class="kpi-k">Avg Stress</div><div class="kpi-v" id="kpi-stress">--</div><div class="kpi-s">越高越警示</div></div>
+      <div class="kpi blue"><div class="kpi-k">Avg Brain Score</div><div class="kpi-v" id="kpi-score">--</div><div class="kpi-s">0-100</div></div>
+    </div>
+  </div>
+
+  <!-- COHORT TABS -->
+  <div class="cohort-tabs">
+    <div class="cohort-tabs-title">COHORTS</div>
+    <div class="cohort-tab all active" data-cohort="all"><i></i>全部 <b id="ct-all">31</b></div>
+    <div class="cohort-tab old" data-cohort="old"><i></i>舊同伴 <b id="ct-old">11</b></div>
+    <div class="cohort-tab student" data-cohort="student"><i></i>學生 <b id="ct-student">10</b></div>
+    <div class="cohort-tab transfer" data-cohort="transfer"><i></i>轉學生 <b id="ct-transfer">10</b></div>
+    <div style="flex:1"></div>
+    <div class="cohort-tabs-title">SORT</div>
+    <div class="cohort-tab" id="sort-toggle" data-sort="bpm">心率高→低</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">
+    <div>資料來源 <code>/static/lobster-dashboard-v2-vitals.json</code> （5 分鐘採樣，前端 3 秒 poll，中間做 lerp + 微抖動）</div>
+    <div>每個人的心跳速度 = <b>0.6 + (1 - stress) × 1.2 秒/拍</b>，stress=1 約 36 BPM，stress=0 約 100 BPM</div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+// cohort lists from v2
+const TRANSFER = new Set(['ashveil','cindersnap','glintmaw','mirebyte','quartzclaw','reefblade','riftpinch','silkbarb','stormledger','tidehook']);
+const STUDENT = new Set(['basaltrook','brineledger','emberling','flarecub','gauntlet','mirrorcalm','nullpinch','omenwake','rushfin','sparkrill']);
+const OLD = new Set(['blazepaw','clawtrix','hexclaw','norika_oda','pincerbot','prismbit','ragclaw','snaplex','stonefang','vortexiq','elder']);
+const COHORT_COLOR = {old:'#facc15', student:'#f8fafc', transfer:'#a78bfa'};
+function cohortOf(name){
+  if(TRANSFER.has(name)) return 'transfer';
+  if(STUDENT.has(name)) return 'student';
+  return 'old';
+}
+
+const POLL_MS = 3000;
+const ECG_BUFFER_SEC = 120;     // 2 min of points visible
+const ECG_TICK_MS = 80;          // canvas redraw / new point cadence
+const ECG_POINTS = Math.floor(ECG_BUFFER_SEC * 1000 / ECG_TICK_MS);
+
+const STATE = {
+  vitals: null,
+  samples: [],      // raw vital samples from json
+  latest: {},       // current per-lobster snapshot, mutated each poll
+  display: {},      // tween display values, mutated each rAF
+  ecg: {brain:[], stress:[], reflex:[]},
+  globalDisplay: {pnl:0, stress:0, score:0, topPnL:0, topName:'--'},
+  globalTarget:  {pnl:0, stress:0, score:0, topPnL:0, topName:'--'},
+  filter: 'all',
+  sort: 'bpm',
+  lastPollTs: 0,
+  pollCount: 0,
+};
+
+function $(id){return document.getElementById(id)}
+function lerp(a,b,t){return a+(b-a)*t}
+function clamp(x,lo,hi){return Math.min(hi,Math.max(lo,x))}
+function fmtMoney(v){
+  const sign = v<0 ? '-' : '';
+  const a = Math.abs(v);
+  if(a>=1e6) return sign+'$'+(a/1e6).toFixed(2)+'M';
+  if(a>=1e3) return sign+'$'+(a/1e3).toFixed(1)+'K';
+  return sign+'$'+a.toFixed(0);
+}
+function fmtPct(v){return (v*100).toFixed(1)+'%'}
+function fmtScore(v){return Math.round(v).toString()}
+
+async function bootData(){
+  $('boot').querySelector('.boot-text').textContent = '抓取 vitals 採樣…';
+  const r = await fetch('/static/lobster-dashboard-v2-vitals.json?ts='+Date.now(),{cache:'no-store'});
+  STATE.vitals = await r.json();
+  STATE.samples = STATE.vitals.samples || [];
+  rebuildLatest();
+  $('boot').querySelector('.boot-text').textContent = '渲染 31 個生命體…';
+  buildGrid();
+  // seed ECG buffer from historical samples
+  seedECG();
+  // hide boot
+  setTimeout(()=>{ $('boot').classList.add('hidden'); }, 250);
+  startTicker();
+  startECG();
+  startPolling();
+}
+
+function rebuildLatest(){
+  if(!STATE.samples.length) return;
+  const last = STATE.samples[STATE.samples.length-1].lobsters || {};
+  STATE.latest = {};
+  for(const [name, v] of Object.entries(last)){
+    STATE.latest[name] = {
+      score: v.score||0,
+      stress: v.stress||0,
+      betWR: v.betWR||0,
+      stockPnL: v.stockPnL||0,
+      stockROI: v.stockROI||0,
+      output: v.output||0,
+      envy: v.envy||0,
+      health: v.health||'normal',
+    };
+    if(!STATE.display[name]) STATE.display[name] = {...STATE.latest[name]};
+  }
+  computeGlobalTarget();
+}
+
+function computeGlobalTarget(){
+  const all = Object.entries(STATE.latest);
+  if(!all.length) return;
+  let pnl=0, stress=0, score=0, topName='--', topPnL=-Infinity;
+  for(const [name, v] of all){
+    pnl += v.stockPnL;
+    stress += v.stress;
+    score += v.score;
+    if(v.stockPnL > topPnL){ topPnL = v.stockPnL; topName = name; }
+  }
+  const n = all.length;
+  STATE.globalTarget = {
+    pnl, stress: stress/n, score: score/n, topName, topPnL,
+  };
+}
+
+function seedECG(){
+  // turn the historical samples into ECG buffers (aggregate avg per sample)
+  const samples = STATE.samples;
+  const pad = Math.max(0, ECG_POINTS - samples.length);
+  for(let i=0;i<pad;i++){
+    STATE.ecg.brain.push(0.5);
+    STATE.ecg.stress.push(0.5);
+    STATE.ecg.reflex.push(0.3);
+  }
+  for(const s of samples){
+    const lobs = Object.values(s.lobsters||{});
+    if(!lobs.length) continue;
+    let b=0,st=0,r=0;
+    for(const l of lobs){ b += (l.score||0)/100; st += (l.stress||0); r += (l.betWR||0)/100; }
+    const n = lobs.length;
+    STATE.ecg.brain.push(b/n);
+    STATE.ecg.stress.push(st/n);
+    STATE.ecg.reflex.push(r/n);
+  }
+  while(STATE.ecg.brain.length > ECG_POINTS) STATE.ecg.brain.shift();
+  while(STATE.ecg.stress.length > ECG_POINTS) STATE.ecg.stress.shift();
+  while(STATE.ecg.reflex.length > ECG_POINTS) STATE.ecg.reflex.shift();
+}
+
+function buildGrid(){
+  const grid = $('grid');
+  grid.innerHTML = '';
+  const names = Object.keys(STATE.latest).sort((a,b)=>{
+    // cohort order: old → student → transfer, then name
+    const order = {old:0, student:1, transfer:2};
+    const oa = order[cohortOf(a)], ob = order[cohortOf(b)];
+    if(oa!==ob) return oa-ob;
+    return a.localeCompare(b);
+  });
+  for(const name of names){
+    const c = cohortOf(name);
+    const card = document.createElement('div');
+    card.className = 'card cohort-'+c;
+    card.dataset.name = name;
+    card.dataset.cohort = c;
+    card.style.setProperty('--cohort-color', COHORT_COLOR[c]);
+    card.innerHTML = `
+      <div class="card-head">
+        <div>
+          <div class="card-name">${name}</div>
+          <span class="cohort-chip">${c==='old'?'舊同伴':c==='student'?'學生':'轉學生'}</span>
+        </div>
+        <div class="heartbeat">
+          <div class="heart" data-heart></div>
+          <div class="heart-bpm" data-bpm>-- bpm</div>
+        </div>
+      </div>
+      <div class="card-spark">
+        <div class="card-spark-label">vital · 24 samples</div>
+        <canvas data-spark></canvas>
+      </div>
+      <div class="card-metrics">
+        <div class="m blue"><div class="m-k">score</div><div class="m-v" data-score>0</div></div>
+        <div class="m red"><div class="m-k">stress</div><div class="m-v" data-stress>0%</div></div>
+        <div class="m dim"><div class="m-k">stock P&L</div><div class="m-v" data-pnl>$0</div></div>
+      </div>
+      <div class="card-bar"><div class="card-bar-fill" data-bar style="width:0%"></div></div>
+      <div class="card-foot"><span>output <b data-output>0</b></span><span>bet WR <b data-betwr>0%</b></span><span data-health>--</span></div>
+      <div class="card-readout" data-readout>--</div>
+    `;
+    grid.appendChild(card);
+    // initialize spark canvas
+    const cv = card.querySelector('[data-spark]');
+    const dpr = window.devicePixelRatio || 1;
+    const rect = cv.getBoundingClientRect();
+    cv.width = rect.width * dpr; cv.height = rect.height * dpr;
+    drawSpark(cv, name);
+  }
+  $('lobster-count').textContent = names.length;
+  $('ct-all').textContent = names.length;
+  $('ct-old').textContent = names.filter(n=>cohortOf(n)==='old').length;
+  $('ct-student').textContent = names.filter(n=>cohortOf(n)==='student').length;
+  $('ct-transfer').textContent = names.filter(n=>cohortOf(n)==='transfer').length;
+}
+
+function drawSpark(cv, name){
+  const ctx = cv.getContext('2d');
+  const w = cv.width, h = cv.height;
+  ctx.clearRect(0,0,w,h);
+  const series = STATE.samples.map(s=> (s.lobsters||{})[name]?.score || 0);
+  if(series.length<2) return;
+  const min = Math.min(...series), max = Math.max(...series);
+  const range = (max-min) || 1;
+  const c = COHORT_COLOR[cohortOf(name)];
+  // gradient fill under the line
+  const grad = ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0, c+'55');
+  grad.addColorStop(1, c+'00');
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  series.forEach((v,i)=>{
+    const x = i / (series.length-1) * w;
+    const y = h - ((v-min)/range) * h * 0.85 - h*0.08;
+    ctx.lineTo(x, y);
+  });
+  ctx.lineTo(w, h);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+  // line
+  ctx.beginPath();
+  series.forEach((v,i)=>{
+    const x = i / (series.length-1) * w;
+    const y = h - ((v-min)/range) * h * 0.85 - h*0.08;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = c;
+  ctx.lineWidth = 1.6 * (window.devicePixelRatio||1);
+  ctx.lineJoin = 'round';
+  ctx.shadowBlur = 8;
+  ctx.shadowColor = c;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+}
+
+function startECG(){
+  const cv = $('ecg');
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    const rect = cv.getBoundingClientRect();
+    cv.width = rect.width * dpr;
+    cv.height = rect.height * dpr;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let lastPush = performance.now();
+
+  function draw(){
+    const now = performance.now();
+    if(now - lastPush > ECG_TICK_MS){
+      lastPush = now;
+      // append latest agg point with small noise
+      const all = Object.values(STATE.latest);
+      if(all.length){
+        let b=0,s=0,r=0;
+        for(const v of all){ b+=(v.score||0)/100; s+=(v.stress||0); r+=(v.betWR||0)/100; }
+        const n = all.length;
+        const jitter = ()=> (Math.random()-0.5)*0.04;
+        STATE.ecg.brain.push(clamp(b/n + jitter(), 0, 1));
+        STATE.ecg.stress.push(clamp(s/n + jitter(), 0, 1));
+        STATE.ecg.reflex.push(clamp(r/n + jitter()*0.7, 0, 1));
+        while(STATE.ecg.brain.length > ECG_POINTS) STATE.ecg.brain.shift();
+        while(STATE.ecg.stress.length > ECG_POINTS) STATE.ecg.stress.shift();
+        while(STATE.ecg.reflex.length > ECG_POINTS) STATE.ecg.reflex.shift();
+        $('ecg-samples').textContent = STATE.ecg.brain.length;
+      }
+    }
+
+    const ctx = cv.getContext('2d');
+    const w = cv.width, h = cv.height;
+    // fade trail effect
+    ctx.fillStyle = 'rgba(4,9,16,0.32)';
+    ctx.fillRect(0,0,w,h);
+
+    function drawLine(buf, color, mult){
+      if(buf.length<2) return;
+      const dpr = window.devicePixelRatio||1;
+      ctx.beginPath();
+      buf.forEach((v,i)=>{
+        const x = i/(ECG_POINTS-1) * w;
+        const y = h - v*h*mult - h*0.06;
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2 * dpr;
+      ctx.lineJoin = 'round';
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = color;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      // leading dot
+      const lastIdx = buf.length-1;
+      const lx = lastIdx/(ECG_POINTS-1) * w;
+      const ly = h - buf[lastIdx]*h*mult - h*0.06;
+      ctx.beginPath();
+      ctx.arc(lx, ly, 4*dpr, 0, Math.PI*2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+    drawLine(STATE.ecg.stress, '#fb7185', 0.85);
+    drawLine(STATE.ecg.reflex, '#fbbf24', 0.65);
+    drawLine(STATE.ecg.brain, '#2dd4bf', 0.85);
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+
+function startTicker(){
+  function frame(){
+    // tween each lobster's display values toward latest
+    for(const [name, target] of Object.entries(STATE.latest)){
+      const d = STATE.display[name] = STATE.display[name] || {...target};
+      d.score   = lerp(d.score,   target.score,   0.06);
+      d.stress  = lerp(d.stress,  target.stress,  0.05);
+      d.betWR   = lerp(d.betWR,   target.betWR,   0.05);
+      d.stockPnL= lerp(d.stockPnL,target.stockPnL,0.05);
+      d.output  = lerp(d.output,  target.output,  0.06);
+      // small "alive" jitter
+      const j = (Math.random()-0.5);
+      d.score  = clamp(d.score  + j*0.4, 0, 100);
+      d.stress = clamp(d.stress + j*0.006, 0, 1);
+    }
+    // tween global
+    const gd = STATE.globalDisplay, gt = STATE.globalTarget;
+    gd.pnl    = lerp(gd.pnl,    gt.pnl,    0.06);
+    gd.stress = lerp(gd.stress, gt.stress, 0.05);
+    gd.score  = lerp(gd.score,  gt.score,  0.05);
+    gd.topPnL = lerp(gd.topPnL, gt.topPnL, 0.05);
+    gd.topName = gt.topName;
+    paintGlobal();
+    paintCards();
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function paintGlobal(){
+  const g = STATE.globalDisplay;
+  $('kpi-pnl').textContent    = fmtMoney(g.pnl);
+  $('kpi-stress').textContent = (g.stress*100).toFixed(1)+'%';
+  $('kpi-score').textContent  = g.score.toFixed(1);
+  $('kpi-top-name').textContent = g.topName;
+  $('kpi-top-pnl').textContent  = fmtMoney(g.topPnL)+' · top profit lobster';
+  // global heartbeat-ish BPM = 60 / (avgBeatDur)
+  const avgBeat = 0.6 + (1 - g.stress) * 1.2;
+  $('bpm-global').textContent = (60/avgBeat).toFixed(0) + ' BPM';
+  $('tension').textContent = (g.stress*100).toFixed(0)+'%';
+  // last beat timer
+  const dt = (Date.now() - STATE.lastPollTs)/1000;
+  $('last-beat').textContent = STATE.lastPollTs ? dt.toFixed(1)+'s ago' : 'syncing';
+  const nextIn = Math.max(0, POLL_MS/1000 - dt);
+  $('next-sample').textContent = nextIn.toFixed(1)+'s';
+}
+
+function paintCards(){
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card=>{
+    const name = card.dataset.name;
+    const d = STATE.display[name];
+    if(!d) return;
+    card.querySelector('[data-score]').textContent = fmtScore(d.score);
+    card.querySelector('[data-stress]').textContent = (d.stress*100).toFixed(0)+'%';
+    card.querySelector('[data-pnl]').textContent = fmtMoney(d.stockPnL);
+    card.querySelector('[data-output]').textContent = Math.round(d.output).toLocaleString();
+    card.querySelector('[data-betwr]').textContent = d.betWR.toFixed(1)+'%';
+    const beatDur = (0.6 + (1 - d.stress) * 1.2).toFixed(2);  // seconds
+    card.querySelector('[data-heart]').style.setProperty('--beat-dur', beatDur+'s');
+    card.querySelector('[data-bpm]').textContent = (60/beatDur).toFixed(0) + ' bpm';
+    card.querySelector('[data-bar]').style.width = (d.stress*100).toFixed(1)+'%';
+    // health label
+    const hv = card.querySelector('[data-health]');
+    const lh = STATE.latest[name]?.health || 'normal';
+    hv.textContent = lh;
+    hv.style.color = lh==='crisis' ? 'var(--red)' : (lh==='normal'?'var(--green)':'var(--text3)');
+    // PnL color
+    const pnlEl = card.querySelector('[data-pnl]');
+    const pnlMetric = card.querySelector('[data-pnl]').closest('.m');
+    pnlMetric.classList.remove('green','red','dim');
+    pnlMetric.classList.add(d.stockPnL>0?'green':(d.stockPnL<0?'red':'dim'));
+    // readout (cohort + stress aware)
+    const r = buildReadout(name, d);
+    const ro = card.querySelector('[data-readout]');
+    if(ro.dataset.last !== r){ ro.dataset.last = r; ro.innerHTML = r; }
+  });
+  applyFilter();
+  applySort();
+}
+
+function buildReadout(name, d){
+  const c = cohortOf(name);
+  const stress = d.stress, score = d.score, pnl = d.stockPnL;
+  const high = stress > 0.8, mid = stress > 0.4 && stress <= 0.8, low = stress <= 0.4;
+  if(c==='old'){
+    if(high) return `<b>守住老將</b>：壓力滿載，先讓 ${name} 走低風險閒聊與社交回放，stop 加新壓力。`;
+    if(mid)  return `<b>穩態維持</b>：${name} 在區間內，可以接 1 個中等難度任務。`;
+    return `<b>可推進</b>：${name} 已回穩，建議派去帶學生或做高賠率測試。`;
+  }
+  if(c==='student'){
+    if(high) return `<b>暫停加課</b>：學生 ${name} stress ${(stress*100).toFixed(0)}%，先讓他看老將 replay。`;
+    if(mid)  return `<b>穩定吸收</b>：${name} 學習中，可以給結構化 quiz 不要 raid。`;
+    return `<b>準備進階</b>：${name} 已適應，可開始小額實戰下注。`;
+  }
+  // transfer
+  if(high) return `<b>轉學生過載</b>：${name} 新環境壓力高，本日不安排對戰、只做 MoltBook。`;
+  if(mid)  return `<b>適應中</b>：${name} 在融入，可派 1 個老將陪伴觀察。`;
+  return `<b>融入良好</b>：${name} 已穩定，可加入正式 cohort 排程。`;
+}
+
+function applyFilter(){
+  document.querySelectorAll('.card').forEach(c=>{
+    c.style.display = (STATE.filter==='all' || c.dataset.cohort===STATE.filter) ? '' : 'none';
+  });
+}
+
+function applySort(){
+  const grid = $('grid');
+  const cards = Array.from(grid.children);
+  if(STATE.sort==='bpm'){
+    cards.sort((a,b)=>{
+      const da = STATE.display[a.dataset.name]?.stress || 0;
+      const db = STATE.display[b.dataset.name]?.stress || 0;
+      return db - da;  // higher stress (slower bpm) on top
+    });
+  } else if(STATE.sort==='pnl'){
+    cards.sort((a,b)=>{
+      const da = STATE.display[a.dataset.name]?.stockPnL || 0;
+      const db = STATE.display[b.dataset.name]?.stockPnL || 0;
+      return db - da;
+    });
+  } else if(STATE.sort==='cohort'){
+    const order = {old:0, student:1, transfer:2};
+    cards.sort((a,b)=>{
+      const oa = order[a.dataset.cohort], ob = order[b.dataset.cohort];
+      if(oa!==ob) return oa-ob;
+      return a.dataset.name.localeCompare(b.dataset.name);
+    });
+  }
+  // Reorder only if changed
+  cards.forEach(c=>grid.appendChild(c));
+}
+
+async function poll(){
+  try{
+    const r = await fetch('/static/lobster-dashboard-v2-vitals.json?ts='+Date.now(),{cache:'no-store'});
+    const v = await r.json();
+    const newSamples = v.samples || [];
+    // detect appended
+    const prevLast = STATE.samples[STATE.samples.length-1]?.ts;
+    const nextLast = newSamples[newSamples.length-1]?.ts;
+    STATE.samples = newSamples;
+    rebuildLatest();
+    STATE.lastPollTs = Date.now();
+    STATE.pollCount++;
+    if(prevLast !== nextLast){
+      // new anchor sample appeared — repaint sparks
+      document.querySelectorAll('.card-spark canvas').forEach(cv=>{
+        const name = cv.closest('.card').dataset.name;
+        drawSpark(cv, name);
+      });
+    }
+  }catch(e){
+    console.warn('poll failed', e);
+  }
+}
+
+function startPolling(){
+  STATE.lastPollTs = Date.now();
+  setInterval(poll, POLL_MS);
+}
+
+// cohort tab clicks
+document.addEventListener('click', e=>{
+  const t = e.target.closest('.cohort-tab');
+  if(!t) return;
+  if(t.id === 'sort-toggle'){
+    const order = ['bpm','pnl','cohort'];
+    const labels = {bpm:'心率高→低', pnl:'P&L 高→低', cohort:'依 Cohort 分組'};
+    const cur = STATE.sort;
+    const next = order[(order.indexOf(cur)+1) % order.length];
+    STATE.sort = next;
+    t.textContent = labels[next];
+    return;
+  }
+  if(!t.dataset.cohort) return;
+  document.querySelectorAll('.cohort-tab[data-cohort]').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  STATE.filter = t.dataset.cohort;
+});
+
+bootData().catch(e=>{
+  $('boot').querySelector('.boot-text').textContent = '啟動失敗：' + e.message;
+  console.error(e);
+});
+
+</script>
+</body>
+</html>

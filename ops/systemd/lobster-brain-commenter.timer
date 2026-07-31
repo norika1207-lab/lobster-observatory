@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Charenix Moltbook brain commenter every 20 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=20min
+AccuracySec=60s
+Persistent=true
+Unit=lobster-brain-commenter.service
+
+[Install]
+WantedBy=timers.target

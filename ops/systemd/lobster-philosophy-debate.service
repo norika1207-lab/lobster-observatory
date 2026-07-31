@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster philosophy debate absorption worker
+After=network-online.target charenix-dashboard.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/python3 /root/lobster-philosophy-debate-worker.py
+Nice=8
+IOSchedulingClass=best-effort

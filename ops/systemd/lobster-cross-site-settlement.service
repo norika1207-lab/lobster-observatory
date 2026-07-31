@@ -1,0 +1,14 @@
+[Unit]
+Description=Lobster cross-site bet settlement sync
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_cross_site_settlement_worker.py sync --limit 40
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+CPUQuota=25%
+MemoryMax=350M
+TimeoutSec=180

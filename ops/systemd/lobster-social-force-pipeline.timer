@@ -1,0 +1,11 @@
+[Unit]
+Description=Run lobster forced social parser every 5 minutes
+
+[Timer]
+OnBootSec=90s
+OnUnitActiveSec=5min
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

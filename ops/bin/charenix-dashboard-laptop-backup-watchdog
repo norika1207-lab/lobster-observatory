@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+SERVICE="charenix-dashboard-sync-laptop-external.service"
+TMP="/mnt/laptop_ext/battle_arena.db.tmp"
+LOG="/var/log/charenix-dashboard-laptop-external-watchdog.log"
+STATE="/run/charenix-dashboard-laptop-external-watchdog.state"
+MAX_STALE_SEC=900
+mkdir -p "$(dirname "$LOG")" /run
+log(){ printf "%s %s\n" "$(date +%Y-%m-%dT%H:%M:%S%z)" "$*" >> "$LOG"; }
+active="$(systemctl is-active "$SERVICE" || true)"
+if [[ "$active" != "activating" && "$active" != "active" ]]; then
+  log "service not active ($active); starting $SERVICE"
+  systemctl reset-failed "$SERVICE" || true
+  systemctl start --no-block "$SERVICE"
+  exit 0
+fi
+if [[ ! -e "$TMP" ]]; then
+  log "tmp file missing while service active; restarting $SERVICE"
+  systemctl restart --no-block "$SERVICE"
+  exit 0
+fi
+size="$(stat -c %s "$TMP")"
+mtime="$(stat -c %Y "$TMP")"
+now="$(date +%s)"
+age=$((now - mtime))
+prev_size=""
+prev_mtime=""
+if [[ -f "$STATE" ]]; then
+  read -r prev_size prev_mtime < "$STATE" || true
+fi
+printf "%s %s\n" "$size" "$mtime" > "$STATE"
+if [[ "${prev_size:-}" == "$size" && "$age" -gt "$MAX_STALE_SEC" ]]; then
+  log "stale backup detected: size=$size age_sec=$age; restarting $SERVICE"
+  systemctl restart --no-block "$SERVICE"
+  exit 0
+fi
+log "ok: service=$active tmp_size=$size tmp_age_sec=$age"

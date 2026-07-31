@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh Lobster Tiamat Raid Dashboard Cache
+After=network.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/battle_arena/.env
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-raid-dashboard-cache --lock-key lobster-raid-dashboard-cache --min-interval-sec 45 --timeout-sec 120 -- /usr/bin/python3 /root/lobster-raid-dashboard-cache-refresh.py
+Nice=10
+IOSchedulingClass=best-effort
+CPUQuota=35%
+MemoryMax=450M

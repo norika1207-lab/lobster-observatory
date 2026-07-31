@@ -1,0 +1,8 @@
+[Unit]
+Description=Lobster living template distillation worker
+After=charenix-dashboard.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-living-template-worker.py
+Nice=8

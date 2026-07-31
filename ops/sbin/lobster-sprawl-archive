@@ -1,0 +1,209 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import argparse, os, re, sqlite3, hashlib, zlib, time, socket, json
+from datetime import datetime, timezone
+
+DEFAULT_ROOTS = ['/root', '/opt']
+ARCHIVE_DIR = Path('/opt/lobster_ops')
+ARCHIVE_DB = ARCHIVE_DIR / 'lobster_file_archive.db'
+AUDIT_BASE = Path('/root/lobster-file-audit')
+backup_re = re.compile(r'(\.bak($|[_\.\-])|\.backup$|\.old$|\.orig$|~$|bak_)', re.I)
+tmp_re = re.compile(r'(\.tmp$|\.tmp\.|\.swp$|\.part$)', re.I)
+zero_db_ext = ('.db', '.sqlite', '.sqlite3')
+EXCLUDE_EXACT = {
+    '/opt/battle_arena/app/battle_arena.db', '/opt/battle_arena/app/battle_arena.db-wal', '/opt/battle_arena/app/battle_arena.db-shm',
+    '/opt/battle_arena/app/lobster_cold_storage.db',
+    '/opt/battle_arena/app/lobster_settlements.db', '/opt/battle_arena/app/lobster_settlements.db-wal', '/opt/battle_arena/app/lobster_settlements.db-shm',
+    '/opt/battle_arena/app/lobster_worker_runs.db',
+    '/opt/battle_arena/app/lobster_distill.db', '/opt/battle_arena/app/lobster_distill.db-wal', '/opt/battle_arena/app/lobster_distill.db-shm',
+    '/root/lobster-memory.db',
+}
+EXCLUDE_PREFIXES = [str(ARCHIVE_DIR), '/proc', '/sys', '/dev', '/run', '/tmp']
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+def should_exclude(path):
+    ps = str(path)
+    if ps in EXCLUDE_EXACT:
+        return True
+    if any(ps == p or ps.startswith(p + '/') for p in EXCLUDE_PREFIXES):
+        return True
+    if path.parent == Path('/root/lobster-memory') and path.suffix == '.json':
+        return True
+    return False
+
+def classify(path, st, now, min_age):
+    name = path.name
+    lname = name.lower()
+    ps = str(path)
+    age = now - st.st_mtime
+    if name.endswith('.pyc') or '__pycache__' in ps:
+        return 'python_bytecode_cache', 'metadata_only'
+    if st.st_size == 0 and lname.endswith(zero_db_ext):
+        return 'zero_byte_db_stub', 'zlib_blob'
+    if tmp_re.search(lname) and age >= min_age:
+        return 'old_temp_file', 'zlib_blob'
+    if backup_re.search(lname) and age >= min_age:
+        return 'old_backup_version', 'zlib_blob'
+    return None, None
+
+def init_db(conn):
+    conn.execute('PRAGMA journal_mode=WAL')
+    conn.execute('PRAGMA synchronous=NORMAL')
+    conn.executescript("""
+CREATE TABLE IF NOT EXISTS archive_runs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  started_at TEXT NOT NULL,
+  finished_at TEXT,
+  host TEXT,
+  run_dir TEXT,
+  notes TEXT
+);
+CREATE TABLE IF NOT EXISTS archived_files (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  run_id INTEGER NOT NULL,
+  original_path TEXT NOT NULL,
+  category TEXT NOT NULL,
+  storage_mode TEXT NOT NULL,
+  size_bytes INTEGER NOT NULL,
+  mtime_ns INTEGER NOT NULL,
+  sha256 TEXT,
+  compressed_sha256 TEXT,
+  compressed_size_bytes INTEGER,
+  content_zlib BLOB,
+  archived_at TEXT NOT NULL,
+  verified_at TEXT,
+  delete_status TEXT DEFAULT 'pending',
+  deleted_at TEXT,
+  error TEXT,
+  UNIQUE(original_path, size_bytes, mtime_ns, sha256)
+);
+CREATE INDEX IF NOT EXISTS idx_archived_files_path ON archived_files(original_path);
+CREATE INDEX IF NOT EXISTS idx_archived_files_run ON archived_files(run_id);
+CREATE INDEX IF NOT EXISTS idx_archived_files_category ON archived_files(category);
+""")
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--min-age-hours', type=float, default=24)
+    ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--roots', nargs='*', default=DEFAULT_ROOTS)
+    args = ap.parse_args()
+    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    AUDIT_BASE.mkdir(parents=True, exist_ok=True)
+    label = datetime.now().strftime('%Y%m%d-%H%M%S') + ('-sprawl-dryrun' if args.dry_run else '-sprawl-auto')
+    run_dir = AUDIT_BASE / label
+    run_dir.mkdir(parents=True, exist_ok=True)
+    now = time.time()
+    min_age = args.min_age_hours * 3600
+    candidates = []
+    for root_s in args.roots:
+        root = Path(root_s)
+        if not root.exists():
+            continue
+        for dirpath, dirnames, filenames in os.walk(root):
+            p = Path(dirpath)
+            dirnames[:] = [d for d in dirnames if not should_exclude(p / d)]
+            for name in filenames:
+                path = p / name
+                if should_exclude(path):
+                    continue
+                try:
+                    st = path.stat()
+                except OSError:
+                    continue
+                cat, mode = classify(path, st, now, min_age)
+                if cat:
+                    candidates.append((path, st, cat, mode))
+    stats = {'archive_db': str(ARCHIVE_DB), 'run_dir': str(run_dir), 'dry_run': args.dry_run, 'candidates': len(candidates), 'archived': 0, 'verified': 0, 'deleted': 0, 'errors': 0, 'bytes_deleted': 0, 'by_category': {}}
+    if args.dry_run:
+        (run_dir / 'dry-run-candidates.json').write_text(json.dumps([str(c[0]) for c in candidates], indent=2))
+        print(json.dumps(stats, indent=2))
+        return
+    conn = sqlite3.connect(str(ARCHIVE_DB))
+    init_db(conn)
+    run_id = conn.execute('INSERT INTO archive_runs(started_at,host,run_dir,notes) VALUES (?,?,?,?)', (utc_now(), socket.gethostname(), str(run_dir), 'automatic scattered file archive')).lastrowid
+    conn.commit()
+    archived = []
+    errors = []
+    def cat_add(cat, key, val):
+        stats['by_category'].setdefault(cat, {'count':0,'bytes':0,'deleted':0,'deleted_bytes':0})
+        stats['by_category'][cat][key] += val
+    insert_sql = """INSERT INTO archived_files(run_id, original_path, category, storage_mode, size_bytes, mtime_ns, sha256, compressed_sha256, compressed_size_bytes, content_zlib, archived_at)
+VALUES (?,?,?,?,?,?,?,?,?,?,?)"""
+    find_sql = """SELECT id FROM archived_files WHERE original_path=? AND size_bytes=? AND mtime_ns=? AND sha256=? ORDER BY id DESC LIMIT 1"""
+    for path, st, cat, mode in candidates:
+        try:
+            size = st.st_size
+            digest = sha256_file(path) if size else hashlib.sha256(b'').hexdigest()
+            blob = comp_digest = comp_size = None
+            if mode == 'zlib_blob':
+                raw = path.read_bytes()
+                if hashlib.sha256(raw).hexdigest() != digest:
+                    raise RuntimeError('sha changed while reading')
+                blob = zlib.compress(raw, 6)
+                comp_digest = hashlib.sha256(blob).hexdigest()
+                comp_size = len(blob)
+            try:
+                row_id = conn.execute(insert_sql, (run_id, str(path), cat, mode, size, st.st_mtime_ns, digest, comp_digest, comp_size, blob, utc_now())).lastrowid
+                conn.commit()
+            except sqlite3.IntegrityError:
+                row = conn.execute(find_sql, (str(path), size, st.st_mtime_ns, digest)).fetchone()
+                if not row:
+                    raise
+                row_id = row[0]
+            stats['archived'] += 1
+            cat_add(cat, 'count', 1); cat_add(cat, 'bytes', size)
+            archived.append((row_id, path, cat, mode, size, digest))
+        except Exception as e:
+            stats['errors'] += 1; errors.append({'stage':'archive','path':str(path),'error':repr(e)})
+    for row_id, path, cat, mode, size, digest in archived:
+        try:
+            row = conn.execute('SELECT sha256, content_zlib FROM archived_files WHERE id=?', (row_id,)).fetchone()
+            if not row or row[0] != digest:
+                raise RuntimeError('row missing or sha mismatch')
+            if mode == 'zlib_blob':
+                raw = zlib.decompress(row[1])
+                if len(raw) != size or hashlib.sha256(raw).hexdigest() != digest:
+                    raise RuntimeError('restore check failed')
+            conn.execute('UPDATE archived_files SET verified_at=? WHERE id=?', (utc_now(), row_id)); conn.commit()
+            stats['verified'] += 1
+        except Exception as e:
+            stats['errors'] += 1; errors.append({'stage':'verify','path':str(path),'error':repr(e)})
+    for row_id, path, cat, mode, size, digest in archived:
+        try:
+            if not path.exists():
+                conn.execute('UPDATE archived_files SET delete_status=?, deleted_at=? WHERE id=?', ('already_missing', utc_now(), row_id)); conn.commit(); continue
+            st = path.stat()
+            if st.st_size != size or sha256_file(path) != digest:
+                raise RuntimeError('file changed after archive')
+            path.unlink()
+            conn.execute('UPDATE archived_files SET delete_status=?, deleted_at=? WHERE id=?', ('deleted', utc_now(), row_id)); conn.commit()
+            stats['deleted'] += 1; stats['bytes_deleted'] += size
+            cat_add(cat, 'deleted', 1); cat_add(cat, 'deleted_bytes', size)
+        except Exception as e:
+            stats['errors'] += 1; errors.append({'stage':'delete','path':str(path),'error':repr(e)})
+    removed_dirs = 0
+    for root_s in args.roots:
+        for dirpath, dirnames, filenames in os.walk(root_s, topdown=False):
+            p = Path(dirpath)
+            if p.name == '__pycache__':
+                try:
+                    p.rmdir(); removed_dirs += 1
+                except OSError:
+                    pass
+    stats['removed_empty_pycache_dirs'] = removed_dirs
+    conn.execute('UPDATE archive_runs SET finished_at=? WHERE id=?', (utc_now(), run_id)); conn.commit(); conn.close()
+    (run_dir / 'sprawl-archive-stats.json').write_text(json.dumps(stats, indent=2, ensure_ascii=False))
+    (run_dir / 'sprawl-archive-errors.json').write_text(json.dumps(errors, indent=2, ensure_ascii=False))
+    print(json.dumps(stats, indent=2, ensure_ascii=False))
+if __name__ == '__main__':
+    main()

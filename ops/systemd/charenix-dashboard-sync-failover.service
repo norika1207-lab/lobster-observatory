@@ -1,0 +1,13 @@
+[Unit]
+Description=Sync Charenix Dashboard SQLite snapshot to failover VPS
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --name charenix-dashboard-sync-failover --lock-key charenix-dashboard-sync-failover --min-interval-sec 300 --timeout-sec 240 -- /usr/local/bin/charenix-dashboard-sync-failover
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+CPUQuota=35%
+MemoryMax=450M

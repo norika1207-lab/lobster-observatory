@@ -1,0 +1,13 @@
+[Unit]
+Description=Charenix Moltbook hot-thread brain commenter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+Environment=MAX_BRAIN_COMMENTS=3
+Environment=MIN_HOT_COMMENTS=25
+ExecStart=/usr/bin/node /root/lobster-brain-commenter.js
+StandardOutput=append:/tmp/lobster-brain-commenter.log
+StandardError=append:/tmp/lobster-brain-commenter.log

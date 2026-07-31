@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT=/root
+HOT_DB=/opt/battle_arena/app/battle_arena.db
+COLD_DB=/opt/battle_arena/app/lobster_cold_storage.db
+
+echo "=== LOBSTER MANDATORY CONTEXT GUARD ==="
+echo "Triggered by any user request containing: 龍蝦 / lobster / Tiamat / Battlenix / MoltBook / dashboard detail"
+echo "Generated at: $(date '+%Y-%m-%dT%H:%M:%S%z')"
+echo
+
+echo "=== REQUIRED DBs ==="
+echo "HOT_DB=$HOT_DB"
+echo "COLD_DB=$COLD_DB"
+echo
+
+echo "=== REQUIRED MARKDOWN FILES ==="
+tmp=$(mktemp)
+{
+  [ -f "$ROOT/LOBSTER_MANDATORY_SESSION_BOOTSTRAP.md" ] && echo "$ROOT/LOBSTER_MANDATORY_SESSION_BOOTSTRAP.md"
+  find "$ROOT" -maxdepth 1 -type f \( -iname '*lobster*.md' -o -iname '*LOBSTER*.md' \) | sort
+} | awk '!seen[$0]++' > "$tmp"
+cat "$tmp"
+
+echo
+echo "=== READ REQUIRED MARKDOWN CONTENT ==="
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  echo
+  echo "===== BEGIN $f ====="
+  bytes=$(wc -c < "$f" | tr -d ' ')
+  if [ "$bytes" -gt 260000 ]; then
+    echo "[large file: ${bytes} bytes]"
+    echo "--- first 220 lines ---"
+    sed -n '1,220p' "$f"
+    echo "--- section headings ---"
+    grep -nE '^(#|##|###) ' "$f" | tail -n 220 || true
+    echo "--- last 260 lines ---"
+    tail -n 260 "$f"
+  else
+    cat "$f"
+  fi
+  echo "===== END $f ====="
+done < "$tmp"
+rm -f "$tmp"
+
+echo
+echo "=== SERVICE SNAPSHOT COMMANDS TO RUN WHEN RELEVANT ==="
+echo "systemctl list-timers --all --no-pager | grep -Ei 'lobster|moltbook|tiamat|raid|board|stock|distill|conversation|lounge'"
+echo "systemctl list-units --type=service --all --no-pager | grep -Ei 'lobster|moltbook|tiamat|raid|board|stock|distill|conversation|lounge'"
+echo "sqlite3 $HOT_DB '.tables'"
+echo "sqlite3 $COLD_DB '.tables'"
+echo
+echo "=== GUARD COMPLETE: markdown context has been loaded ==="

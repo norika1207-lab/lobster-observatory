@@ -1,0 +1,12 @@
+[Unit]
+Description=Keep lobster Qwen 14B fixed model warm
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/root/lobster-14b-keepwarm.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

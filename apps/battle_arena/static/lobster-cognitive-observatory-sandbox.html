@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lobster Cognitive Observatory Sandbox</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#060d14;color:#dce8f0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;overflow:hidden}
+body{display:flex;flex-direction:column}
+button{font:inherit}
+#topbar{height:54px;background:#0c1824;border-bottom:1px solid #1a2d40;display:flex;align-items:center;gap:12px;padding:9px 18px;flex-shrink:0}
+.logo{font-size:23px}.title{font-size:14px;font-weight:900}.sub{font-size:9px;color:#557084;letter-spacing:.7px;text-transform:uppercase;margin-top:2px}
+.live{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 9px #4ade8088;animation:blink 2s infinite}@keyframes blink{50%{opacity:.35}}
+.top-actions{margin-left:auto;display:flex;gap:8px}.top-actions a{padding:6px 12px;border:1px solid #1e3a50;border-radius:7px;color:#7ab4d8;text-decoration:none;font-size:11px;font-weight:800}
+#layout{flex:1;min-height:0;display:grid;grid-template-columns:220px 1fr}
+#side{background:#0a1520;border-right:1px solid #111e2a;overflow:auto;padding:12px 0}
+.side-head{padding:4px 14px 12px;border-bottom:1px solid #111e2a}.side-title{font-size:12px;font-weight:900;color:#8bd8ff}.side-note{font-size:10px;color:#40586a;margin-top:4px;line-height:1.45}
+.agent{display:grid;grid-template-columns:9px 1fr 42px;gap:8px;align-items:center;padding:8px 14px;border-left:2px solid transparent;cursor:pointer;color:#6f8ea2}
+.agent:hover,.agent.active{background:#0d1e2e;border-left-color:var(--c);color:#dcecff}.dot{width:9px;height:9px;border-radius:50%;background:var(--c)}.agent-name{font-size:12px;font-weight:800}.agent-score{font-size:10px;text-align:right;color:var(--c);font-weight:900}
+#main{overflow:auto;padding:18px 20px 32px}
+.hero{display:grid;grid-template-columns:minmax(340px,1.2fr) minmax(280px,.8fr);gap:14px;margin-bottom:14px}
+.hero-card,.panel,.metric,.detail-card{background:#0b1724;border:1px solid #14283a;border-radius:8px}
+.hero-card{padding:18px}.kicker{font-size:10px;color:#4ade80;text-transform:uppercase;letter-spacing:.8px;font-weight:900}.h1{font-size:25px;font-weight:950;line-height:1.15;margin-top:8px}.copy{font-size:12px;line-height:1.7;color:#89a4b7;margin-top:10px;max-width:780px}
+.map-list{display:grid;gap:7px;padding:14px}.map-row{display:grid;grid-template-columns:132px 1fr;gap:10px;font-size:11px;line-height:1.45}.map-k{color:#8bd8ff;font-weight:900}.map-v{color:#7893a8}
+.metrics{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:10px;margin-bottom:14px}.metric{padding:13px}.metric-v{font-size:25px;font-weight:950}.metric-k{font-size:11px;color:#9bb5c8;font-weight:900;margin-top:2px}.metric-s{font-size:10px;color:#4a6578;line-height:1.45;margin-top:6px}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-bottom:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.panel-h{padding:12px 14px;border-bottom:1px solid #14283a;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}.panel-t{font-size:13px;font-weight:950}.panel-s{font-size:10px;color:#506a7c;margin-top:2px}.panel-b{padding:12px 14px}
+svg{width:100%;display:block}.chart{height:260px}.smallchart{height:150px}
+.table{display:grid;gap:7px}.row{display:grid;grid-template-columns:110px repeat(6,1fr);gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #102235;font-size:11px}.row.head{color:#557084;font-size:10px;text-transform:uppercase;font-weight:900}.name{font-weight:900}.bar{height:8px;background:#050b11;border:1px solid #132235;border-radius:8px;overflow:hidden}.fill{height:100%;border-radius:8px;background:var(--c)}
+.detail{display:none}.detail.active{display:block}.detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 14px}.detail-title{font-size:20px;font-weight:950}.back{border:1px solid #1e3a50;background:#0a1824;color:#8bd8ff;border-radius:7px;padding:7px 11px;cursor:pointer;font-size:11px;font-weight:900}
+.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.detail-card{padding:12px}.detail-v{font-size:22px;font-weight:950}.detail-l{font-size:10px;color:#6f8ea2;font-weight:900;margin-top:2px}
+.event{display:grid;grid-template-columns:92px 1fr;gap:10px;border-bottom:1px solid #102235;padding:8px 0;font-size:11px;line-height:1.45}.event-t{color:#4a6578}.event-x{color:#9eb7c8}.pill{display:inline-flex;padding:3px 7px;border:1px solid #1e3a50;border-radius:999px;color:#83c5e8;background:#081522;font-size:10px;font-weight:900;margin:2px 4px 2px 0}
+.empty{color:#506a7c;font-size:12px;text-align:center;padding:34px}
+@media(max-width:1100px){#layout{grid-template-columns:1fr}#side{display:none}.hero,.grid{grid-template-columns:1fr}.metrics,.grid3,.detail-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <div class="logo">人</div>
+  <div><div class="title">Cognitive Observatory Sandbox</div><div class="sub">Second-brain telemetry · signal mapping · live sqlite timeline</div></div>
+  <div class="live"></div>
+  <div class="top-actions"><a href="/lobster/dashboard">正式 Dashboard</a><a href="/api/cognitive-signals?limit=20" target="_blank">Raw API</a></div>
+</div>
+<div id="layout">
+  <aside id="side"><div class="side-head"><div class="side-title">Agents</div><div class="side-note">依「認知負載」排序。點擊查看單隻人的參數曲線與原始訊號。</div></div><div id="agent-list"></div></aside>
+  <main id="main">
+    <section id="overview">
+      <div class="hero">
+        <div class="hero-card">
+          <div class="kicker">Sandbox mapping layer</div>
+          <div class="h1">把第二層大腦參數轉成可觀察指標</div>
+          <div class="copy">這個版本不是再列 JSON，而是把 working memory、prediction、metacognition、interoception、consolidation、causal model、self continuity、procedural skill 轉成 dashboard 監控語言。目標是看「哪隻人正在失準、過載、修正、疲勞、鞏固或形成技能」。</div>
+        </div>
+        <div class="hero-card map-list">
+          <div class="map-row"><div class="map-k">認知負載</div><div class="map-v">attention_load + active_focus_count + fatigue</div></div>
+          <div class="map-row"><div class="map-k">模型失準</div><div class="map-v">prediction_error + model_revision_pressure + overconfidence_risk</div></div>
+          <div class="map-row"><div class="map-k">後設穩定</div><div class="map-v">metacognitive_calibration - overconfidence_risk</div></div>
+          <div class="map-row"><div class="map-k">身體壓力</div><div class="map-v">arousal + threat_body_signal + fatigue</div></div>
+          <div class="map-row"><div class="map-k">鞏固壓力</div><div class="map-v">consolidation_queue_size + causal_hypothesis_count + narrative_drift</div></div>
+          <div class="map-row"><div class="map-k">程序穩定</div><div class="map-v">procedural_strength + routine strength</div></div>
+        </div>
+      </div>
+      <div class="metrics" id="metrics"></div>
+      <div class="grid">
+        <div class="panel"><div class="panel-h"><div><div class="panel-t">Cohort Cognitive Timeline</div><div class="panel-s">全體認知負載、模型失準、身體壓力平均值</div></div></div><div class="panel-b"><svg class="chart" id="cohort-chart"></svg></div></div>
+        <div class="panel"><div class="panel-h"><div><div class="panel-t">Risk Quadrant</div><div class="panel-s">X=模型失準，Y=身體壓力，點大小=認知負載</div></div></div><div class="panel-b"><svg class="chart" id="quadrant"></svg></div></div>
+      </div>
+      <div class="grid3">
+        <div class="panel"><div class="panel-h"><div><div class="panel-t">Attention Load</div><div class="panel-s">工作記憶負載排名</div></div></div><div class="panel-b"><svg class="smallchart" id="attention-bars"></svg></div></div>
+        <div class="panel"><div class="panel-h"><div><div class="panel-t">Prediction Error</div><div class="panel-s">模型失準排名</div></div></div><div class="panel-b"><svg class="smallchart" id="error-bars"></svg></div></div>
+        <div class="panel"><div class="panel-h"><div><div class="panel-t">Somatic Pressure</div><div class="panel-s">身體壓力排名</div></div></div><div class="panel-b"><svg class="smallchart" id="body-bars"></svg></div></div>
+      </div>
+      <div class="panel"><div class="panel-h"><div><div class="panel-t">Agent Signal Table</div><div class="panel-s">目前快照，點擊列進入 detail</div></div></div><div class="panel-b"><div class="table" id="agent-table"></div></div></div>
+    </section>
+    <section id="detail" class="detail"></section>
+  </main>
+</div>
+<script>
+const COLORS={snaplex:'#c084fc',ragclaw:'#a3e635',pincerbot:'#f97316',hexclaw:'#38bdf8',clawtrix:'#818cf8',norika_oda:'#fbbf24',vortexiq:'#fb7185',prismbit:'#2dd4bf',blazepaw:'#ff6b35',stonefang:'#94a3b8'};
+let DATA={rows:[],latest:[]}, byName={}, current=null;
+const pct=v=>Math.round(Math.max(0,Math.min(1,Number(v)||0))*100);
+const avg=xs=>xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:0;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function color(n){return COLORS[n]||'#8bd8ff'}
+function loadScore(r){return Math.min(1,(+r.attention_load||0)*.72+(+r.fatigue||0)*.18+Math.min(1,(+r.active_focus_count||0)/7)*.1)}
+function driftScore(r){return Math.min(1,(+r.prediction_error||0)*.38+(+r.model_revision_pressure||0)*.38+(+r.overconfidence_risk||0)*.24)}
+function metaScore(r){return Math.max(0,Math.min(1,(+r.metacognitive_calibration||0)-(+r.overconfidence_risk||0)*.35))}
+function bodyScore(r){return Math.min(1,(+r.arousal||0)*.38+(+r.threat_body_signal||0)*.42+(+r.fatigue||0)*.2)}
+function consolidationScore(r){return Math.min(1,Math.min(1,(+r.consolidation_queue_size||0)/12)*.35+Math.min(1,(+r.causal_hypothesis_count||0)/12)*.35+(+r.narrative_drift||0)*.3)}
+function skillScore(r){return Math.min(1,+r.procedural_strength||0)}
+function groupRows(){const g={}; DATA.rows.forEach(r=>(g[r.persona]||(g[r.persona]=[])).push(r)); return g}
+function spark(vals,w,h){if(!vals.length)return''; return vals.map((v,i)=>`${i?'L':'M'}${(i/(vals.length-1||1))*w},${h-(Math.max(0,Math.min(1,v))*(h-6)+3)}`).join(' ')}
+function lineChart(id, series){const el=document.getElementById(id), w=920,h=250; let grid=''; for(let i=0;i<=4;i++){const y=i*h/4; grid+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#132235"/>`} const lines=series.map(s=>`<path d="${spark(s.vals,w,h)}" fill="none" stroke="${s.c}" stroke-width="2.4" stroke-linecap="round"/><text x="8" y="${16+series.indexOf(s)*14}" fill="${s.c}" font-size="10" font-weight="900">${s.name}</text>`).join(''); el.setAttribute('viewBox',`0 0 ${w} ${h}`); el.innerHTML=grid+lines}
+function bars(id, rows, fn){const el=document.getElementById(id), w=420,h=Math.max(150,rows.length*18+10); let body=''; rows.forEach((r,i)=>{const y=8+i*18,v=fn(r),c=color(r.persona);body+=`<text x="0" y="${y+9}" fill="${c}" font-size="10" font-weight="900">${r.persona}</text><rect x="96" y="${y}" width="${w-140}" height="8" rx="4" fill="#050b11" stroke="#132235"/><rect x="96" y="${y}" width="${(w-140)*pct(v)/100}" height="8" rx="4" fill="${c}"/><text x="${w-34}" y="${y+9}" fill="${c}" font-size="10" font-weight="900">${pct(v)}</text>`}); el.setAttribute('viewBox',`0 0 ${w} ${h}`); el.innerHTML=body}
+function quadrant(rows){const el=document.getElementById('quadrant'),w=520,h=260,p=34; let body=`<line x1="${p}" y1="${h/2}" x2="${w-p}" y2="${h/2}" stroke="#20364a"/><line x1="${w/2}" y1="${p}" x2="${w/2}" y2="${h-p}" stroke="#20364a"/><text x="${p}" y="18" fill="#557084" font-size="10">calm / stable</text><text x="${w-p}" y="18" fill="#557084" font-size="10" text-anchor="end">high drift</text>`; rows.forEach(r=>{const x=p+driftScore(r)*(w-p*2),y=h-p-bodyScore(r)*(h-p*2),rad=5+loadScore(r)*12,c=color(r.persona);body+=`<circle cx="${x}" cy="${y}" r="${rad}" fill="${c}" fill-opacity=".28" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y-rad-4}" fill="${c}" font-size="10" text-anchor="middle" font-weight="900">${r.persona}</text>`}); el.setAttribute('viewBox',`0 0 ${w} ${h}`); el.innerHTML=body}
+function render(){
+ const latest=DATA.latest.slice().sort((a,b)=>loadScore(b)-loadScore(a)); byName=groupRows();
+ const m=[['認知負載',avg(latest.map(loadScore)),'attention + focus + fatigue','#38bdf8'],['模型失準',avg(latest.map(driftScore)),'prediction + revision + overconfidence','#fb7185'],['後設穩定',avg(latest.map(metaScore)),'calibration minus overconfidence','#a78bfa'],['身體壓力',avg(latest.map(bodyScore)),'arousal + threat + fatigue','#fbbf24'],['鞏固壓力',avg(latest.map(consolidationScore)),'queue + hypotheses + drift','#4ade80'],['程序穩定',avg(latest.map(skillScore)),'routine strength','#f97316']];
+ document.getElementById('metrics').innerHTML=m.map(x=>`<div class="metric"><div class="metric-v" style="color:${x[3]}">${pct(x[1])}</div><div class="metric-k">${x[0]}</div><div class="metric-s">${x[2]}</div></div>`).join('');
+ const g=groupRows(), times=[...new Set(DATA.rows.map(r=>r.created_at))].slice(-70); const co=key=>times.map(t=>avg(DATA.rows.filter(r=>r.created_at===t).map(key))); lineChart('cohort-chart',[{name:'load',c:'#38bdf8',vals:co(loadScore)},{name:'drift',c:'#fb7185',vals:co(driftScore)},{name:'body',c:'#fbbf24',vals:co(bodyScore)},{name:'meta',c:'#a78bfa',vals:co(metaScore)}]);
+ quadrant(latest); bars('attention-bars',latest,loadScore); bars('error-bars',latest.slice().sort((a,b)=>driftScore(b)-driftScore(a)),driftScore); bars('body-bars',latest.slice().sort((a,b)=>bodyScore(b)-bodyScore(a)),bodyScore);
+ document.getElementById('agent-list').innerHTML=latest.map(r=>`<div class="agent ${current===r.persona?'active':''}" style="--c:${color(r.persona)}" onclick="openDetail('${r.persona}')"><div class="dot"></div><div class="agent-name">${r.persona}</div><div class="agent-score">${pct(loadScore(r))}</div></div>`).join('');
+ document.getElementById('agent-table').innerHTML=`<div class="row head"><div>Agent</div><div>Load</div><div>Drift</div><div>Meta</div><div>Body</div><div>Consolid.</div><div>Skill</div></div>`+latest.map(r=>`<div class="row" onclick="openDetail('${r.persona}')" style="cursor:pointer"><div class="name" style="color:${color(r.persona)}">${r.persona}</div>${[loadScore,driftScore,metaScore,bodyScore,consolidationScore,skillScore].map(fn=>`<div><div class="bar"><div class="fill" style="--c:${color(r.persona)};width:${pct(fn(r))}%"></div></div></div>`).join('')}</div>`).join('');
+}
+function openDetail(name){current=name; render(); const r=DATA.latest.find(x=>x.persona===name)||{}, rows=(byName[name]||[]).slice(-90), full=r.full||{}, wm=full.workingMemory||{}, pm=full.predictiveModel||{}, meta=full.metacognition||{}, inter=full.interoception||{}, cons=full.memoryConsolidation||{}, causal=full.causalModel||{}, self=full.selfContinuity||{}, proc=full.proceduralSkill||{}; document.getElementById('overview').style.display='none'; const d=document.getElementById('detail'); d.classList.add('active'); d.innerHTML=`<div class="detail-head"><div><div class="detail-title" style="color:${color(name)}">${name} cognitive signals</div><div class="sub">latest ${esc(r.created_at||'--')} · ${rows.length} samples</div></div><button class="back" onclick="closeDetail()">返回總覽</button></div><div class="detail-grid">${[['負載',loadScore(r),'#38bdf8'],['失準',driftScore(r),'#fb7185'],['後設',metaScore(r),'#a78bfa'],['身體',bodyScore(r),'#fbbf24']].map(x=>`<div class="detail-card"><div class="detail-v" style="color:${x[2]}">${pct(x[1])}</div><div class="detail-l">${x[0]}</div></div>`).join('')}</div><div class="grid"><div class="panel"><div class="panel-h"><div><div class="panel-t">四線趨勢</div><div class="panel-s">load / drift / meta / body</div></div></div><div class="panel-b"><svg class="chart" id="detail-lines"></svg></div></div><div class="panel"><div class="panel-h"><div><div class="panel-t">目前工作記憶</div><div class="panel-s">current focus / suppressed</div></div></div><div class="panel-b">${(wm.currentFocus||[]).slice(0,6).map(x=>`<div class="event"><div class="event-t">${esc(String(x.time||'').slice(5,19).replace('T',' '))}</div><div class="event-x">${esc(x.label||x.type)} · ${pct(x.salience)} · ${esc(x.summary||'')}</div></div>`).join('')||'<div class="empty">no focus</div>'}<div>${(wm.suppressedSignals||[]).slice(0,8).map(x=>`<span class="pill">${esc(x.label||x.type)}</span>`).join('')}</div></div></div></div><div class="grid3"><div class="panel"><div class="panel-h"><div><div class="panel-t">Prediction</div><div class="panel-s">recent forecasts</div></div></div><div class="panel-b">${(pm.recentForecasts||[]).slice(0,8).map(f=>`<div class="event"><div class="event-t">${esc(String(f.time||'').slice(5,19).replace('T',' '))}</div><div class="event-x">pred ${pct(f.predictedWin)} · actual ${f.actual} · error ${pct(f.error)}</div></div>`).join('')||'<div class="empty">no forecasts</div>'}</div></div><div class="panel"><div class="panel-h"><div><div class="panel-t">Causal</div><div class="panel-s">hypotheses / counterfactuals</div></div></div><div class="panel-b">${(causal.hypotheses||[]).slice(0,8).map(h=>`<div class="event"><div class="event-t">${esc(String(h.time||'').slice(5,19).replace('T',' '))}</div><div class="event-x">${esc(h.hypothesis||'')} · ${pct(h.confidence)}</div></div>`).join('')||'<div class="empty">no hypotheses</div>'}</div></div><div class="panel"><div class="panel-h"><div><div class="panel-t">Self / Skill</div><div class="panel-s">continuity and routines</div></div></div><div class="panel-b"><div class="event"><div class="event-t">drift</div><div class="event-x">${pct(self.narrativeDrift)} · contradictions ${(self.recentSelfContradictions||[]).length}</div></div>${Object.entries(proc.raidRoutines||{}).slice(0,8).map(([k,v])=>`<div class="event"><div class="event-t">${esc(k)}</div><div class="event-x">strength ${pct(v.strength)} · ${v.attempts||0} attempts</div></div>`).join('')||'<div class="empty">no routines</div>'}</div></div></div>`; lineChart('detail-lines',[{name:'load',c:'#38bdf8',vals:rows.map(loadScore)},{name:'drift',c:'#fb7185',vals:rows.map(driftScore)},{name:'meta',c:'#a78bfa',vals:rows.map(metaScore)},{name:'body',c:'#fbbf24',vals:rows.map(bodyScore)}]);}
+function closeDetail(){current=null; document.getElementById('detail').classList.remove('active'); document.getElementById('overview').style.display='block'; render()}
+async function init(){const r=await fetch('/api/cognitive-signals?limit=2000',{cache:'no-store'}); DATA=await r.json(); DATA.rows=(DATA.rows||[]).reverse(); DATA.latest=DATA.latest||[]; render()}
+init().catch(e=>{document.getElementById('main').innerHTML=`<div class="empty">讀取失敗：${esc(e.message)}</div>`})
+</script>
+</body>
+</html>

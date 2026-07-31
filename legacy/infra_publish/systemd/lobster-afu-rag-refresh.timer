@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Lobster aggregate Afu Brain RAG pack every 30 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=30min
+AccuracySec=1min
+Unit=lobster-afu-rag-refresh.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=Refresh Lobster social intelligence and conversation dashboard DB cache
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/refresh_lobster_social_cache.py --only all
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+CPUQuota=35%
+MemoryMax=700M

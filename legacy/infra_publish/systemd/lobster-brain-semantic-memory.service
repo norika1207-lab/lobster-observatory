@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster brain semantic memory builder
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-brain-semantic-memory --lock-key lobster-brain-semantic-memory --min-interval-sec 21600 --timeout-sec 300 -- /usr/bin/python3 /root/lobster-brain-semantic-memory-builder.py
+Nice=10
+CPUQuota=40%
+MemoryMax=500M

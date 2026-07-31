@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Streaming backup using sqlite3 .backup → sshfs (no VACUUM, no readonly hold)
+set -euo pipefail
+SRC="/opt/battle_arena/app/battle_arena.db"
+MOUNT="/mnt/laptop_ext"
+DEST="$MOUNT/battle_arena.db"
+TMP="$MOUNT/battle_arena.db.staging"
+LOG="/var/log/charenix-dashboard-laptop-external-sync.log"
+LOCK="/run/charenix-dashboard-laptop-external-sync.lock"
+STAMP="/var/lib/charenix-dashboard-laptop-external-sync.last"
+MIN_INTERVAL_SEC="${MIN_INTERVAL_SEC:-86400}"
+ALLOW_HUGE_BACKUP="${ALLOW_HUGE_BACKUP:-0}"
+SSHFS_REMOTE="norik@100.118.221.12:/D:/charenix-backups"
+SSH_KEY="/root/.ssh/charenix_laptop_backup_ed25519"
+
+log() { mkdir -p "$(dirname "$LOG")"; printf "%s %s\n" "$(date +%Y-%m-%dT%H:%M:%S%z)" "$*" >> "$LOG"; }
+
+ensure_mount() {
+  if ! timeout 3 stat "$MOUNT" >/dev/null 2>&1; then
+    log "mount unhealthy: attempting lazy unmount $MOUNT"
+    fusermount -uz "$MOUNT" >/dev/null 2>&1 || umount -l "$MOUNT" >/dev/null 2>&1 || true
+  fi
+  mkdir -p "$MOUNT"
+  if mountpoint -q "$MOUNT"; then return 0; fi
+  if ! timeout 45 sshfs -o "IdentityFile=$SSH_KEY" -o StrictHostKeyChecking=no \
+        -o UserKnownHostsFile=/tmp/laptop_known_hosts -o reconnect \
+        -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -o allow_other \
+        "$SSHFS_REMOTE" "$MOUNT"; then
+    log "skipped: laptop external mount unavailable"
+    return 1
+  fi
+}
+
+exec 9>"$LOCK"
+if ! flock -n 9; then log 'skipped: another running'; exit 0; fi
+
+mkdir -p /var/lib
+now=$(date +%s)
+last=0
+if [ -f "$STAMP" ]; then last=$(cat "$STAMP" 2>/dev/null || echo 0); fi
+if [ $((now-last)) -lt "$MIN_INTERVAL_SEC" ]; then
+  log "skipped: last backup $((now-last))s ago < ${MIN_INTERVAL_SEC}s"
+  exit 0
+fi
+src_size=$(stat -c%s "$SRC")
+if [ "$ALLOW_HUGE_BACKUP" != "1" ] && [ "$src_size" -gt $((20*1024*1024*1024)) ]; then
+  log "skipped: source too large for opportunistic external backup: src_size=$src_size; set ALLOW_HUGE_BACKUP=1 to run"
+  echo "$now" > "$STAMP"
+  exit 0
+fi
+if ! ensure_mount; then exit 0; fi
+log "backup started: src_size=$src_size"
+
+# .backup is the SQLite-safe streaming backup (vs VACUUM which holds lock long)
+# It uses pages-at-a-time copy with shared lock on each page
+# 90s timeout per page = ~30 min worst case for 97GB db (about 1-2 MB/s through sshfs)
+timeout 7200 sqlite3 -cmd ".timeout 60000" "$SRC" ".backup '$TMP'" 2>>"$LOG" || { log 'backup FAILED'; rm -f "$TMP"; exit 1; }
+
+# atomic swap
+mv -f "$TMP" "$DEST"
+dest_size=$(stat -c%s "$DEST")
+echo "$(date +%s)" > "$STAMP"
+log "backup done: dest_size=$dest_size"

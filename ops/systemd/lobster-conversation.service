@@ -1,0 +1,26 @@
+[Unit]
+Description=Lobster conversation coordinator
+After=network-online.target lobster-lounge.service charenix-dashboard.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+EnvironmentFile=/opt/battle_arena/.env
+Environment=LOBSTER_LOUNGE_LLM=qwen
+Environment=LOBSTER_QWEN_API_BASE=http://100.118.221.12:11434/v1
+Environment=LOBSTER_QWEN_MODEL=lobster-zh-chat-v2
+Environment=LOBSTER_QWEN_HIGH_MODEL=lobster-zh-chat-v2
+Environment=LOBSTER_LOCAL_LLM_URL=http://100.118.221.12:11434/v1
+Environment=LOBSTER_LOCAL_LLM_MODEL=lobster-zh-chat-v2
+Environment=LOBSTER_LOCAL_LLM_KIND=openai
+Environment=DASHSCOPE_API_KEY=local-vllm-no-auth
+Environment=QWEN_API_KEY=local-vllm-no-auth
+ExecStart=/usr/bin/node /root/lobster-conversation.js
+Restart=always
+RestartSec=20
+StandardOutput=append:/tmp/lobster-conv.log
+StandardError=append:/tmp/lobster-conv.log
+
+[Install]
+WantedBy=multi-user.target

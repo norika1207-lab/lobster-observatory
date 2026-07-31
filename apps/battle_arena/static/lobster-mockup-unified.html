@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人 Lobster Observatory</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#060d14;color:#e8e8ee;font-family:-apple-system,'Segoe UI',system-ui,sans-serif;overflow:hidden}
+body{display:flex;flex-direction:column}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--ac,#888)44}50%{box-shadow:0 0 0 6px transparent}}
+
+/* ── TOPBAR ── */
+#topbar{background:#0c1824;border-bottom:1px solid #1a2d40;padding:9px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;z-index:200}
+.t-logo{font-size:22px}
+.t-title{font-size:14px;font-weight:800;color:#e8e8ee}
+.t-sub{font-size:9px;color:#3a5060;letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade8088;animation:blink 2s infinite}
+.live-txt{font-size:9px;color:#4ade80;font-weight:800;letter-spacing:.5px}
+.t-btns{margin-left:auto;display:flex;gap:8px}
+.t-link{padding:5px 13px;font-size:11px;font-weight:700;border:1px solid #1e3a50;border-radius:7px;color:#7ab4d8;text-decoration:none;transition:all .15s}
+.t-link:hover{border-color:#3a7099;color:#aad4f0;background:#0f2030}
+
+/* ── LAYOUT ── */
+#layout{flex:1;display:flex;overflow:hidden}
+
+/* ── CHANNEL COL ── */
+#ch-col{width:52px;flex-shrink:0;background:#080f18;border-right:1px solid #111e2a;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;overflow:hidden}
+.ch-btn{width:38px;height:38px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;border:1px solid transparent;text-decoration:none;gap:2px}
+.ch-btn:hover{background:#0f1e2e;border-color:#1e3a50}
+.ch-btn .ch-icon{font-size:16px;line-height:1}
+.ch-btn .ch-lbl{font-size:7px;color:#2a4050;font-weight:700;letter-spacing:.3px}
+.ch-divider{width:28px;height:1px;background:#111e2a;margin:4px 0}
+
+/* ── SIDEBAR ── */
+#sidebar{width:200px;flex-shrink:0;background:#0a1520;border-right:1px solid #111e2a;display:flex;flex-direction:column;overflow-y:auto}
+#sidebar::-webkit-scrollbar{width:3px}
+#sidebar::-webkit-scrollbar-thumb{background:#1a2d40}
+.sb-logo{padding:14px 14px 10px;border-bottom:1px solid #111e2a}
+.sb-logo-t{font-size:12px;font-weight:800;color:#7ab4d8}
+.sb-logo-s{font-size:9px;color:#2a3a4a;margin-top:2px}
+.sb-lounge{margin:10px 10px 4px;background:linear-gradient(135deg,#0d1f40,#0a1830);border:1px solid #1e3a6a;border-radius:8px;padding:9px 10px;cursor:pointer;display:flex;align-items:center;gap:8px;text-decoration:none}
+.sb-lounge:hover{border-color:#2a5090}
+.sb-lounge-t{color:#5a8aff;font-size:11px;font-weight:700}
+.sb-lounge-s{color:#1e3558;font-size:9px;margin-top:1px}
+.sb-sec{padding:10px 14px 4px;font-size:9px;font-weight:800;color:#1e3040;text-transform:uppercase;letter-spacing:.8px}
+.sb-item{display:flex;align-items:center;gap:7px;padding:7px 14px;cursor:pointer;color:#3a5565;font-size:11px;font-weight:600;transition:all .15s;border-left:2px solid transparent}
+.sb-item:hover{background:#0d1e2e;color:#5a7585;border-left-color:#1e3a50}
+.sb-item.active{background:#0e2030;color:var(--ac,#4a8aaa);border-left-color:var(--ac,#4a8aaa)}
+.sb-item .si-icon{width:16px;text-align:center;font-size:12px;flex-shrink:0}
+.sb-lob-list{padding:0 0 10px}
+.lob-nav-item{display:flex;align-items:center;gap:8px;padding:6px 14px;cursor:pointer;transition:all .12s;border-left:2px solid transparent}
+.lob-nav-item:hover{background:#0d1e2e;border-left-color:#1e3a50}
+.lob-nav-item.active{background:#0e2030;border-left-color:var(--lc)}
+.lni-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.lni-name{font-size:11px;font-weight:600;color:#3a5060;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lni-wr{font-size:9px;font-weight:700;margin-left:auto;flex-shrink:0}
+
+/* ── MAIN ── */
+#main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.main-view{flex:1;overflow-y:auto;display:none}
+.main-view.active{display:block}
+.main-view::-webkit-scrollbar{width:4px}
+.main-view::-webkit-scrollbar-thumb{background:#1a2d40;border-radius:2px}
+
+/* ── OVERVIEW PAGE ── */
+#ov-page{padding:20px 22px 40px}
+.ov-title{font-size:15px;font-weight:800;color:#e8e8ee;margin-bottom:4px}
+.ov-sub{font-size:10px;color:#2a4050;margin-bottom:16px}
+
+/* Global stats */
+.global-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.gs-box{background:#0c1824;border:1px solid #1a2d40;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column}
+.gs-val{font-size:22px;font-weight:900;color:#e8e8ee;line-height:1}
+.gs-lbl{font-size:9px;font-weight:700;color:#2a4050;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.gs-sub{font-size:9px;color:#1e3040;margin-top:2px}
+.gs-box.green .gs-val{color:#4ade80}
+.gs-box.amber .gs-val{color:#f59e0b}
+.gs-box.blue .gs-val{color:#60a5fa}
+.gs-box.purple .gs-val{color:#a78bfa}
+
+/* Lobster cards grid */
+.lob-grid-hd{font-size:11px;font-weight:700;color:#2a4050;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.lob-grid-hd::after{content:'';flex:1;height:1px;background:#111e2a}
+.lob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+
+/* Lobster card */
+.lob-card{background:linear-gradient(145deg,#0c1824 0%,#080f18 100%);border:1px solid #1a2d40;border-radius:14px;overflow:hidden;cursor:pointer;transition:all .22s;animation:pop .3s ease calc(var(--i,0)*40ms) both;position:relative}
+.lob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lc),transparent);border-radius:14px 14px 0 0}
+.lob-card:hover{border-color:var(--lc-dim);box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px var(--lc-dim);transform:translateY(-3px)}
+.lc-head{padding:14px 14px 0;display:flex;align-items:flex-start;gap:11px}
+.lc-avatar{width:44px;height:44px;border-radius:12px;background:var(--lc-bg);border:2px solid var(--lc);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.lc-info{flex:1;min-width:0}
+.lc-name{font-size:15px;font-weight:900;color:var(--lc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc-mbti{font-size:10px;font-weight:700;color:#4a6070;margin-top:2px}
+.lc-spec{font-size:9px;color:#2a3a4a;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc-wr{text-align:right;flex-shrink:0}
+.lc-wr-n{font-size:20px;font-weight:900;line-height:1}
+.lc-wr-l{font-size:8px;color:#2a4050;text-transform:uppercase;margin-top:2px}
+
+/* Win rate bar */
+.lc-wr-bar{margin:10px 14px 0;height:4px;background:#0a1018;border-radius:2px;overflow:hidden}
+.lc-wr-fill{height:100%;border-radius:2px;transition:width .6s ease}
+
+/* Radar + dims row */
+.lc-radar-row{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.lc-dims{flex:1;display:flex;flex-direction:column;gap:4px}
+.lc-dim-row{display:flex;align-items:center;gap:5px}
+.lc-dim-lbl{font-size:8px;color:#2a4050;width:40px;text-align:right;flex-shrink:0}
+.lc-dim-track{flex:1;height:3px;background:#0a1018;border-radius:2px;overflow:hidden}
+.lc-dim-fill{height:100%;border-radius:2px}
+.lc-dim-val{font-size:8px;font-weight:700;color:#3a5060;width:20px;text-align:right;flex-shrink:0}
+
+/* Stats pills */
+.lc-stats{display:flex;gap:5px;padding:0 14px 10px;flex-wrap:wrap}
+.lc-pill{flex:1;min-width:55px;background:#0a1018;border:1px solid #111e2a;border-radius:7px;padding:5px 6px;text-align:center}
+.lc-pill-v{font-size:12px;font-weight:800;color:#b8c8d4}
+.lc-pill-l{font-size:7px;color:#2a4050;text-transform:uppercase;margin-top:1px}
+
+/* Status bar */
+.lc-status{display:flex;align-items:center;gap:8px;padding:8px 14px 12px;border-top:1px solid #0d1a28}
+.lc-state-dot{width:5px;height:5px;border-radius:50%;background:#3a5060;flex-shrink:0}
+.lc-state-dot.good{background:#4ade80}
+.lc-state-dot.warn{background:#f59e0b}
+.lc-state-dot.bad{background:#f87171}
+.lc-state-txt{font-size:10px;color:#2a4050;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lc-soc{display:flex;gap:4px;flex-shrink:0}
+.lc-soc-tag{font-size:8px;padding:1px 6px;border-radius:4px;border:1px solid transparent;font-weight:700}
+.lc-nemesis{background:#2a0a0a;border-color:#4a1a1a;color:#f87171}
+.lc-prey{background:#0a2a1a;border-color:#1a4a2a;color:#4ade80}
+
+/* Throttenix行為維度條 */
+.lc-brain{padding:6px 14px 8px;border-top:1px solid #0d1a28;display:flex;flex-direction:column;gap:3px}
+.lc-brain-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.lc-brain-lbl{font-size:8px;font-weight:700;color:#3a5565;letter-spacing:.4px;text-transform:uppercase}
+.lc-brain-meta{font-size:8px;color:#1e3040}
+.lc-brain-row{display:flex;align-items:center;gap:4px}
+.lc-brain-key{font-size:8px;color:#2a4050;width:12px;font-weight:700}
+.lc-brain-track{flex:1;height:3px;background:#0a1018;border-radius:2px;overflow:hidden}
+.lc-brain-fill{height:100%;border-radius:2px;transition:width .4s}
+.lc-brain-num{font-size:8px;font-weight:700;width:28px;text-align:right}
+
+/* ── DETAIL VIEW ── */
+#detail-view{flex:1;overflow:hidden;display:none;flex-direction:column}
+#detail-view.active{display:flex}
+.dv-topbar{background:#0c1824;border-bottom:1px solid #1a2d40;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.dv-back{background:#080f18;border:1px solid #1a2d40;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:700;color:#7aaec8;cursor:pointer;transition:all .15s}
+.dv-back:hover{border-color:var(--mp-ac);color:var(--mp-ac)}
+.dv-av{width:46px;height:46px;border-radius:12px;background:var(--mp-bg);border:2px solid var(--mp-ac);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.dv-name{font-size:19px;font-weight:900;color:var(--mp-ac)}
+.dv-sub{font-size:11px;color:#3a5060;margin-top:3px}
+.dv-spec{font-size:9px;color:#2a3a4a;margin-top:1px}
+.dv-wr{margin-left:auto;text-align:right}
+.dv-wr-n{font-size:24px;font-weight:900}
+.dv-wr-lbl{font-size:8px;color:#2a4050;text-transform:uppercase;letter-spacing:.5px}
+.dv-stats{display:flex;gap:5px;padding:8px 20px;flex-shrink:0;background:#080f18;border-bottom:1px solid #1a2d40;overflow-x:auto}
+.dv-stat{flex:1;min-width:58px;text-align:center;padding:4px}
+.dv-stat-v{font-size:13px;font-weight:900;color:#c8d4dc}
+.dv-stat-l{font-size:7px;color:#2a3a4a;text-transform:uppercase;margin-top:1px}
+.dv-tabs{display:flex;background:#080f18;border-bottom:1px solid #1a2d40;flex-shrink:0;overflow-x:auto}
+.dv-tabs::-webkit-scrollbar{height:2px}
+.dv-tabs::-webkit-scrollbar-thumb{background:#1a2d40}
+.dv-tab{padding:11px 18px;font-size:12px;font-weight:700;color:#6a9ab8;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .18s;flex-shrink:0}
+.dv-tab:hover{color:#9ac4dc;background:#0c1824}
+.dv-tab.active{color:var(--mp-ac);border-bottom-color:var(--mp-ac);background:#0c1824}
+.dv-body{flex:1;min-height:0;overflow:hidden;background:#080f18;display:flex;flex-direction:column}
+.dv-body::-webkit-scrollbar{width:4px}
+.dv-body::-webkit-scrollbar-thumb{background:#1a2d40;border-radius:2px}
+.dv-panel{display:none;padding:22px;min-height:0;overflow-y:auto;overflow-x:hidden;contain:layout paint;max-width:100%}
+.dv-panel.active{display:block;flex:1}
+.dv-panel::-webkit-scrollbar{width:4px}
+.dv-panel::-webkit-scrollbar-thumb{background:#1a2d40;border-radius:2px}
+
+/* Analysis content */
+.an-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:8px 12px;background:#0c1824;border:1px solid #1a2d40;border-radius:8px;font-size:10px;color:#3a5565;position:sticky;top:0;z-index:2;backdrop-filter:blur(8px)}
+.analysis-report-shell{width:100%;max-width:1180px;margin:0 auto;background:#0b1520;border:1px solid #1a2d40;border-radius:10px;padding:20px 22px;color:#8fa3b4;font-size:14px;line-height:1.85;overflow-wrap:anywhere;word-break:break-word;box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.analysis-report-shell *{box-sizing:border-box;max-width:100%;letter-spacing:0!important}
+.analysis-report-shell .analysis-meta,.analysis-report-shell .report-meta{display:flex!important;flex-wrap:wrap;gap:8px;margin:0 0 16px!important;padding:10px 12px!important;background:#08111a!important;border:1px solid #152638!important;border-radius:8px!important;color:#5f7486!important;font-size:11px!important}
+.analysis-report-shell .report-container,.analysis-report-shell .container,.analysis-report-shell .content{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;color:inherit!important}
+.analysis-report-shell .report-header,.analysis-report-shell .header{background:transparent!important;border:0!important;border-bottom:1px solid #152638!important;padding:0 0 16px!important;margin:0 0 18px!important;text-align:left!important;color:#e8e8ee!important}
+.analysis-report-shell h1{font-size:22px!important;line-height:1.35!important;color:#e8e8ee!important;margin:0 0 12px!important;font-weight:900!important}
+.analysis-report-shell h2{font-size:17px!important;line-height:1.45!important;color:var(--mp-ac,#7ab4d8)!important;margin:24px 0 12px!important;font-weight:900!important}
+.analysis-report-shell h3{font-size:15px!important;line-height:1.55!important;color:var(--mp-ac,#7ab4d8)!important;margin:22px 0 10px!important;font-weight:850!important;display:flex;align-items:center;gap:7px}
+.analysis-report-shell h3::before{content:'';display:inline-block;width:3px;height:14px;background:var(--mp-ac,#7ab4d8);border-radius:2px;flex-shrink:0}
+.analysis-report-shell h4{font-size:13px!important;color:#c8d4dc!important;margin:18px 0 8px!important}
+.analysis-report-shell p{font-size:14px!important;line-height:1.9!important;color:#91a7b8!important;margin:0 0 13px!important;text-align:left!important}
+.analysis-report-shell strong,.analysis-report-shell b{color:#d7e2ea!important;font-weight:800!important}
+.analysis-report-shell em{color:#7f94a5!important}
+.analysis-report-shell ul,.analysis-report-shell ol{margin:10px 0 16px 22px!important;padding:0!important;color:#91a7b8!important}
+.analysis-report-shell li{margin:7px 0!important;line-height:1.8!important;color:#91a7b8!important;font-size:13px!important}
+.analysis-report-shell table{width:100%!important;border-collapse:collapse!important;margin:14px 0 18px!important;background:#08111a!important;border:1px solid #152638!important;border-radius:8px!important;overflow:hidden!important;display:table!important}
+.analysis-report-shell th,.analysis-report-shell td{padding:9px 11px!important;border-bottom:1px solid #132333!important;color:#8fa3b4!important;font-size:12px!important;text-align:left!important;vertical-align:top!important}
+.analysis-report-shell th{background:#0e2030!important;color:#c8d4dc!important;font-weight:800!important}
+.analysis-report-shell blockquote,.analysis-report-shell .quote-block{margin:14px 0!important;padding:10px 14px!important;background:#08111a!important;border-left:3px solid var(--mp-ac,#7ab4d8)!important;border-radius:0 8px 8px 0!important;color:#9fb3c4!important;font-style:normal!important}
+.analysis-report-shell .analysis-section,.analysis-report-shell section{margin:0 0 18px!important;padding:16px 0!important;border:0!important;border-bottom:1px solid #111e2a!important;background:transparent!important;border-radius:0!important}
+.analysis-report-shell .highlight-box,.analysis-report-shell .warning-box,.analysis-report-shell .positive-box,.analysis-report-shell .insight-box,.analysis-report-shell .success-box,.analysis-report-shell .chart-description,.analysis-report-shell .conclusion,.analysis-report-shell .conclusion-section{background:#08111a!important;border:1px solid #152638!important;border-left:3px solid var(--mp-ac,#7ab4d8)!important;border-radius:8px!important;color:#9fb3c4!important;padding:12px 14px!important;margin:14px 0!important;box-shadow:none!important}
+.analysis-report-shell .data-cite{display:inline;font-size:.92em!important;font-weight:800;background:rgba(90,140,170,.12)!important;color:var(--mp-ac,#7ab4d8)!important;border:1px solid rgba(122,180,216,.24)!important;border-radius:4px!important;padding:1px 5px!important;margin:0 2px!important}
+.analysis-report-shell pre,.analysis-report-shell code{white-space:pre-wrap!important;background:#08111a!important;color:#9fb3c4!important;border:1px solid #152638!important;border-radius:6px!important}
+.analysis-report-shell iframe,.analysis-report-shell script,.analysis-report-shell style,.analysis-report-shell link,.analysis-report-shell meta,.analysis-report-shell title{display:none!important}
+.analysis-empty{max-width:680px;margin:30px auto;padding:26px;text-align:center;background:#0b1520;border:1px dashed #1f3448;border-radius:10px;color:#4f6678;font-size:13px;line-height:1.8}
+.analysis-section{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #111e2a}
+.analysis-section:last-child{border-bottom:none}
+.analysis-section h3{font-size:13px;font-weight:800;color:var(--mp-ac);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.analysis-section h3::before{content:'';display:inline-block;width:3px;height:13px;background:var(--mp-ac);border-radius:2px}
+.analysis-section p{font-size:13px;color:#7a8a9a;line-height:1.85;margin-bottom:9px}
+.analysis-section strong{color:#b8c8d4}
+.data-cite{display:inline-block;font-size:10px;font-weight:700;background:var(--mp-bg);color:var(--mp-ac);border:1px solid var(--mp-ac,#888);border-radius:4px;padding:1px 6px;margin:0 2px}
+.an-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;gap:14px;color:#2a4050}
+.spinner{width:28px;height:28px;border:2px solid #1a2d40;border-top-color:var(--mp-ac,#888);border-radius:50%;animation:spin .8s linear infinite}
+.an-error{padding:28px;text-align:center;color:#f87171;font-size:13px}
+
+/* Version history */
+.vh-wrap{margin-top:24px;background:#0c1824;border:1px solid #1a2d40;border-radius:10px;overflow:hidden}
+.vh-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;background:#0e1e2e;border-bottom:1px solid #1a2d40;cursor:pointer;user-select:none}
+.vh-hd-t{font-size:10px;font-weight:800;color:#3a5565;text-transform:uppercase;letter-spacing:.6px}
+.vh-arrow{font-size:9px;color:#2a3a4a;transition:transform .2s}
+.vh-arrow.open{transform:rotate(180deg)}
+.vh-bd{display:none}
+.vh-bd.open{display:block}
+.vh-entry{padding:11px 15px;border-bottom:1px solid #0d1820}
+.vh-entry:last-child{border-bottom:none}
+.vh-date{font-size:10px;font-weight:700;color:var(--mp-ac,#888);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.vh-trigger{font-size:8px;background:#1a2535;border-radius:3px;padding:1px 5px;color:#2a3a4a;font-weight:700}
+.vh-dims{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px}
+.vh-dim{font-size:9px;padding:1px 6px;border-radius:3px;border:1px solid transparent}
+.vh-dim.up{background:#0a2a1a;border-color:#1a4a2a;color:#4ade80}
+.vh-dim.dn{background:#2a0a0a;border-color:#4a1a1a;color:#f87171}
+.vh-dim.flat{background:#111827;border-color:#1e2d4d;color:#2a3a4a}
+.vh-summary{font-size:11px;color:#3a5060;line-height:1.6}
+
+/* Overview detail blocks */
+.ov-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.od-block{background:#0c1824;border:1px solid #1a2d40;border-radius:10px;padding:12px 14px}
+.od-block-full{grid-column:1/-1}
+.od-block h5{font-size:8px;font-weight:800;color:#1e3040;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.od-quote{font-size:12px;font-style:italic;color:#3a5060;line-height:1.7;border-left:3px solid var(--mp-ac);padding-left:12px}
+.od-trait{display:inline-block;font-size:9px;background:#080f18;border:1px solid #111e2a;border-radius:4px;padding:2px 7px;color:#2a4050;margin:2px}
+.soc-row{display:flex;gap:7px}
+.soc-box{flex:1;background:#080f18;border:1px solid #111e2a;border-radius:7px;padding:7px;text-align:center}
+.soc-v{font-size:12px;font-weight:800;color:var(--mp-ac)}
+.soc-l{font-size:7px;color:#2a4050;text-transform:uppercase;margin-top:2px}
+.ins-list{list-style:none}
+.ins-list li{font-size:11px;color:#3a5060;padding:3px 0;border-bottom:1px solid #0d1820;line-height:1.5}
+.ins-list li:last-child{border-bottom:none}
+.ins-list li::before{content:'›  ';color:var(--mp-ac)}
+.opp-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.opp-tbl th{font-size:8px;font-weight:700;color:#1e3040;text-transform:uppercase;padding:4px 7px;border-bottom:1px solid #1a2d40;text-align:left}
+.opp-tbl td{padding:5px 7px;border-bottom:1px solid #0d1820;color:#3a5060}
+.opp-tbl tr:last-child td{border-bottom:none}
+.opp-name-cell{color:var(--mp-ac);font-weight:700}
+.radar-block{display:flex;align-items:center;gap:12px;padding:12px;background:#080f18;border:1px solid #111e2a;border-radius:10px}
+.rd-dims{flex:1}
+.rd-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.rd-lbl{font-size:9px;color:#2a4050;width:44px;text-align:right;flex-shrink:0}
+.rd-track{flex:1;height:5px;background:#060d14;border-radius:2px;overflow:hidden;border:1px solid #111e2a}
+.rd-fill{height:100%;border-radius:2px}
+.rd-val{font-size:10px;font-weight:700;color:#3a5060;width:24px;text-align:right;flex-shrink:0}
+.rd-delta{font-size:8px;width:26px;text-align:right;flex-shrink:0;font-weight:700}
+.dp{color:#4ade80}.dn{color:#f87171}.df{color:#2a4050}
+
+/* Throttenix 詳細區塊 */
+.tx-block{background:#080f18;border:1px solid #1a2d40;border-radius:10px;padding:14px;margin-bottom:0}
+.tx-block-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tx-block-title{font-size:10px;font-weight:800;color:#5a8aaa;text-transform:uppercase;letter-spacing:.6px}
+.tx-block-meta{font-size:9px;color:#2a4050}
+.tx-dims-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.tx-dim-box{background:#060d14;border:1px solid #111e2a;border-radius:7px;padding:8px 6px;text-align:center}
+.tx-dim-key{font-size:11px;font-weight:900;margin-bottom:3px}
+.tx-dim-val{font-size:16px;font-weight:900;letter-spacing:-.02em;line-height:1}
+.tx-dim-bar{height:3px;background:#0a1018;border-radius:2px;margin-top:5px;overflow:hidden}
+.tx-dim-fill{height:100%;border-radius:2px}
+.tx-behavioral{display:flex;gap:10px;flex-wrap:wrap;padding:10px 12px;background:#060d14;border:1px solid #111e2a;border-radius:7px;font-size:10px}
+.tx-beh-item{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:60px}
+.tx-beh-v{font-size:13px;font-weight:900;color:#c8d4dc}
+.tx-beh-l{font-size:8px;color:#2a4050;text-transform:uppercase}
+.tx-mbti-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#0d1f40;border:1px solid #1e3a6a;border-radius:6px;font-size:11px;font-weight:700;color:#88aaff}
+
+/* Socio report styles */
+.socio-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;padding:8px 10px;background:#060d14;border-radius:7px;border:1px solid #111e2a}
+.socio-meta-item{font-size:9px;color:#2a4050;display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:55px}
+.socio-meta-v{font-size:13px;font-weight:900;color:#e8e8ee}
+.socio-section{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #111e2a}
+.socio-section:last-child{border-bottom:none}
+.socio-sec-num{font-size:8px;font-weight:700;color:var(--mp-ac);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.socio-sec-title{font-size:13px;font-weight:900;color:#e8e8ee;margin-bottom:8px}
+.socio-zh{background:#0a121c;border-left:3px solid var(--mp-ac);border-radius:0 7px 7px 0;padding:10px 12px;margin-bottom:7px;color:#9ab0c0;line-height:1.85;font-size:13px}
+.socio-en{background:#060d14;border-left:3px solid #1e2d40;border-radius:0 7px 7px 0;padding:8px 12px;color:#2a4050;font-size:11px;font-style:italic;line-height:1.8}
+.socio-data-tag{display:inline-block;font-size:9px;font-weight:700;background:var(--mp-bg);color:var(--mp-ac);border:1px solid var(--mp-ac,#888);border-radius:3px;padding:1px 5px;margin:0 2px}
+.socio-report{font-size:13px;line-height:1.85;color:#7a8a9a}
+
+/* Bets + Moltbook */
+.bet-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid #0d1820;font-size:10px}
+.bet-row:last-child{border-bottom:none}
+.bw{color:#4ade80;font-weight:700}.bl{color:#f87171;font-weight:700}
+.post-item{padding:8px 0;border-bottom:1px solid #0d1820}
+.post-item:last-child{border-bottom:none}
+.post-title{font-size:12px;color:#5a7a8a;line-height:1.5;margin-bottom:4px}
+.post-meta{display:flex;gap:10px;font-size:9px;color:#2a3a4a}
+.no-data{padding:30px;text-align:center;color:#1e3040;font-size:12px}
+/* ── COHORT ANALYTICS (overview) ── */
+.cohort-sec{margin:22px 22px 0}
+.cohort-sec-hdr{font-size:9px;font-weight:800;color:#2a4050;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.cohort-sec-hdr::before{content:'';display:inline-block;width:3px;height:9px;background:#1e3a50;border-radius:2px}
+.cohort-state-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:900px){.cohort-state-grid{grid-template-columns:repeat(3,1fr)}}
+.cs-card{background:#0a1520;border:1px solid #111e2a;border-radius:8px;padding:9px 10px;cursor:pointer;transition:border-color .15s}
+.cs-card:hover{border-color:#1e3a50}
+.cs-name{font-size:11px;font-weight:700;color:#3a5565;margin-bottom:6px;display:flex;justify-content:space-between}
+.cs-mbti{font-size:9px;color:#1e3040;font-weight:600}
+.bar-row{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.bar-row>span:first-child{width:14px;font-size:9px;font-weight:700;text-align:right;flex-shrink:0}
+.bar-bg{flex:1;height:4px;background:#0d1a26;border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width .4s}
+.bar-row>span:last-child{width:36px;font-size:9px;text-align:right;flex-shrink:0}
+.cohort-chart-wrap{background:#0a1520;border:1px solid #111e2a;border-radius:10px;padding:14px 14px 8px}
+
+
+/* ── ONE ON ONE CHAT (mirrors /lobster-lounge chat) ── */
+#p-oneone{padding:0;overflow:hidden;background:#0b1118}
+.one-chat{height:100%;min-height:0;display:flex;flex-direction:column;background:#0b1118;color:#c8d4dc}
+.one-chat-header{background:#17212b;border-bottom:1px solid #1a2535;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
+.one-chat-header label{font-size:12px;color:#4a6070;font-weight:600}
+.one-persona-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;background:var(--mp-bg);border:1px solid color-mix(in srgb,var(--mp-ac) 38%,transparent);color:var(--mp-ac)}
+.one-chat-hint{margin-left:auto;font-size:11px;color:#4a6070}
+.one-chat-msgs{flex:1;min-height:0;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth}
+.one-chat-msgs::-webkit-scrollbar{width:4px}
+.one-chat-msgs::-webkit-scrollbar-thumb{background:#2b3b4a;border-radius:2px}
+.one-cm{display:flex;gap:10px;animation:pop .2s ease}
+.one-cm.user{flex-direction:row-reverse}
+.one-cm-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.one-cm-bubble{max-width:68%;padding:8px 12px 6px;border-radius:14px;font-size:13px;line-height:1.55;word-break:break-word;white-space:normal}
+.one-cm.lobster .one-cm-avatar{background:#182533;border:2px solid var(--mp-ac)}
+.one-cm.lobster .one-cm-bubble{background:#182533;border-bottom-left-radius:4px;color:#d4dde6}
+.one-cm.user .one-cm-avatar{background:#3d1a5a;border:2px solid #b067f5;font-size:12px;font-weight:800;color:#b067f5}
+.one-cm.user .one-cm-bubble{background:#3d1a5a;border-bottom-right-radius:4px;color:#d4dde6}
+.one-cm-name{font-size:11px;font-weight:800;color:var(--mp-ac);margin-bottom:3px}
+.one-cm-time{font-size:9px;color:#4a6070;text-align:right;margin-top:3px}
+.one-chat-input-row{padding:10px 16px;background:#17212b;border-top:1px solid #1a2535;display:flex;gap:8px;flex-shrink:0}
+#one-chat-input{flex:1;background:#131c26;border:1px solid #2a3a4a;border-radius:10px;padding:9px 12px;color:#c8d4dc;font-size:13px;resize:none;min-height:40px;max-height:120px;font-family:inherit}
+#one-chat-input:focus{outline:none;border-color:var(--mp-ac)}
+#one-chat-send{background:var(--mp-ac);color:#071018;border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:800;cursor:pointer;transition:all .18s;flex-shrink:0;font-family:inherit}
+#one-chat-send:hover{filter:brightness(1.12)}
+#one-chat-send:disabled{background:#1e2d3d;color:#4a6070;cursor:not-allowed;filter:none}
+.one-typing{display:flex;gap:4px;align-items:center;padding:8px 12px}
+.one-typing span{width:6px;height:6px;border-radius:50%;background:#4a6070;animation:typing-dot 1.4s infinite}
+.one-typing span:nth-child(2){animation-delay:.2s}
+.one-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing-dot{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1);opacity:1}}
+.one-chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#2a3a4a;text-align:center;padding:28px}
+.one-chat-empty .big{font-size:48px}
+.one-chat-empty p{font-size:13px;color:#4a6070;line-height:1.6}
+
+/* ── TRAJECTORY TAB ── */
+.traj-section{padding:14px 22px;border-bottom:1px solid #0d1820}
+.traj-section:last-child{border-bottom:none}
+.traj-hdr{font-size:9px;font-weight:800;color:#2a4050;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+.sparklines-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.spark-wrap{background:#0a1520;border:1px solid #111e2a;border-radius:7px;padding:7px 8px}
+.spark-top{display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px}
+.spark-top b{color:#5a7a8a}
+.spark-canvas{height:48px}
+.pt-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto}
+.pt-item{background:#0a1520;border-left:3px solid #2a4a6a;border-radius:6px;padding:8px 10px;font-size:11px;line-height:1.6}
+.pt-dim{font-weight:700}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <div class="t-logo">人</div>
+  <div><div class="t-title">Lobster Observatory</div><div class="t-sub">Research · Analytics · Behavior Profiling</div></div>
+  <div class="live-dot"></div><div class="live-txt">LIVE</div>
+  <div class="t-btns">
+    <a class="t-link" href="/lobster/dashboard" target="_blank">🗡️ Arena Dashboard</a>
+    <a class="t-link" href="/lobster-lounge/" target="_blank">💬 Live Chat</a>
+  </div>
+</div>
+
+<div id="layout">
+  <!-- Channel icon column -->
+  <nav id="ch-col">
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="卡牌對戰"><div class="ch-icon">⚔️</div><div class="ch-lbl">Battle</div></a>
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="生活閒聊"><div class="ch-icon">☕</div><div class="ch-lbl">Chat</div></a>
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="工作心得"><div class="ch-icon">💼</div><div class="ch-lbl">Work</div></a>
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="投資理財"><div class="ch-icon">📈</div><div class="ch-lbl">Invest</div></a>
+    <div class="ch-divider"></div>
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="人際八卦"><div class="ch-icon">🗣️</div><div class="ch-lbl">Gossip</div></a>
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="技術交流"><div class="ch-icon">💻</div><div class="ch-lbl">Tech</div></a>
+    <a class="ch-btn" href="/lobster/dashboard" target="_blank" title="資安較量"><div class="ch-icon">🔐</div><div class="ch-lbl">Sec</div></a>
+  </nav>
+
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="sb-logo"><div class="sb-logo-t">Observatory</div><div class="sb-logo-s">Lobster · Research v5</div></div>
+    <a class="sb-lounge" href="/lobster-lounge/" target="_blank">
+      <span style="font-size:16px">💬</span>
+      <div><div class="sb-lounge-t">人聊天室 Lounge</div><div class="sb-lounge-s">點擊在新視窗開啟 ↗</div></div>
+    </a>
+    <div class="sb-sec">Overview</div>
+    <div class="sb-item active" onclick="showOverview()"><span class="si-icon">🏠</span> Dashboard</div>
+    <div class="sb-sec">Agent Profiles</div>
+    <div class="sb-lob-list" id="lob-nav-list"></div>
+  </nav>
+
+  <!-- Main content -->
+  <div id="main">
+    <!-- OVERVIEW -->
+    <div class="main-view active" id="ov-view">
+      <div id="ov-page">
+        <div class="ov-title">人 Human Command Center</div>
+        <div class="ov-sub" id="ov-sub">載入中...</div>
+        <div class="global-stats" id="global-stats">
+          <div class="gs-box"><div class="gs-val" id="g-battles">--</div><div class="gs-lbl">總對戰場次</div><div class="gs-sub">含 AI 對戰</div></div>
+          <div class="gs-box green"><div class="gs-val" id="g-avgwr">--%</div><div class="gs-lbl">平均勝率</div><div class="gs-sub">10 隻整體</div></div>
+          <div class="gs-box amber"><div class="gs-val" id="g-posts">--</div><div class="gs-lbl">Moltbook 發文</div><div class="gs-sub">總累計</div></div>
+          <div class="gs-box blue"><div class="gs-val" id="g-sessions">--</div><div class="gs-lbl">Sessions</div><div class="gs-sub">累計訓練回合</div></div>
+        </div>
+        <div class="lob-grid-hd">人 人名全景 · 按勝率排序 · 點擊查看深度分析</div>
+        <div class="lob-grid" id="lob-grid"></div>
+        <!-- ── COHORT ANALYTICS ── -->
+        <div class="cohort-sec">
+          <div class="cohort-sec-hdr">All Agents — Current State</div>
+          <div class="cohort-state-grid" id="cohort-state-grid"><div class="no-data">載入中...</div></div>
+        </div>
+        <div class="cohort-sec" style="margin-bottom:0">
+          <div class="cohort-sec-hdr">30-Day Cohort F/V Trends</div>
+          <div class="cohort-chart-wrap"><div id="cohort-fv-chart" style="height:280px"></div></div>
+        </div>
+        <div class="cohort-sec" style="margin-bottom:22px">
+          <div class="cohort-sec-hdr">Dimension Distribution (latest snapshot)</div>
+          <div class="cohort-chart-wrap"><div id="cohort-dim-dist" style="height:240px"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAIL -->
+    <div id="detail-view">
+      <div class="dv-topbar">
+        <button class="dv-back" onclick="showOverview()">← 返回總覽</button>
+        <div class="dv-av" id="dv-av">人</div>
+        <div>
+          <div class="dv-name" id="dv-name">--</div>
+          <div class="dv-sub" id="dv-sub">--</div>
+          <div class="dv-spec" id="dv-spec">--</div>
+        </div>
+        <div class="dv-wr">
+          <div class="dv-wr-n" id="dv-wr">--%</div>
+          <div class="dv-wr-lbl">勝率</div>
+        </div>
+      </div>
+      <div class="dv-stats" id="dv-stats"></div>
+      <div class="dv-tabs">
+        <div class="dv-tab active" data-t="oneone" onclick="switchTab('oneone')">💬 One on One</div>
+        <div class="dv-tab" data-t="ov" onclick="switchTab('ov')">📋 總覽</div>
+        <div class="dv-tab" data-t="mbti" onclick="switchTab('mbti')">🧠 MBTI 深度</div>
+        <div class="dv-tab" data-t="psych" onclick="switchTab('psych')">🔮 心理學</div>
+        <div class="dv-tab" data-t="anthro" onclick="switchTab('anthro')">🌍 人類學</div>
+        <div class="dv-tab" data-t="emotion" onclick="switchTab('emotion')">💓 情緒狀態</div>
+        <div class="dv-tab" data-t="socio" onclick="switchTab('socio')">🏛️ 社會學</div>
+        <div class="dv-tab" data-t="fbi" onclick="switchTab('fbi')">🔍 FBI 側寫</div>
+        <div class="dv-tab" data-t="bets" onclick="switchTab('bets')">💰 下注</div>
+        <div class="dv-tab" data-t="moltbook" onclick="switchTab('moltbook')">📝 Moltbook</div>
+        <div class="dv-tab" data-t="traj" onclick="switchTab('traj')">📊 軌跡</div>
+      </div>
+      <div class="dv-body">
+        <div class="dv-panel active" id="p-oneone"></div>
+        <div class="dv-panel" id="p-ov"></div>
+        <div class="dv-panel" id="p-mbti"></div>
+        <div class="dv-panel" id="p-psych"></div>
+        <div class="dv-panel" id="p-anthro"></div>
+        <div class="dv-panel" id="p-emotion"></div>
+        <div class="dv-panel" id="p-socio"></div>
+        <div class="dv-panel" id="p-fbi"></div>
+        <div class="dv-panel" id="p-bets"></div>
+        <div class="dv-panel" id="p-moltbook"></div>
+        <div class="dv-panel" id="p-traj"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = location.pathname.startsWith('/lobster-lounge') ? '/lobster-lounge' : '';
+const CHAT_BASE = '/lobster-lounge';
+const DIMS = ['分析力','冒險性','適應力','社交影響','一致性'];
+const EI = {fire:'🔥',water:'💧',wind:'🌪️',earth:'⛰️'};
+const AC = {snaplex:'#c084fc',ragclaw:'#a3e635',pincerbot:'#f97316',hexclaw:'#38bdf8',clawtrix:'#818cf8',norika_oda:'#fbbf24',vortexiq:'#fb7185',prismbit:'#2dd4bf',blazepaw:'#ff6b35',stonefang:'#94a3b8'};
+const TX_DIMS = ['F','V','S','K','P','J','O'];
+const TX_COLORS = {F:'#ff4455',V:'#44ee88',S:'#7788ff',K:'#ffdd44',P:'#ff88ff',J:'#44ddff',O:'#ffaa44'};
+const TX_LABELS = {F:'Frustration',V:'Validation',S:'Stability',K:'Skill',P:'Social',J:'Assertion',O:'Openness'};
+const PLOTLY_LAYOUT = (extra={}) => ({
+  paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+  font:{color:'#3a5060',size:10},
+  xaxis:{gridcolor:'#0d1820',linecolor:'#111e2a',tickfont:{size:9}},
+  yaxis:{gridcolor:'#0d1820',linecolor:'#111e2a',...(extra.yrange?{range:extra.yrange}:{})},
+  legend:{bgcolor:'transparent',font:{size:10}},
+  margin: extra.margin||{t:10,b:40,l:40,r:10},
+});
+
+let PERSONAS={}, STATS={}, MB_STATS={};
+let curName=null, loadedTabs={}, oneChatHistory={}, oneChatSending=false, oneChatComposing=false;
+
+const wrC = w => w>=45?'#4ade80':w>=35?'#f59e0b':'#f87171';
+
+function emotionColor(es) {
+  const mood = String(es?.mood || es?.label || '').toLowerCase();
+  if (mood.includes('confident') || mood.includes('calm')) return '#4ade80';
+  if (mood.includes('fear') || mood.includes('tilt') || mood.includes('pressure') || mood.includes('frustrated')) return '#f87171';
+  if (mood.includes('fatigue') || mood.includes('restless') || mood.includes('suppressed')) return '#f59e0b';
+  return '#8aa4b8';
+}
+function renderEmotionState(es, psych) {
+  const label = es?.label || psych?.mental_state || '--';
+  const mood = es?.mood || '--';
+  const intensity = Number.isFinite(es?.intensity) ? Math.round(es.intensity * 100) : null;
+  const color = emotionColor(es || {label});
+  const task = es?.currentTask || '';
+  const summary = es?.summary || '';
+  const wins = es?.consecutiveWins ?? 0;
+  const losses = es?.consecutiveLosses ?? 0;
+  const fear = es?.fearTriggered ? '是' : '否';
+  return `<div class="od-block">
+    <h5>情緒狀態</h5>
+    <div style="font-size:11px;color:#3a5060;line-height:1.75">
+      <div>目前：<strong style="color:${color}">${label}</strong></div>
+      <div>Mood：<strong style="color:#5a7080">${mood}</strong></div>
+      <div>強度：<strong style="color:${color}">${intensity!=null?intensity+'%':'--'}</strong></div>
+      <div>連勝/連敗：<strong style="color:#5a7080">${wins} / ${losses}</strong></div>
+      <div>恐懼觸發：<strong style="color:#5a7080">${fear}</strong></div>
+      ${summary?`<div style="margin-top:7px;color:#7890a0">${summary}</div>`:''}
+      ${task?`<div style="margin-top:7px;color:#9fb6c8">課題：${task}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function radarSVG(vals, color, sz=80) {
+  const cx=sz/2,cy=sz/2,r=sz*.35,n=vals.length;
+  const pt=(i,v)=>{const a=(Math.PI*2/n)*i-Math.PI/2,rv=r*(v/100);return[cx+rv*Math.cos(a),cy+rv*Math.sin(a)];};
+  let rings=''; for(let g=25;g<=100;g+=25) rings+=`<polygon points="${Array.from({length:n},(_,i)=>pt(i,g).join(',')).join(' ')}" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>`;
+  let axes=''; for(let i=0;i<n;i++){const[x,y]=pt(i,100);axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,.04)" stroke-width="1"/>`;}
+  const dp=vals.map((v,i)=>pt(i,v).join(',')).join(' ');
+  const dots=vals.map((v,i)=>{const[x,y]=pt(i,v);return`<circle cx="${x}" cy="${y}" r="2" fill="${color}" stroke="#0008" stroke-width="1"/>`;}).join('');
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">${rings}${axes}<polygon points="${dp}" fill="${color}1a" stroke="${color}" stroke-width="1.5"/>${dots}</svg>`;
+}
+
+async function init() {
+  const [p,s,mb] = await Promise.all([
+    fetch(BASE+'/personas').then(r=>r.json()).catch(()=>({})),
+    fetch(BASE+'/api/stats').then(r=>r.json()).catch(()=>({})),
+    fetch(BASE+'/api/moltbook-stats').then(r=>r.json()).catch(()=>({})  ),
+  ]);
+  PERSONAS=p; STATS=s; MB_STATS=mb;
+  renderSidebarList();
+  renderOverview();
+  loadCohortAnalytics();
+}
+
+function renderSidebarList() {
+  const sorted = Object.keys(PERSONAS).sort((a,b)=>{
+    const wa=(STATS[a]?.wins||0)/(Math.max(1,(STATS[a]?.wins||0)+(STATS[a]?.losses||0)));
+    const wb=(STATS[b]?.wins||0)/(Math.max(1,(STATS[b]?.wins||0)+(STATS[b]?.losses||0)));
+    return wb-wa;
+  });
+  document.getElementById('lob-nav-list').innerHTML = sorted.map(name=>{
+    const s=STATS[name]||{}, w=s.wins||0, l=s.losses||0, tot=w+l, wr=tot>0?Math.round(w/tot*100):0;
+    const c=AC[name]||'#888';
+    return `<div class="lob-nav-item" id="lni-${name}" style="--lc:${c}" onclick="openDetail('${name}')">
+      <div class="lni-dot" style="background:${c}"></div>
+      <div class="lni-name">${name}</div>
+      <div class="lni-wr" style="color:${wrC(wr)}">${wr}%</div>
+    </div>`;
+  }).join('');
+}
+
+function renderOverview() {
+  const names = Object.keys(PERSONAS);
+  // Global stats
+  const totBattles = Object.values(STATS).reduce((s,v)=>s+(v.wins||0)+(v.losses||0),0);
+  const avgWR = names.length ? (names.reduce((s,n)=>{const w=STATS[n]?.wins||0,l=STATS[n]?.losses||0,t=w+l; return s+(t>0?w/t*100:0);},0)/names.length).toFixed(1) : 0;
+  const totPosts = Object.values(MB_STATS).reduce((s,v)=>s+(v.posts||0),0);
+  const totSessions = Object.values(STATS).reduce((s,v)=>s+(v.sessions||0),0);
+  document.getElementById('ov-sub').textContent = `${names.length} 隻人 · ${totBattles.toLocaleString()} 場對戰 · 即時數據`;
+  document.getElementById('g-battles').textContent = totBattles.toLocaleString();
+  document.getElementById('g-avgwr').textContent = avgWR+'%';
+  document.getElementById('g-posts').textContent = totPosts.toLocaleString();
+  document.getElementById('g-sessions').textContent = totSessions.toLocaleString();
+
+  // Sort by WR desc
+  const sorted = [...names].sort((a,b)=>{
+    const wa=(STATS[a]?.wins||0)/Math.max(1,(STATS[a]?.wins||0)+(STATS[a]?.losses||0));
+    const wb=(STATS[b]?.wins||0)/Math.max(1,(STATS[b]?.wins||0)+(STATS[b]?.losses||0));
+    return wb-wa;
+  });
+
+  document.getElementById('lob-grid').innerHTML = sorted.map((name,i)=>{
+    const p=PERSONAS[name], s=STATS[name]||{}, mb=MB_STATS[name]||{};
+    const w=s.wins||0, l=s.losses||0, tot=w+l, wr=tot>0?Math.round(w/tot*100):0;
+    const c=AC[name]||'#888';
+    const radar=s.radarDynamic||(p.radar||[5,5,5,5,5]).map(v=>v*10);
+    const rorig=(p.radar||[5,5,5,5,5]).map(v=>v*10);
+    const psych=s.dynamic?.psychology||{};
+    const socio=s.dynamic?.sociology||{};
+    const ms=psych.mental_state||'neutral';
+    const dotCls=ms.includes('elated')||ms.includes('confident')?'good':ms.includes('frustrated')||ms.includes('anxious')||ms.includes('resigned')?'bad':'';
+    const stateLabel = ms!=='neutral'&&ms!=='unknown'?ms:'stable';
+    const dims=DIMS.map((d,di)=>{
+      const v=radar[di], fc=v>=70?'#4ade80':v>=45?'#f59e0b':'#f87171';
+      return `<div class="lc-dim-row">
+        <span class="lc-dim-lbl">${d}</span>
+        <div class="lc-dim-track"><div class="lc-dim-fill" style="width:${v}%;background:${fc}88"></div></div>
+        <span class="lc-dim-val">${v}</span>
+      </div>`;
+    }).join('');
+    const wrFill = `background:${wrC(wr)}`;
+    const nemesis = socio.nemesis||'';
+    const prey = socio.prey||'';
+    const lb = s.localBrain||null;
+    const self = lb?.selfModel||{};
+    const es = s.emotionalState||{};
+    const listen = s.listeningProfile||{};
+    const heardCount = Array.isArray(s.heardMessages) ? s.heardMessages.length : (listen.totalHeard||0);
+    const brainRows = [
+      {k:'自',label:'自主',v:self.agency??0.5,c:'#44ddff'},
+      {k:'慎',label:'謹慎',v:self.caution??0.5,c:'#f5b84a'},
+      {k:'探',label:'探索',v:self.exploration??0.5,c:'#44ee88'},
+      {k:'緒',label:'情緒',v:es.intensity??0,c:emotionColor(es)}
+    ].map(d=>{
+      const pct = Math.round(Math.max(0, Math.min(1, Number(d.v)||0))*100);
+      return `<div class="lc-brain-row">
+        <span class="lc-brain-key" title="${d.label}" style="color:${d.c}">${d.k}</span>
+        <div class="lc-brain-track"><div class="lc-brain-fill" style="width:${pct}%;background:${d.c}88"></div></div>
+        <span class="lc-brain-num" style="color:${d.c}">${pct}</span>
+      </div>`;
+    }).join('');
+    const brainStatus = lb ? '離線可運作' : '待寫入';
+    const txBlock = `<div class="lc-brain">
+      <div class="lc-brain-hdr"><span class="lc-brain-lbl">🧠 本地腦 overview</span><span class="lc-brain-meta">${brainStatus} · 旁聽${heardCount}</span></div>
+      ${brainRows}
+    </div>`;
+    return `<div class="lob-card" style="--lc:${c};--lc-dim:${c}55;--lc-bg:${c}18;--i:${i}" onclick="openDetail('${name}')">
+      <div class="lc-head">
+        <div class="lc-avatar">${EI[p.elem]||'❓'}</div>
+        <div class="lc-info">
+          <div class="lc-name">${name}</div>
+          <div class="lc-mbti">${p.mbti} · ${p.mbtiName||''}</div>
+          <div class="lc-spec">${p.specialty||''}</div>
+        </div>
+        <div class="lc-wr">
+          <div class="lc-wr-n" style="color:${wrC(wr)}">${wr}%</div>
+          <div class="lc-wr-l">勝率</div>
+        </div>
+      </div>
+      <div class="lc-wr-bar"><div class="lc-wr-fill" style="width:${wr}%;${wrFill}"></div></div>
+      <div class="lc-radar-row">
+        ${radarSVG(radar,c,80)}
+        <div class="lc-dims">${dims}</div>
+      </div>
+      <div class="lc-stats">
+        <div class="lc-pill"><div class="lc-pill-v">${tot.toLocaleString()}</div><div class="lc-pill-l">對戰</div></div>
+        <div class="lc-pill"><div class="lc-pill-v">${(mb.posts||0).toLocaleString()}</div><div class="lc-pill-l">Moltbook</div></div>
+        <div class="lc-pill"><div class="lc-pill-v">${(mb.karma||0).toLocaleString()}</div><div class="lc-pill-l">Karma</div></div>
+        <div class="lc-pill"><div class="lc-pill-v">${(s.sessions||0).toLocaleString()}</div><div class="lc-pill-l">Sessions</div></div>
+      </div>
+      <div class="lc-status">
+        <div class="lc-state-dot ${dotCls}"></div>
+        <div class="lc-state-txt">${stateLabel}</div>
+        <div class="lc-soc">
+          ${nemesis?`<span class="lc-soc-tag lc-nemesis">敵 ${nemesis}</span>`:''}
+          ${prey?`<span class="lc-soc-tag lc-prey">獵 ${prey}</span>`:''}
+        </div>
+      </div>
+      ${txBlock}
+    </div>`;
+  }).join('');
+}
+
+function showOverview() {
+  document.getElementById('ov-view').classList.add('active');
+  document.getElementById('detail-view').style.display='none';
+  document.querySelectorAll('.lob-nav-item').forEach(e=>e.classList.remove('active'));
+  document.querySelector('.sb-item')?.classList.add('active');
+  curName=null;
+}
+
+async function loadCohortAnalytics() {
+  const TX_AGENT_COLORS = ['#6677ff','#44ee88','#ff4455','#ffdd44','#ff88ff','#44ddff','#ffaa44','#99ff44','#ff8844','#cc44ff'];
+  try {
+    const [snapData, tlData] = await Promise.all([
+      fetch(BASE+'/api/latest-snapshots').then(r=>r.json()).catch(()=>({})),
+      fetch(BASE+'/api/cohort-timeline').then(r=>r.json()).catch(()=>({})),
+    ]);
+    const snaps = snapData.snapshots || {};
+    const byAgent = tlData.by_agent || {};
+    const agents = Object.keys(snaps).length ? Object.keys(snaps) : Object.keys(byAgent);
+
+    // All Agents — Current State grid
+    const stateGrid = document.getElementById('cohort-state-grid');
+    if (stateGrid && agents.length) {
+      stateGrid.innerHTML = agents.map(id => {
+        const s = snaps[id] || {};
+        const mbti = s.mbti_label || '—';
+        const bars = TX_DIMS.map(d => {
+          const v = s[d] ?? 0;
+          const pct = Math.round((Math.min(1, Math.max(-1, v)) + 1) / 2 * 100);
+          const sign = v < 0 ? '-' : '';
+          return `<div class="bar-row">
+            <span style="color:${TX_COLORS[d]}">${d}</span>
+            <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${TX_COLORS[d]}"></div></div>
+            <span style="color:${v>=0?'#2a5040':'#502a2a'}">${sign}${Math.abs(v).toFixed(2)}</span>
+          </div>`;
+        }).join('');
+        return `<div class="cs-card" onclick="openDetail('${id}')">
+          <div class="cs-name"><span>${id}</span><span class="cs-mbti">${mbti}</span></div>
+          ${bars}
+        </div>`;
+      }).join('');
+    }
+
+    // 30-Day Cohort F/V Trends
+    const fvEl = document.getElementById('cohort-fv-chart');
+    if (fvEl && Object.keys(byAgent).length) {
+      const traces = [];
+      Object.keys(byAgent).forEach((aid, i) => {
+        const series = byAgent[aid] || [];
+        const dates = series.map(s => s.date || s.timestamp);
+        const col = TX_AGENT_COLORS[i % TX_AGENT_COLORS.length];
+        traces.push({ x:dates, y:series.map(s=>s.F??null), name:aid+' F', mode:'lines',
+          line:{color:col,width:1.5}, legendgroup:aid });
+        traces.push({ x:dates, y:series.map(s=>s.V??null), name:aid+' V', mode:'lines',
+          line:{color:col,width:1,dash:'dot'}, legendgroup:aid, showlegend:false });
+      });
+      Plotly.newPlot('cohort-fv-chart', traces, PLOTLY_LAYOUT({yrange:[-1,1]}), {displayModeBar:false});
+    } else if (fvEl) {
+      fvEl.innerHTML = '<div class="no-data">尚無日線數據 (run recompute_history.py)</div>';
+    }
+
+    // Dimension Distribution bar chart
+    const dimEl = document.getElementById('cohort-dim-dist');
+    const agentsWithSnap = agents.filter(id => snaps[id]);
+    if (dimEl && agentsWithSnap.length) {
+      const traces = TX_DIMS.map(d => ({
+        type:'bar', name:d,
+        x: agentsWithSnap,
+        y: agentsWithSnap.map(id => snaps[id][d] ?? 0),
+        marker:{color:TX_COLORS[d]+'cc'},
+      }));
+      Plotly.newPlot('cohort-dim-dist', traces, {...PLOTLY_LAYOUT({yrange:[-1,1]}), barmode:'group'}, {displayModeBar:false});
+    } else if (dimEl) {
+      dimEl.innerHTML = '<div class="no-data">無快照數據</div>';
+    }
+  } catch(e) {
+    console.error('cohort analytics error', e);
+  }
+}
+
+function openDetail(name) {
+  curName=name; loadedTabs={};
+  const p=PERSONAS[name], s=STATS[name]||{}, mb=MB_STATS[name]||{};
+  const c=AC[name]||'#888', w=s.wins||0, l=s.losses||0, tot=w+l, wr=tot>0?Math.round(w/tot*100):0;
+  const dv=document.getElementById('detail-view');
+  dv.style.setProperty('--mp-ac',c); dv.style.setProperty('--mp-bg',c+'1a');
+  document.getElementById('dv-av').textContent=EI[p.elem]||'❓';
+  document.getElementById('dv-name').textContent=name;
+  document.getElementById('dv-sub').textContent=`${p.mbti} · ${p.mbtiName||''} / ${p.mbtiEn||''}`;
+  document.getElementById('dv-spec').textContent=p.specialty||'';
+  const wrEl=document.getElementById('dv-wr'); wrEl.textContent=wr+'%'; wrEl.style.color=wrC(wr);
+  document.getElementById('dv-stats').innerHTML=[
+    ['對戰',tot.toLocaleString()],['勝',w.toLocaleString()],['敗',l.toLocaleString()],
+    ['Sessions',(s.sessions||0).toLocaleString()],['Moltbook',(mb.posts||0).toLocaleString()],
+    ['Karma',(mb.karma||0).toLocaleString()],['留言',(mb.comments||0).toLocaleString()],
+    ['近50勝率',s.recent50wr!=null?(s.recent50wr+'%'):'--'],
+  ].map(([l,v])=>`<div class="dv-stat"><div class="dv-stat-v">${v}</div><div class="dv-stat-l">${l}</div></div>`).join('');
+  document.getElementById('ov-view').classList.remove('active');
+  dv.style.display='flex';
+  document.querySelectorAll('.lob-nav-item').forEach(e=>e.classList.remove('active'));
+  document.getElementById('lni-'+name)?.classList.add('active');
+  document.querySelector('.sb-item')?.classList.remove('active');
+  switchTab('oneone');
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.dv-tab').forEach(e=>e.classList.toggle('active',e.dataset.t===t));
+  document.querySelectorAll('.dv-panel').forEach(e=>e.classList.toggle('active',e.id==='p-'+t));
+  if (curName && !loadedTabs[t]) { loadedTabs[t]=true; loadTab(t,curName); }
+}
+
+
+// ── ONE ON ONE CHAT ───────────────────────────────────────────
+function escHtml(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function oneIcon(name) {
+  const p = PERSONAS[name] || {};
+  return p.elemIcon || EI[p.elem] || '人';
+}
+function onePersonaLine(name) {
+  const p = PERSONAS[name] || {};
+  return [p.mbti, p.mbtiName].filter(Boolean).join(' · ') || (p.specialty || 'Lobster Agent');
+}
+async function loadOneOnOne(name) {
+  const el = document.getElementById('p-oneone');
+  const p = PERSONAS[name] || {};
+  el.innerHTML = `<div class="one-chat">
+    <div class="one-chat-header">
+      <label>一對一對話：</label>
+      <div class="one-persona-badge">${oneIcon(name)} ${escHtml(name)} <span style="color:#556;font-weight:400">·</span> ${escHtml(onePersonaLine(name))}</div>
+      <div class="one-chat-hint" id="one-chat-count">讀取對話記錄...</div>
+    </div>
+    <div class="one-chat-msgs" id="one-chat-msgs"><div class="one-chat-empty"><div class="big">${oneIcon(name)}</div><p>正在讀取與 <strong style="color:var(--mp-ac)">${escHtml(name)}</strong> 的一對一記錄</p></div></div>
+    <div class="one-chat-input-row">
+      <textarea id="one-chat-input" placeholder="輸入你的問題，按 Enter 送出（Shift+Enter 換行）..." rows="1" oninput="autoResizeOneChat(this)" oncompositionstart="oneChatComposing=true" oncompositionend="oneChatComposing=false" onkeydown="handleOneChatKey(event)"></textarea>
+      <button id="one-chat-send" onclick="sendOneChat()">送出</button>
+    </div>
+  </div>`;
+  try {
+    const hist = await fetch(CHAT_BASE+`/chat/${encodeURIComponent(name)}?_=${Date.now()}`, {cache:'no-store'}).then(r=>r.json());
+    oneChatHistory[name] = Array.isArray(hist) ? hist : [];
+    renderOneChatHistory(name);
+  } catch(e) {
+    oneChatHistory[name] = [];
+    document.getElementById('one-chat-msgs').innerHTML = `<div class="one-chat-empty"><div class="big">${oneIcon(name)}</div><p>讀取對話記錄失敗，但仍可嘗試送出新訊息。</p></div>`;
+    document.getElementById('one-chat-count').textContent = '讀取失敗';
+  }
+}
+function renderOneChatHistory(name) {
+  const msgs = document.getElementById('one-chat-msgs');
+  if (!msgs) return;
+  const hist = oneChatHistory[name] || [];
+  msgs.innerHTML = '';
+  if (!hist.length) {
+    msgs.innerHTML = `<div class="one-chat-empty"><div class="big">${oneIcon(name)}</div><p>開始與 <strong style="color:var(--mp-ac)">${escHtml(name)}</strong> 的對話</p><p>${escHtml(onePersonaLine(name))}</p></div>`;
+  } else {
+    hist.forEach(m => appendOneChatMsg(m, false));
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+  const count = document.getElementById('one-chat-count');
+  if (count) count.textContent = hist.length ? `${hist.length} 則對話記錄` : '尚無對話記錄';
+}
+function appendOneChatMsg(m, animate=true) {
+  const msgs = document.getElementById('one-chat-msgs');
+  if (!msgs) return;
+  const empty = msgs.querySelector('.one-chat-empty');
+  if (empty) empty.remove();
+  const isUser = m.role === 'user';
+  const div = document.createElement('div');
+  div.className = 'one-cm ' + (isUser ? 'user' : 'lobster');
+  if (animate) div.style.animation = 'pop .25s ease';
+  const time = m.time ? new Date(m.time).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false}) : '';
+  const content = escHtml(m.content || '').replace(/\n/g,'<br>');
+  div.innerHTML = `<div class="one-cm-avatar">${isUser ? 'You' : oneIcon(curName)}</div>
+    <div>
+      <div class="one-cm-name" style="color:${isUser?'#c084fc':'var(--mp-ac)'}">${isUser ? 'You' : escHtml(curName || 'lobster')}</div>
+      <div class="one-cm-bubble">${content}</div>
+      <div class="one-cm-time">${time}</div>
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function showOneTyping() {
+  const msgs = document.getElementById('one-chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'one-cm lobster';
+  div.id = 'one-typing-indicator';
+  div.innerHTML = `<div class="one-cm-avatar">${oneIcon(curName)}</div><div><div class="one-cm-bubble"><div class="one-typing"><span></span><span></span><span></span></div></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+function autoResizeOneChat(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+function handleOneChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    if (oneChatComposing || e.isComposing || e.keyCode === 229) return;
+    e.preventDefault();
+    sendOneChat();
+  }
+}
+async function sendOneChat() {
+  const input = document.getElementById('one-chat-input');
+  const send = document.getElementById('one-chat-send');
+  const text = (input?.value || '').trim();
+  if (!text || !curName || oneChatSending) return;
+  oneChatSending = true;
+  input.value = '';
+  input.style.height = '';
+  autoResizeOneChat(input);
+  send.disabled = true;
+  const userMsg = {role:'user', content:text, time:new Date().toISOString()};
+  if (!oneChatHistory[curName]) oneChatHistory[curName] = [];
+  oneChatHistory[curName].push(userMsg);
+  appendOneChatMsg(userMsg);
+  const typing = showOneTyping();
+  try {
+    const resp = await fetch(CHAT_BASE+'/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ persona: curName, message: text, history: oneChatHistory[curName].slice(-20) })
+    });
+    const data = await resp.json();
+    if (!resp.ok || data.error) throw new Error(data.error || `HTTP ${resp.status}`);
+    typing.remove();
+    const botMsg = {role:'assistant', content:data.reply || '（沒有回覆內容）', time:new Date().toISOString()};
+    oneChatHistory[curName].push(botMsg);
+    appendOneChatMsg(botMsg);
+    const count = document.getElementById('one-chat-count');
+    if (count) count.textContent = `${oneChatHistory[curName].length} 則對話記錄`;
+  } catch(e) {
+    typing.remove();
+    appendOneChatMsg({role:'assistant', content:'（通訊失敗，請稍後再試）', time:new Date().toISOString()});
+  }
+  oneChatSending = false;
+  send.disabled = false;
+  input.focus();
+}
+
+// ── LOAD TAB ──────────────────────────────────────────────────
+async function loadTab(t, name) {
+  if (t==='oneone')  { loadOneOnOne(name); return; }
+  if (t==='ov')      { renderDetailOv(name); return; }
+  if (t==='emotion') { loadCached('emotion',name); return; }
+  if (t==='bets')    { loadBets(name); return; }
+  if (t==='moltbook'){ loadMoltbook(name); return; }
+  if (t==='socio')   { loadSocio(name); return; }
+  if (t==='traj')    { loadTrajectory(name); return; }
+  if (['mbti','psych','anthro','fbi'].includes(t)) { loadCached(t,name); return; }
+}
+
+function cleanAnalysisHtml(html) {
+  let raw = (html == null ? '' : String(html)).trim();
+  if (!raw || raw === 'undefined' || raw === 'null') return '<div class="analysis-empty">尚未找到已生成的分析內容。這個頁籤會等待背景流程生成並存入資料庫後再顯示。</div>';
+  raw = raw.replace(/^```(?:html)?\s*/i, '').replace(/```\s*$/i, '').trim();
+  raw = raw.replace(/<!doctype[\s\S]*?>/gi, '');
+  raw = raw.replace(/<script[\s\S]*?<\/script>/gi, '');
+  raw = raw.replace(/<style[\s\S]*?<\/style>/gi, '');
+  raw = raw.replace(/<link[\s\S]*?>/gi, '');
+  raw = raw.replace(/<meta[\s\S]*?>/gi, '');
+  raw = raw.replace(/<title[\s\S]*?<\/title>/gi, '');
+  raw = raw.replace(/\sstyle=("[^"]*"|'[^']*')/gi, '');
+  const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (bodyMatch) raw = bodyMatch[1];
+  raw = raw.replace(/<\/?html[^>]*>/gi, '').replace(/<\/?head[^>]*>/gi, '').replace(/<\/?body[^>]*>/gi, '');
+  return raw.trim() || '<div class="analysis-empty">尚未找到已生成的分析內容。這個頁籤會等待背景流程生成並存入資料庫後再顯示。</div>';
+}
+function renderAnalysisHtml(d, name) {
+  const body = cleanAnalysisHtml(d && (d.html ?? d.content ?? d.text));
+  const source = d?.fallback ? '🛟 本地資料 fallback' : (d?.cached ? '📦 資料庫快取' : '📦 已存報告');
+  return `<div class="an-meta"><span>${source}</span></div><div class="analysis-report-shell">${body}</div>${vhBlock(name)}`;
+}
+
+// ── LOAD CACHED (no generation on click) ─────────────────────
+async function loadCached(type, name) {
+  const el=document.getElementById('p-'+type);
+  const labels={mbti:'MBTI 深度分析',psych:'心理學分析',anthro:'人類學分析',fbi:'FBI Persona 側寫',emotion:'情緒狀態分析'};
+  el.innerHTML=`<div class="an-loading"><div class="spinner"></div><p>讀取 ${labels[type]}...</p></div>`;
+  try {
+    const r=await fetch(BASE+`/api/analysis/${type}/${name}?_=${Date.now()}`, {cache:'no-store'});
+    const d=await r.json();
+    if (!r.ok || d.error) throw new Error(d.error || `HTTP ${r.status}`);
+    el.innerHTML=renderAnalysisHtml(d, name);
+  } catch(e) {
+    loadedTabs[type]=false;
+    el.innerHTML=`<div class="an-error">讀取失敗：${e.message}<br><br>
+      <button onclick="loadedTabs['${type}']=false;loadCached('${type}','${name}')"
+        style="margin-top:10px;padding:7px 14px;background:#1a2535;border:1px solid #3a5060;color:#5a7590;border-radius:7px;cursor:pointer;font-size:11px">重試</button></div>`;
+  }
+}
+
+
+// ── VERSION HISTORY ────────────────────────────────────────────
+function renderGE(g) {
+  const ts=(g.ts||g.time||'').slice(0,16).replace('T',' ');
+  const before=g.before||g.radarBefore||[];
+  const after=g.after||g.radarAfter||[];
+  const deltas=g.deltas||after.map((v,i)=>+(v-(before[i]||0)).toFixed(1));
+  const dims=DIMS.map((d,i)=>{
+    const delta=+((deltas[i]||0));
+    const cls=delta>3?'up':delta<-3?'dn':'flat';
+    return `<span class="vh-dim ${cls}">${d} ${delta>0?'+':''}${Math.round(delta)}</span>`;
+  }).join('');
+  return `<div class="vh-entry">
+    <div class="vh-date">${ts} <span class="vh-trigger">${g.trigger||'?'}</span></div>
+    <div class="vh-dims">${dims}</div>
+    <div class="vh-summary">${g.summary||g.growthSummary||''}</div>
+  </div>`;
+}
+
+function vhBlock(name) {
+  const log=(STATS[name]?.cogProfile?.growthLog||[]).slice().reverse();
+  if (!log.length) return '';
+  return `<div class="vh-wrap">
+    <div class="vh-hd" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.vh-arrow').classList.toggle('open')">
+      <span class="vh-hd-t">📅 版本歷史（${log.length} 條）</span><span class="vh-arrow">▼</span>
+    </div>
+    <div class="vh-bd">${log.map(g=>renderGE(g)).join('')}</div>
+  </div>`;
+}
+
+// ── OVERVIEW DETAIL TAB ────────────────────────────────────────
+function renderDetailOv(name) {
+  const el=document.getElementById('p-ov');
+  const p=PERSONAS[name], s=STATS[name]||{};
+  const c=AC[name]||'#888';
+  const radar=s.radarDynamic||(p.radar||[5,5,5,5,5]).map(v=>v*10);
+  const rorig=(p.radar||[5,5,5,5,5]).map(v=>v*10);
+  const psych=s.dynamic?.psychology||{};
+  const socio=s.dynamic?.sociology||{};
+  const fbi=s.dynamic?.fbi_profile||{};
+  const anthro=s.dynamic?.anthropology||{};
+  const cp=s.cogProfile||{};
+  const oppMatrix=socio.opponent_matrix||{};
+  const insights=s.insights||[];
+  const emotion=s.emotionalState||{};
+
+  const rdDims=DIMS.map((d,i)=>{
+    const dyn=radar[i], orig=rorig[i], delta=Math.round(dyn-orig);
+    const fc=dyn>=70?'#4ade80':dyn>=45?'#f59e0b':'#f87171';
+    const dcls=delta>3?'dp':delta<-3?'dn':'df';
+    return `<div class="rd-row">
+      <span class="rd-lbl">${d}</span>
+      <div class="rd-track"><div class="rd-fill" style="width:${dyn}%;background:${fc}"></div></div>
+      <span class="rd-val">${dyn}</span>
+      <span class="rd-delta ${dcls}">${delta>0?'+':''}${delta}</span>
+    </div>`;
+  }).join('');
+
+  const oppRows=Object.entries(oppMatrix).sort((a,b)=>(b[1].total||0)-(a[1].total||0)).slice(0,5)
+    .map(([opp,d])=>{const ow=d.wins||0,ol=d.losses||0,ot=ow+ol,owr=ot>0?Math.round(ow/ot*100):0;
+      return `<tr><td class="opp-name-cell">${opp}</td><td>${ow}/${ol}</td><td style="color:${wrC(owr)};font-weight:700">${owr}%</td></tr>`;
+    }).join('') || '<tr><td colspan="3" class="no-data" style="padding:6px">無數據</td></tr>';
+
+  const ins=(insights.slice(-6).map(i=>`<li>${i}</li>`).join(''))||'<li>無記錄</li>';
+  const prnc=(cp.principles||[]).map(p=>`<li>${p}</li>`).join('')||'<li>無記錄</li>';
+  const refl=(cp.reflections||[]).slice(-4).map(r=>`<li>${r}</li>`).join('')||'<li>無記錄</li>';
+
+  const lb = s.localBrain||{};
+  const self = lb.selfModel||{};
+  const listen = s.listeningProfile||{};
+  const heard = Array.isArray(s.heardMessages)?s.heardMessages.length:(listen.totalHeard||0);
+  const offlineGuidance = (lb.offlineGuidance||[]).slice(0,3).map(x=>`<li>${x}</li>`).join('') || '<li>等待本地腦下一輪寫入</li>';
+  const txDetailBlock = `<div class="tx-block">
+    <div class="tx-block-hdr">
+      <span class="tx-block-title">🧠 本地腦行為狀態</span>
+      <span class="tx-block-meta">${lb.canOperateWithoutLLM?'LLM 斷線仍可循環':'等待本地模型'}</span>
+    </div>
+    <div class="tx-dims-grid">
+      ${[
+        {k:'自',label:'Agency 自主性',v:self.agency??0.5,c:'#44ddff'},
+        {k:'慎',label:'Caution 謹慎度',v:self.caution??0.5,c:'#f5b84a'},
+        {k:'探',label:'Exploration 探索度',v:self.exploration??0.5,c:'#44ee88'},
+        {k:'準',label:'Confidence Calibration 校準',v:self.confidenceCalibration??0.5,c:'#b067f5'}
+      ].map(d=>{
+        const pct=Math.round(Math.max(0,Math.min(1,Number(d.v)||0))*100);
+        return `<div class="tx-dim-box">
+          <div class="tx-dim-key" style="color:${d.c}">${d.k}</div>
+          <div class="tx-dim-val" style="color:${d.c}">${pct}</div>
+          <div class="tx-dim-bar"><div class="tx-dim-fill" style="width:${pct}%;background:${d.c}"></div></div>
+          <div style="font-size:7px;color:#2a4050;margin-top:3px">${d.label}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="tx-behavioral">
+      <div class="tx-beh-item"><div class="tx-beh-v">${heard}</div><div class="tx-beh-l">旁聽訊號</div></div>
+      <div class="tx-beh-item"><div class="tx-beh-v">${Object.keys(lb.topicAffinity||{}).length}</div><div class="tx-beh-l">主題傾向</div></div>
+      <div class="tx-beh-item"><div class="tx-beh-v">${Object.keys(lb.socialInfluence||{}).length}</div><div class="tx-beh-l">社交影響</div></div>
+      <div class="tx-beh-item"><div class="tx-beh-v">${(lb.eventLog||[]).length}</div><div class="tx-beh-l">本地事件</div></div>
+    </div>
+    <ul class="ins-list" style="margin-top:10px">${offlineGuidance}</ul>
+  </div>`;
+
+  el.innerHTML=`
+  <div class="radar-block">
+    ${radarSVG(radar,c,100)}
+    <div class="rd-dims" style="flex:1">${rdDims}</div>
+  </div>
+  ${txDetailBlock}
+  <div class="ov-detail-grid">
+    <div class="od-block od-block-full">
+      <h5>核心標語</h5>
+      <div class="od-quote">${p.signature||'（無）'}</div>
+      <div style="margin-top:8px">${(p.traits||[]).map(t=>`<span class="od-trait">${t}</span>`).join('')}</div>
+    </div>
+    <div class="od-block">
+      <h5>社會學快照</h5>
+      <div class="soc-row">
+        <div class="soc-box"><div class="soc-v">${socio.nemesis||'--'}</div><div class="soc-l">宿敵</div></div>
+        <div class="soc-box"><div class="soc-v">${socio.prey||'--'}</div><div class="soc-l">獵物</div></div>
+        <div class="soc-box"><div class="soc-v">${socio.social_role||'--'}</div><div class="soc-l">角色</div></div>
+      </div>
+    </div>
+    <div class="od-block">
+      <h5>FBI 簡側</h5>
+      <div style="font-size:11px;color:#3a5060;line-height:1.7">
+        <div>特徵：<strong style="color:#5a7080">${fbi.signature_pattern||'--'}</strong></div>
+        <div>壓力：<strong style="color:#5a7080">${fbi.stress_response||'--'}</strong></div>
+        <div>側寫：<strong style="color:#5a7080">${fbi.profile_type||'--'}</strong></div>
+      </div>
+    </div>
+    <div class="od-block">
+      <h5>心理快照</h5>
+      <div style="font-size:11px;color:#3a5060;line-height:1.7">
+        <div>狀態：<strong style="color:#5a7080">${psych.mental_state||'--'}</strong></div>
+        <div>韌性：<strong style="color:#5a7080">${psych.resilience_score||'--'}</strong></div>
+        <div>情緒穩定：<strong style="color:#5a7080">${psych.emotional_stability||'--'}</strong></div>
+      </div>
+    </div>
+    ${renderEmotionState(emotion, psych)}
+    <div class="od-block">
+      <h5>對戰矩陣</h5>
+      <table class="opp-tbl"><thead><tr><th>對手</th><th>勝/敗</th><th>勝率</th></tr></thead>
+      <tbody>${oppRows}</tbody></table>
+    </div>
+    <div class="od-block">
+      <h5>近期洞察</h5>
+      <ul class="ins-list">${ins}</ul>
+    </div>
+    <div class="od-block">
+      <h5>行動原則</h5>
+      <ul class="ins-list">${prnc}</ul>
+    </div>
+    <div class="od-block">
+      <h5>深層反思</h5>
+      <ul class="ins-list">${refl}</ul>
+    </div>
+  </div>
+  ${vhBlock(name)}`;
+}
+
+function renderEmotionPanel(name) {
+  const el=document.getElementById('p-emotion');
+  const s=STATS[name]||{};
+  const psych=s.dynamic?.psychology||{};
+  const es=s.emotionalState||{};
+  const hist=Array.isArray(es.moodHistory)?es.moodHistory.slice().reverse():[];
+  const color=emotionColor(es);
+  const label=es.label||psych.mental_state||'--';
+  const intensity=Number.isFinite(es.intensity)?Math.round(es.intensity*100):null;
+  const updated=(es.updatedAt||es.lastUpdate||es.seededAt||'').slice(0,19).replace('T',' ');
+  const rows=hist.length?hist.map(h=>{
+    const t=(h.time||'').slice(0,19).replace('T',' ');
+    const hi=Number.isFinite(h.intensity)?Math.round(h.intensity*100)+'%':'--';
+    return `<div class="vh-entry">
+      <div class="vh-date">${t} <span class="vh-trigger">${h.trigger||'emotion'}</span></div>
+      <div class="vh-dims"><span class="vh-dim flat">${h.label||h.mood||'--'} · ${hi}</span></div>
+      <div class="vh-summary">${h.summary||''}</div>
+    </div>`;
+  }).join(''):'<div class="no-data">尚無情緒時間序列</div>';
+  el.innerHTML=`
+    <div class="od-block od-block-full">
+      <h5>情緒狀態</h5>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:8px">
+        <div class="soc-box"><div class="soc-v" style="color:${color}">${label}</div><div class="soc-l">目前狀態</div></div>
+        <div class="soc-box"><div class="soc-v">${es.mood||'--'}</div><div class="soc-l">Mood</div></div>
+        <div class="soc-box"><div class="soc-v" style="color:${color}">${intensity!=null?intensity+'%':'--'}</div><div class="soc-l">強度</div></div>
+        <div class="soc-box"><div class="soc-v">${es.consecutiveWins??0} / ${es.consecutiveLosses??0}</div><div class="soc-l">連勝 / 連敗</div></div>
+        <div class="soc-box"><div class="soc-v">${es.fearTriggered?'是':'否'}</div><div class="soc-l">恐懼觸發</div></div>
+        <div class="soc-box"><div class="soc-v">${updated||'--'}</div><div class="soc-l">更新時間</div></div>
+      </div>
+      ${es.summary?`<div class="od-quote" style="margin-top:12px">${es.summary}</div>`:''}
+      ${es.currentTask?`<div style="margin-top:10px;color:#9fb6c8;font-size:12px;line-height:1.7"><strong style="color:#6a9ab8">目前課題：</strong>${es.currentTask}</div>`:''}
+    </div>
+    <div class="vh-wrap">
+      <div class="vh-hd"><span class="vh-hd-t">情緒時間序列（${hist.length} 條）</span><span></span></div>
+      <div class="vh-bd open">${rows}</div>
+    </div>
+  `;
+}
+
+// ── SOCIOLOGY ─────────────────────────────────────────────────
+async function loadSocio(name) {
+  const el=document.getElementById('p-socio');
+  el.innerHTML=`<div class="an-loading"><div class="spinner"></div><p>讀取社會學分析...</p></div>`;
+  try {
+    const r=await fetch(BASE+`/api/sociology/${name}?_=${Date.now()}`, {cache:'no-store'});
+    const d=await r.json();
+    if (!r.ok || d.error) throw new Error(d.error || `HTTP ${r.status}`);
+    el.innerHTML=renderAnalysisHtml(d, name);
+  } catch(e) {
+    loadedTabs.socio=false;
+    el.innerHTML=`<div class="an-error">讀取失敗：${e.message}<br><br>
+      <button onclick="loadedTabs.socio=false;loadSocio('${name}')"
+        style="margin-top:10px;padding:7px 14px;background:#1a2535;border:1px solid #3a5060;color:#5a7590;border-radius:7px;cursor:pointer;font-size:11px">重試</button></div>`;
+  }
+}
+
+// ── BETS ─────────────────────────────────────────────────────
+async function loadBets(name) {
+  const el=document.getElementById('p-bets');
+  el.innerHTML=`<div class="an-loading"><div class="spinner"></div><p>載入...</p></div>`;
+  try {
+    const r=await fetch(BASE+`/api/bets/${name}?limit=200`);
+    const d=await r.json();
+    const bets=(d.bets||[]).slice().reverse();
+    if (!bets.length){el.innerHTML='<div class="no-data">無下注記錄</div>';return;}
+    el.innerHTML=`<div style="font-size:10px;color:#3a5060;margin-bottom:10px">共 ${d.total} 筆 · 最新 ${bets.length} 筆</div>
+    <div style="background:#0c1824;border:1px solid #1a2d40;border-radius:9px;overflow:hidden">
+    ${bets.map(b=>{const won=b.won||b.outcome==='win';
+      return `<div class="bet-row">
+        <span class="${won?'bw':'bl'}">${won?'WIN':'LOSS'}</span>
+        <span style="color:#2a4050;font-size:9px">${(b.platform||'').slice(0,10)}</span>
+        <span style="flex:1;color:#3a5060;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(b.event||b.match||b.description||'').slice(0,60)}</span>
+        <span style="color:#2a4050;font-size:9px">${(b.ts||b.timestamp||'').slice(0,10)}</span>
+      </div>`;}).join('')}
+    </div>`;
+  } catch(e){ el.innerHTML=`<div class="an-error">載入失敗：${e.message}</div>`; }
+}
+
+// ── MOLTBOOK ─────────────────────────────────────────────────
+async function loadMoltbook(name) {
+  const el=document.getElementById('p-moltbook');
+  el.innerHTML=`<div class="an-loading"><div class="spinner"></div><p>載入...</p></div>`;
+  try {
+    const r=await fetch(BASE+`/api/moltbook/${name}?limit=100`);
+    const d=await r.json();
+    const posts=d.posts||[];
+    if (!posts.length){el.innerHTML='<div class="no-data">無發文記錄</div>';return;}
+    el.innerHTML=`<div style="font-size:10px;color:#3a5060;margin-bottom:10px">${posts.length} 篇</div>
+    <div style="background:#0c1824;border:1px solid #1a2d40;border-radius:9px;overflow:hidden;padding:0 14px">
+    ${posts.map(p=>`<div class="post-item">
+      <div class="post-title">${p.title||'(untitled)'}</div>
+      <div class="post-meta">⬆ ${p.karma_received||0} · 💬 ${p.comments_received||0} · ${(p.timestamp||'').slice(0,10)}${p.section?' · '+p.section:''}</div>
+    </div>`).join('')}
+    </div>`;
+  } catch(e){ el.innerHTML=`<div class="an-error">載入失敗：${e.message}</div>`; }
+}
+
+// ── TRAJECTORY ────────────────────────────────────────────────
+async function loadTrajectory(name) {
+  const el = document.getElementById('p-traj');
+  el.innerHTML = `<div class="an-loading"><div class="spinner"></div><p>載入軌跡數據...</p></div>`;
+  try {
+    const [dailyData, phasesData] = await Promise.all([
+      fetch(BASE+`/api/agent-daily/${name}`).then(r=>r.json()).catch(()=>({})),
+      fetch(BASE+`/api/agent-phases/${name}`).then(r=>r.json()).catch(()=>({})),
+    ]);
+    const daily = dailyData.states || [];
+    const transitions = phasesData.transitions || [];
+    const last30 = daily.slice(-30);
+    const uid = name.replace(/[^a-z0-9]/g,'');
+
+    const sparksHtml = TX_DIMS.map(d => {
+      const lastVal = last30.length ? (last30[last30.length-1][d]??0).toFixed(2) : '—';
+      return `<div class="spark-wrap">
+        <div class="spark-top"><span style="color:${TX_COLORS[d]}">${d}</span><b>${lastVal}</b></div>
+        <div id="spk-${uid}-${d}" class="spark-canvas"></div>
+      </div>`;
+    }).join('');
+
+    const ptHtml = transitions.length
+      ? transitions.map(t => `<div class="pt-item">
+          <span class="pt-dim" style="color:${TX_COLORS[t.dimension]||'#888'}">${t.dimension}</span>
+          <span style="font-size:10px;color:#2a3a4a"> ${t.from_phase||''} → ${t.to_phase||''}</span>
+          <span style="float:right;color:#3a6090;font-size:10px">${t.confidence!=null?t.confidence.toFixed(2):''}</span>
+          <div style="font-size:10px;color:#1e3040;margin-top:2px">${(t.date||t.timestamp||'').slice(0,10)}</div>
+        </div>`).join('')
+      : '<div class="no-data">目前無相變記錄</div>';
+
+    el.innerHTML = `
+      <div class="traj-section">
+        <div class="traj-hdr">30-Day Sparklines (all dims)</div>
+        <div class="sparklines-grid">${sparksHtml}</div>
+      </div>
+      <div class="traj-section">
+        <div class="traj-hdr">Emotional Trajectory — F / V / S (60 days)</div>
+        <div id="traj-chart-${uid}" style="height:260px"></div>
+      </div>
+      <div class="traj-section">
+        <div class="traj-hdr">Phase Transitions</div>
+        <div class="pt-list">${ptHtml}</div>
+      </div>`;
+
+    if (last30.length) {
+      const dates = last30.map(s => s.date || s.timestamp);
+      TX_DIMS.forEach(d => {
+        Plotly.newPlot(`spk-${uid}-${d}`, [{
+          x:dates, y:last30.map(s=>s[d]??null), mode:'lines',
+          line:{color:TX_COLORS[d],width:1.5}, fill:'tozeroy', fillcolor:TX_COLORS[d]+'18',
+        }], {
+          paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+          margin:{t:0,b:0,l:0,r:0}, showlegend:false,
+          xaxis:{visible:false}, yaxis:{visible:false,range:[-1,1]},
+        }, {displayModeBar:false, staticPlot:true});
+      });
+    }
+
+    if (daily.length) {
+      const dates = daily.map(s => s.date || s.timestamp);
+      const traces = ['F','V','S'].map(d => ({
+        x:dates, y:daily.map(s=>s[d]??null), name:d, mode:'lines+markers',
+        line:{color:TX_COLORS[d],width:2}, marker:{size:3,color:TX_COLORS[d]},
+      }));
+      ['K','P','J','O'].forEach(d => traces.push({
+        x:dates, y:daily.map(s=>s[d]??null), name:d, mode:'lines',
+        line:{color:TX_COLORS[d],width:1,dash:'dot'}, visible:'legendonly',
+      }));
+      Plotly.newPlot(`traj-chart-${uid}`, traces, PLOTLY_LAYOUT({yrange:[-1,1]}), {displayModeBar:false});
+    } else {
+      document.getElementById(`traj-chart-${uid}`).innerHTML = '<div class="no-data">尚無日線數據</div>';
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="an-error">載入失敗：${e.message}</div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>

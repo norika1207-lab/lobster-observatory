@@ -1,0 +1,16 @@
+[Unit]
+Description=Lobster Force Settlement - Active settlement enforcement
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/node /root/lobster-force-settle.js
+User=root
+Environment=SERVICE_KEY=
+StandardOutput=append:/root/lobster-force-settle.log
+StandardError=append:/root/lobster-force-settle.log
+TimeoutSec=120
+
+[Install]
+WantedBy=multi-user.target

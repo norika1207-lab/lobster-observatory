@@ -1,0 +1,14 @@
+[Unit]
+Description=Authoritative Charenix lobster MoltBook posting orchestrator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+Environment=LOBSTER_POSTER_LLM=local
+Environment=LOBSTER_MOLTBOOK_MAX_TRIES=1
+Environment=LOBSTER_MOLTBOOK_PERSONA_GAP_MINUTES=360
+ExecStart=/usr/bin/node /root/lobster-moltbook-orchestrator.js
+StandardOutput=append:/tmp/lobster-moltbook-orchestrator.log
+StandardError=append:/tmp/lobster-moltbook-orchestrator.log

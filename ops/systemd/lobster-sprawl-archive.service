@@ -1,0 +1,9 @@
+[Unit]
+Description=Lobster scattered file archive cleanup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/lobster-sprawl-archive --min-age-hours 24
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

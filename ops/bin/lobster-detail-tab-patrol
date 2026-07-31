@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+import json
+import sqlite3
+import sys
+import time
+import urllib.request
+
+DB = "/opt/battle_arena/app/battle_arena.db"
+API = "http://127.0.0.1:8004/api/lobster-detail-sandbox-db/{}"
+PERSONAS = [
+    "blazepaw",
+    "clawtrix",
+    "hexclaw",
+    "norika_oda",
+    "pincerbot",
+    "prismbit",
+    "ragclaw",
+    "snaplex",
+    "stonefang",
+    "vortexiq",
+]
+REPORTS = ["mbti", "psych", "anthro", "fbi", "emotion", "socio"]
+
+
+def fetch_detail(persona):
+    with urllib.request.urlopen(API.format(persona), timeout=12) as res:
+        return json.loads(res.read().decode("utf-8"))
+
+
+def count(v):
+    return len(v) if isinstance(v, list) else 0
+
+
+def audit_persona(persona, data):
+    reports = data.get("reports") or {}
+    snapshot = data.get("snapshot") or {}
+    lounge = data.get("lounge_messages") or {}
+    bets = data.get("bets") or {}
+    moltbook = data.get("moltbook") or {}
+    trajectory = data.get("trajectory") or {}
+    distillation = data.get("distillation") or {}
+
+    tabs = {}
+
+    def put(tab, ok, metrics=None, missing=None):
+        tabs[tab] = {
+            "ok": bool(ok),
+            "metrics": metrics or {},
+            "missing": missing or [],
+        }
+
+    put(
+        "snapshot",
+        bool(snapshot),
+        {
+            "wins": snapshot.get("wins", 0),
+            "losses": snapshot.get("losses", 0),
+            "sessions": snapshot.get("sessions", 0),
+            "winrate_source": snapshot.get("winrate_source"),
+        },
+        [] if snapshot else ["snapshot"],
+    )
+
+    for key in REPORTS:
+        html = (reports.get(key) or {}).get("html") or ""
+        put(
+            f"report:{key}",
+            bool(html) and len(html) >= 1500,
+            {"html_chars": len(html), "source": (reports.get(key) or {}).get("source")},
+            [] if html else [f"report:{key}"],
+        )
+
+    chat = data.get("chat_history") or []
+    put("one_on_one", bool(chat), {"messages": len(chat), "pairs": len(chat) // 2}, [] if chat else ["chat_history"])
+
+    put(
+        "lounge",
+        bool(lounge.get("messages")) and int(lounge.get("total") or 0) > 0,
+        {"total": lounge.get("total", 0), "loaded": count(lounge.get("messages") or [])},
+        [] if lounge.get("messages") else ["lounge_messages"],
+    )
+
+    put(
+        "bets",
+        bool(bets.get("bets")),
+        {"total": bets.get("total", 0), "loaded": count(bets.get("bets") or [])},
+        [] if bets.get("bets") else ["bets"],
+    )
+
+    put(
+        "moltbook",
+        bool(moltbook.get("posts")) and bool(moltbook.get("events")),
+        {"posts": count(moltbook.get("posts") or []), "events": count(moltbook.get("events") or [])},
+        ([] if moltbook.get("posts") else ["moltbook.posts"])
+        + ([] if moltbook.get("events") else ["moltbook.events"]),
+    )
+
+    daily = (trajectory.get("daily") or {}).get("states") or []
+    phases = (trajectory.get("phases") or {}).get("transitions") or []
+    put(
+        "trajectory",
+        bool(daily) and bool(phases),
+        {"daily_states": count(daily), "phase_transitions": count(phases)},
+        ([] if daily else ["trajectory.daily"]) + ([] if phases else ["trajectory.phases"]),
+    )
+
+    put(
+        "distillation",
+        bool(distillation.get("signal")) and bool(distillation.get("decision_hooks")),
+        {
+            "signal": bool(distillation.get("signal")),
+            "decision_hooks": bool(distillation.get("decision_hooks")),
+        },
+        ([] if distillation.get("signal") else ["distillation.signal"])
+        + ([] if distillation.get("decision_hooks") else ["distillation.decision_hooks"]),
+    )
+
+    put(
+        "structured_brain",
+        bool(snapshot.get("dynamic")) and bool(snapshot.get("localBrain")) and bool(snapshot.get("cogProfile")),
+        {
+            "dynamic": bool(snapshot.get("dynamic")),
+            "localBrain": bool(snapshot.get("localBrain")),
+            "cogProfile": bool(snapshot.get("cogProfile")),
+            "socialMap": bool(snapshot.get("socialMap")),
+        },
+        ([] if snapshot.get("dynamic") else ["snapshot.dynamic"])
+        + ([] if snapshot.get("localBrain") else ["snapshot.localBrain"])
+        + ([] if snapshot.get("cogProfile") else ["snapshot.cogProfile"]),
+    )
+
+    return tabs
+
+
+def main():
+    checked_at = time.strftime("%Y-%m-%d %H:%M:%S")
+    rows = []
+    failures = []
+    for persona in PERSONAS:
+        try:
+            data = fetch_detail(persona)
+            tabs = audit_persona(persona, data)
+        except Exception as exc:
+            tabs = {"api": {"ok": False, "metrics": {}, "missing": [str(exc)]}}
+        for tab, payload in tabs.items():
+            if not payload["ok"]:
+                failures.append((persona, tab, payload["missing"]))
+            rows.append((persona, tab, payload))
+
+    with sqlite3.connect(DB) as con:
+        con.execute(
+            """CREATE TABLE IF NOT EXISTS lobster_detail_tab_audit (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                checked_at TEXT NOT NULL,
+                persona TEXT NOT NULL,
+                tab_key TEXT NOT NULL,
+                ok INTEGER NOT NULL DEFAULT 0,
+                metrics_json TEXT NOT NULL DEFAULT '{}',
+                missing_json TEXT NOT NULL DEFAULT '[]'
+            )"""
+        )
+        con.executemany(
+            """INSERT INTO lobster_detail_tab_audit
+               (checked_at, persona, tab_key, ok, metrics_json, missing_json)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            [
+                (
+                    checked_at,
+                    persona,
+                    tab,
+                    1 if payload["ok"] else 0,
+                    json.dumps(payload["metrics"], ensure_ascii=False),
+                    json.dumps(payload["missing"], ensure_ascii=False),
+                )
+                for persona, tab, payload in rows
+            ],
+        )
+        con.commit()
+
+    print(f"checked_at={checked_at}")
+    print(f"tabs_checked={len(rows)}")
+    print(f"failures={len(failures)}")
+    for persona, tab, missing in failures:
+        print(f"FAIL\t{persona}\t{tab}\t{','.join(missing)}")
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

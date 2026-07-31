@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+import json
+import os
+import sqlite3
+import subprocess
+import time
+from datetime import datetime, timezone
+
+DB="/opt/battle_arena/app/battle_arena.db"
+DEFERRED_LOG="/var/log/lobster-loop-health-monitor-deferred.jsonl"
+
+def now():
+    return datetime.now(timezone.utc).isoformat()
+
+def configure_sqlite(con):
+    con.execute("PRAGMA busy_timeout=120000")
+    con.execute("PRAGMA synchronous=NORMAL")
+
+
+def ensure(con):
+    con.execute("""
+    CREATE TABLE IF NOT EXISTS lobster_system_alerts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      alert_type TEXT NOT NULL,
+      severity TEXT NOT NULL,
+      summary TEXT NOT NULL,
+      raw_json TEXT NOT NULL DEFAULT '{}',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+    """)
+    con.execute("CREATE INDEX IF NOT EXISTS idx_lobster_system_alerts_time ON lobster_system_alerts(created_at)")
+    con.commit()
+
+def ps_rows():
+    out=subprocess.check_output(["/bin/ps","-eo","pid,pcpu,pmem,etime,cmd","--sort=-pcpu"], text=True, timeout=10)
+    rows=[]
+    for line in out.splitlines()[1:30]:
+        parts=line.split(None,4)
+        if len(parts)<5: continue
+        pid,pcpu,pmem,etime,cmd=parts
+        try:
+            cpu=float(pcpu); mem=float(pmem)
+        except Exception:
+            continue
+        if cpu >= 40 or ("lobster" in cmd.lower() and cpu >= 20) or ("uvicorn" in cmd and cpu >= 30):
+            rows.append({"pid":int(pid),"cpu":cpu,"mem":mem,"etime":etime,"cmd":cmd[:500]})
+    return rows
+
+def write_deferred(payload):
+    os.makedirs(os.path.dirname(DEFERRED_LOG), exist_ok=True)
+    with open(DEFERRED_LOG, "a", encoding="utf-8") as f:
+        f.write(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
+
+def run_once():
+    with sqlite3.connect(DB, timeout=120) as con:
+        configure_sqlite(con)
+        ensure(con)
+        hot=ps_rows()
+        if hot:
+            con.execute("INSERT INTO lobster_system_alerts(alert_type,severity,summary,raw_json) VALUES(?,?,?,?)",
+                        ("high_cpu_process","warning",f"{len(hot)} high CPU process(es)",json.dumps({"processes":hot,"checkedAt":now()},ensure_ascii=False)))
+        stale=con.execute("""
+          SELECT id, worker_name, started_at
+          FROM lobster_worker_runs
+          WHERE status='running'
+            AND (strftime('%s','now') - strftime('%s', started_at)) > 900
+          ORDER BY id DESC LIMIT 20
+        """).fetchall()
+        if stale:
+            con.execute("INSERT INTO lobster_system_alerts(alert_type,severity,summary,raw_json) VALUES(?,?,?,?)",
+                        ("stale_worker_run","critical",f"{len(stale)} worker run(s) older than 900s",json.dumps({"runs":[{"id":r[0],"worker_name":r[1],"started_at":r[2]} for r in stale],"checkedAt":now()},ensure_ascii=False)))
+        con.commit()
+
+for attempt in range(1, 4):
+    try:
+        run_once()
+        break
+    except sqlite3.OperationalError as exc:
+        if "locked" not in str(exc).lower() and "busy" not in str(exc).lower():
+            raise
+        if attempt == 3:
+            write_deferred({
+                "checkedAt": now(),
+                "severity": "warning",
+                "summary": "battle_arena.db was busy; monitor deferred instead of failing systemd",
+                "error": str(exc),
+            })
+            break
+        time.sleep(10 * attempt)
+print("lobster loop health checked")

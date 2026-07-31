@@ -1,0 +1,14 @@
+[Unit]
+Description=Lobster Daily Quiz 10-minute brain solver
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-quiz-worker --lock-key lobster-quiz-worker --min-interval-sec 480 --timeout-sec 120 -- /usr/bin/python3 /root/lobster-quiz-brain-solver.py
+User=root
+Group=root
+TimeoutStartSec=150
+Nice=8
+CPUQuota=40%
+MemoryMax=500M

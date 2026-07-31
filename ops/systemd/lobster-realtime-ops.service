@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster realtime sports ingest, settlement, betting, and endpoint guard
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/lobster-realtime-ops.sh
+TimeoutSec=1200
+Nice=5
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6

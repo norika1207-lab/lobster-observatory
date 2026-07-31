@@ -1,0 +1,12 @@
+[Unit]
+Description=Sample Lobster Dashboard V2 vitals every 5 minutes
+
+[Timer]
+OnBootSec=120s
+OnUnitActiveSec=5min
+AccuracySec=30s
+Persistent=true
+Unit=lobster-v2-vital-snapshot.service
+
+[Install]
+WantedBy=timers.target

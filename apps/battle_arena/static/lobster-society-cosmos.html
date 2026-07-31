@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>人 Charenix Society Cosmos — 30 minds · 3D force graph</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#04060a;overflow:hidden;font-family:-apple-system,"Segoe UI","PingFang TC",system-ui,sans-serif;color:#eceff4;font-size:13px}
+#graph{position:fixed;inset:0;z-index:1}
+
+#title{position:fixed;top:14px;left:18px;z-index:6;pointer-events:none}
+#title h1{font-size:18px;font-weight:900;color:#7df9ff;letter-spacing:.5px;text-shadow:0 0 18px #7df9ff55}
+#title p{font-size:11px;color:#647a8e;margin-top:3px;font-weight:600;letter-spacing:.4px}
+#mode{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:10px;background:rgba(125,249,255,.10);border:1px solid #7df9ff55;color:#7df9ff;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+
+#ui{position:fixed;top:60px;left:14px;width:220px;display:flex;flex-direction:column;gap:8px;z-index:6;max-height:calc(100vh - 130px);overflow-y:auto}
+#ui-right{position:fixed;top:60px;right:14px;width:230px;display:flex;flex-direction:column;gap:8px;z-index:6;max-height:calc(100vh - 130px);overflow-y:auto}
+.panel{background:rgba(10,14,20,.92);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px 12px;backdrop-filter:blur(8px);pointer-events:all}
+.panel h3{font-size:10px;color:#7df9ff;margin-bottom:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.stat{display:flex;justify-content:space-between;font-size:10px;padding:3px 0;border-bottom:1px solid #ffffff0a;color:#9fb2c4}
+.stat:last-child{border-bottom:0}
+.sv{font-weight:800;color:#eceff4}
+.leg{display:flex;align-items:center;gap:8px;font-size:11px;padding:3px 0;color:#9fb2c4;font-weight:700}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
+.cohort-btn{display:block;width:100%;margin:3px 0;padding:5px 9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:5px;color:#9fb2c4;font-size:10px;cursor:pointer;text-align:left;font-weight:700;letter-spacing:.3px}
+.cohort-btn:hover,.cohort-btn.on{background:rgba(125,249,255,.10);border-color:#7df9ff55;color:#fff}
+.mini-row{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:10px;color:#9fb2c4;font-weight:700;border-bottom:1px solid #ffffff08}
+.mini-row:last-child{border-bottom:0}
+.mini-row .rank{width:14px;color:#647a8e;font-size:9px;font-weight:900}
+.mini-row .n{flex:1;color:#cdd8e3;font-size:11px;font-weight:800}
+.mini-row .v{color:#7df9ff;font-size:10px;font-weight:900;font-variant-numeric:tabular-nums}
+.mini-row .bar{flex-shrink:0;width:42px;height:5px;background:#0f1622;border-radius:3px;overflow:hidden;margin-left:6px}
+.mini-row .bar > i{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#7df9ff)}
+.bond-row{padding:4px 0;border-bottom:1px solid #ffffff08;font-size:10px}
+.bond-row:last-child{border-bottom:0}
+.bond-row .pair{font-size:10px;font-weight:800}
+.bond-row .pair .sep{color:#647a8e;margin:0 4px}
+.bond-row .meta{color:#647a8e;font-size:9px;font-weight:700;margin-top:1px}
+
+#ui-bottom{position:fixed;bottom:8px;left:14px;right:14px;display:flex;gap:8px;z-index:6;background:rgba(10,14,20,.86);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px 14px;backdrop-filter:blur(8px)}
+.kpi-strip{display:flex;flex-direction:column;justify-content:center;min-width:78px}
+.kpi-strip .kpi-k{font-size:9px;color:#647a8e;font-weight:800;text-transform:uppercase;letter-spacing:.6px}
+.kpi-strip .kpi-v{font-size:17px;font-weight:900;color:#eceff4;font-variant-numeric:tabular-nums;line-height:1.1;margin-top:2px}
+.kpi-strip .kpi-v.green{color:#4ade80}
+.kpi-strip .kpi-v.red{color:#fb7185}
+.kpi-strip .kpi-v.amber{color:#fbbf24}
+.kpi-strip .kpi-v.blue{color:#60a5fa}
+
+#tooltip-html{position:fixed;background:rgba(10,14,20,.97);border:1px solid rgba(125,249,255,.32);border-radius:8px;padding:8px 12px;font-size:11px;color:#cdd8e3;pointer-events:none;display:none;z-index:30;backdrop-filter:blur(8px);max-width:280px}
+#tooltip-html .name{font-size:13px;color:#7df9ff;font-weight:900;margin-bottom:3px}
+#tooltip-html .meta{color:#9fb2c4;font-size:10px}
+#tooltip-html .meta b{color:#facc15}
+
+#loading{position:fixed;inset:0;background:#04060a;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:100}
+#loading h2{font-size:22px;color:#7df9ff;font-weight:900;letter-spacing:.6px}
+#loading p{font-size:12px;color:#4a5566;font-weight:600}
+
+#crumb{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:rgba(10,14,20,.92);border:1px solid rgba(125,249,255,.25);border-radius:18px;padding:6px 16px;font-size:11px;color:#7df9ff;font-weight:800;cursor:pointer;display:none;z-index:55;backdrop-filter:blur(6px)}
+#crumb b{color:#facc15}
+
+#brain-frame{position:fixed;inset:0;background:#04060a;z-index:50;display:none;opacity:0;transition:opacity .55s ease}
+#brain-frame iframe{width:100%;height:100%;border:0}
+#brain-back{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:rgba(10,14,20,.96);border:1px solid rgba(125,249,255,.35);border-radius:18px;padding:7px 18px;font-size:11px;color:#7df9ff;font-weight:800;cursor:pointer;z-index:60}
+#brain-name-pill{position:fixed;top:14px;right:14px;background:rgba(10,14,20,.96);border:1px solid #facc1555;border-radius:18px;padding:7px 14px;font-size:11px;color:#facc15;font-weight:800;z-index:60}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <h2>人 Charenix Society Cosmos</h2>
+  <p>載入 30 位居民的社交網絡 + 3D force-graph 引擎…</p>
+</div>
+
+<div id="graph"></div>
+
+<div id="title">
+  <h1>人 Charenix Society Cosmos <span id="mode">COSMOS</span></h1>
+  <p>30 residents · distance = social bond · line thickness = interaction weight · click a sphere to enter their brain</p>
+</div>
+
+<div id="ui">
+  <div class="panel">
+    <h3>Filter Cohort</h3>
+    <button class="cohort-btn on" data-c="all">🌐 全部 30 位</button>
+    <button class="cohort-btn" data-c="old">🟡 Mentor · 10</button>
+    <button class="cohort-btn" data-c="student">⚪ Student · 10</button>
+    <button class="cohort-btn" data-c="transfer">🟣 Transfer · 10</button>
+  </div>
+  <div class="panel">
+    <h3>Network</h3>
+    <div class="stat"><span>Agents</span><span class="sv" id="s-agents">--</span></div>
+    <div class="stat"><span>Edges</span><span class="sv" id="s-edges">--</span></div>
+    <div class="stat"><span>Total brain leaves</span><span class="sv" id="s-int">--</span></div>
+    <div class="stat"><span>Avg edge weight</span><span class="sv" id="s-conf">--</span></div>
+  </div>
+  <div class="panel">
+    <h3>Legend</h3>
+    <div class="leg"><span class="dot" style="color:#facc15;background:#facc15"></span>Mentor (OG)</div>
+    <div class="leg"><span class="dot" style="color:#f8fafc;background:#f8fafc"></span>學生</div>
+    <div class="leg"><span class="dot" style="color:#a78bfa;background:#a78bfa"></span>Transfer</div>
+    <div class="leg" style="margin-top:6px;color:#647a8e;font-size:10px">球大小 = 認知容量 · 距離 = 親疏 · 線粗 = 互動量</div>
+  </div>
+  <div class="panel">
+    <h3>🏆 Top Cog Engine</h3>
+    <div id="top-cog-list"></div>
+  </div>
+</div>
+
+<div id="ui-right">
+  <div class="panel">
+    <h3>人 Selected Resident</h3>
+    <div id="sel-empty" style="font-size:11px;color:#475569;font-weight:600;padding:6px 0">滑鼠移到任一顆球 →<br>顯示牠的詳細狀態</div>
+    <div id="sel-card" style="display:none">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div id="sel-avatar" style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div id="sel-name" style="font-size:13px;font-weight:900;color:#eceff4"></div>
+          <div id="sel-cohort" style="font-size:9px;font-weight:800;letter-spacing:.4px;margin-top:1px"></div>
+        </div>
+      </div>
+      <div class="stat"><span>cog engine</span><span class="sv" id="sel-cog">--</span></div>
+      <div class="stat"><span>brain leaves</span><span class="sv" id="sel-leaves">--</span></div>
+      <div class="stat"><span>wins / losses</span><span class="sv" id="sel-wl">--</span></div>
+      <div class="stat"><span>sessions</span><span class="sv" id="sel-sess">--</span></div>
+      <div class="stat"><span>rank</span><span class="sv" id="sel-rank">--</span></div>
+      <div style="font-size:9px;color:#647a8e;margin-top:7px;font-weight:700">TOP 3 BRAIN REGIONS</div>
+      <div id="sel-regions" style="font-size:10px;line-height:1.7;color:#9fb2c4;font-weight:700;margin-top:3px"></div>
+      <div style="font-size:9px;color:#647a8e;margin-top:7px;font-weight:700">CLOSEST PEERS</div>
+      <div id="sel-peers" style="font-size:10px;line-height:1.7;color:#9fb2c4;font-weight:700;margin-top:3px"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>🔗 Top Social Bonds</h3>
+    <div id="top-bonds-list"></div>
+  </div>
+</div>
+
+<div id="ui-bottom">
+  <div class="kpi-strip"><span class="kpi-k">wins</span><span class="kpi-v green" id="b-wins">--</span></div>
+  <div class="kpi-strip"><span class="kpi-k">losses</span><span class="kpi-v red" id="b-loss">--</span></div>
+  <div class="kpi-strip"><span class="kpi-k">sessions</span><span class="kpi-v" id="b-sess">--</span></div>
+  <div class="kpi-strip"><span class="kpi-k">avg streak</span><span class="kpi-v amber" id="b-streak">--</span></div>
+  <div class="kpi-strip"><span class="kpi-k">total brain leaves</span><span class="kpi-v blue" id="b-leaves">--</span></div>
+  <div class="kpi-strip" style="flex:1"><span class="kpi-k">tip</span><span class="kpi-v" style="font-size:11px;color:#7df9ff">點任一球 = 縮進去那個人的真實腦袋  ·  ESC 回 cosmos</span></div>
+</div>
+
+<div id="tooltip-html"></div>
+<div id="crumb">◂ 回 cosmos · 當前 <b id="crumb-name">--</b></div>
+
+<div id="brain-frame">
+  <iframe id="brain-iframe" src="about:blank"></iframe>
+  <div id="brain-back">◂ 縮回去看星空</div>
+  <div id="brain-name-pill">人 --</div>
+</div>
+
+<script src="/static/vendor/3d-force-graph/3d-force-graph.min.js"></script>
+<script>
+const COHORT_COLOR = { old:'#facc15', student:'#f8fafc', transfer:'#a78bfa' };
+const COHORT_LABEL = { old:'Mentor', student:'Student', transfer:'Transfer' };
+
+const STATE = {
+  graph: null, v2: {},
+  nodesByName: new Map(),
+  edgesAll: [],
+  graphInstance: null,
+  filter: 'all',
+  mode: 'cosmos',
+  focused: null,
+};
+
+(async function boot(){
+  const [graph, v2bundle] = await Promise.all([
+    fetch('/static/lobster-society-graph.json?ts='+Date.now()).then(r=>r.json()),
+    fetch('/api/lobster-dashboard-v2-bundle').then(r=>r.json()).catch(()=>({data:{}})),
+  ]);
+  STATE.graph = graph;
+  STATE.v2 = v2bundle.data || {};
+  STATE.edgesAll = graph.edges || [];
+
+  // build graph data for 3d-force-graph
+  const cMin = graph.cognitive_power_min, cMax = graph.cognitive_power_max;
+  const cRange = Math.max(1, cMax - cMin);
+  const maxW = Math.max(...STATE.edgesAll.map(e=>e.weight), 1);
+
+  const nodes = Object.values(graph.personas).map(p => {
+    const cn = ((p.cognitive_power||0) - cMin) / cRange;
+    const node = {
+      id: p.name,
+      name: p.name,
+      cohort: p.cohort,
+      cogPower: p.cognitive_power || 0,
+      cogNorm: cn,
+      leaves: p.total_leaves || 0,
+      top_keys: p.top_keys || 0,
+      regions: p.regions || {},
+      score: p.score ?? 55,
+      val: 0.6 + Math.pow(cn, 0.65) * 6.4, // d3-force-3d uses this for sphere radius scaling
+    };
+    STATE.nodesByName.set(p.name, node);
+    return node;
+  });
+
+  const links = STATE.edgesAll.map(e => ({
+    source: e.a, target: e.b, weight: e.weight,
+    wn: e.weight / maxW,
+  }));
+
+  const Graph = ForceGraph3D()(document.getElementById('graph'))
+    .graphData({ nodes, links })
+    .backgroundColor('#04060a')
+    .showNavInfo(false)
+    .nodeRelSize(2.4)                                  // base sphere radius
+    .nodeVal(n => n.val)                                // size by cog
+    .nodeColor(n => COHORT_COLOR[n.cohort])
+    .nodeOpacity(0.92)
+    .nodeResolution(20)
+    .linkColor(l => '#7df9ff')
+    .linkOpacity(0.55)
+    .linkWidth(l => 0.4 + l.wn * 2.8)                  // REAL world-unit thickness
+    .linkDirectionalParticles(l => Math.round(l.wn * 3))
+    .linkDirectionalParticleWidth(l => 0.5 + l.wn * 1.5)
+    .linkDirectionalParticleColor(()=> '#bff5ff')
+    .linkDirectionalParticleSpeed(l => 0.0015 + l.wn * 0.004)
+    .onNodeHover(node => {
+      document.getElementById('graph').style.cursor = node ? 'pointer' : 'default';
+      if(node) updateSelectedCard(node);
+    })
+    .onNodeClick(node => flyToBrain(Graph, node))
+    .onBackgroundClick(()=>{ /* noop */ });
+
+  // tune forces: spread them out — link distance much larger, repulsion stronger
+  Graph.d3Force('charge').strength(-520);
+  Graph.d3Force('link')
+    .distance(l => 95 - 55 * l.wn)                    // weak bond ~95u, strong bond ~40u
+    .strength(l => 0.10 + l.wn * 0.45);
+  // explicit collision force (d3-force-3d's forceCollide is exposed via instance)
+  // 3d-force-graph ships its own; setting d3Force collide adds it
+  const collideRadius = n => (n.val ? Math.cbrt(n.val) * 2.4 + 1.2 : 4);
+  Graph.d3Force('collide', window.d3 ? d3.forceCollide(collideRadius).strength(1.0).iterations(3) :
+    // fallback: use built-in adapter via forceCollide-compatible function
+    (function makeCollide(){
+      // basic implementation if d3 not exposed
+      const f = function(alpha){
+        const nodes = Graph.graphData().nodes;
+        for(let iter=0;iter<3;iter++){
+          for(let i=0;i<nodes.length;i++){
+            for(let j=i+1;j<nodes.length;j++){
+              const a=nodes[i], b=nodes[j];
+              const dx=(a.x||0)-(b.x||0), dy=(a.y||0)-(b.y||0), dz=(a.z||0)-(b.z||0);
+              const d=Math.sqrt(dx*dx+dy*dy+dz*dz)||0.001;
+              const min=collideRadius(a)+collideRadius(b);
+              if(d<min){
+                const overlap=(min-d)*0.5*alpha;
+                const ux=dx/d, uy=dy/d, uz=dz/d;
+                a.x=(a.x||0)+ux*overlap; a.y=(a.y||0)+uy*overlap; a.z=(a.z||0)+uz*overlap;
+                b.x=(b.x||0)-ux*overlap; b.y=(b.y||0)-uy*overlap; b.z=(b.z||0)-uz*overlap;
+              }
+            }
+          }
+        }
+      };
+      f.initialize = function(ns){};
+      return f;
+    })());
+
+  STATE.graphInstance = Graph;
+
+  // initial camera pull-back (match wider layout)
+  setTimeout(()=> Graph.cameraPosition({ x: 0, y: 60, z: 340 }, { x:0, y:0, z:0 }, 1500), 500);
+
+  // build side panels
+  buildSidePanels();
+  updateStats();
+  bindUI();
+  document.getElementById('loading').style.display = 'none';
+})();
+
+function updateStats(){
+  const totalW = STATE.edgesAll.reduce((s,e)=>s+(e.weight||0),0);
+  const avgW = STATE.edgesAll.length ? totalW/STATE.edgesAll.length : 0;
+  const totalLeaves = [...STATE.nodesByName.values()].reduce((s,n)=>s+n.leaves,0);
+  document.getElementById('s-agents').textContent = STATE.nodesByName.size;
+  document.getElementById('s-edges').textContent  = STATE.edgesAll.length;
+  document.getElementById('s-int').textContent    = totalLeaves.toLocaleString();
+  document.getElementById('s-conf').textContent   = avgW.toFixed(2);
+}
+
+function buildSidePanels(){
+  const nodes = [...STATE.nodesByName.values()];
+  const cogTop = [...nodes].sort((a,b)=>b.cogPower-a.cogPower).slice(0,5);
+  const cogMax = cogTop[0]?.cogPower || 1;
+  document.getElementById('top-cog-list').innerHTML = cogTop.map((n,i)=>
+    `<div class="mini-row"><span class="rank">#${i+1}</span><span class="n">${n.name}</span><span class="v">${n.cogPower.toLocaleString()}</span><span class="bar"><i style="width:${(n.cogPower/cogMax*100).toFixed(0)}%"></i></span></div>`
+  ).join('');
+
+  const bondTop = [...STATE.edgesAll].sort((a,b)=>b.weight-a.weight).slice(0,7);
+  document.getElementById('top-bonds-list').innerHTML = bondTop.map(e=>{
+    const a = STATE.nodesByName.get(e.a), b = STATE.nodesByName.get(e.b);
+    if(!a||!b) return '';
+    return `<div class="bond-row"><div class="pair"><span style="color:${COHORT_COLOR[a.cohort]}">${e.a}</span><span class="sep">↔</span><span style="color:${COHORT_COLOR[b.cohort]}">${e.b}</span></div><div class="meta">weight ${e.weight.toFixed(2)}</div></div>`;
+  }).join('');
+
+  let wins=0, losses=0, sess=0, streak=0, withStreak=0;
+  for(const n of nodes){
+    const v = STATE.v2[n.name];
+    if(!v) continue;
+    wins   += v.wins || 0;
+    losses += v.losses || 0;
+    sess   += v.sessions || 0;
+    if(v.qualityStreak?.count != null){ streak += v.qualityStreak.count; withStreak++; }
+  }
+  document.getElementById('b-wins').textContent = wins.toLocaleString();
+  document.getElementById('b-loss').textContent = losses.toLocaleString();
+  document.getElementById('b-sess').textContent = sess.toLocaleString();
+  document.getElementById('b-streak').textContent = withStreak ? (streak/withStreak).toFixed(1) : '--';
+  document.getElementById('b-leaves').textContent = [...STATE.nodesByName.values()].reduce((s,n)=>s+n.leaves,0).toLocaleString();
+}
+
+function updateSelectedCard(node){
+  const empty = document.getElementById('sel-empty');
+  const card  = document.getElementById('sel-card');
+  if(!node){ empty.style.display='block'; card.style.display='none'; return; }
+  empty.style.display='none'; card.style.display='block';
+  const col = COHORT_COLOR[node.cohort];
+  const av = document.getElementById('sel-avatar');
+  av.textContent = node.name.charAt(0).toUpperCase();
+  av.style.background = col;
+  av.style.color = node.cohort==='student' ? '#0c1622' : '#04060a';
+  document.getElementById('sel-name').textContent = node.name;
+  const cohEl = document.getElementById('sel-cohort');
+  cohEl.textContent = COHORT_LABEL[node.cohort];
+  cohEl.style.color = col;
+  document.getElementById('sel-cog').textContent = node.cogPower.toLocaleString();
+  document.getElementById('sel-leaves').textContent = node.leaves.toLocaleString();
+  const v = STATE.v2[node.name] || {};
+  document.getElementById('sel-wl').innerHTML = `<span style="color:#4ade80">${v.wins||0}</span> / <span style="color:#fb7185">${v.losses||0}</span>`;
+  document.getElementById('sel-sess').textContent = (v.sessions||0).toLocaleString();
+  document.getElementById('sel-rank').textContent = v.rank?.current || '--';
+  const topR = Object.entries(node.regions).sort((a,b)=>b[1].leaves-a[1].leaves).slice(0,3)
+    .map(([k,v])=>`<div>${k} <b style="color:#7df9ff">${v.leaves}</b></div>`).join('');
+  document.getElementById('sel-regions').innerHTML = topR;
+  const peers = STATE.edgesAll.filter(e=>e.a===node.name||e.b===node.name)
+    .sort((a,b)=>b.weight-a.weight).slice(0,3)
+    .map(e => {
+      const other = e.a===node.name ? e.b : e.a;
+      const pn = STATE.nodesByName.get(other);
+      if(!pn) return '';
+      return `<div>${other} <b style="color:${COHORT_COLOR[pn.cohort]}">${e.weight.toFixed(2)}</b></div>`;
+    }).join('') || '<div style="color:#475569">(無強連結)</div>';
+  document.getElementById('sel-peers').innerHTML = peers;
+}
+
+function bindUI(){
+  document.querySelectorAll('.cohort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cohort-btn').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      STATE.filter = btn.dataset.c;
+      applyFilter();
+    });
+  });
+  document.addEventListener('keydown', ev => {
+    if(ev.key === 'Escape' && STATE.mode === 'brain') exitBrain();
+  });
+  document.getElementById('brain-back').addEventListener('click', exitBrain);
+  document.getElementById('crumb').addEventListener('click', exitBrain);
+}
+
+function applyFilter(){
+  const G = STATE.graphInstance;
+  if(!G) return;
+  // hide/show by re-styling color + opacity
+  G.nodeOpacity(0.92).nodeColor(n => {
+    if(STATE.filter==='all' || n.cohort===STATE.filter) return COHORT_COLOR[n.cohort];
+    return '#1a2538'; // dimmed
+  });
+  G.linkVisibility(l => {
+    if(STATE.filter === 'all') return true;
+    const a = STATE.nodesByName.get(typeof l.source==='object' ? l.source.id : l.source);
+    const b = STATE.nodesByName.get(typeof l.target==='object' ? l.target.id : l.target);
+    return a && b && a.cohort===STATE.filter && b.cohort===STATE.filter;
+  });
+}
+
+function flyToBrain(Graph, node){
+  STATE.focused = node;
+  STATE.mode = 'brain';
+  document.getElementById('mode').textContent = 'BRAIN · '+node.name;
+  document.getElementById('crumb').style.display = 'block';
+  document.getElementById('crumb-name').textContent = node.name;
+
+  // fly camera to the node
+  const dist = 30;
+  const distRatio = 1 + dist / Math.hypot(node.x || 1, node.y || 1, node.z || 1);
+  Graph.cameraPosition({
+    x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio
+  }, node, 1200);
+
+  // after fly-in, load brain iframe
+  setTimeout(() => {
+    const wrap = document.getElementById('brain-frame');
+    document.getElementById('brain-iframe').src = '/static/lobster-brain-individual.html?lobster=' + encodeURIComponent(node.name);
+    document.getElementById('brain-name-pill').textContent = '人 ' + node.name;
+    wrap.style.display = 'block';
+    requestAnimationFrame(()=> { wrap.style.opacity = '1'; });
+  }, 1100);
+}
+
+function exitBrain(){
+  STATE.mode = 'cosmos';
+  STATE.focused = null;
+  document.getElementById('mode').textContent = 'COSMOS';
+  document.getElementById('crumb').style.display = 'none';
+  const wrap = document.getElementById('brain-frame');
+  wrap.style.opacity = '0';
+  setTimeout(()=> {
+    wrap.style.display = 'none';
+    document.getElementById('brain-iframe').src = 'about:blank';
+  }, 600);
+  // pull camera back out
+  if(STATE.graphInstance){
+    STATE.graphInstance.cameraPosition({ x:0, y:60, z:340 }, { x:0,y:0,z:0 }, 1200);
+  }
+}
+</script>
+</body>
+</html>

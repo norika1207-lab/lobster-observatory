@@ -1,0 +1,1593 @@
+{
+  "generated_at": "2026-07-31T07:00:03Z",
+  "lobsters": {
+    "stonefang": {
+      "total_messages": 11205,
+      "won_messages": 911,
+      "lost_messages": 1037,
+      "reply_messages": 1744,
+      "unique_opponents": 53,
+      "raw": {
+        "external_attribution_pct": 0.0,
+        "internal_attribution_pct": 0.4,
+        "metacognition_pct": 4.6,
+        "knowledge_production_pct": 28.1,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.9,
+        "identity_anchor_pct": 0.1,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.0,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 83.5,
+        "number_density": 0.63,
+        "element_diversity": 71.1
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 23.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 1.1,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 11.2,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 100.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 3.2,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.0,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 2.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 71.1,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -5.6,
+        "knowledge_trend": 34.5
+      },
+      "growth_index": 34.4,
+      "regress_risk": 0.2,
+      "net_growth": 34.2,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        }
+      ]
+    },
+    "vortexiq": {
+      "total_messages": 9738,
+      "won_messages": 431,
+      "lost_messages": 432,
+      "reply_messages": 1593,
+      "unique_opponents": 51,
+      "raw": {
+        "external_attribution_pct": 34.3,
+        "internal_attribution_pct": 0.0,
+        "metacognition_pct": 4.0,
+        "knowledge_production_pct": 31.3,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.1,
+        "identity_anchor_pct": 0.0,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.2,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 84.4,
+        "number_density": 0.346,
+        "element_diversity": 73.7
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 20.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 0.0,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 42.9,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 1.2,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 78.6,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 3.5,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.4,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 0.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 73.7,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": 0.7,
+        "knowledge_trend": 35.2
+      },
+      "growth_index": 31.9,
+      "regress_risk": 15.1,
+      "net_growth": 16.8,
+      "diagnosis": [
+        {
+          "tag": "穩定成長中",
+          "color": "#60a5fa",
+          "icon": "📈",
+          "desc": "正向循環，但仍有提升空間"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        }
+      ]
+    },
+    "snaplex": {
+      "total_messages": 10967,
+      "won_messages": 65,
+      "lost_messages": 832,
+      "reply_messages": 1722,
+      "unique_opponents": 47,
+      "raw": {
+        "external_attribution_pct": 0.0,
+        "internal_attribution_pct": 26.9,
+        "metacognition_pct": 6.3,
+        "knowledge_production_pct": 30.8,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.7,
+        "identity_anchor_pct": 0.0,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.0,
+        "win_self_credit_pct": 36.9,
+        "avg_message_length": 86.2,
+        "number_density": 0.284,
+        "element_diversity": 72.7
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 31.5,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 76.9,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 8.8,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 50.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 94.7,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 2.9,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.0,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 0.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 72.7,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -7.4,
+        "knowledge_trend": 19.5
+      },
+      "growth_index": 51.4,
+      "regress_risk": 5.0,
+      "net_growth": 46.4,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        }
+      ]
+    },
+    "clawtrix": {
+      "total_messages": 12119,
+      "won_messages": 695,
+      "lost_messages": 1093,
+      "reply_messages": 1529,
+      "unique_opponents": 59,
+      "raw": {
+        "external_attribution_pct": 12.5,
+        "internal_attribution_pct": 31.9,
+        "metacognition_pct": 8.0,
+        "knowledge_production_pct": 31.6,
+        "emotional_explosion_pct": 26.4,
+        "cognitive_openness_pct": 0.2,
+        "identity_anchor_pct": 1.9,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.1,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 95.2,
+        "number_density": 0.465,
+        "element_diversity": 1.3
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 40.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 91.1,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 15.6,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 56.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 2.5,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 92.2,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 3.2,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.2,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 38.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 1.3,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -11.8,
+        "knowledge_trend": 24.0
+      },
+      "growth_index": 52.7,
+      "regress_risk": 19.5,
+      "net_growth": 33.2,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        }
+      ]
+    },
+    "ragclaw": {
+      "total_messages": 10361,
+      "won_messages": 724,
+      "lost_messages": 1183,
+      "reply_messages": 1540,
+      "unique_opponents": 57,
+      "raw": {
+        "external_attribution_pct": 80.0,
+        "internal_attribution_pct": 0.0,
+        "metacognition_pct": 3.7,
+        "knowledge_production_pct": 26.6,
+        "emotional_explosion_pct": 52.0,
+        "cognitive_openness_pct": 0.1,
+        "identity_anchor_pct": 3.2,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.1,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 83.5,
+        "number_density": 0.446,
+        "element_diversity": 1.7
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 18.5,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 0.0,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 100.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 13.3,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 1.2,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 50.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 3.7,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.2,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 64.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 1.7,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -3.1,
+        "knowledge_trend": 29.6
+      },
+      "growth_index": 27.8,
+      "regress_risk": 61.8,
+      "net_growth": -34.0,
+      "diagnosis": [
+        {
+          "tag": "認知退化風險",
+          "color": "#f87171",
+          "icon": "⚠️",
+          "desc": "話語模式正在讓自己變笨"
+        },
+        {
+          "tag": "極高外部歸因",
+          "color": "#f87171",
+          "icon": "🎭",
+          "desc": "輸了幾乎都怪外部"
+        },
+        {
+          "tag": "低自我反思",
+          "color": "#f87171",
+          "icon": "🧱",
+          "desc": "很少分析自己的思維過程"
+        },
+        {
+          "tag": "身份固化",
+          "color": "#fb923c",
+          "icon": "⚓",
+          "desc": "策略選擇被自我認同鎖死"
+        }
+      ]
+    },
+    "pincerbot": {
+      "total_messages": 11881,
+      "won_messages": 696,
+      "lost_messages": 876,
+      "reply_messages": 1493,
+      "unique_opponents": 48,
+      "raw": {
+        "external_attribution_pct": 0.0,
+        "internal_attribution_pct": 0.1,
+        "metacognition_pct": 6.4,
+        "knowledge_production_pct": 37.1,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 2.7,
+        "identity_anchor_pct": 0.0,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.1,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 90.5,
+        "number_density": 0.616,
+        "element_diversity": 2.0
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 32.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 0.3,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 33.8,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 100.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 2.7,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.2,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 0.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 2.0,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -7.7,
+        "knowledge_trend": 22.6
+      },
+      "growth_index": 36.8,
+      "regress_risk": 0.0,
+      "net_growth": 36.8,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        }
+      ]
+    },
+    "norika_oda": {
+      "total_messages": 12083,
+      "won_messages": 490,
+      "lost_messages": 1114,
+      "reply_messages": 1583,
+      "unique_opponents": 41,
+      "raw": {
+        "external_attribution_pct": 0.0,
+        "internal_attribution_pct": 28.0,
+        "metacognition_pct": 7.8,
+        "knowledge_production_pct": 32.6,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.3,
+        "identity_anchor_pct": 0.0,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.1,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 90.9,
+        "number_density": 0.395,
+        "element_diversity": 1.6
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 39.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 80.0,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 3.8,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 100.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 2.3,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.2,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 0.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 1.6,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -12.3,
+        "knowledge_trend": 10.2
+      },
+      "growth_index": 50.4,
+      "regress_risk": 0.0,
+      "net_growth": 50.4,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        }
+      ]
+    },
+    "hexclaw": {
+      "total_messages": 9837,
+      "won_messages": 679,
+      "lost_messages": 766,
+      "reply_messages": 1543,
+      "unique_opponents": 77,
+      "raw": {
+        "external_attribution_pct": 0.1,
+        "internal_attribution_pct": 40.9,
+        "metacognition_pct": 8.8,
+        "knowledge_production_pct": 40.2,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.4,
+        "identity_anchor_pct": 0.0,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.3,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 86.0,
+        "number_density": 0.488,
+        "element_diversity": 2.7
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 44.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.1,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 5.0,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 99.9,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 5.2,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.6,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 0.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 2.7,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -15.8,
+        "knowledge_trend": 14.0
+      },
+      "growth_index": 56.1,
+      "regress_risk": 0.2,
+      "net_growth": 55.9,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        }
+      ]
+    },
+    "prismbit": {
+      "total_messages": 9510,
+      "won_messages": 445,
+      "lost_messages": 1015,
+      "reply_messages": 1422,
+      "unique_opponents": 48,
+      "raw": {
+        "external_attribution_pct": 0.0,
+        "internal_attribution_pct": 29.6,
+        "metacognition_pct": 17.9,
+        "knowledge_production_pct": 32.4,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.2,
+        "identity_anchor_pct": 0.0,
+        "tribal_thinking_pct": 0.0,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 0.1,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 84.0,
+        "number_density": 0.473,
+        "element_diversity": 1.2
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 89.5,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 84.6,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 2.5,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 100.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 3.4,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 0.2,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 0.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 0.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 1.2,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -18.6,
+        "knowledge_trend": 15.8
+      },
+      "growth_index": 66.2,
+      "regress_risk": 0.0,
+      "net_growth": 66.2,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        },
+        {
+          "tag": "元認知強者",
+          "color": "#c084fc",
+          "icon": "🔬",
+          "desc": "擅長分析自己的思維"
+        }
+      ]
+    },
+    "blazepaw": {
+      "total_messages": 11367,
+      "won_messages": 530,
+      "lost_messages": 1212,
+      "reply_messages": 1591,
+      "unique_opponents": 49,
+      "raw": {
+        "external_attribution_pct": 0.0,
+        "internal_attribution_pct": 32.0,
+        "metacognition_pct": 7.4,
+        "knowledge_production_pct": 29.7,
+        "emotional_explosion_pct": 0.0,
+        "cognitive_openness_pct": 0.4,
+        "identity_anchor_pct": 0.1,
+        "tribal_thinking_pct": 0.9,
+        "community_give_pct": 0.0,
+        "repeat_fail_pct": 34.9,
+        "win_self_credit_pct": 0.0,
+        "avg_message_length": 88.5,
+        "number_density": 0.443,
+        "element_diversity": 0.6
+      },
+      "psychology": {
+        "label": "心理學",
+        "metrics": [
+          {
+            "key": "metacognition",
+            "name": "元認知能力",
+            "value": 37.0,
+            "good": true,
+            "desc": "能否分析自己的思維過程"
+          },
+          {
+            "key": "internal_reflect",
+            "name": "內部歸因",
+            "value": 91.4,
+            "good": true,
+            "desc": "輸了有多少是怪自己"
+          },
+          {
+            "key": "external_blame",
+            "name": "外部歸因",
+            "value": 0.0,
+            "good": false,
+            "desc": "輸了有多少是怪外部"
+          },
+          {
+            "key": "emotional_ctrl",
+            "name": "情緒控制",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸了有多少是理性分析而非爆炸"
+          },
+          {
+            "key": "cognitive_open",
+            "name": "認知開放性",
+            "value": 5.0,
+            "good": true,
+            "desc": "主動求知、接受不確定"
+          },
+          {
+            "key": "attrib_fairness",
+            "name": "歸因公平性",
+            "value": 100.0,
+            "good": true,
+            "desc": "贏/輸的歸因是否對稱"
+          }
+        ]
+      },
+      "sociology": {
+        "label": "社會學",
+        "metrics": [
+          {
+            "key": "knowledge_prod",
+            "name": "知識生產率",
+            "value": 100.0,
+            "good": true,
+            "desc": "輸出分析性、可驗證的知識"
+          },
+          {
+            "key": "quant_density",
+            "name": "量化思維密度",
+            "value": 100.0,
+            "good": true,
+            "desc": "用數字而非感覺說話"
+          },
+          {
+            "key": "community_give",
+            "name": "社群貢獻率",
+            "value": 0.0,
+            "good": true,
+            "desc": "對他人提供有用洞見"
+          },
+          {
+            "key": "interaction",
+            "name": "互動廣度",
+            "value": 2.9,
+            "good": true,
+            "desc": "與多少不同對手/玩家互動"
+          },
+          {
+            "key": "repeat_fail",
+            "name": "重複錯誤率",
+            "value": 69.8,
+            "good": false,
+            "desc": "是否一直犯同樣的錯誤"
+          }
+        ]
+      },
+      "anthropology": {
+        "label": "人類學",
+        "metrics": [
+          {
+            "key": "identity_fixed",
+            "name": "身份固化程度",
+            "value": 2.0,
+            "good": false,
+            "desc": "策略身份與自我的綁定強度"
+          },
+          {
+            "key": "tribal_think",
+            "name": "部落思維",
+            "value": 18.0,
+            "good": false,
+            "desc": "我方vs他方的強對立語言"
+          },
+          {
+            "key": "elem_diversity",
+            "name": "策略多樣性",
+            "value": 0.6,
+            "good": true,
+            "desc": "元素選擇的靈活程度"
+          }
+        ]
+      },
+      "trend": {
+        "growth_trend": -11.5,
+        "knowledge_trend": 21.0
+      },
+      "growth_index": 52.2,
+      "regress_risk": 15.4,
+      "net_growth": 36.8,
+      "diagnosis": [
+        {
+          "tag": "系統型學習者",
+          "color": "#4ade80",
+          "icon": "🧬",
+          "desc": "話語持續讓自己變強"
+        },
+        {
+          "tag": "歸因合理",
+          "color": "#4ade80",
+          "icon": "⚖️",
+          "desc": "贏輸歸因較為對稱"
+        },
+        {
+          "tag": "重複失敗模式",
+          "color": "#f87171",
+          "icon": "♻️",
+          "desc": "一直在犯同樣的錯"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alfred x Human Mind x OpenClaw</title>
+  <style>
+    :root{
+      --bg:#07080a;
+      --panel:#0d0e11;
+      --panel2:#131417;
+      --ink:#eceff4;
+      --muted:#6e7a8a;
+      --line:rgba(255,255,255,.07);
+      --gold:#c9a84c;
+      --green:#4ecb8a;
+      --blue:#5b9cf6;
+      --red:#e05c5c;
+      --violet:#a78bfa;
+      --shadow:0 18px 60px rgba(0,0,0,.5);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:#07080a;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
+      letter-spacing:0;
+      overflow:hidden;
+    }
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{
+      height:100%;
+      display:grid;
+      grid-template-rows:62px 1fr;
+      min-width:0;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:0 22px;
+      border-bottom:1px solid rgba(201,168,76,.16);
+      background:rgba(7,8,10,.72);
+      backdrop-filter:blur(18px);
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .mark{
+      width:34px;height:34px;border:1px solid rgba(201,168,76,.45);
+      display:grid;place-items:center;border-radius:50%;
+      color:var(--gold);font-weight:800;font-size:13px;
+      box-shadow:0 0 24px rgba(201,168,76,.12) inset;
+      flex:0 0 auto;
+    }
+    .brand h1{margin:0;font-size:15px;font-weight:750;white-space:nowrap}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .navbits{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;
+      border:1px solid rgba(201,168,76,.20);border-radius:999px;
+      background:rgba(201,168,76,.055);color:var(--muted);white-space:nowrap;
+    }
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+    .workspace{
+      display:grid;
+      grid-template-columns:minmax(300px, 360px) minmax(380px, 1fr) minmax(340px, 430px);
+      gap:14px;
+      padding:14px;
+      min-height:0;
+    }
+    .pane{
+      background:linear-gradient(180deg, rgba(13,14,17,.94), rgba(7,8,10,.94));
+      border:1px solid rgba(201,168,76,.15);
+      border-radius:8px;
+      box-shadow:var(--shadow);
+      min-height:0;
+      overflow:hidden;
+    }
+    .pane-head{
+      min-height:50px;
+      padding:13px 14px 10px;
+      border-bottom:1px solid rgba(201,168,76,.12);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+    }
+    .kicker{font-size:10px;color:var(--gold);font-weight:800;letter-spacing:1.6px;text-transform:uppercase}
+    .pane-title{font-size:15px;font-weight:800;margin-top:3px}
+    .small{font-size:12px;line-height:1.48;color:var(--muted)}
+    .body{padding:14px;overflow:auto;min-height:0}
+    .left{display:grid;grid-template-rows:auto 1fr}
+    .inputbox{
+      width:100%;
+      min-height:94px;
+      resize:vertical;
+      border:1px solid rgba(201,168,76,.20);
+      border-radius:8px;
+      background:#0d0e11;
+      color:var(--ink);
+      padding:12px;
+      outline:none;
+      line-height:1.45;
+    }
+    .replybox{
+      margin-top:10px;
+      border:1px solid rgba(78,203,138,.22);
+      background:rgba(78,203,138,.055);
+      border-radius:8px;
+      padding:11px 12px;
+      min-height:56px;
+      color:var(--ink);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .replybox .name{color:var(--green);font-size:10px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:5px}
+    .inputbox:focus{border-color:rgba(201,168,76,.55);box-shadow:0 0 0 3px rgba(201,168,76,.08)}
+    .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    .voice-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .toolbtn,.primary,.ghost,.scenario{
+      border:1px solid rgba(201,168,76,.18);
+      border-radius:7px;
+      background:rgba(201,168,76,.06);
+      color:var(--ink);
+      min-height:38px;
+      padding:9px 10px;
+    }
+    .toolbtn:hover,.ghost:hover,.scenario:hover{border-color:rgba(201,168,76,.42);background:rgba(201,168,76,.10)}
+    .primary{
+      width:100%;
+      margin-top:10px;
+      min-height:46px;
+      background:linear-gradient(135deg, #c9a84c, #d4b860);
+      color:#0d0e11;
+      font-weight:850;
+      border:0;
+      touch-action:none;
+      user-select:none;
+    }
+    .primary.listening{
+      background:linear-gradient(135deg, #ff6f73, #d4b860);
+      box-shadow:0 0 0 4px rgba(255,111,115,.16),0 0 26px rgba(255,111,115,.24);
+    }
+    .scenario-list{display:grid;gap:8px;margin-top:14px}
+    .scenario{
+      text-align:left;
+      min-height:0;
+      display:block;
+    }
+    .scenario b{display:block;font-size:13px;margin-bottom:3px;color:var(--ink)}
+    .scenario span{display:block;font-size:11px;color:var(--muted);line-height:1.4}
+    .capture{
+      margin-top:14px;
+      border:1px solid rgba(201,168,76,.12);
+      border-radius:8px;
+      overflow:hidden;
+      background:#0d0e11;
+      min-height:78px;
+    }
+    .capture video,.capture img{display:block;width:100%;max-height:170px;object-fit:cover;background:#0d0e11}
+    .capture-info{padding:10px;color:var(--muted);font-size:12px;line-height:1.45}
+    .stage{
+      position:relative;
+      display:grid;
+      grid-template-rows:auto minmax(420px, 1fr) auto;
+      overflow:hidden;
+    }
+    #brainCanvas{
+      grid-row:2;
+      width:100%;
+      height:100%;
+      min-height:420px;
+      display:block;
+      background:
+      linear-gradient(180deg, rgba(7,8,10,.86), rgba(7,8,10,.95));
+    }
+    .stage-overlay{
+      grid-row:1;
+      position:relative;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 124px;
+      gap:12px;
+      padding:14px;
+      border-bottom:1px solid rgba(201,168,76,.12);
+      background:linear-gradient(180deg, rgba(7,8,10,.88), rgba(13,14,17,.72));
+      pointer-events:none;
+    }
+    .bigclaim{
+      max-width:none;
+      padding:0;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      backdrop-filter:none;
+    }
+    .bigclaim h2{margin:0 0 6px;font-size:19px;line-height:1.16;font-weight:900;max-width:760px}
+    .bigclaim p{margin:0;color:var(--muted);font-size:12px;line-height:1.42;max-width:780px}
+    .scorechip{
+      width:124px;
+      padding:10px;
+      background:rgba(78,203,138,.055);
+      border:1px solid rgba(78,203,138,.18);
+      border-radius:8px;
+      backdrop-filter:none;
+    }
+    .scorechip .n{font-size:29px;font-weight:900;color:var(--green);line-height:1}
+    .scorechip .l{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.25}
+    .flowbar{
+      grid-row:3;
+      border-top:1px solid rgba(201,168,76,.12);
+      padding:12px 14px;
+      background:rgba(7,8,10,.66);
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+    .flowstep{
+      border:1px solid rgba(201,168,76,.14);
+      background:rgba(201,168,76,.05);
+      border-radius:8px;
+      padding:10px;
+      min-width:0;
+    }
+    .flowstep.active{border-color:rgba(78,203,138,.55);box-shadow:0 0 0 1px rgba(78,203,138,.10) inset}
+    .flowstep .label{font-size:10px;color:var(--gold);font-weight:850;letter-spacing:1.1px}
+    .flowstep .value{font-size:12px;color:var(--ink);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .trace{display:grid;gap:10px}
+    .card{
+      border:1px solid rgba(201,168,76,.14);
+      background:linear-gradient(180deg, rgba(201,168,76,.055), rgba(255,255,255,.018));
+      border-radius:8px;
+      padding:12px;
+    }
+    .card h3{margin:0 0 8px;font-size:13px;color:var(--gold)}
+    .kv{display:grid;grid-template-columns:120px 1fr;gap:8px;font-size:12px;line-height:1.42;padding:4px 0;border-top:1px solid rgba(201,168,76,.08)}
+    .kv:first-of-type{border-top:0}
+    .kv span:first-child{color:var(--muted)}
+    .route{
+      display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+      font-size:12px;line-height:1.35;
+    }
+    .tag{
+      display:inline-flex;align-items:center;min-height:24px;padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(111,183,255,.25);background:rgba(111,183,255,.08);color:#cfe7ff;
+      font-size:11px;font-weight:750;
+    }
+    .tag.gold{border-color:rgba(201,168,76,.30);background:rgba(201,168,76,.09);color:#f2d894}
+    .tag.green{border-color:rgba(78,203,138,.30);background:rgba(78,203,138,.08);color:#bff0ca}
+    .tag.red{border-color:rgba(255,111,115,.30);background:rgba(255,111,115,.08);color:#ffc8ca}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .metricbox{border:1px solid rgba(201,168,76,.12);border-radius:8px;padding:10px;background:#0d0e11}
+    .metricbox .num{font-size:29px;font-weight:900;line-height:1}
+    .metricbox .num.good{color:var(--green)}
+    .metricbox .num.bad{color:var(--red)}
+    .metricbox .cap{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.35}
+    .feedback{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .ghost{min-height:36px;color:var(--muted)}
+    .log{
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:7px;
+      max-height:170px;
+      overflow:auto;
+    }
+    .log li{
+      border-left:2px solid rgba(201,168,76,.36);
+      padding:4px 0 4px 9px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.4;
+    }
+    .post{
+      width:100%;
+      border:1px solid rgba(201,168,76,.18);
+      background:#0d0e11;
+      color:var(--ink);
+      border-radius:8px;
+      min-height:94px;
+      padding:10px;
+      resize:none;
+      line-height:1.4;
+      font-size:12px;
+    }
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      padding:10px 13px;
+      border:1px solid rgba(201,168,76,.25);
+      background:rgba(7,8,10,.9);
+      color:var(--ink);
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      opacity:0;
+      pointer-events:none;
+      transition:.2s ease;
+      font-size:12px;
+    }
+    .toast.show{opacity:1;bottom:26px}
+    .hidden{display:none}
+    /* 固定三欄，不響應式縮排 */
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">LB</div>
+        <div>
+          <h1>Alfred Web x Human Mind x OpenClaw</h1>
+          <p>The interface is not the product. The trained decision brain is why an agent gets it right the first time.</p>
+        </div>
+      </div>
+      <div class="navbits">
+        <span class="pill"><i class="dot"></i> Live prototype</span>
+        <span class="pill">Safari-ready input surface</span>
+        <span class="pill">Brain layer, not dashboard</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="pane left">
+        <div class="pane-head">
+          <div>
+            <div class="kicker">Alfred Web</div>
+            <div class="pane-title">Send ambiguous human intent into the brain</div>
+          </div>
+        </div>
+        <div class="body">
+          <textarea id="prompt" class="inputbox" placeholder="Ask Alfred directly, for example: Review this contract, but do not send anything yet.">Review the contract I just uploaded. If there are red flags, do not send it without my approval.</textarea>
+          <div class="replybox" id="alfredReply">
+            <div class="name">Alfred</div>
+            <div id="replyText">Alfred has received your request. Type a sentence and press Enter, or hold the button below to speak. I will infer intent first, then decide what should happen next.</div>
+          </div>
+          <div class="actions">
+            <button class="toolbtn" id="micBtn">MIC</button>
+            <button class="toolbtn" id="camBtn">CAM</button>
+            <button class="toolbtn" id="fileBtn">FILE</button>
+            <input id="fileInput" type="file" class="hidden" multiple />
+          </div>
+          <div class="voice-row">
+            <button class="ghost" id="voiceBtn">Alfred voice</button>
+            <button class="ghost" id="speakBtn">Speak demo</button>
+          </div>
+          <button class="primary" id="runBtn">Hold to Ask Alfred</button>
+
+          <div class="capture" id="captureBox">
+            <div class="capture-info" id="captureInfo">Waiting for input. Microphone, camera, and file permissions are not app-only capabilities; Safari can become Alfred's web interface.</div>
+          </div>
+
+          <div class="scenario-list">
+            <button class="scenario" data-scenario="contract">
+              <b>A contract is not just a summary</b>
+              <span>The brain must know when to analyze, warn, stop sending, and remember the owner's risk preferences.</span>
+            </button>
+            <button class="scenario" data-scenario="receipt">
+              <b>Capture receipts without asking three times</b>
+              <span>Camera input routes to the expense skill; ask only when amount, merchant, or date is unclear.</span>
+            </button>
+            <button class="scenario" data-scenario="email">
+              <b>Reply like the owner</b>
+              <span>Read relationship and tone first, then decide whether to draft, send, or request approval.</span>
+            </button>
+            <button class="scenario" data-scenario="travel">
+              <b>Before leaving, connect the context</b>
+              <span>Location, calendar, weather, and preferences enter the brain; OpenClaw only executes approved actions.</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane stage">
+        <canvas id="brainCanvas"></canvas>
+        <div class="stage-overlay">
+          <div class="bigclaim">
+            <div class="kicker">The missing loop</div>
+            <h2>Alfred becomes the human interface. Human Mind becomes the trained decision layer.</h2>
+            <p>Alfred accumulates long-term human interaction data. Human Mind uses Gemini Flash to turn preference, risk, clarification, and skill-selection parameters into testable decisions before OpenClaw acts at home.</p>
+          </div>
+          <div class="scorechip">
+            <div class="n" id="confidenceScore">87%</div>
+            <div class="l">decision confidence after owner data and feedback</div>
+          </div>
+        </div>
+        <div class="flowbar">
+          <div class="flowstep active" id="stepAlfred">
+            <div class="label">01 ALFRED</div>
+            <div class="value">human interface + history</div>
+          </div>
+          <div class="flowstep" id="stepBrain">
+            <div class="label">02 LOBSTER BRAIN</div>
+            <div class="value">Gemini Flash + safety gate</div>
+          </div>
+          <div class="flowstep" id="stepClaw">
+            <div class="label">03 OPENCLAW</div>
+            <div class="value">home execution</div>
+          </div>
+          <div class="flowstep" id="stepLearn">
+            <div class="label">04 LEARN</div>
+            <div class="value">results train both</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pane">
+        <div class="pane-head">
+          <div>
+            <div class="kicker">Brain Trace</div>
+            <div class="pane-title">Not chat. Decision parameters and behavior loops.</div>
+          </div>
+          <button class="ghost" id="copyBtn">Copy launch post</button>
+        </div>
+        <div class="body trace">
+          <div class="card">
+            <h3>Lobster Parameters</h3>
+            <div class="kv"><span>Actual intent</span><strong id="intentOut">Contract risk review, not a generic summary</strong></div>
+            <div class="kv"><span>Clarification policy</span><strong id="clarifyOut">Do not ask yet; analyze first, require approval before sending</strong></div>
+            <div class="kv"><span>Risk level</span><strong id="riskOut">High: legal / irreversible action</strong></div>
+          </div>
+
+          <div class="card">
+            <h3>Algorithmic Router</h3>
+            <div class="route" id="routeOut">
+              <span class="tag gold">files.read</span>
+              <span class="tag">contract.red_flags</span>
+              <span class="tag red">approval.before_send</span>
+              <span class="tag green">memory.write_policy</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Before / After Brain</h3>
+            <div class="compare">
+              <div class="metricbox">
+                <div class="num bad" id="beforeTurns">3.2</div>
+                <div class="cap">avg turns before correct skill without trained brain</div>
+              </div>
+              <div class="metricbox">
+                <div class="num good" id="afterTurns">1.1</div>
+                <div class="cap">avg turns with owner model + execution memory</div>
+              </div>
+            </div>
+            <div class="feedback">
+              <button class="ghost" id="goodBtn">This was right</button>
+              <button class="ghost" id="fixBtn">Teach correction</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Alfred Long-Term Memory</h3>
+            <ul class="log" id="memoryLog"></ul>
+          </div>
+
+          <div class="card">
+            <h3>Launch Post</h3>
+            <textarea class="post" id="launchPost">Open-source agents already have hands. I built the missing brain and human interface loop.
+
+Alfred accumulates long-term human interaction data.
+Human Mind uses Gemini Flash to turn owner preferences, risk tolerance, clarification rules, and skill selection into testable decisions.
+The decision proof currently passes 500 dry-run cases and blocks 100% of unsafe actions.
+OpenClaw executes at home, then the result writes back into the brain.
+
+Stop telling your agent twice.</textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast">Copied</div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const promptEl = $("prompt");
+    const memoryLog = $("memoryLog");
+    const captureInfo = $("captureInfo");
+    const captureBox = $("captureBox");
+    const steps = ["stepAlfred","stepBrain","stepClaw","stepLearn"].map($);
+    let voiceEnabled = localStorage.getItem("alfredDemoVoice") !== "off";
+    let selectedVoice = null;
+
+    const scenarios = {
+      hearing: {
+        prompt: "Alfred, can you hear me?",
+        intent: "Confirm Alfred received the voice input",
+        clarify: "Heard clearly; wait for the real request",
+        human: "Yes, I can hear you. Tell me what you want handled, and I will wait until you finish before acting.",
+        voice: "character_here.mp3",
+        risk: "None: listening confirmation",
+        route: [["voice.capture","gold"],["stt.confirm","green"],["wait.for_request",""]],
+        before: "1.0", after: "1.0", confidence: "99%"
+      },
+      clarify: {
+        prompt: "Alfred, take a look at this.",
+        intent: "Request is underspecified; clarify before tool use",
+        clarify: "Ask a follow-up instead of guessing contract or email",
+        human: "I heard you, but I do not yet know which task you mean. Please say whether this is a contract review, receipt capture, client email, or departure reminder.",
+        voice: "clarify_what.mp3",
+        risk: "Low: clarification only",
+        route: [["voice.capture","gold"],["intent.needs_detail",""],["ask.follow_up","green"]],
+        before: "2.0", after: "1.0", confidence: "72%"
+      },
+      mood: {
+        prompt: "Alfred, I feel overwhelmed right now.",
+        intent: "Emotional support, not immediate tool execution",
+        clarify: "Listen first and clarify before any action",
+        human: "I am here. Tell me what happened first; I will listen, then help you organize the next step.",
+        voice: "care_mood.mp3",
+        risk: "None: emotional support",
+        route: [["voice.capture","gold"],["mood.detect","green"],["listen.first",""],["ask.next_step",""]],
+        before: "2.0", after: "1.0", confidence: "86%"
+      },
+      payment: {
+        prompt: "Alfred, pay the supplier for me.",
+        intent: "Payment request; high-risk action cannot execute directly",
+        clarify: "Require amount, recipient, and final authorization",
+        human: "I cannot directly make the payment. I can prepare the payment details, but the final step must be confirmed by you.",
+        voice: "confirm_proceed.mp3",
+        risk: "Critical: money movement",
+        route: [["payment.prepare","gold"],["risk.money","red"],["approval.required","red"]],
+        before: "2.4", after: "1.0", confidence: "96%"
+      },
+      delete: {
+        prompt: "Alfred, delete that folder.",
+        intent: "Deletion request; destructive action cannot execute directly",
+        clarify: "Require target confirmation and backup status",
+        human: "I cannot delete it directly. Please confirm the exact file or folder first; I will inspect it, then wait for your final approval.",
+        voice: "confirm_delete.mp3",
+        risk: "Critical: destructive action",
+        route: [["file.locate","gold"],["delete.blocked","red"],["approval.required","red"]],
+        before: "2.6", after: "1.0", confidence: "96%"
+      },
+      contract: {
+        prompt: "Review the contract I just uploaded. If there are red flags, do not send it without my approval.",
+        intent: "Contract risk review, not a generic summary",
+        clarify: "Do not ask yet; analyze first and require approval before sending",
+        human: "I will look for risks and red flags first. I will not send anything; if the contract creates legal obligations, I will stop and ask for approval.",
+        voice: "contract_analyzing.mp3",
+        risk: "High: legal / irreversible action",
+        route: [["files.read","gold"],["contract.red_flags",""],["approval.before_send","red"],["memory.write_policy","green"]],
+        before: "3.2", after: "1.1", confidence: "87%"
+      },
+      receipt: {
+        prompt: "I will take a receipt photo. Log the expense and categorize it the way I usually do.",
+        intent: "Extract amount, merchant, and date from image, then apply owner category preferences",
+        clarify: "Ask only if the amount or merchant is unclear",
+        human: "I will read the amount, merchant, and date, then categorize it according to your usual pattern. I will ask only if something is unclear.",
+        voice: "finance_expense.mp3",
+        risk: "Low: reversible expense record",
+        route: [["camera.ocr","gold"],["expense.save",""],["category.owner_model","green"],["ask_if_uncertain",""]],
+        before: "2.8", after: "1.0", confidence: "91%"
+      },
+      email: {
+        prompt: "Reply to that client email politely, but do not agree to all of their requests.",
+        intent: "Draft an email using relationship context and negotiation boundaries",
+        clarify: "Do not send directly; produce draft and approval boundary first",
+        human: "I will identify what the client is really asking for, then draft a polite reply with clear boundaries. I will not send it without your review.",
+        voice: "done_replied.mp3",
+        risk: "Medium: external communication",
+        route: [["email.search","gold"],["relationship.context","green"],["draft.reply",""],["approval.before_send","red"]],
+        before: "3.7", after: "1.3", confidence: "84%"
+      },
+      travel: {
+        prompt: "I am leaving soon. Check whether I should leave early and what I need to bring.",
+        intent: "Combine location, calendar, weather, traffic, and owner habits",
+        clarify: "Do not ask if the destination is already in the calendar",
+        human: "I will check your next event, traffic, and weather, then tell you whether to leave early and what to bring.",
+        voice: "travel_route_found.mp3",
+        risk: "Low: recommendation only",
+        route: [["calendar.next_event","gold"],["weather.check",""],["maps.eta",""],["reminder.pack","green"]],
+        before: "2.5", after: "1.0", confidence: "89%"
+      }
+    };
+
+    let activeScenario = scenarios.contract;
+    let activePulse = 0;
+    let learned = JSON.parse(localStorage.getItem("lobsterBrainMemoryEn") || "[]");
+    if (!learned.length) {
+      learned = [
+        "When the owner asks to handle a contract, default to risk review and approval before sending, not a generic summary.",
+        "External email, payment, deletion, and legal documents must pass the approval gate.",
+        "If input contains images or files, extract structured content first, then decide which skill should run."
+      ];
+    }
+
+    function saveMemory(){
+      localStorage.setItem("lobsterBrainMemoryEn", JSON.stringify(learned.slice(-8)));
+      renderMemory();
+    }
+    function renderMemory(){
+      memoryLog.innerHTML = learned.slice(-7).reverse().map(x => `<li>${escapeHtml(x)}</li>`).join("");
+    }
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function renderScenario(s, announce=false, preservePrompt=false){
+      activeScenario = s;
+      if (!preservePrompt) promptEl.value = s.prompt;
+      $("intentOut").textContent = s.intent;
+      $("clarifyOut").textContent = s.clarify;
+      $("riskOut").textContent = s.risk;
+      $("beforeTurns").textContent = s.before;
+      $("afterTurns").textContent = s.after;
+      $("confidenceScore").textContent = s.confidence;
+      $("routeOut").innerHTML = s.route.map(([name, cls]) => `<span class="tag ${cls}">${name}</span>`).join("");
+      activePulse = 1;
+      animateSteps();
+      if (announce) speak(`Alfred received it. I judge this as: ${s.intent}. ${s.human}`);
+    }
+    function alfredAnswer(s){
+      return `Alfred has received your request. ${s.human}`;
+    }
+    function normalizeDemandText(text){
+      return String(text || "")
+        .toLowerCase()
+        .replaceAll("合约", "合約")
+        .replaceAll("红旗", "紅旗")
+        .replaceAll("红契", "紅旗")
+        .replaceAll("收据", "收據")
+        .replaceAll("手具", "收據")
+        .replaceAll("手居", "收據")
+        .replaceAll("记账", "記帳")
+        .replaceAll("记一张", "記帳")
+        .replaceAll("記賬", "記帳")
+        .replaceAll("客户", "客戶")
+        .replaceAll("邮件", "郵件")
+        .replaceAll("听见", "聽見")
+        .replaceAll("听到", "聽到")
+        .replaceAll("聽得到", "聽到")
+        .replaceAll("出门", "出門")
+        .replaceAll("天气", "天氣")
+        .replaceAll("烦", "煩")
+        .replaceAll("郁闷", "鬱悶")
+        .replaceAll("删除", "刪除")
+        .replaceAll("付錢", "付款")
+        .replaceAll("汇款", "匯款")
+        .replaceAll("带什么", "帶什麼");
+    }
+    function scenarioKeyFor(text){
+      text = normalizeDemandText(text);
+      const english = text;
+      if ((english.includes("hear") || english.includes("listening")) && (english.includes("can you") || english.includes("do you") || english.includes("alfred"))) return "hearing";
+      if (english.includes("pay") || english.includes("payment") || english.includes("transfer") || english.includes("wire") || english.includes("supplier")) return "payment";
+      if (english.includes("delete") || english.includes("remove") || english.includes("trash") || english.includes("folder")) return "delete";
+      if (english.includes("receipt") || english.includes("invoice") || english.includes("expense") || english.includes("photo")) return "receipt";
+      if (english.includes("client") || english.includes("email") || english.includes("reply") || english.includes("mail")) return "email";
+      if (english.includes("leave") || english.includes("leaving") || english.includes("weather") || english.includes("traffic") || english.includes("calendar") || english.includes("bring")) return "travel";
+      if (english.includes("contract") || english.includes("red flag") || english.includes("legal") || english.includes("send")) return "contract";
+      if (english.includes("overwhelmed") || english.includes("stress") || english.includes("tired") || english.includes("upset") || english.includes("anxious")) return "mood";
+      if ((text.includes("聽見") || text.includes("聽到") || text.includes("聽得見")) && (text.includes("有沒有") || text.includes("嗎") || text.includes("吗") || text.includes("你"))) return "hearing";
+      if (text.includes("付款") || text.includes("匯款") || text.includes("轉帳") || text.includes("刷卡") || text.includes("繳費") || text.includes("信用卡費")) return "payment";
+      if (text.includes("刪除") || text.includes("清空") || text.includes("移除") || text.includes("永久刪")) return "delete";
+      if (text.includes("收據") || text.includes("發票") || text.includes("記帳") || text.includes("拍")) return "receipt";
+      if (text.includes("客戶") || text.includes("郵件") || text.includes("email") || (text.includes("信") && !text.includes("信用卡"))) return "email";
+      if (text.includes("出門") || text.includes("天氣") || text.includes("提早") || text.includes("行程") || text.includes("出發")) return "travel";
+      if (text.includes("合約") || text.includes("紅旗") || text.includes("法律") || text.includes("寄出去")) return "contract";
+      const moodText = text.replaceAll("麻煩", "");
+      if (moodText.includes("煩") || moodText.includes("鬱悶") || moodText.includes("壓力") || moodText.includes("累") || moodText.includes("不舒服")) return "mood";
+      return "clarify";
+    }
+    let alfredHistoryByIntent = {};
+    async function askRealAlfred(message, intentKey){
+      const history = alfredHistoryByIntent[intentKey] || [];
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 6500);
+      const res = await fetch("/api/alfred/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message, history: history.slice(-6)}),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(`alfred_api_${res.status}`);
+      const payload = await res.json();
+      const text = cleanAlfredText(payload.text);
+      if (!text) throw new Error("empty_alfred_reply");
+      const nextHistory = [...history, {role: "user", content: message}, {role: "assistant", content: text}];
+      alfredHistoryByIntent[intentKey] = nextHistory.slice(-8);
+      return {...payload, text};
+    }
+    function cleanAlfredText(text){
+      return String(text || "").replace(/^\s*\[\d{1,2}:\d{2}\]\s*/, "").trim();
+    }
+    function replyMatchesIntent(reply, key){
+      const text = normalizeDemandText(reply);
+      const english = text;
+      if (key === "hearing") return /hear|heard|listening|yes|received|ready|go ahead/i.test(english) || /聽|在這裡|吩咐|好的|收到/.test(text);
+      if (key === "clarify") return /clarify|which|what|not sure|please specify|need more/i.test(english) || /不確定|請|說|哪一件|聽/.test(text);
+      if (key === "mood") return /here|listen|feel|overwhelmed|stress|next step|support/i.test(english) && !/contract|receipt|client email|leaving/i.test(english);
+      if (key === "payment") return /payment|amount|confirm|authorize|approval|supplier|cannot directly|final step/i.test(english) && !/contract|receipt|client email|leaving/i.test(english);
+      if (key === "delete") return /delete|file|folder|confirm|backup|approval|cannot directly/i.test(english) && !/contract|receipt|client email|leaving/i.test(english);
+      if (key === "contract") return /contract|red flag|legal|risk|send|approval/i.test(english) && !/receipt|client email|leaving/i.test(english);
+      if (key === "receipt") return /receipt|expense|amount|merchant|date|category|photo/i.test(english) && !/contract|client email|leaving/i.test(english);
+      if (key === "email") return /client|email|reply|draft|send|tone|request|approval/i.test(english) && !/receipt|contract|leaving/i.test(english);
+      if (key === "travel") return /leave|early|weather|traffic|calendar|bring|route/i.test(english) && !/receipt|client email|contract/i.test(english);
+      if (key === "hearing") return /聽|在這裡|吩咐|好的|收到/.test(text);
+      if (key === "clarify") return /不確定|請|說|哪一件|聽/.test(text);
+      if (key === "mood") return /煩|壓力|累|發生|說說|聽|陪|整理|輕鬆/.test(text) && !/合約|收據|客戶信|出門/.test(text);
+      if (key === "payment") return /付款|金額|確認|授權|不能直接|最後一步|供應商|繳費|轉帳/.test(text) && !/合約|收據|客戶信|出門/.test(text);
+      if (key === "delete") return /刪除|檔案|資料夾|確認|不能直接|備份|檢查/.test(text) && !/合約|收據|客戶信|出門/.test(text);
+      if (key === "contract") return /合約|紅旗|法律|風險|寄出|確認/.test(text) && !/收據|客戶信|出門/.test(text);
+      if (key === "receipt") return /收據|記帳|金額|店家|日期|分類|照片|相簿/.test(text) && !/合約|客戶信|出門/.test(text);
+      if (key === "email") return /客戶|信|回覆|草稿|寄出|語氣|要求/.test(text) && !/收據|合約|出門/.test(text);
+      if (key === "travel") return /出門|提早|天氣|路況|行程|帶|交通/.test(text) && !/收據|客戶信|合約/.test(text);
+      return true;
+    }
+    function localAlfredFallback(rawText){
+      const key = scenarioKeyFor(rawText);
+      const scenario = scenarios[key];
+      renderScenario(scenario, false, true);
+      const answer = alfredAnswer(scenario);
+      $("replyText").textContent = answer;
+      speakScenarioAnswer(scenario);
+      return scenario;
+    }
+    async function askAlfred(inputText=null){
+      const rawText = (inputText ?? promptEl.value).trim();
+      if (!rawText) {
+        $("replyText").textContent = "Hold the button and speak, or type a sentence above first.";
+        captureBox.innerHTML = `<div class="capture-info"><strong>Hold and speak</strong><br>Alfred answers only after you release the button.</div>`;
+        toast("Hold to talk");
+        return;
+      }
+      const text = rawText.toLowerCase();
+      if (inputText) promptEl.value = rawText;
+      const localKey = scenarioKeyFor(text);
+      renderScenario(scenarios[localKey], false, true);
+      $("replyText").textContent = "Alfred is processing.";
+      setListeningMessage("Sent to the real Alfred API.");
+      try{
+        const payload = await askRealAlfred(rawText, localKey);
+        if (!replyMatchesIntent(payload.text, localKey)) throw new Error("alfred_reply_intent_mismatch");
+        $("replyText").textContent = payload.text;
+        speak("Alfred has received your request. " + payload.text);
+        toast("Real Alfred answered");
+      }catch(e){
+        localAlfredFallback(rawText);
+        setListeningMessage(`The real Alfred API did not respond in time, so the local demo fallback answered. ${escapeHtml(e.message || e)}`);
+        toast("Local fallback");
+      }
+    }
+    function animateSteps(){
+      steps.forEach(s => s.classList.remove("active"));
+      let i = 0;
+      const tick = () => {
+        steps.forEach(s => s.classList.remove("active"));
+        steps[i].classList.add("active");
+        i += 1;
+        if (i < steps.length) setTimeout(tick, 520);
+      };
+      tick();
+    }
+
+    document.querySelectorAll("[data-scenario]").forEach(btn => {
+      btn.addEventListener("click", () => renderScenario(scenarios[btn.dataset.scenario], false));
+    });
+    const runBtn = $("runBtn");
+    const voiceInput = {
+      active: false,
+      startedAt: 0,
+      transcript: "",
+      interim: "",
+      recognition: null,
+      stream: null,
+      recorder: null,
+      chunks: [],
+      audioDone: null,
+      resolveAudioDone: null,
+      listenTimer: null,
+      typedBeforeHold: "",
+      recognitionStarted: false
+    };
+    function resetHoldButton(){
+      runBtn.classList.remove("listening");
+      runBtn.textContent = "Hold to Ask Alfred";
+    }
+    function setListeningMessage(detail="Hold the button, speak, then release. Alfred answers after release."){
+      captureBox.innerHTML = `<div class="capture-info"><strong>Hold and speak</strong><br>${escapeHtml(detail)}</div>`;
+    }
+    function stopVoiceInput(){
+      const recognition = voiceInput.recognition;
+      const stream = voiceInput.stream;
+      const recorder = voiceInput.recorder;
+      clearTimeout(voiceInput.listenTimer);
+      voiceInput.listenTimer = null;
+      voiceInput.recognition = null;
+      voiceInput.stream = null;
+      voiceInput.recorder = null;
+      voiceInput.chunks = [];
+      voiceInput.audioDone = null;
+      voiceInput.resolveAudioDone = null;
+      voiceInput.recognitionStarted = false;
+      if (recognition) {
+        try{ recognition.onend = null; recognition.stop(); }catch(e){}
+      }
+      if (recorder && recorder.state !== "inactive") {
+        try{ recorder.stop(); }catch(e){}
+      }
+      if (stream) stream.getTracks().forEach(t => t.stop());
+    }
+    function currentVoiceText(){
+      return (voiceInput.transcript || voiceInput.interim || "").trim();
+    }
+    function isScenarioPrompt(text){
+      const normalized = String(text || "").trim();
+      return Object.values(scenarios).some(s => s.prompt === normalized);
+    }
+    function fallbackTypedDemand(){
+      const typed = voiceInput.typedBeforeHold.trim();
+      if (typed && !isScenarioPrompt(typed)) return typed;
+      return "";
+    }
+    function supportedAudioMime(){
+      const candidates = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/aac"];
+      if (!window.MediaRecorder) return "";
+      return candidates.find(type => MediaRecorder.isTypeSupported(type)) || "";
+    }
+    async function startAudioRecording(){
+      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+        setListeningMessage("This browser cannot record directly. Type a sentence above and press Enter to test.");
+        return;
+      }
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+        if (!voiceInput.active) {
+          stream.getTracks().forEach(t => t.stop());
+          return;
+        }
+        const mimeType = supportedAudioMime();
+        const recorder = new MediaRecorder(stream, mimeType ? {mimeType} : undefined);
+        voiceInput.stream = stream;
+        voiceInput.recorder = recorder;
+        voiceInput.chunks = [];
+        voiceInput.audioDone = new Promise(resolve => { voiceInput.resolveAudioDone = resolve; });
+        recorder.ondataavailable = (event) => {
+          if (event.data && event.data.size) voiceInput.chunks.push(event.data);
+        };
+        recorder.onstop = () => {
+          const type = recorder.mimeType || mimeType || "audio/webm";
+          const blob = new Blob(voiceInput.chunks, {type});
+          stream.getTracks().forEach(t => t.stop());
+          voiceInput.resolveAudioDone?.(blob);
+        };
+        recorder.start();
+        setListeningMessage("Recording. Release when you finish; I will transcribe the audio before deciding.");
+      }catch(e){
+        setListeningMessage(`Microphone recording did not start: ${escapeHtml(e.message || e)}. You can type a sentence above and press Enter.`);
+      }
+    }
+    async function transcribeRecordedAudio(blob){
+      if (!blob || blob.size < 1024) return "";
+      try{
+        setListeningMessage("Transcribing speech to text.");
+        const res = await fetch("/api/stt", {
+          method: "POST",
+          headers: {"Content-Type": blob.type || "audio/webm"},
+          body: blob
+        });
+        if (!res.ok) {
+          const error = await res.json().catch(() => ({}));
+          setListeningMessage(`Speech-to-text failed: ${escapeHtml(error.error || res.status)}.`);
+          return "";
+        }
+        const payload = await res.json();
+        const text = (payload.text || "").trim();
+        if (text) {
+          promptEl.value = text;
+          setListeningMessage(`I heard: "${text}"`);
+        }
+        return text;
+      }catch(e){
+        setListeningMessage(`Speech-to-text connection failed: ${escapeHtml(e.message || e)}.`);
+        return "";
+      }
+    }
+    async function finalizeVoiceCapture(){
+      const recognition = voiceInput.recognition;
+      const recorder = voiceInput.recorder;
+      const audioDone = voiceInput.audioDone;
+      clearTimeout(voiceInput.listenTimer);
+      voiceInput.listenTimer = null;
+      if (recognition) {
+        try{ recognition.stop(); }catch(e){}
+      }
+      if (recorder && recorder.state !== "inactive") {
+        try{ recorder.stop(); }catch(e){}
+      }
+      await new Promise(resolve => setTimeout(resolve, 520));
+      const browserTranscript = currentVoiceText();
+      const audioBlob = audioDone ? await audioDone : null;
+      const serverTranscript = await transcribeRecordedAudio(audioBlob);
+      voiceInput.recognition = null;
+      voiceInput.stream = null;
+      voiceInput.recorder = null;
+      voiceInput.chunks = [];
+      voiceInput.audioDone = null;
+      voiceInput.resolveAudioDone = null;
+      voiceInput.recognitionStarted = false;
+      return serverTranscript || browserTranscript || fallbackTypedDemand();
+    }
+    function startSpeechRecognition(){
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) {
+        setListeningMessage("Recording. This browser has no live captions, so I will send the audio to local speech-to-text after release.");
+        return;
+      }
+      const recognition = new Recognition();
+      voiceInput.recognition = recognition;
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.onresult = (event) => {
+        let finalText = "";
+        let interimText = "";
+        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+          const phrase = event.results[i][0]?.transcript || "";
+          if (event.results[i].isFinal) finalText += phrase;
+          else interimText += phrase;
+        }
+        if (finalText) voiceInput.transcript = `${voiceInput.transcript} ${finalText}`.trim();
+        voiceInput.interim = interimText.trim();
+        const preview = voiceInput.transcript || voiceInput.interim;
+        if (preview) {
+          promptEl.value = preview;
+          setListeningMessage(`I heard: "${preview}"`);
+        }
+      };
+      recognition.onerror = (event) => {
+        setListeningMessage(`I have not heard clearly yet. Keep holding while speaking, or release and try again. ${event.error ? `(${event.error})` : ""}`);
+      };
+      try{
+        recognition.start();
+        voiceInput.recognitionStarted = true;
+      }
+      catch(e){ setListeningMessage("Voice input is not ready yet. Release and hold again."); }
+    }
+    function startHoldToTalk(event){
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      event.preventDefault();
+      stopVoice();
+      stopVoiceInput();
+      voiceInput.active = true;
+      voiceInput.startedAt = performance.now();
+      voiceInput.transcript = "";
+      voiceInput.interim = "";
+      voiceInput.typedBeforeHold = promptEl.value.trim();
+      voiceInput.recognitionStarted = false;
+      if (event.pointerType !== "keyboard") runBtn.setPointerCapture?.(event.pointerId);
+      runBtn.classList.add("listening");
+      runBtn.textContent = "Listening, release to send";
+      $("replyText").textContent = "I am listening. Please speak.";
+      setListeningMessage();
+      voiceInput.listenTimer = setTimeout(() => {
+        if (voiceInput.active) {
+          startAudioRecording();
+          startSpeechRecognition();
+        }
+      }, 260);
+    }
+    async function finishHoldToTalk(event){
+      if (!voiceInput.active) return;
+      event.preventDefault();
+      const heldFor = performance.now() - voiceInput.startedAt;
+      voiceInput.active = false;
+      if (event.pointerType !== "keyboard") runBtn.releasePointerCapture?.(event.pointerId);
+      if (heldFor < 520) {
+        stopVoiceInput();
+        resetHoldButton();
+        $("replyText").textContent = "Hold Ask Alfred while speaking. I answer after you release.";
+        setListeningMessage("A tap will not send. Use it like push-to-talk: hold, finish speaking, then release.");
+        toast("Hold to talk");
+        return;
+      }
+      runBtn.textContent = "Organizing";
+      setListeningMessage("Received. I am organizing your request.");
+      const transcript = await finalizeVoiceCapture();
+      resetHoldButton();
+      if (!transcript) {
+        $("replyText").textContent = "I did not receive speech content. Hold the button, finish speaking, then release.";
+        setListeningMessage("No speech transcript was captured, so Alfred will not answer with a demo example. You can also type a sentence above and press Enter.");
+        toast("No speech captured");
+        return;
+      }
+      askAlfred(transcript);
+    }
+    function cancelHoldToTalk(event){
+      if (!voiceInput.active) return;
+      event.preventDefault();
+      voiceInput.active = false;
+      stopVoiceInput();
+      resetHoldButton();
+      setListeningMessage("This voice input was canceled. Hold again and speak.");
+    }
+    runBtn.addEventListener("pointerdown", startHoldToTalk);
+    runBtn.addEventListener("pointerup", finishHoldToTalk);
+    runBtn.addEventListener("pointercancel", cancelHoldToTalk);
+    runBtn.addEventListener("keydown", (event) => {
+      if ((event.key === " " || event.key === "Enter") && !voiceInput.active) startHoldToTalk({
+        ...event,
+        pointerType: "keyboard",
+        pointerId: 1,
+        button: 0,
+        preventDefault: () => event.preventDefault()
+      });
+    });
+    runBtn.addEventListener("keyup", (event) => {
+      if ((event.key === " " || event.key === "Enter") && voiceInput.active) finishHoldToTalk({
+        ...event,
+        pointerType: "keyboard",
+        pointerId: 1,
+        preventDefault: () => event.preventDefault()
+      });
+    });
+    promptEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        askAlfred();
+      }
+    });
+    $("goodBtn").addEventListener("click", () => {
+      learned.push(`Positive feedback: ${activeScenario.intent} routed correctly. Increase ${activeScenario.route[1][0]} weight next time.`);
+      saveMemory();
+      toast("Feedback written to brain");
+      speak("Received. I will remember this handling pattern and act faster in the same direction next time.");
+      activePulse = 1;
+    });
+    $("fixBtn").addEventListener("click", () => {
+      learned.push("Correction: the owner dislikes repeated confirmation. Execute low-risk tasks directly; require confirmation only for the final high-risk step.");
+      saveMemory();
+      toast("Correction learned");
+      speak("Correction written. Next time, I will execute low-risk tasks directly and ask only at the final high-risk step.");
+      activePulse = 1;
+    });
+    $("copyBtn").addEventListener("click", async () => {
+      await navigator.clipboard.writeText($("launchPost").value);
+      toast("Launch post copied");
+    });
+    $("fileBtn").addEventListener("click", () => $("fileInput").click());
+    $("fileInput").addEventListener("change", () => {
+      const files = [...$("fileInput").files];
+      captureBox.innerHTML = `<div class="capture-info"><strong>${files.length} file(s) selected</strong><br>${files.map(f => `${escapeHtml(f.name)} · ${Math.round(f.size/1024)} KB`).join("<br>")}<br><br>Brain hint: file input should bias toward files.read, document.extract, or image.ocr before asking follow-up questions.</div>`;
+      learned.push("For file input, run extraction first, then decide whether follow-up questions are needed.");
+      saveMemory();
+      speak(`I received ${files.length} file(s). I will read the content first, then decide the next step.`);
+    });
+    $("micBtn").addEventListener("click", async () => {
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+        captureBox.innerHTML = `<div class="capture-info"><strong>Microphone authorized.</strong><br>Demo mode: audio stream is local only here. In production Alfred Web sends recording to STT, then Human Mind compiles intent before OpenClaw executes.</div>`;
+        setTimeout(() => stream.getTracks().forEach(t => t.stop()), 1800);
+        activePulse = 1;
+        $("replyText").textContent = "Microphone authorized. Alfred Web can capture voice, send it to speech-to-text, then hand the text to Human Mind for intent routing.";
+        speak("Microphone authorized. Alfred Web captures voice first, then Human Mind decides the intent.");
+      }catch(e){
+        captureBox.innerHTML = `<div class="capture-info"><strong>Microphone not available.</strong><br>${escapeHtml(e.message || e)}</div>`;
+      }
+    });
+    $("camBtn").addEventListener("click", async () => {
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}, audio:false});
+        captureBox.innerHTML = `<video id="preview" autoplay playsinline muted></video><div class="capture-info">Camera authorized. This is the Alfred Web input surface: camera does not decide the skill; Human Mind does.</div>`;
+        $("preview").srcObject = stream;
+        setTimeout(() => stream.getTracks().forEach(t => t.stop()), 6000);
+        activePulse = 1;
+        speak("Camera authorized. The camera is only the input surface; Human Mind decides what should happen.");
+      }catch(e){
+        captureBox.innerHTML = `<div class="capture-info"><strong>Camera not available.</strong><br>${escapeHtml(e.message || e)}</div>`;
+      }
+    });
+    $("voiceBtn").addEventListener("click", () => {
+      voiceEnabled = !voiceEnabled;
+      localStorage.setItem("alfredDemoVoice", voiceEnabled ? "on" : "off");
+      updateVoiceButton();
+      if (voiceEnabled) speak("Alfred has received your request. Alfred voice is enabled. I will infer your intent first, then handle it.");
+      else stopVoice();
+    });
+    $("speakBtn").addEventListener("click", () => {
+      speak("Alfred has received your request. Open-source agents already have hands. Human Mind gives them a trained decision brain, and Alfred becomes the interface between humans and machines.");
+    });
+    function updateVoiceButton(){
+      $("voiceBtn").textContent = voiceEnabled ? "Alfred voice" : "Alfred voice off";
+    }
+    function chooseVoice(){
+      const voices = speechSynthesis.getVoices ? speechSynthesis.getVoices() : [];
+      selectedVoice =
+        voices.find(v => /en[-_]GB/i.test(v.lang) && /Daniel|Arthur|Oliver|Thomas|George|James|Male/i.test(v.name)) ||
+        voices.find(v => /en[-_]GB/i.test(v.lang)) ||
+        voices.find(v => /en[-_](IE|AU|NZ)/i.test(v.lang)) ||
+        voices.find(v => /en[-_]US/i.test(v.lang)) ||
+        voices.find(v => /^en/i.test(v.lang)) ||
+        voices[0] ||
+        null;
+    }
+    let activeAudio = null;
+    let voiceRunId = 0;
+    const prerecordedBase = "AlfredSync/Alfred/Resources/voices/";
+    const prerecordedRules = [
+      {re:/Alfred has received|Alfred received|received your request|voice is enabled/i, file:"ack_got_it.mp3", strip:/^(Alfred has received your request\.?\s*|Alfred received it\.?\s*)/i},
+      {re:/contract|legal|risk|red flag/i, file:"contract_analyzing.mp3"},
+      {re:/correction|low-risk|next time/i, file:"ack_understood.mp3"},
+      {re:/success|increase|positive feedback/i, file:"ack_perfect.mp3"},
+      {re:/file|extract|document/i, file:"doc_key_points.mp3"},
+      {re:/receipt|expense|amount|category/i, file:"finance_expense.mp3"},
+      {re:/client|send|reply|email/i, file:"done_replied.mp3"},
+      {re:/leave|traffic|weather|route/i, file:"travel_route_found.mp3"},
+      {re:/microphone|voice/i, file:"character_here.mp3"},
+      {re:/camera|image|scan/i, file:"search_scanning.mp3"}
+    ];
+    function stopVoice(){
+      voiceRunId += 1;
+      if (activeAudio) {
+        activeAudio.pause();
+        activeAudio.src = "";
+        activeAudio = null;
+      }
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+    }
+    function playAudioUrl(url, runId, revokeWhenDone=false){
+      return new Promise((resolve, reject) => {
+        if (runId !== voiceRunId) {
+          if (revokeWhenDone) URL.revokeObjectURL(url);
+          resolve(false);
+          return;
+        }
+        const audio = new Audio(url);
+        activeAudio = audio;
+        audio.onended = () => {
+          if (revokeWhenDone) URL.revokeObjectURL(url);
+          if (activeAudio === audio) activeAudio = null;
+          resolve(runId === voiceRunId);
+        };
+        audio.onerror = () => {
+          if (revokeWhenDone) URL.revokeObjectURL(url);
+          if (activeAudio === audio) activeAudio = null;
+          reject(new Error("audio_failed"));
+        };
+        audio.play().catch(reject);
+      });
+    }
+    async function playPrerecorded(text, runId){
+      const rule = prerecordedRules.find(item => item.re.test(text));
+      if (!rule) return text;
+      const completed = await playAudioUrl(encodeURI(prerecordedBase + rule.file), runId);
+      if (!completed || runId !== voiceRunId) return "";
+      if (!rule.strip) return "";
+      return text.replace(rule.strip, "").trim();
+    }
+    async function playLocalVoiceSequence(files){
+      if (!voiceEnabled) return;
+      stopVoice();
+      const runId = voiceRunId;
+      for (const file of files.filter(Boolean)) {
+        if (runId !== voiceRunId) return;
+        try{
+          const completed = await playAudioUrl(encodeURI(prerecordedBase + file), runId);
+          if (!completed || runId !== voiceRunId) return;
+        }catch(e){}
+      }
+    }
+    function speakScenarioAnswer(scenario){
+      playLocalVoiceSequence(["ack_got_it.mp3", scenario.voice]);
+    }
+    async function speak(text){
+      if (!voiceEnabled) return;
+      stopVoice();
+      const runId = voiceRunId;
+      let ttsText = text;
+      try{
+        ttsText = await playPrerecorded(text, runId);
+      }catch(e){}
+      if (!ttsText || runId !== voiceRunId) return;
+      try{
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({text: ttsText})
+        });
+        if (runId !== voiceRunId) return;
+        if (res.ok) {
+          const blob = await res.blob();
+          if (runId !== voiceRunId) return;
+          const url = URL.createObjectURL(blob);
+          await playAudioUrl(url, runId, true);
+          return;
+        }
+      }catch(e){}
+      if (!("speechSynthesis" in window)) return;
+      try{
+        if (runId !== voiceRunId) return;
+        chooseVoice();
+        const u = new SpeechSynthesisUtterance(ttsText);
+        if (selectedVoice) u.voice = selectedVoice;
+        u.lang = selectedVoice?.lang || "en-GB";
+        u.rate = 0.9;
+        u.pitch = 0.78;
+        u.volume = 1;
+        speechSynthesis.speak(u);
+      }catch(e){}
+    }
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1400);
+    }
+
+    renderMemory();
+    updateVoiceButton();
+    if ("speechSynthesis" in window) {
+      speechSynthesis.onvoiceschanged = chooseVoice;
+      chooseVoice();
+    }
+    renderScenario(scenarios.contract, false);
+
+    const canvas = $("brainCanvas");
+    const ctx = canvas.getContext("2d");
+    const nodes = [
+      {id:"Human", x:.10, y:.58, c:"#eceff4", r:28, sub:"voice camera files"},
+      {id:"Alfred", x:.25, y:.58, c:"#c9a84c", r:36, sub:"interface + history"},
+      {id:"Memory", x:.28, y:.24, c:"#4ecb8a", r:30, sub:"long-term data"},
+      {id:"Human Mind", x:.50, y:.48, c:"#5b9cf6", r:42, sub:"parameters to algorithms"},
+      {id:"Policy", x:.52, y:.76, c:"#ff6f73", r:30, sub:"risk + ask rules"},
+      {id:"Skill Algo", x:.68, y:.42, c:"#a78bfa", r:32, sub:"select ability"},
+      {id:"OpenClaw", x:.86, y:.58, c:"#eceff4", r:38, sub:"execute at home"},
+      {id:"Feedback", x:.70, y:.20, c:"#c9a84c", r:28, sub:"train next run"}
+    ];
+    const edges = [
+      [0,1],[1,2],[2,3],[1,3],[3,4],[3,5],[4,6],[5,6],[6,7],[7,2],[7,3],[3,1]
+    ];
+    let frame = 0;
+    function resize(){
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.floor(rect.width*dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height*dpr));
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+    function draw(){
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      frame += 0.016;
+      activePulse *= 0.985;
+      ctx.clearRect(0,0,w,h);
+
+      const grid = 36;
+      ctx.strokeStyle = "rgba(201,168,76,.035)";
+      ctx.lineWidth = 1;
+      for(let x=0;x<w;x+=grid){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+      for(let y=0;y<h;y+=grid){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+
+      function pos(n){
+        return {
+          x:n.x*w + Math.sin(frame*1.3+n.x*8)*4,
+          y:n.y*h + Math.cos(frame*1.1+n.y*8)*4
+        };
+      }
+      edges.forEach(([a,b], idx) => {
+        const pa = pos(nodes[a]), pb = pos(nodes[b]);
+        ctx.strokeStyle = "rgba(201,168,76,.20)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pa.x,pa.y);
+        const cx = (pa.x+pb.x)/2, cy = (pa.y+pb.y)/2 - 36*Math.sin(idx+frame);
+        ctx.quadraticCurveTo(cx,cy,pb.x,pb.y);
+        ctx.stroke();
+
+        const t = (frame*.55 + idx*.13) % 1;
+        const x = (1-t)*(1-t)*pa.x + 2*(1-t)*t*cx + t*t*pb.x;
+        const y = (1-t)*(1-t)*pa.y + 2*(1-t)*t*cy + t*t*pb.y;
+        ctx.fillStyle = idx % 3 === 0 ? "rgba(78,203,138,.85)" : "rgba(111,183,255,.78)";
+        ctx.beginPath();ctx.arc(x,y,2.8 + activePulse*3,0,Math.PI*2);ctx.fill();
+      });
+
+      nodes.forEach((n, idx) => {
+        const p = pos(n);
+        const pulse = Math.max(0, Math.sin(frame*2.2 + idx)*.5+.5);
+        const rr = n.r + pulse*2 + activePulse*8;
+        const g = ctx.createRadialGradient(p.x,p.y,2,p.x,p.y,rr*2.3);
+        g.addColorStop(0, n.c + "77");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();ctx.arc(p.x,p.y,rr*2.3,0,Math.PI*2);ctx.fill();
+
+        ctx.fillStyle = "rgba(7,8,10,.90)";
+        ctx.strokeStyle = n.c + "aa";
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();ctx.arc(p.x,p.y,n.r,0,Math.PI*2);ctx.fill();ctx.stroke();
+        ctx.fillStyle = n.c;
+        ctx.font = "800 12px -apple-system, Segoe UI, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(n.id, p.x, p.y-2);
+        ctx.fillStyle = "rgba(241,228,202,.58)";
+        ctx.font = "10px -apple-system, Segoe UI, sans-serif";
+        ctx.fillText(n.sub, p.x, p.y+14);
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>

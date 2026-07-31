@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster TW market open trigger - daily 09:05 CST (01:05 UTC)
+
+[Timer]
+OnCalendar=*-*-* 01:05:00 UTC
+RandomizedDelaySec=30
+Persistent=false
+
+[Install]
+WantedBy=timers.target

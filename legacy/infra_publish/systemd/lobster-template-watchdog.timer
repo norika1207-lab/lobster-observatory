@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Lobster Lounge template watchdog every 3 minutes
+
+[Timer]
+OnBootSec=90sec
+OnUnitActiveSec=3min
+AccuracySec=20sec
+Persistent=true
+Unit=lobster-template-watchdog.service
+
+[Install]
+WantedBy=timers.target

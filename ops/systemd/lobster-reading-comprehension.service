@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster reading comprehension engine
+After=lobster-agents.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_reading_comprehension_engine.py --limit 60 --time-budget 35 --summary
+TimeoutStartSec=45
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

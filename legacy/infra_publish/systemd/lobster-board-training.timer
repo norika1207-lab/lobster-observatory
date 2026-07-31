@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster board-game training daily
+
+[Timer]
+OnCalendar=*-*-* 04:50:00
+RandomizedDelaySec=20m
+Persistent=true
+Unit=lobster-board-training.service
+
+[Install]
+WantedBy=timers.target

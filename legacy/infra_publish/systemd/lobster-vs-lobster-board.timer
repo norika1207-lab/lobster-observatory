@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Lobster vs Lobster board matches
+
+[Timer]
+OnCalendar=*-*-* 03:25:00 Asia/Taipei
+Persistent=true
+RandomizedDelaySec=8m
+
+[Install]
+WantedBy=timers.target

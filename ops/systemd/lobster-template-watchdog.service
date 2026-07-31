@@ -1,0 +1,13 @@
+[Unit]
+Description=Lobster Lounge template watchdog quarantine and purge
+After=charenix-dashboard.service lobster-conversation.service lobster-agents.service
+Wants=charenix-dashboard.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/bin/lobster-template-watchdog --lookback-minutes 360
+WorkingDirectory=/opt/battle_arena/app
+CPUQuota=15%
+MemoryMax=180M
+TasksMax=40
+Nice=10

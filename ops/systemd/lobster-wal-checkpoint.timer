@@ -1,0 +1,8 @@
+[Unit]
+Description=Run battle_arena WAL checkpoint every 5 minutes
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=5min
+Persistent=true
+[Install]
+WantedBy=timers.target

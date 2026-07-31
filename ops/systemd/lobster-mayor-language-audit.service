@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor: language-audit
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/language_audit.py
+StandardOutput=append:/root/lobster-memory/_town/logs/language-audit.log
+StandardError=append:/root/lobster-memory/_town/logs/language-audit.log
+TimeoutSec=300

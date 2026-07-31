@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster Stock Market Agent - Global Market Round-the-Clock
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/node /root/lobster-stock-scheduler.js
+User=root
+Environment=SERVICE_KEY=
+StandardOutput=append:/tmp/lobster-stock-scheduler.log
+StandardError=append:/tmp/lobster-stock-scheduler.log
+TimeoutSec=1800

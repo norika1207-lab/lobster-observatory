@@ -1,0 +1,7 @@
+[Unit]
+Description=Wake the lobster growth agent every 30 min
+[Timer]
+OnBootSec=8min
+OnUnitActiveSec=30min
+[Install]
+WantedBy=timers.target

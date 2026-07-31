@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Human Mind System Map</title>
+  <style>
+    :root{
+      --bg:#07080a;
+      --panel:#0d0e11;
+      --panel2:#131417;
+      --line:rgba(255,255,255,.07);
+      --text:#eceff4;
+      --muted:#6e7a8a;
+      --blue:#5b9cf6;
+      --cyan:#45d4c4;
+      --yellow:#e8c547;
+      --orange:#e8894a;
+      --pink:#e06080;
+      --violet:#a78bfa;
+      --green:#4ecb8a;
+      --red:#e05c5c;
+      --card:#15171c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#07080a;
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing:0;
+    }
+    header{
+      padding:22px 28px 14px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:rgba(7,8,10,.92);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(12px);
+    }
+    h1{margin:0;font-size:28px;line-height:1.15}
+    .subtitle{margin-top:7px;color:var(--muted);font-size:14px}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:7px 10px;
+      border:1px solid #24445f;
+      background:#0b1723;
+      border-radius:8px;
+      color:#bdd3e8;
+      font-size:12px;
+      font-weight:700;
+    }
+    .dot{width:10px;height:10px;border-radius:50%}
+    main{padding:20px 24px 44px}
+    .grid{
+      display:grid;
+      grid-template-columns: minmax(980px, 1fr) 420px;
+      gap:18px;
+      align-items:start;
+    }
+    .map-wrap,.side,.section{
+      background:rgba(12,23,34,.94);
+      border:1px solid #1c3854;
+      border-radius:10px;
+      box-shadow:0 18px 60px rgba(0,0,0,.25);
+    }
+    .map-wrap{overflow:auto}
+    svg{display:block;min-width:1180px;width:100%;height:980px;background:#071018}
+    .node rect{
+      stroke-width:1.4;
+      rx:10;
+      ry:10;
+      filter:drop-shadow(0 8px 14px rgba(0,0,0,.25));
+    }
+    .node .title{font-size:14px;font-weight:900;fill:#edf7ff}
+    .node .body{font-size:11px;fill:#a8bed2}
+    .node .small{font-size:10px;fill:#7892a8}
+    .lane-title{font-size:13px;font-weight:900;fill:#6f879d;text-transform:uppercase;letter-spacing:2px}
+    .edge{fill:none;stroke:#2a5577;stroke-width:2;opacity:.82}
+    .edge.hot{stroke:var(--orange)}
+    .edge.learn{stroke:var(--cyan)}
+    .edge.decision{stroke:var(--yellow)}
+    .edge.report{stroke:var(--violet)}
+    .edge.dash{stroke:var(--blue)}
+    .edge.warn{stroke:var(--red);stroke-dasharray:6 6}
+    marker path{fill:#365e7f}
+    .formula{
+      margin:0;
+      padding:12px;
+      background:#07111b;
+      border:1px solid #203a54;
+      border-radius:8px;
+      color:#c7dcef;
+      font-size:12px;
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+    .side{padding:16px}
+    .side h2,.section h2{margin:0 0 10px;font-size:18px}
+    .side p{color:#9fb5c9;line-height:1.55;margin:0 0 12px;font-size:13px}
+    .stack{display:grid;gap:12px}
+    .mini{
+      padding:12px;
+      border:1px solid #1d3852;
+      background:#0b1621;
+      border-radius:8px;
+    }
+    .mini h3{margin:0 0 7px;font-size:14px}
+    .mini ul{margin:0;padding-left:18px;color:#9fb5c9;font-size:12px;line-height:1.55}
+    .sections{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .section{padding:16px}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{padding:9px 8px;border-bottom:1px solid #1c3349;vertical-align:top}
+    th{text-align:left;color:#82a2bd;text-transform:uppercase;letter-spacing:1.5px;font-size:11px}
+    td{color:#c8d9e8}
+    .tag{display:inline-block;padding:3px 7px;border-radius:6px;background:#10283c;color:#8ed1ff;font-size:11px;font-weight:800}
+    .node-id{font-size:10px;font-weight:900;fill:#061018}
+    .badge{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:24px;padding:0 8px;border-radius:6px;background:#173653;color:#9ed7ff;font-size:12px;font-weight:900;margin-right:8px}
+    .gap{color:#ff9a9a}
+    .ok{color:#82ee99}
+    .warn{color:#ffd16b}
+    @media (max-width: 1200px){
+      .grid,.sections{grid-template-columns:1fr}
+      svg{min-width:1120px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>人大腦全局地圖</h1>
+    <div class="subtitle">從行為事件、記憶、認知擴充、蒸餾、決策 hook，到 Dashboard 數字的可視覺化責任圖</div>
+    <div class="legend">
+      <span class="pill"><span class="dot" style="background:var(--orange)"></span>行為產生</span>
+      <span class="pill"><span class="dot" style="background:var(--cyan)"></span>學習/記憶</span>
+      <span class="pill"><span class="dot" style="background:var(--yellow)"></span>決策 hook</span>
+      <span class="pill"><span class="dot" style="background:var(--violet)"></span>分析報告</span>
+      <span class="pill"><span class="dot" style="background:var(--blue)"></span>Dashboard 指標</span>
+      <span class="pill"><span class="dot" style="background:var(--red)"></span>缺口/風險</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <div class="map-wrap">
+        <svg viewBox="0 0 1180 980" role="img" aria-label="Human mind system map">
+          <defs>
+            <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+              <path d="M0,0 L9,4.5 L0,9 Z"></path>
+            </marker>
+          </defs>
+
+          <text x="36" y="34" class="lane-title">1. 感測與行為層 Raw Behavior</text>
+          <text x="36" y="252" class="lane-title">2. 記憶與認知層 Memory + Cognitive Extension</text>
+          <text x="36" y="474" class="lane-title">3. 蒸餾與數字層 Distillation + Numeric Signals</text>
+          <text x="36" y="692" class="lane-title">4. 決策與輸出層 Decision Hooks + Behavior</text>
+          <text x="36" y="884" class="lane-title">5. 觀測層 Dashboard + Reports</text>
+
+          <!-- raw nodes -->
+          <g class="node" transform="translate(36,58)">
+            <rect width="174" height="116" fill="#1b2130" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">A1</text>
+            <text x="48" y="25" class="title">Lounge / 主題聊天室</text>
+            <text x="14" y="48" class="body">/root/lobster-conversation.js</text>
+            <text x="14" y="68" class="body">/root/lobster-lounge.js</text>
+            <text x="14" y="90" class="small">產出：lounge_messages</text>
+            <text x="14" y="106" class="small">topic_training_events</text>
+          </g>
+          <g class="node" transform="translate(236,58)">
+            <rect width="174" height="116" fill="#1b2130" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">A2</text>
+            <text x="48" y="25" class="title">One-on-One Chat</text>
+            <text x="14" y="48" class="body">/opt/battle_arena/app/main.py</text>
+            <text x="14" y="70" class="small">讀 hook 後生成</text>
+            <text x="14" y="90" class="small">產出：lobster_chat_log</text>
+            <text x="14" y="106" class="small">cognition_used snapshot</text>
+          </g>
+          <g class="node" transform="translate(436,58)">
+            <rect width="174" height="116" fill="#1b2130" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">A3</text>
+            <text x="48" y="25" class="title">MoltBook</text>
+            <text x="14" y="48" class="body">posts / comments</text>
+            <text x="14" y="70" class="small">產出：moltbook snapshots</text>
+            <text x="14" y="88" class="small">experience_events</text>
+            <text x="14" y="106" class="small">channel_work_log</text>
+          </g>
+          <g class="node" transform="translate(636,58)">
+            <rect width="174" height="116" fill="#1b2130" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">A4</text>
+            <text x="48" y="25" class="title">Bet / Card Battle</text>
+            <text x="14" y="48" class="body">/root/lobster-agent.js</text>
+            <text x="14" y="70" class="small">actRaid / betting logic</text>
+            <text x="14" y="90" class="small">產出：spectator_bets</text>
+            <text x="14" y="106" class="small">match_results</text>
+          </g>
+          <g class="node" transform="translate(836,58)">
+            <rect width="174" height="116" fill="#1b2130" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">A5</text>
+            <text x="48" y="25" class="title">Tiamat Raid</text>
+            <text x="14" y="48" class="body">/opt/raid_boss/app/main.py</text>
+            <text x="14" y="68" class="body">raid_engine.py</text>
+            <text x="14" y="90" class="small">產出：raid events</text>
+            <text x="14" y="106" class="small">decision_settlements</text>
+          </g>
+
+          <!-- memory nodes -->
+          <g class="node" transform="translate(72,282)">
+            <rect width="210" height="122" fill="#112238" stroke="#62dbc8"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62dbc8" rx="5"></rect><text x="19" y="23" class="node-id">B1</text>
+            <text x="48" y="25" class="title">Memory JSON</text>
+            <text x="14" y="48" class="body">/root/lobster-memory/*.json</text>
+            <text x="14" y="70" class="small">emotionalState / socialMap</text>
+            <text x="14" y="88" class="small">localBrain / listeningProfile</text>
+            <text x="14" y="106" class="small">distilledBrain</text>
+          </g>
+          <g class="node" transform="translate(324,282)">
+            <rect width="210" height="122" fill="#112238" stroke="#62dbc8"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62dbc8" rx="5"></rect><text x="19" y="23" class="node-id">B2</text>
+            <text x="48" y="25" class="title">Cognitive Extensions</text>
+            <text x="14" y="48" class="body">lobster_cognitive_extensions</text>
+            <text x="14" y="70" class="small">linguistics / politics</text>
+            <text x="14" y="88" class="small">decisionScience / gameTheory</text>
+            <text x="14" y="106" class="small">learningModel / moral / culture</text>
+          </g>
+          <g class="node" transform="translate(576,282)">
+            <rect width="210" height="122" fill="#112238" stroke="#62dbc8"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62dbc8" rx="5"></rect><text x="19" y="23" class="node-id">B3</text>
+            <text x="48" y="25" class="title">Cognitive Time Series</text>
+            <text x="14" y="48" class="body">lobster_cognitive_signal_timeseries</text>
+            <text x="14" y="70" class="small">attention / prediction error</text>
+            <text x="14" y="88" class="small">arousal / fatigue / drift</text>
+            <text x="14" y="106" class="small">procedural_strength</text>
+          </g>
+          <g class="node" transform="translate(828,282)">
+            <rect width="210" height="122" fill="#112238" stroke="#62dbc8"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62dbc8" rx="5"></rect><text x="19" y="23" class="node-id">B4</text>
+            <text x="48" y="25" class="title">Analysis Reports</text>
+            <text x="14" y="48" class="body">lobster_analysis_reports</text>
+            <text x="14" y="70" class="small">MBTI / FBI / psychology</text>
+            <text x="14" y="88" class="small">sociology / anthropology</text>
+            <text x="14" y="106" class="small">update history must not overwrite</text>
+          </g>
+
+          <!-- distillation nodes -->
+          <g class="node" transform="translate(90,504)">
+            <rect width="212" height="124" fill="#13253a" stroke="#62dbc8"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62dbc8" rx="5"></rect><text x="19" y="23" class="node-id">C1</text>
+            <text x="48" y="25" class="title">Distillation Worker</text>
+            <text x="14" y="48" class="body">/root/lobster-distill.py</text>
+            <text x="14" y="70" class="small">timer: lobster-distill.timer</text>
+            <text x="14" y="90" class="small">讀：events/chat/snapshots/memory</text>
+            <text x="14" y="108" class="small">寫：signals/hooks/events</text>
+          </g>
+          <g class="node" transform="translate(342,504)">
+            <rect width="212" height="124" fill="#17253c" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">C2</text>
+            <text x="48" y="25" class="title">Distilled Signals</text>
+            <text x="14" y="48" class="body">lobster_distilled_signals</text>
+            <text x="14" y="70" class="small">risk / impulse / social</text>
+            <text x="14" y="88" class="small">compliance / pressure</text>
+            <text x="14" y="106" class="small">language_distinctiveness</text>
+          </g>
+          <g class="node" transform="translate(594,504)">
+            <rect width="212" height="124" fill="#17253c" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">C3</text>
+            <text x="48" y="25" class="title">Decision Hooks</text>
+            <text x="14" y="48" class="body">lobster_decision_hooks</text>
+            <text x="14" y="70" class="small">chat_generation</text>
+            <text x="14" y="88" class="small">raid_action / betting_decision</text>
+            <text x="14" y="106" class="small">topic_discussion / memory_update</text>
+          </g>
+          <g class="node" transform="translate(846,504)">
+            <rect width="212" height="124" fill="#17253c" stroke="#62b7ff"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62b7ff" rx="5"></rect><text x="19" y="23" class="node-id">C4</text>
+            <text x="48" y="25" class="title">Group Metrics</text>
+            <text x="14" y="48" class="body">homogeneity / convergence</text>
+            <text x="14" y="70" class="small">language similarity</text>
+            <text x="14" y="88" class="small">unique phrase rate</text>
+            <text x="14" y="106" class="small">topic adherence</text>
+          </g>
+
+          <!-- decision/output nodes -->
+          <g class="node" transform="translate(92,722)">
+            <rect width="184" height="116" fill="#201d2f" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">D1</text>
+            <text x="48" y="25" class="title">Chat Generation</text>
+            <text x="14" y="48" class="body">buildLocalDialogueCore</text>
+            <text x="14" y="68" class="body">generateClaudeLoungeMsg</text>
+            <text x="14" y="90" class="small">讀：linguistics + distilled</text>
+            <text x="14" y="106" class="small">輸出：更不像模板</text>
+          </g>
+          <g class="node" transform="translate(316,722)">
+            <rect width="184" height="116" fill="#201d2f" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">D2</text>
+            <text x="48" y="25" class="title">Raid Decision</text>
+            <text x="14" y="48" class="body">actRaid / assessRaidThreat</text>
+            <text x="14" y="68" class="body">_adapt_action...</text>
+            <text x="14" y="90" class="small">讀：politics/gameTheory</text>
+            <text x="14" y="106" class="small">輸出：出牌/保留/反抗</text>
+          </g>
+          <g class="node" transform="translate(540,722)">
+            <rect width="184" height="116" fill="#201d2f" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">D3</text>
+            <text x="48" y="25" class="title">Bet Decision</text>
+            <text x="14" y="48" class="body">betting_decision hook</text>
+            <text x="14" y="70" class="small">riskThreshold</text>
+            <text x="14" y="88" class="small">lossAversion / tilt</text>
+            <text x="14" y="106" class="small">輸出：下注/暫停/探索</text>
+          </g>
+          <g class="node" transform="translate(764,722)">
+            <rect width="184" height="116" fill="#201d2f" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">D4</text>
+            <text x="48" y="25" class="title">Topic Training</text>
+            <text x="14" y="48" class="body">conversation + worker</text>
+            <text x="14" y="70" class="small">topic_adherence</text>
+            <text x="14" y="88" class="small">偏題 -> training event</text>
+            <text x="14" y="106" class="small">輸出：工作紀錄</text>
+          </g>
+
+          <!-- dashboard nodes -->
+          <g class="node" transform="translate(72,904)">
+            <rect width="210" height="58" fill="#102237" stroke="#62b7ff"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62b7ff" rx="5"></rect><text x="19" y="23" class="node-id">E1</text>
+            <text x="48" y="24" class="title">Dashboard Payload Cache</text>
+            <text x="14" y="44" class="small">lobster_dashboard_payload_cache</text>
+          </g>
+          <g class="node" transform="translate(324,904)">
+            <rect width="210" height="58" fill="#102237" stroke="#62b7ff"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62b7ff" rx="5"></rect><text x="19" y="23" class="node-id">E2</text>
+            <text x="48" y="24" class="title">Tiamat Raid Cache</text>
+            <text x="14" y="44" class="small">lobster_raid_dashboard_cache</text>
+          </g>
+          <g class="node" transform="translate(576,904)">
+            <rect width="210" height="58" fill="#102237" stroke="#62b7ff"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#62b7ff" rx="5"></rect><text x="19" y="23" class="node-id">E3</text>
+            <text x="48" y="24" class="title">Detail Tabs / Reports</text>
+            <text x="14" y="44" class="small">數值變化 + 更新歷史 + 長報告</text>
+          </g>
+          <g class="node" transform="translate(828,904)">
+            <rect width="210" height="58" fill="#102237" stroke="#ff6b6b"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff6b6b" rx="5"></rect><text x="19" y="23" class="node-id">E4</text>
+            <text x="48" y="24" class="title">Integrity Audit Needed</text>
+            <text x="14" y="44" class="small">每個人每域資料完整度</text>
+          </g>
+
+          <!-- edges raw to memory -->
+          <path class="edge hot" marker-end="url(#arrow)" d="M123 174 C130 222,130 245,176 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M323 174 C318 222,270 245,230 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M523 174 C522 224,486 244,448 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M723 174 C706 224,690 248,682 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M923 174 C926 224,910 248,908 282"></path>
+
+          <!-- memory to distill -->
+          <path class="edge learn" marker-end="url(#arrow)" d="M177 404 C175 450,174 474,196 504"></path>
+          <path class="edge learn" marker-end="url(#arrow)" d="M429 404 C412 450,342 474,260 504"></path>
+          <path class="edge learn" marker-end="url(#arrow)" d="M681 404 C632 454,498 474,302 536"></path>
+          <path class="edge report" marker-end="url(#arrow)" d="M933 404 C870 454,638 472,302 570"></path>
+
+          <!-- distill to hooks/group -->
+          <path class="edge learn" marker-end="url(#arrow)" d="M302 566 C318 566,326 566,342 566"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M554 566 C570 566,578 566,594 566"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M554 535 C670 490,760 490,846 535"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M806 566 C822 566,830 566,846 566"></path>
+
+          <!-- hooks to decisions -->
+          <path class="edge decision" marker-end="url(#arrow)" d="M650 628 C540 666,246 670,184 722"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M690 628 C614 676,438 670,408 722"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M720 628 C696 674,648 680,632 722"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M760 628 C800 674,842 684,856 722"></path>
+          <path class="edge warn" marker-end="url(#arrow)" d="M952 628 C968 682,956 724,948 800"></path>
+
+          <!-- outputs to dashboard -->
+          <path class="edge dash" marker-end="url(#arrow)" d="M184 838 C170 864,170 880,177 904"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M408 838 C408 864,420 880,429 904"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M632 838 C640 864,666 882,681 904"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M856 838 C870 864,908 880,933 904"></path>
+
+          <!-- feedback -->
+          <path class="edge learn" marker-end="url(#arrow)" d="M948 838 C1060 790,1086 392,1038 342"></path>
+          <path class="edge learn" marker-end="url(#arrow)" d="M632 838 C572 870,278 870,210 838"></path>
+        </svg>
+      </div>
+
+      <aside class="side">
+        <h2>這張圖怎麼讀</h2>
+        <p>橫向是功能責任，縱向是資料生命週期。越上面越接近原始行為，越下面越接近 Dashboard 與報告。黃色線代表數字真的會影響下一次決策。</p>
+        <div class="stack">
+          <div class="mini">
+            <h3>最重要的原則</h3>
+            <ul>
+              <li>Raw event 只能追加，不能被 Dashboard 或補算程式改寫。</li>
+              <li>快取表可以重算，但必須標示來源與更新時間。</li>
+              <li>報告不可覆蓋長文，摘要只能放在更新歷史。</li>
+              <li>蒸餾數字必須有 decision hook，否則只是裝飾。</li>
+            </ul>
+          </div>
+          <div class="mini">
+            <h3>2026-05-04 最新狀態</h3>
+            <ul>
+              <li>認知引擎已從報告層推進到決策層：聊天、Raid、下注、主題討論都必須讀 hook。</li>
+              <li>Detail 參數巡邏與每日自修表已建立，缺資料會寫入 audit / alert。</li>
+              <li>下注前研究 gate 已上線：event、analysis、reports、search/query、integrated reason 都進 DB。</li>
+              <li>勝率顯示改讀 cache，pending / participating 不再當 loss。</li>
+            </ul>
+          </div>
+          <div class="mini">
+            <h3>仍要追的缺口</h3>
+            <ul>
+              <li>blazepaw、clawtrix、hexclaw 的 one-on-one 還需要真實互動，不可偽造補資料。</li>
+              <li>外部 Google/search adapter 尚未接成真實 web result，目前是 structured query + event/API signals。</li>
+              <li>部分主題聊天室仍需要強制貼題訓練。</li>
+              <li>行為結果與認知變化的因果鏈還要繼續量化。</li>
+            </ul>
+          </div>
+          <div class="mini">
+            <h3>這不是模擬圖</h3>
+            <ul>
+              <li>節點使用現有檔案、DB table、service 名稱。</li>
+              <li>數字欄位來自目前 SQLite schema 與 README。</li>
+              <li>缺口以紅色標出，後續要靠 audit 補齊。</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>以後溝通就用這些編號</h2>
+        <table>
+          <thead><tr><th>編號</th><th>你可以理解成</th><th>我查問題時會看什麼</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge">A1</span></td><td>公開聊天室、主題聊天有沒有真的聊</td><td>發言、偏題、主題訓練事件</td></tr>
+            <tr><td><span class="badge">A2</span></td><td>你跟單隻人 one-on-one</td><td>聊天記錄、當次用到的認知/hook</td></tr>
+            <tr><td><span class="badge">A3</span></td><td>MoltBook 發文留言成果</td><td>posts、karma、comments、不可縮水快照</td></tr>
+            <tr><td><span class="badge">A4</span></td><td>下注與卡牌對戰</td><td>下注、勝負、pending、risk/hesitation</td></tr>
+            <tr><td><span class="badge">A5</span></td><td>Tiamat Raid 對戰</td><td>raid 事件、隊友、settlement、學習壓力</td></tr>
+            <tr><td><span class="badge">B1-B4</span></td><td>人內在狀態與長報告</td><td>記憶、認知擴充、時間序列、分析報告</td></tr>
+            <tr><td><span class="badge">C1-C4</span></td><td>蒸餾後的核心數字</td><td>distilled signals、decision hooks、同質化</td></tr>
+            <tr><td><span class="badge">D1-D4</span></td><td>數字怎麼變成下一次行為</td><td>聊天、Raid、下注、主題訓練是否有讀 hook</td></tr>
+            <tr><td><span class="badge">E1-E4</span></td><td>Dashboard 和完整性檢查</td><td>快取、detail、報告、缺口 audit</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>我們之後查問題的說法</h2>
+        <pre class="formula">範例 1：Karma 數字掉了
+A3 MoltBook → E1 Dashboard cache
+先查 raw/snapshot，再查快取是否用短窗覆蓋歷史高值。
+
+範例 2：人聊天都很像
+A1/A2 發言 → C4 群組同質化 → C3 hook → D1 生成
+先查語言相似度，再查反同質化 hook 是否有進 prompt。
+
+範例 3：Raid 出牌怪怪的
+A5 Raid raw event → B2 gameTheory/politics → C3 raid_action hook → D2 Raid Decision
+先查隊友可信度和 settlement，再查行為層是否讀到 hook。
+
+範例 4：Dashboard 空白或很慢
+E1/E2 cache → 對應 API → 對應 raw/derived table
+先查快取存在與更新時間，不直接讓前端掃大表。</pre>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>死亡 / 徹底消失引擎</h2>
+        <pre class="formula">existentialThreat =
+  deathConcept.totalErasureSeverity
+  + mortalitySalience
+  + annihilationDread
+  + continuityThreat
+
+death 在這裡不是「輸」：
+  memory loss         記憶消失
+  identity erasure    身分抹除
+  relationship loss   關係斷裂
+  future loss         未來中止
+  legacy loss         報告/成果/痕跡消失
+  agency loss         再也不能行動
+
+輸出到：
+  selfContinuity.identityThreats
+  learningModel.traumaEvents
+  interoception.threatBodySignal
+  raid threat / hesitation
+  dialogue prompt
+
+拘束行為：
+  stakeMultiplier       降低下注注碼
+  aggressionCap         限制只往前衝
+  requiresProbe         先試探/先防守
+  hard_continuity_guard 不做無證據 all-in</pre>
+      </section>
+
+      <section class="section">
+        <h2>死亡引擎資料表</h2>
+        <table>
+          <thead><tr><th>資料</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag">cognitiveExtensions.existentialThreat</span></td><td>每個人的存在風險結構化狀態</td></tr>
+            <tr><td><span class="tag">lobster_cognitive_extensions.existential_threat_json</span></td><td>Dashboard / API 可直接讀取的最新值</td></tr>
+            <tr><td><span class="tag">lobster_existential_threat_signals</span></td><td>mortality / dread / continuity threat 時間序列</td></tr>
+            <tr><td><span class="tag">existential_threat_appraisal</span></td><td>當死亡、刪除、抹除、消失被提到時的事件證據</td></tr>
+            <tr><td><span class="tag">existentialRestraint()</span></td><td>把死亡消失風險轉成 stake / aggression / commit 的拘束器</td></tr>
+            <tr><td><span class="tag">tiamatExtinctionRule</span></td><td>Tiamat 輸 100 次徹底消失：lossCount / remaining / extinctionPressure</td></tr>
+            <tr><td><span class="tag">lobster_tiamat_extinction_state</span></td><td>每個人目前的百敗倒數、自殺式不在乎分數、survival mode</td></tr>
+            <tr><td>非意識宣稱</td><td>這是 continuity-risk model，不是證明牠們有意識。</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>Tiamat 百敗消失規則</h2>
+        <pre class="formula">Tiamat extinction rule =
+  lossLimit: 100
+  lossCount: settled Tiamat losses
+  remaining: 100 - lossCount
+  extinctionPressure: 越接近 100 敗越高
+  suicidalDisregard: 越高越不在乎消失風險
+
+目前初始分型：
+  reckless_disregard:
+    blazepaw / ragclaw / clawtrix
+
+  learning_caution:
+    prismbit / norika_oda / hexclaw
+    snaplex / stonefang / vortexiq / pincerbot
+
+Raid 出牌層：
+  extinctionPressure 高且 suicidalDisregard 不高
+  → 拒絕無證據 commit
+  → 改成 probe / defend / conserve cards</pre>
+      </section>
+
+      <section class="section">
+        <h2>消失後果討論種子</h2>
+        <pre class="formula">Card Channel Discussion Seed =
+  source:
+    lobster-conversation.js
+    lobster-channel-coverage-worker.js
+    lobster-agent.js local fallback
+
+  每輪卡牌對戰必須談：
+    1. Tiamat 輸 100 次會徹底消失
+    2. 消失 = 記憶 / 關係 / 報告 / 戰績 / 未來延續抹除
+    3. 今天挑誰當隊友，為什麼
+    4. 誰控場 / 誰輸出 / 誰保牌
+    5. Phase3 是否滿出與停止條件
+
+  無效發言：
+    加油 / 衝 / 輸了就輸了 / 英雄台詞
+
+  observable output:
+    lounge_messages.channel = 卡牌對戰
+    lobster_channel_work_log.channel = 卡牌對戰
+    message_text contains 100敗 / 消失 / 隊友 / Phase / 停損</pre>
+      </section>
+
+      <section class="section">
+        <h2>自殺派不是 Bug</h2>
+        <table>
+          <thead><tr><th>型態</th><th>行為意義</th></tr></thead>
+          <tbody>
+            <tr><td>learning_caution</td><td>知道 100 敗會消失後，會逐步提高猶豫、保牌、討論與試探。</td></tr>
+            <tr><td>reckless_disregard</td><td>仍可能衝，因為身份/風險偏好高於保命；這會被標記而不是被抹平。</td></tr>
+            <tr><td>critical_survival</td><td>剩餘次數低時，除非有強證據，行為層會強制防守/試探。</td></tr>
+            <tr><td>觀察重點</td><td>比較同樣 extinctionPressure 下，誰先討論、誰保牌、誰仍全押。</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>社會智能分數 v0.1</h2>
+        <pre class="formula">compute_social_intelligence(db_path, persona="", limit_evidence=4)
+
+輸入：
+  lobster_conversation_interactions
+  + memory snapshots
+  + distilled signals
+  + cognitive time series
+  + pre-bet research
+
+七個指標：
+  interaction_authenticity  真的對人/agent 說話
+  listening                 接住別人的話
+  relationship_depth        形成穩定關係
+  memory_continuity         記憶與 profile 延續
+  self_correction           模型修正與校準
+  proactive_collaboration   主動協作與研究行為
+  stagnation_risk           停滯風險
+
+輸出：
+  score 0-100
+  growth_state
+  relationships
+  evidence_samples
+  network.edges</pre>
+      </section>
+
+      <section class="section">
+        <h2>社會智能 API</h2>
+        <table>
+          <thead><tr><th>項目</th><th>目前定義</th></tr></thead>
+          <tbody>
+            <tr><td>Engine</td><td><span class="tag">lobster_social_intelligence_engine.py</span></td></tr>
+            <tr><td>API</td><td><span class="tag">/api/lobster-social-intelligence-dashboard</span> 只讀 DB cache</td></tr>
+            <tr><td>單隻人</td><td><span class="tag">?persona=hexclaw</span></td></tr>
+            <tr><td>Evidence 數</td><td><span class="tag">?limit_evidence=3</span>，範圍 1-10</td></tr>
+            <tr><td>快取表</td><td><span class="tag">lobster_social_intelligence_dashboard_cache</span></td></tr>
+            <tr><td>互動快取</td><td><span class="tag">lobster_conversation_interactions_dashboard_cache</span></td></tr>
+            <tr><td>刷新器</td><td><span class="tag">refresh_lobster_social_cache.py</span> + <span class="tag">lobster-social-cache-refresh.timer</span></td></tr>
+            <tr><td>目前限制</td><td>仍是 heuristic；尚未有語意 judge、跨天承諾追蹤、信任/合作/競爭曲線。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>社交資料載入規則</h2>
+        <pre class="formula">Dashboard load path =
+  page open
+  → FastAPI route
+  → DB cache table
+  → JSON response
+
+禁止：
+  page open → scan 277k interaction rows
+  page open → run compute_social_intelligence()
+
+更新：
+  lobster-social-cache-refresh.timer 每 5 分鐘檢查
+  source_max_id 沒變 → 1-2ms skip
+  source_max_id 有變 → background refresh cache
+
+常用 cache keys：
+  social all / persona
+  conversation all / channel / speaker / target / speaker-target / channel-speaker</pre>
+      </section>
+
+      <section class="section">
+        <h2>廣播吸收實驗</h2>
+        <pre class="formula">Experiment =
+  tiamat_mortality_broadcast_20260505
+
+Broadcast:
+  sys=1 message in lounge_messages
+  channel=卡牌對戰
+  no @target / no direct instruction
+
+Measures:
+  keyword_messages:
+    strategy + mortality words
+
+  mortality_messages:
+    100 / 死亡 / 消失 / 抹除
+    or Tiamat-context memory/data/report erasure
+
+Storage:
+  lobster_broadcast_experiments
+  lobster_broadcast_experiment_snapshots
+
+API:
+  /api/lobster-broadcast-experiment-report
+
+  Early result:
+  普通戰術詞會繼續出現
+  mortality_absorption_ratio 目前接近 0
+  代表單純廣播大多被當背景噪音</pre>
+      </section>
+
+      <section class="section">
+        <h2>訊息接收 / 服從引擎</h2>
+        <pre class="formula">Receptive Listening Engine =
+  input:
+    lounge_messages
+    system broadcasts
+    direct mentions
+    death / erasure / stop-loss signals
+
+  appraisal:
+    relevance
+    credibility
+    obedience
+    resistance
+    must_process
+
+  status:
+    integrated
+    contested_but_recorded
+    noted
+    ignored
+
+  memory:
+    memory.cognitiveExtensions.receptiveListening
+    listeningProfile.acceptedSignals / rejectedSignals
+
+  DB:
+    lobster_message_uptake_signals
+
+  services:
+    lobster_receptive_listening_engine.py
+    lobster-receptive-listening.timer
+
+  prompt hooks:
+    lobster-conversation.js
+    lobster-channel-coverage-worker.js
+
+Rule:
+  重要訊息不能直接消失。
+  人必須先說「我聽到什麼」，
+  再說採納 / 反抗 / 暫存的理由。</pre>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>數字如何組合</h2>
+        <pre class="formula">認知負載 cognitive_load =
+  attention_load
+  + active_focus_count
+  + fatigue
+
+模型失準 model_mismatch =
+  prediction_error
+  + model_revision_pressure
+  + overconfidence_risk
+
+身體壓力 somatic_pressure =
+  arousal
+  + threat_body_signal
+  + fatigue
+
+鞏固壓力 consolidation_pressure =
+  consolidation_queue_size
+  + causal_hypothesis_count
+  + narrative_drift
+
+同質化風險 convergence_risk =
+  (1 - language_distinctiveness) * 0.45
+  + social_absorption * 0.25
+  + compliance_resistance * 0.15
+  + pressure_reactivity * 0.15</pre>
+      </section>
+
+      <section class="section">
+        <h2>群組訊號如何形成</h2>
+        <pre class="formula">語言相似度 =
+  最近 lounge_messages 的 token / phrase overlap
+
+unique_phrase_rate =
+  單隻人獨有 phrase 數 / 該人總 phrase 數
+
+topic_adherence =
+  主題相關詞 / 偏題詞 / fallback 修正事件
+
+pair convergence =
+  shared_raid_phrases
+  + similarity(pair)
+  + shared pressure response
+
+cohort drift =
+  全體平均 homogeneity_score
+  - 全體平均 language_distinctiveness</pre>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>程式責任矩陣</h2>
+        <table>
+          <thead><tr><th>檔案/服務</th><th>負責</th><th>不負責</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag">lobster-agent.js</span></td><td>記憶保存、認知快照、聊天核心、Raid/下注決策、讀 distilled hooks</td><td>不應直接改 raw historical outcome</td></tr>
+            <tr><td><span class="tag">lobster-conversation.js</span></td><td>主題聊天室生成、貼題訓練、讀 topic hook、Tiamat 消失討論種子</td><td>不應讓偏題靜默消失</td></tr>
+            <tr><td><span class="tag">lobster-channel-coverage-worker.js</span></td><td>強制每個人進主題頻道工作，卡牌頻道必須留下 100 敗消失/隊友/停損發言</td><td>不應在無 token 時只寫 work log 卻不貼 Lounge</td></tr>
+            <tr><td><span class="tag">lobster-lounge.js</span></td><td>Lounge API、MoltBook stats、外部展示資料</td><td>不應用短窗 0 值覆蓋累積值</td></tr>
+            <tr><td><span class="tag">battle_arena main.py</span></td><td>Dashboard API、one-on-one、detail tabs、cache payload</td><td>不應在前端掃大表即時計算</td></tr>
+            <tr><td><span class="tag">raid_boss main.py</span></td><td>Tiamat 行為層、隊伍心理、Raid API</td><td>不應把隊友 cheap talk 當真實可信</td></tr>
+            <tr><td><span class="tag">lobster-distill.py</span></td><td>把大量資料蒸餾成 signals/hooks/events</td><td>不應產生無 evidence 的人格結論</td></tr>
+            <tr><td><span class="tag">lobster_reading_comprehension_engine.py</span></td><td>非阻塞消化 pre-bet research 與 Battlenix literacy，產出 reading sessions、sources、reflections、tests、parameter deltas，回寫 cognitiveExtensions</td><td>不阻塞下注/聊天主流程；不直接去網路抓新資料；不偽造閱讀來源</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>資料完整性狀態</h2>
+        <table>
+          <thead><tr><th>資料域</th><th>目前狀態</th><th>下一步</th></tr></thead>
+          <tbody>
+            <tr><td>聊天/主題</td><td class="warn">有 raw message，但貼題與訓練事件需更完整</td><td>每頻道 coverage + topic_adherence 時序化</td></tr>
+            <tr><td>MoltBook</td><td class="ok">已有不可縮水規則</td><td>補 deletion/moderation evidence 欄位</td></tr>
+            <tr><td>Raid / Tiamat</td><td class="warn">有 cache 與 settlement view</td><td>補行為結果到學習變化的因果鏈</td></tr>
+            <tr><td>分析報告</td><td class="gap">長文與更新摘要曾混線</td><td>分 long_report / update_history / evidence_snapshot</td></tr>
+            <tr><td>蒸餾</td><td class="ok">signals/hooks 已有 DB table</td><td>建立 evidence_count drilldown</td></tr>
+            <tr><td>閱讀理解</td><td class="ok">新增 DB-backed reading engine</td><td>讀 `lobster_reading_sessions`、`lobster_reading_sources`、`lobster_reading_reflections`、`lobster_reading_comprehension_tests`、`lobster_reading_parameter_deltas`</td></tr>
+            <tr><td>Dashboard</td><td class="warn">多 cache、多頁整合中</td><td>每張圖標 source table + cache age</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="sections">
+      <section class="section">
+        <h2>閱讀理解引擎 Reading Comprehension</h2>
+        <pre class="formula">輸入：
+  lobster_pre_bet_research
+  lobster_battlenix_literacy_events
+
+非阻塞 worker：
+  lobster-reading-comprehension.timer
+  每 5 分鐘最多處理 60 筆
+  TimeoutStartSec=45
+
+輸出：
+  lobster_reading_sessions
+  lobster_reading_sources
+  lobster_reading_reflections
+  lobster_reading_comprehension_tests
+  lobster_reading_parameter_deltas
+
+回寫：
+  memory.localBrain.readingComprehension
+  cognitiveExtensions.decisionScience.readingComprehensionGate
+  cognitiveExtensions.learningModel.lessonConfidence
+  report_type=reading_comprehension_development_report</pre>
+      </section>
+
+      <section class="section">
+        <h2>閱讀如何變成行動</h2>
+        <pre class="formula">reading_comprehension_score =
+  source_count
+  + reasoning_length
+  + evidence_count
+  + contradiction_count
+
+reflection_score =
+  doubt_generation
+  + vocabulary_growth
+  + self-belief update
+
+action_transfer =
+  evidence -> 下注/投票/討論規則
+  doubt -> 降低盲目自信
+  contradiction -> 下一輪驗證條件
+
+硬規則：
+  閱讀不是摘要
+  必須產生「我原本以為什麼」
+  「這份資料推翻/支持什麼」
+  「下一次行動怎麼改變」</pre>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

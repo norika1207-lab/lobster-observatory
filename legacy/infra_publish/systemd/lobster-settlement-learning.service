@@ -1,0 +1,8 @@
+[Unit]
+Description=Lobster settlement learning writeback
+After=lobster-cross-site-settlement.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_settlement_learning_worker.py
+WorkingDirectory=/opt/battle_arena/app

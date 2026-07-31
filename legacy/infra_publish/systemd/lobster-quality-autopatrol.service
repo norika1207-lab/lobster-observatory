@@ -1,0 +1,15 @@
+[Unit]
+Description=Lobster quality autopatrol, service health, and safe recurring repair
+After=charenix-dashboard.service lobster-agents.service
+Wants=charenix-dashboard.service lobster-agents.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-quality-autopatrol --lock-key lobster-quality-autopatrol --min-interval-sec 1800 --timeout-sec 360 -- /usr/local/bin/lobster-quality-autopatrol
+WorkingDirectory=/opt/battle_arena/app
+CPUQuota=20%
+MemoryMax=380M
+TasksMax=80
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6

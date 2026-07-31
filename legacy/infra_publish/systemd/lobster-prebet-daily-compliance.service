@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster pre-bet research daily compliance rollup
+After=lobster-agents.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-prebet-daily-compliance --lock-key lobster-prebet-daily-compliance --min-interval-sec 1800 --timeout-sec 240 -- /usr/local/bin/lobster-prebet-daily-compliance
+WorkingDirectory=/opt/battle_arena/app
+CPUQuota=15%
+MemoryMax=500M
+TasksMax=40
+Nice=10

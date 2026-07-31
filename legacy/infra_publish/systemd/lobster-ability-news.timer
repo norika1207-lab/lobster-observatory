@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster ability/news reading worker daily
+
+[Timer]
+OnCalendar=*-*-* 04:10:00
+RandomizedDelaySec=30m
+Persistent=true
+Unit=lobster-ability-news.service
+
+[Install]
+WantedBy=timers.target

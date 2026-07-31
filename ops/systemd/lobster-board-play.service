@@ -1,0 +1,17 @@
+[Unit]
+Description=Lobster playable board arena API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/node /opt/battle_arena/app/lobster_board_play_server.js
+Restart=always
+RestartSec=3
+Environment=LOBSTER_BOARD_PORT=8071
+MemoryMax=700M
+Nice=5
+
+[Install]
+WantedBy=multi-user.target

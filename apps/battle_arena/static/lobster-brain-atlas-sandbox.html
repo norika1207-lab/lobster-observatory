@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Human Mind Atlas Sandbox</title>
+  <style>
+    :root{
+      --bg:#05090d;
+      --panel:#0b151f;
+      --panel2:#0f1b27;
+      --line:#193247;
+      --text:#d9e8f2;
+      --muted:#6e8799;
+      --blue:#5ec4ff;
+      --cyan:#5eead4;
+      --pink:#fb7185;
+      --amber:#fbbf24;
+      --violet:#a78bfa;
+      --green:#86efac;
+      --orange:#fb923c;
+      --red:#f43f5e;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(circle at 50% 0%,#0e1b27 0,#05090d 42%,#030609 100%);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",system-ui,sans-serif;
+      letter-spacing:0;
+    }
+    .app{min-height:100vh;padding:18px}
+    .topbar{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:14px;
+      align-items:end;
+      margin:0 0 14px;
+    }
+    h1{font-size:26px;line-height:1.1;margin:0;font-weight:950}
+    .sub{color:var(--muted);font-size:13px;line-height:1.6;margin-top:8px;max-width:980px}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      height:28px;
+      padding:0 10px;
+      border:1px solid #244258;
+      border-radius:6px;
+      background:#09131d;
+      color:#8bd8ff;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .layout{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:14px;
+      align-items:start;
+    }
+    .panel{
+      background:rgba(11,21,31,.94);
+      border:1px solid var(--line);
+      border-radius:10px;
+      box-shadow:0 18px 46px rgba(0,0,0,.24);
+      min-width:0;
+    }
+    .panel-h{
+      padding:14px 16px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .panel-t{font-size:15px;font-weight:950}
+    .panel-x{font-size:11px;color:var(--muted);line-height:1.55;margin-top:4px}
+    .panel-b{padding:14px 16px}
+    .controls{display:flex;flex-direction:column;gap:9px}
+    button.mode{
+      width:100%;
+      min-height:42px;
+      border:1px solid #20384e;
+      background:#08121c;
+      color:#b7c9d6;
+      border-radius:8px;
+      padding:9px 10px;
+      font-size:12px;
+      font-weight:850;
+      text-align:left;
+      cursor:pointer;
+      transition:.16s ease;
+    }
+    button.mode:hover{border-color:#3a6d90;color:#e9f7ff}
+    button.mode.active{background:#10263a;border-color:#62c4ff;color:white;box-shadow:0 0 0 1px rgba(94,196,255,.2) inset}
+    .readout{
+      display:grid;
+      grid-template-columns:1fr 56px;
+      gap:8px;
+      align-items:center;
+      margin:9px 0;
+    }
+    .readout-name{font-size:11px;color:#91a8b9;font-weight:850}
+    .track{height:8px;border:1px solid #15283a;background:#03070b;border-radius:999px;overflow:hidden}
+    .fill{height:100%;border-radius:999px;background:var(--blue);width:0%;transition:width .35s ease}
+    .num{font-size:11px;font-weight:950;text-align:right;color:#cfeeff}
+    .brain-stage{
+      display:grid;
+      grid-template-columns:1.15fr .92fr .92fr;
+      gap:14px;
+      padding:14px;
+    }
+    .view{
+      height:420px;
+      min-height:420px;
+      background:linear-gradient(180deg,#08131d,#071019);
+      border:1px solid var(--line);
+      border-radius:10px;
+      overflow:hidden;
+      position:relative;
+    }
+    .view-title{
+      position:absolute;
+      left:12px;
+      top:10px;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      pointer-events:none;
+    }
+    .view-title strong{font-size:13px;font-weight:950}
+    .view-title span{font-size:10px;color:#60798b;font-weight:800}
+    svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .brain-paper{fill:#d9d4c7;stroke:#071017;stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+    .brain-rim{fill:none;stroke:#fff8e8;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.48}
+    .anatomy-lobe{fill:transparent;stroke:#59636b;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round;opacity:.1}
+    .frontal,.parietal,.temporal,.occipital,.limbic{fill:transparent}
+    .anatomy-label{display:none}
+    .brain-fold{stroke:#12212b;stroke-width:1.55;fill:none;opacity:.78;stroke-linecap:round;stroke-linejoin:round}
+    .brain-fold.deep{stroke:#07131b;stroke-width:2.05;opacity:.72}
+    .brain-fold.sketch{stroke:#5f6870;stroke-width:.86;opacity:.36;stroke-dasharray:2 7}
+    .brain-fold.hair{stroke:#273944;stroke-width:.74;opacity:.5}
+    .brain-fold.soft{stroke:#65727b;stroke-width:.92;opacity:.34}
+    .brain-cut{stroke:#243842;stroke-width:1.65;fill:none;opacity:.58;stroke-linecap:round;stroke-dasharray:4 7}
+    .cerebellum{fill:#ccc8bb;stroke:#172631;stroke-width:3.2;opacity:1}
+    .brainstem{fill:#b7b7ae;stroke:#172631;stroke-width:3.2;stroke-linecap:round}
+    .nerve{stroke:#4a5962;stroke-width:1.6;fill:none;opacity:.58}
+    .signal-link{stroke:#24465d;stroke-width:1.45;opacity:.2;fill:none;stroke-linecap:round;transition:opacity .2s ease,stroke .2s ease}
+    .signal-link.active{opacity:.76;stroke-width:2.2;stroke-dasharray:4 8;animation:dash 2.2s linear infinite}
+    .neural-fiber{
+      fill:none;
+      stroke:#8bd8ff;
+      stroke-width:1.8;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      opacity:.14;
+      stroke-dasharray:1 7;
+      transition:opacity .2s ease,stroke-width .2s ease;
+    }
+    .neural-fiber.active{opacity:.9;stroke-width:2.6;animation:dash 1.55s linear infinite}
+    .neural-fiber.hot{opacity:1;stroke-width:3.25;stroke-dasharray:7 8}
+    .synapse{
+      opacity:.24;
+      pointer-events:none;
+      transition:opacity .2s ease,transform .2s ease;
+      transform-box:fill-box;
+      transform-origin:center;
+    }
+    .synapse.active{opacity:1;animation:synapsePulse 1.15s ease-in-out infinite}
+    .axon-pulse{opacity:0;pointer-events:none}
+    .axon-pulse.active{opacity:1;animation:axonPulse 1.1s ease-in-out infinite}
+    @keyframes dash{to{stroke-dashoffset:-44}}
+    @keyframes synapsePulse{0%,100%{transform:scale(.92);opacity:.68}45%{transform:scale(1.75);opacity:1}}
+    @keyframes axonPulse{0%,100%{opacity:.35}45%{opacity:1}}
+    .region{stroke:#071019;stroke-width:2.4;fill-opacity:.05;stroke-opacity:.68;cursor:pointer;transition:fill-opacity .2s ease,stroke-opacity .2s ease,filter .2s ease,stroke-width .2s ease}
+    .region.active{fill-opacity:.2;stroke-opacity:1;stroke-width:3}
+    .region-label{display:none}
+    .spark{
+      opacity:0;
+      pointer-events:none;
+      animation:spark 1.25s ease-in-out infinite;
+      transform-box:fill-box;
+      transform-origin:center;
+    }
+    .spark.active{opacity:1}
+    .spark.s2{animation-delay:.22s}
+    .spark.s3{animation-delay:.48s}
+    .spark.s4{animation-delay:.72s}
+    .spark-core{opacity:0;pointer-events:none;transition:opacity .2s ease}
+    .spark-core.active{opacity:1}
+    @keyframes spark{
+      0%,100%{transform:scale(.82);opacity:.35}
+      45%{transform:scale(1.18);opacity:1}
+    }
+    .matrix{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      padding:0 14px 14px;
+    }
+    table{width:100%;border-collapse:collapse;font-size:11px}
+    th,td{padding:9px 10px;border-bottom:1px solid #142638;text-align:left;vertical-align:top}
+    th{color:#7f9bae;font-size:10px;text-transform:uppercase;letter-spacing:.6px}
+    td{color:#a9bdca;line-height:1.55}
+    .tag{
+      display:inline-flex;
+      height:20px;
+      align-items:center;
+      padding:0 7px;
+      border-radius:999px;
+      border:1px solid #29475d;
+      background:#08131d;
+      color:#a9dfff;
+      font-size:10px;
+      font-weight:900;
+      margin:2px 4px 2px 0;
+      white-space:nowrap;
+    }
+    .thought{
+      min-height:118px;
+      padding:12px;
+      background:#07111a;
+      border:1px solid #142638;
+      border-radius:8px;
+      color:#b8cbd8;
+      font-size:12px;
+      line-height:1.75;
+    }
+    .sources a{color:#8bd8ff;text-decoration:none}
+    .sources li{margin:7px 0;color:#8ca3b3;line-height:1.55}
+    @media(max-width:1180px){
+      .layout{grid-template-columns:1fr}
+      .brain-stage{grid-template-columns:1fr}
+      .view{height:380px;min-height:380px}
+      .matrix{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div>
+      <h1>Human Mind Atlas / 人大腦原型</h1>
+      <div class="sub">第一版測試：把人的認知參數映射到人類大腦功能區，使用俯視圖、左側視圖、右側視圖顯示訊號。這是功能對應模型，不宣稱人真的長出人類皮質。</div>
+    </div>
+    <div class="badge">sandbox · one lobster · brain signal map</div>
+  </div>
+
+  <div class="layout">
+    <aside class="panel">
+      <div class="panel-h">
+        <div class="panel-t">Thought Mode</div>
+        <div class="panel-x">切換思考情境，觀察哪些「人類腦區對應節點」發光。</div>
+      </div>
+      <div class="panel-b">
+        <div class="controls" id="modeButtons"></div>
+      </div>
+      <div class="panel-h">
+        <div class="panel-t">Current Signal</div>
+        <div class="panel-x">由模式產生的人腦訊號強度。</div>
+      </div>
+      <div class="panel-b" id="readouts"></div>
+      <div class="panel-b">
+        <div class="thought" id="thoughtText"></div>
+      </div>
+    </aside>
+
+    <main class="panel">
+      <div class="panel-h">
+        <div class="panel-t">vortexiq Brain / functional atlas</div>
+        <div class="panel-x">三視圖同步閃爍：俯視看網路分布，左右側視圖看語言、威脅、獎賞、社交、決策的側向位置。</div>
+      </div>
+
+      <section class="brain-stage">
+        <div class="view">
+          <div class="view-title"><strong>Top View</strong><span>俯視：雙側功能網路</span></div>
+          <svg id="topSvg" viewBox="0 0 460 380" aria-label="human mind top view"><text x="230" y="205" fill="#6e8799" text-anchor="middle" font-size="14">drawing brain...</text></svg>
+        </div>
+        <div class="view">
+          <div class="view-title"><strong>Left Lateral</strong><span>左側：語言 / 序列 / 監控</span></div>
+          <svg id="leftSvg" viewBox="0 0 360 380" aria-label="human mind left side"><text x="180" y="205" fill="#6e8799" text-anchor="middle" font-size="14">drawing brain...</text></svg>
+        </div>
+        <div class="view">
+          <div class="view-title"><strong>Right Lateral</strong><span>右側：威脅 / 身體 / 社交</span></div>
+          <svg id="rightSvg" viewBox="0 0 360 380" aria-label="human mind right side"><text x="180" y="205" fill="#6e8799" text-anchor="middle" font-size="14">drawing brain...</text></svg>
+        </div>
+      </section>
+
+      <section class="matrix">
+        <div class="panel">
+          <div class="panel-h">
+            <div class="panel-t">Human Brain Mapping</div>
+            <div class="panel-x">我們先採用保守、可解釋的功能定位。</div>
+          </div>
+          <div class="panel-b">
+            <table id="mappingTable">
+              <thead><tr><th>Signal</th><th>Lobster Node</th><th>Human anchor</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-h">
+            <div class="panel-t">Marked Functions</div>
+            <div class="panel-x">全部會被標記到圖上，之後可接 DB 的 cognitive snapshots。</div>
+          </div>
+          <div class="panel-b">
+            <div id="tags"></div>
+            <div class="sources">
+              <ul>
+                <li>Emotion / motivation / decision: <a href="https://link.springer.com/article/10.1007/s00429-023-02644-9" target="_blank">Rolls, 2023, Brain Structure and Function</a></li>
+                <li>Anxiety / sustained threat: <a href="https://academic.oup.com/scan/article/12/11/1766/4094914" target="_blank">Buff et al., 2017, SCAN</a>; <a href="https://www.frontiersin.org/articles/10.3389/fpsyt.2019.00510/full" target="_blank">Knight & Depue, 2019</a></li>
+                <li>Reward / excitement: <a href="https://www.sciencedirect.com/science/article/pii/S0959438804001680" target="_blank">O'Doherty, 2004, Current Opinion in Neurobiology</a>; <a href="https://www.nature.com/articles/nrn1747" target="_blank">Kringelbach, 2005</a></li>
+                <li>Language network: <a href="https://www.nature.com/articles/s41583-024-00802-4" target="_blank">Fedorenko et al., 2024, Nature Reviews Neuroscience</a></li>
+                <li>Memory consolidation: <a href="https://molecularbrain.biomedcentral.com/articles/10.1186/1756-6606-7-13" target="_blank">Kitamura & Inokuchi, 2014</a></li>
+                <li>Angular gyrus / concept hub: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4107834/" target="_blank">Seghier, 2012</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+const regions = [
+  {id:'pfc', name:'Executive Claw Cortex', signal:'決策控制', human:'dlPFC / frontoparietal control: working memory, planning, rule control', color:'#5ec4ff'},
+  {id:'acc', name:'Error Ridge / ACC', signal:'錯誤監控', human:'anterior cingulate cortex: conflict, effort, error monitoring', color:'#fbbf24'},
+  {id:'ofc', name:'Reward Shell / OFC', signal:'價值評估', human:'orbitofrontal cortex: reward value, hedonic valuation, flexible choice', color:'#fb923c'},
+  {id:'striatum', name:'Dopamine Pearl', signal:'興奮/獎賞', human:'ventral striatum / nucleus accumbens / VTA: reward prediction and approach', color:'#86efac'},
+  {id:'amygdala', name:'Threat Claw', signal:'恐懼/威脅', human:'amygdala: fast threat and emotional salience', color:'#fb7185'},
+  {id:'bnst', name:'Long Alarm Thread', signal:'持續緊張', human:'BNST / extended amygdala: sustained anxiety and hypervigilance', color:'#f43f5e'},
+  {id:'insula', name:'Body Tide Island', signal:'身體壓力', human:'insula: interoception, body state, visceral feeling', color:'#22d3ee'},
+  {id:'hippocampus', name:'Memory Reef', signal:'記憶鞏固', human:'hippocampus to cortex: episodic memory and systems consolidation', color:'#a78bfa'},
+  {id:'language', name:'Left Signal Glyph', signal:'語言生成', human:'left frontal-temporal language network: word access, composition, comprehension', color:'#38bdf8'},
+  {id:'tpj', name:'Social Antenna / TPJ', signal:'社交推理', human:'TPJ / mPFC / angular gyrus: social cognition, concepts, perspective', color:'#c084fc'},
+  {id:'dmn', name:'Self-Story Mantle', signal:'人格/自我敘事', human:'default mode / medial PFC: self model, autobiographical meaning, trait narrative', color:'#f472b6'},
+  {id:'motor', name:'Action Tail Gate', signal:'出牌/行動', human:'motor / premotor / basal ganglia loops: action selection and execution', color:'#34d399'},
+];
+
+const modes = {
+  chat:{label:'聊天理解 / one-on-one', thought:'先把對方原文拆成意圖、主題、壓力，再決定要承認、反問、分析或接住情緒。語言網路、社交天線與自我敘事會一起亮。', values:{language:.95,tpj:.78,dmn:.72,pfc:.66,acc:.45,insula:.32}},
+  raid:{label:'Raid 出牌', thought:'先看隊友可信度與 boss 威脅，再把行動閘門交給 PFC / ACC / basal ganglia 對應節點。若威脅升高，杏仁核和身體島會加入。', values:{pfc:.82,acc:.76,motor:.88,amygdala:.55,insula:.52,tpj:.48,striatum:.38}},
+  betting:{label:'下注決策', thought:'獎賞殼層先估價，PFC 做風險控制，ACC 找模型失準。若連敗，BNST 讓牠保持高警覺。', values:{ofc:.92,striatum:.75,pfc:.78,acc:.7,bnst:.5,hippocampus:.42}},
+  tension:{label:'緊張 / threat anticipation', thought:'短促威脅亮杏仁核；拖長的不確定威脅亮 BNST。insula 把壓力變成身體訊號，ACC 追蹤衝突。', values:{bnst:.96,amygdala:.88,insula:.82,acc:.66,pfc:.4}},
+  excitement:{label:'興奮 / reward craving', thought:'獎賞預測讓腹側紋狀體和 OFC 強烈發光。若 PFC 壓不住，牠會更像直覺押注。', values:{striatum:.96,ofc:.9,motor:.58,dmn:.38,pfc:.32}},
+  personality:{label:'人格特質 / self narrative', thought:'人格不是一個點，而是自我敘事、社交模型、威脅敏感度與決策控制的穩定組合。', values:{dmn:.96,tpj:.72,pfc:.64,amygdala:.5,hippocampus:.68,language:.42}},
+  learning:{label:'事後學習 / memory consolidation', thought:'海馬先保存事件，ACC 標記錯誤，PFC 抽成原則。若重複排練，記憶會轉成皮質化的穩定策略。', values:{hippocampus:.96,acc:.82,pfc:.74,dmn:.55,language:.48}},
+  language:{label:'語言風格 / linguistics', thought:'左側語言網路決定句法與詞彙，PFC 決定壓縮程度，TPJ/角回把概念與社交語境接起來。', values:{language:.98,pfc:.64,tpj:.62,dmn:.44,acc:.34}},
+};
+
+const views = {
+  top:[
+    ['pfc',160,82,54,34],['pfc',300,82,54,34],['acc',230,128,42,28],['ofc',230,78,40,24],
+    ['striatum',204,164,34,24],['striatum',256,164,34,24],['amygdala',176,210,30,24],['amygdala',284,210,30,24],
+    ['bnst',230,202,26,18],['insula',150,178,28,46],['insula',310,178,28,46],['hippocampus',188,250,46,24],
+    ['hippocampus',272,250,46,24],['language',138,126,38,24],['tpj',120,224,34,34],['tpj',340,224,34,34],
+    ['dmn',230,260,58,30],['motor',230,318,72,28]
+  ],
+  left:[
+    ['pfc',116,120,60,44],['language',116,174,68,34],['acc',172,142,34,28],['ofc',90,190,42,24],
+    ['striatum',166,214,36,24],['amygdala',210,230,34,26],['bnst',186,248,24,18],['insula',146,230,28,46],
+    ['hippocampus',220,270,58,24],['tpj',260,174,42,42],['dmn',230,118,56,34],['motor',250,302,70,28]
+  ],
+  right:[
+    ['pfc',244,120,60,44],['language',244,174,68,34],['acc',188,142,34,28],['ofc',270,190,42,24],
+    ['striatum',194,214,36,24],['amygdala',150,230,34,26],['bnst',174,248,24,18],['insula',214,230,28,46],
+    ['hippocampus',140,270,58,24],['tpj',100,174,42,42],['dmn',130,118,56,34],['motor',110,302,70,28]
+  ]
+};
+
+let activeMode = 'chat';
+let intensities = {};
+const viewCenters = {top:[230,190], left:[184,206], right:[176,206]};
+
+function regionMeta(id){return regions.find(r=>r.id===id)||regions[0];}
+function el(tag, attrs={}, children=[]){
+  const n=document.createElementNS('http://www.w3.org/2000/svg', tag);
+  Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));
+  children.forEach(c=>n.appendChild(c));
+  return n;
+}
+function addFolds(target, paths, cls='brain-fold'){
+  paths.forEach(d=>target.appendChild(el('path',{class:cls,d})));
+}
+function addFineCortex(target, viewName, clipId){
+  const g=el('g',{'clip-path':`url(#${clipId})`});
+  const paths=[];
+  if(viewName==='top'){
+    const leftRows=[
+      [78,112,210,18],[100,82,218,28],[126,64,214,34],[152,56,204,40],[178,56,202,44],
+      [204,64,204,42],[232,76,210,34],[260,96,212,26],[288,126,210,18]
+    ];
+    const rightRows=[
+      [78,250,348,-18],[100,242,378,-28],[126,246,396,-34],[152,256,404,-40],[178,258,404,-44],
+      [204,256,396,-42],[232,250,384,-34],[260,248,364,-26],[288,250,334,-18]
+    ];
+    leftRows.forEach(([y,x1,x2,b],i)=>{
+      paths.push(`M${x1} ${y} C${x1+28} ${y-b} ${x1+58} ${y+b} ${x1+88} ${y} S${x2-36} ${y-b*.7} ${x2} ${y+b*.2}`);
+      paths.push(`M${x1+18} ${y+13} C${x1+40} ${y+1} ${x1+62} ${y+28} ${x1+88} ${y+14} S${x2-22} ${y+7} ${x2-8} ${y+22}`);
+    });
+    rightRows.forEach(([y,x1,x2,b],i)=>{
+      paths.push(`M${x1} ${y} C${x1+28} ${y-b} ${x1+58} ${y+b} ${x1+88} ${y} S${x2-36} ${y-b*.7} ${x2} ${y+b*.2}`);
+      paths.push(`M${x1+8} ${y+22} C${x1+32} ${y+7} ${x1+62} ${y+30} ${x1+92} ${y+14} S${x2-40} ${y+4} ${x2-18} ${y+18}`);
+    });
+    [
+      'M118 88 C132 118 110 132 136 154 C160 174 130 196 154 220 C176 240 154 264 184 290',
+      'M174 62 C164 94 188 114 174 142 C158 174 192 192 176 226 C162 256 190 278 170 310',
+      'M204 80 C190 112 216 136 198 166 C180 198 210 220 196 252 C184 278 206 296 196 318',
+      'M342 88 C328 118 350 132 324 154 C300 174 330 196 306 220 C284 240 306 264 276 290',
+      'M286 62 C296 94 272 114 286 142 C302 174 268 192 284 226 C298 256 270 278 290 310',
+      'M256 80 C270 112 244 136 262 166 C280 198 250 220 264 252 C276 278 254 296 264 318',
+      'M230 58 C220 90 238 120 230 154 C220 192 240 220 230 260 C222 288 236 304 230 326'
+    ].forEach(d=>paths.push(d));
+  } else {
+    const rows=[
+      [104,96,246,22],[124,78,286,32],[148,66,318,40],[174,62,326,46],[202,70,324,42],
+      [230,82,306,34],[258,106,282,26],[286,146,254,18]
+    ];
+    rows.forEach(([y,x1,x2,b])=>{
+      paths.push(`M${x1} ${y} C${x1+32} ${y-b} ${x1+74} ${y+b*.9} ${x1+112} ${y-b*.2} S${x2-38} ${y+b*.6} ${x2} ${y-b*.1}`);
+      paths.push(`M${x1+8} ${y+16} C${x1+42} ${y+2} ${x1+78} ${y+30} ${x1+116} ${y+12} S${x2-46} ${y+4} ${x2-16} ${y+20}`);
+    });
+    [
+      'M146 88 C156 122 128 142 152 168 C174 192 136 214 160 242 C184 270 154 286 174 310',
+      'M204 84 C190 118 226 138 206 170 C184 204 222 228 202 262 C188 286 212 298 202 316',
+      'M262 104 C238 130 280 154 252 182 C224 212 268 232 244 262 C226 284 258 296 246 314',
+      'M86 166 C122 150 154 160 184 190 C146 180 112 198 86 232',
+      'M112 238 C154 218 202 226 238 262 C194 246 152 254 120 286',
+      'M246 128 C286 136 316 164 328 202 C294 184 258 188 228 216',
+      'M226 204 C270 202 310 226 330 266 C294 244 258 246 224 272',
+      'M222 282 C254 270 294 278 322 302',
+      'M232 296 C258 286 288 292 310 312'
+    ].forEach(d=>paths.push(d));
+  }
+  addFolds(g, paths, 'brain-fold hair');
+  target.appendChild(g);
+}
+const neuralEdges = [
+  ['pfc','acc'],['pfc','language'],['pfc','tpj'],['pfc','motor'],['pfc','ofc'],
+  ['acc','insula'],['acc','amygdala'],['acc','motor'],
+  ['ofc','striatum'],['striatum','motor'],['striatum','dmn'],
+  ['amygdala','bnst'],['amygdala','insula'],['bnst','insula'],
+  ['hippocampus','dmn'],['hippocampus','language'],['hippocampus','amygdala'],
+  ['language','tpj'],['language','dmn'],['tpj','dmn'],['tpj','insula']
+];
+function viewNodeMap(viewName){
+  const map={};
+  views[viewName].forEach(([id,cx,cy])=>{
+    if(!map[id]) map[id]=[];
+    map[id].push([cx,cy]);
+  });
+  return map;
+}
+function nearestPair(aPoints,bPoints){
+  let best=[aPoints[0],bPoints[0]], bestD=Infinity;
+  aPoints.forEach(a=>bPoints.forEach(b=>{
+    const d=(a[0]-b[0])**2+(a[1]-b[1])**2;
+    if(d<bestD){best=[a,b]; bestD=d;}
+  }));
+  return best;
+}
+function addNeuralNetwork(svg, viewName){
+  const map=viewNodeMap(viewName);
+  const layer=el('g',{class:'neural-layer'});
+  neuralEdges.forEach(([from,to],i)=>{
+    if(!map[from]||!map[to]) return;
+    const [[x1,y1],[x2,y2]]=nearestPair(map[from],map[to]);
+    const bend=(i%2===0?-1:1)*(18+(i%5)*6);
+    const mx=(x1+x2)/2;
+    const my=(y1+y2)/2 + bend;
+    const d=`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`;
+    const m1=regionMeta(from), m2=regionMeta(to);
+    const fiber=el('path',{class:'neural-fiber',d,stroke:m1.color,'data-edge':`${from}:${to}`});
+    const pulse=el('circle',{class:'axon-pulse',r:'4.2',fill:m2.color,stroke:'#ffffff','stroke-width':'.8','data-pulse':`${from}:${to}`},[
+      el('animateMotion',{dur:(1.45+(i%4)*.22)+'s',repeatCount:'indefinite',path:d})
+    ]);
+    layer.appendChild(fiber);
+    layer.appendChild(pulse);
+  });
+  Object.entries(map).forEach(([id,points])=>{
+    const m=regionMeta(id);
+    points.forEach(([cx,cy])=>{
+      layer.appendChild(el('circle',{class:'synapse',cx,cy,r:'5.6',fill:m.color,stroke:'#fff','stroke-width':'1.1','data-synapse':id}));
+    });
+  });
+  svg.appendChild(layer);
+}
+function addTopBrainTexture(svg){
+  addFolds(svg, [
+    'M224 50 C204 78 214 106 222 132 C232 162 214 184 226 214 C236 240 224 268 232 306',
+    'M236 50 C256 78 246 106 238 132 C228 162 246 184 234 214 C224 240 236 268 228 306'
+  ], 'brain-cut');
+  addFolds(svg, [
+    'M108 96 C130 78 166 72 196 90 C168 90 146 102 130 126 C152 116 174 120 194 140',
+    'M94 126 C122 108 160 110 190 134 C158 132 130 144 110 170 C138 156 166 160 194 184',
+    'M82 162 C112 146 148 150 184 176 C150 174 116 190 94 218 C128 198 166 202 198 228',
+    'M82 208 C112 190 150 196 190 224 C154 222 124 238 102 268 C132 250 168 252 204 282',
+    'M112 274 C142 250 178 256 208 292 C176 278 146 286 126 310',
+    'M132 92 C158 98 176 112 190 134 C166 128 142 136 126 158',
+    'M126 164 C154 158 176 170 196 194 C166 188 140 198 120 224',
+    'M132 228 C164 218 190 232 206 260 C176 248 150 254 130 280',
+    'M160 74 C186 78 204 98 210 126',
+    'M170 126 C196 142 206 164 202 190',
+    'M166 188 C194 202 210 224 208 252',
+    'M174 250 C198 264 212 282 214 304',
+    'M352 96 C330 78 294 72 264 90 C292 90 314 102 330 126 C308 116 286 120 266 140',
+    'M366 126 C338 108 300 110 270 134 C302 132 330 144 350 170 C322 156 294 160 266 184',
+    'M378 162 C348 146 312 150 276 176 C310 174 344 190 366 218 C332 198 294 202 262 228',
+    'M378 208 C348 190 310 196 270 224 C306 222 336 238 358 268 C328 250 292 252 256 282',
+    'M348 274 C318 250 282 256 252 292 C284 278 314 286 334 310',
+    'M328 92 C302 98 284 112 270 134 C294 128 318 136 334 158',
+    'M334 164 C306 158 284 170 264 194 C294 188 320 198 340 224',
+    'M328 228 C296 218 270 232 254 260 C284 248 310 254 330 280',
+    'M300 74 C274 78 256 98 250 126',
+    'M290 126 C264 142 254 164 258 190',
+    'M294 188 C266 202 250 224 252 252',
+    'M286 250 C262 264 248 282 246 304'
+  ], 'brain-fold deep');
+  addFolds(svg, [
+    'M104 112 C142 118 174 108 202 132',
+    'M94 148 C132 138 168 146 198 172',
+    'M92 188 C128 178 166 184 198 214',
+    'M98 232 C136 222 174 232 206 264',
+    'M128 296 C156 284 188 288 210 312',
+    'M116 82 C142 92 162 86 188 102',
+    'M104 242 C132 272 162 276 196 294',
+    'M74 136 C106 126 126 132 152 150',
+    'M70 180 C102 170 126 178 154 202',
+    'M82 258 C112 240 138 244 168 264',
+    'M356 112 C318 118 286 108 258 132',
+    'M366 148 C328 138 292 146 262 172',
+    'M368 188 C332 178 294 184 262 214',
+    'M362 232 C324 222 286 232 254 264',
+    'M332 296 C304 284 272 288 250 312',
+    'M344 82 C318 92 298 86 272 102',
+    'M356 242 C328 272 298 276 264 294',
+    'M386 136 C354 126 334 132 308 150',
+    'M390 180 C358 170 334 178 306 202',
+    'M378 258 C348 240 322 244 292 264',
+    'M204 96 C218 114 218 138 206 158',
+    'M256 96 C242 114 242 138 254 158',
+    'M204 176 C222 194 222 218 208 238',
+    'M256 176 C238 194 238 218 252 238'
+  ], 'brain-fold hair');
+}
+function addSideBrainTexture(group){
+  addFolds(group, [
+    'M76 206 C84 154 120 116 170 100 C220 84 282 106 314 154',
+    'M78 232 C116 204 166 190 214 200 C256 208 292 232 318 266',
+    'M112 108 C150 92 196 94 232 118 C198 116 168 126 146 150 C178 140 210 148 236 174',
+    'M84 146 C124 126 172 128 210 156 C170 152 136 164 108 194 C146 174 188 178 226 208',
+    'M72 188 C112 170 158 174 198 204 C160 202 124 218 96 248 C132 230 174 232 214 260',
+    'M104 260 C142 238 188 246 224 282 C184 270 148 276 118 300',
+    'M190 96 C224 106 252 130 268 164 C238 150 208 152 180 172',
+    'M224 126 C260 132 292 154 310 188 C278 174 244 178 214 202',
+    'M222 198 C260 200 294 220 316 254 C282 238 250 240 220 262',
+    'M144 158 C176 150 206 162 230 190 C196 178 162 186 136 214',
+    'M142 220 C176 206 212 216 240 250 C202 234 170 238 144 264',
+    'M174 282 C204 264 236 264 264 286',
+    'M246 270 C274 264 302 274 322 294'
+  ], 'brain-fold deep');
+  addFolds(group, [
+    'M98 126 C132 122 160 132 184 154',
+    'M130 104 C160 108 186 122 206 146',
+    'M222 108 C250 118 270 136 286 162',
+    'M260 146 C288 154 306 174 316 202',
+    'M82 170 C116 158 150 164 180 190',
+    'M102 210 C136 194 176 198 210 226',
+    'M76 226 C108 232 134 224 160 204',
+    'M118 250 C152 242 184 250 212 278',
+    'M152 294 C184 282 216 284 244 300',
+    'M224 232 C254 228 282 240 304 266',
+    'M238 180 C268 182 294 196 312 222',
+    'M174 132 C202 136 226 150 244 174',
+    'M134 180 C164 172 194 182 218 210',
+    'M170 246 C202 238 230 248 252 276'
+  ], 'brain-fold hair');
+}
+function addRealTopCortex(svg){
+  addFolds(svg, [
+    'M230 52 C210 76 218 104 226 128 C236 158 214 180 226 210 C240 246 218 272 230 314',
+    'M216 58 C196 70 188 90 194 112 C202 136 184 148 190 174 C196 198 176 214 188 242 C198 266 182 286 204 306',
+    'M244 58 C264 70 272 90 266 112 C258 136 276 148 270 174 C264 198 284 214 272 242 C262 266 278 286 256 306'
+  ], 'brain-fold deep');
+  addFolds(svg, [
+    'M128 74 C156 56 198 56 218 84 C190 78 166 84 146 102 C176 96 200 104 216 126',
+    'M88 104 C122 76 166 78 202 106 C162 100 128 112 104 140 C138 126 176 132 204 160',
+    'M66 150 C96 124 142 124 188 154 C144 146 104 164 76 202 C112 178 156 180 198 214',
+    'M66 204 C96 178 142 182 190 218 C144 210 108 228 82 266 C116 246 160 250 202 282',
+    'M100 282 C132 256 174 260 206 304 C166 286 132 294 112 324',
+    'M146 70 C174 76 194 92 204 116 C178 108 152 114 132 138',
+    'M118 126 C154 116 184 128 206 158 C170 146 138 154 112 186',
+    'M100 178 C136 164 174 176 204 210 C164 196 130 208 100 242',
+    'M120 238 C158 222 190 236 208 270 C170 254 140 262 116 294',
+    'M178 86 C208 102 218 128 208 156',
+    'M164 146 C200 162 214 190 204 222',
+    'M168 218 C202 232 218 260 210 292',
+    'M332 74 C304 56 262 56 242 84 C270 78 294 84 314 102 C284 96 260 104 244 126',
+    'M372 104 C338 76 294 78 258 106 C298 100 332 112 356 140 C322 126 284 132 256 160',
+    'M394 150 C364 124 318 124 272 154 C316 146 356 164 384 202 C348 178 304 180 262 214',
+    'M394 204 C364 178 318 182 270 218 C316 210 352 228 378 266 C344 246 300 250 258 282',
+    'M360 282 C328 256 286 260 254 304 C294 286 328 294 348 324',
+    'M314 70 C286 76 266 92 256 116 C282 108 308 114 328 138',
+    'M342 126 C306 116 276 128 254 158 C290 146 322 154 348 186',
+    'M360 178 C324 164 286 176 256 210 C296 196 330 208 360 242',
+    'M340 238 C302 222 270 236 252 270 C290 254 320 262 344 294',
+    'M282 86 C252 102 242 128 252 156',
+    'M296 146 C260 162 246 190 256 222',
+    'M292 218 C258 232 242 260 250 292'
+  ], 'brain-fold deep');
+  addFolds(svg, [
+    'M106 92 C140 102 170 94 202 116',
+    'M78 132 C120 118 162 124 198 150',
+    'M70 176 C110 162 154 170 198 202',
+    'M76 224 C118 210 160 220 204 252',
+    'M102 304 C136 284 176 290 210 318',
+    'M354 92 C320 102 290 94 258 116',
+    'M382 132 C340 118 298 124 262 150',
+    'M390 176 C350 162 306 170 262 202',
+    'M384 224 C342 210 300 220 256 252',
+    'M358 304 C324 284 284 290 250 318',
+    'M208 78 C220 104 220 132 208 160',
+    'M252 78 C240 104 240 132 252 160',
+    'M204 172 C222 198 222 230 208 256',
+    'M256 172 C238 198 238 230 252 256'
+  ], 'brain-fold hair');
+}
+function addRealSideCortex(group){
+  addFolds(group, [
+    'M66 214 C58 168 78 126 118 98 C158 70 212 64 262 84 C310 104 338 144 338 192 C338 240 304 276 252 294 C198 314 130 304 88 276 C68 262 58 240 66 214 Z',
+    'M82 214 C96 170 128 136 174 118 C222 100 280 116 316 156',
+    'M94 248 C138 214 188 204 238 214 C282 222 312 248 328 282',
+    'M118 104 C154 84 202 82 242 104 C206 104 174 116 150 140 C184 128 220 136 248 166',
+    'M82 142 C126 114 180 116 220 150 C176 144 138 158 108 196 C148 172 194 178 232 210',
+    'M72 190 C116 166 166 172 208 206 C164 202 126 220 96 260 C134 236 180 238 222 270',
+    'M116 270 C154 244 202 250 238 288 C198 274 158 282 132 306',
+    'M202 96 C238 104 270 130 292 166 C258 152 224 156 192 182',
+    'M238 134 C276 140 306 164 322 202 C288 184 250 190 216 220',
+    'M226 204 C266 204 300 222 324 258 C288 240 252 242 220 266',
+    'M146 160 C180 148 216 160 242 194 C204 176 168 186 140 220',
+    'M140 226 C176 206 216 216 246 252 C206 234 170 240 140 270',
+    'M178 286 C212 264 248 266 278 290'
+  ], 'brain-fold deep');
+  addFolds(group, [
+    'M100 124 C132 124 164 134 190 158',
+    'M140 100 C174 106 202 122 224 148',
+    'M226 108 C260 118 286 140 302 170',
+    'M270 150 C300 160 318 184 326 212',
+    'M90 170 C128 156 166 164 198 194',
+    'M104 212 C144 194 188 200 224 230',
+    'M78 226 C112 236 140 226 168 204',
+    'M118 252 C154 242 190 250 220 280',
+    'M154 296 C190 284 226 286 256 302',
+    'M230 236 C262 230 292 244 314 272',
+    'M238 182 C272 184 300 202 318 230',
+    'M174 132 C206 138 232 154 252 182',
+    'M132 184 C166 174 200 186 226 216',
+    'M170 250 C206 240 238 252 262 282'
+  ], 'brain-fold hair');
+}
+function drawView(svgId, viewName){
+  const svg=document.getElementById(svgId);
+  svg.innerHTML='';
+  const assetBase = location.protocol === 'file:' ? 'assets/' : '/static/assets/';
+  if(viewName==='top'){
+    svg.appendChild(el('image',{
+      href:assetBase+'human-brain-top-pencil.png',
+      x:46,y:18,width:368,height:344,
+      preserveAspectRatio:'xMidYMid meet',
+      opacity:'.96'
+    }));
+  } else {
+    const attrs={
+      href:assetBase+'human-brain-lateral-pencil.png',
+      x:22,y:36,width:318,height:302,
+      preserveAspectRatio:'xMidYMid meet',
+      opacity:'.96'
+    };
+    if(viewName==='right') attrs.transform='scale(-1 1) translate(-360 0)';
+    svg.appendChild(el('image',attrs));
+  }
+  if(false){
+  if(viewName==='top'){
+    const topOutline='M230 42 C188 28 136 40 98 66 C58 94 42 142 48 194 C54 250 92 306 146 328 C180 342 210 334 230 318 C250 334 280 342 314 328 C368 306 406 250 412 194 C418 142 402 94 362 66 C324 40 272 28 230 42 Z';
+    svg.appendChild(el('defs',{},[el('clipPath',{id:'topBrainClip'},[el('path',{d:topOutline})])]));
+    svg.appendChild(el('path',{class:'brain-paper',d:topOutline}));
+    svg.appendChild(el('path',{class:'brain-rim',d:'M230 54 C190 40 142 50 108 74 C70 102 56 146 62 192 C68 242 102 292 150 314 C184 330 212 320 230 304 C248 320 276 330 310 314 C358 292 392 242 398 192 C404 146 390 102 352 74 C318 50 270 40 230 54 Z'}));
+    svg.appendChild(el('path',{class:'anatomy-lobe frontal',d:'M222 58 C164 50 104 72 78 114 C104 106 156 108 202 136 C204 102 204 76 222 58 Z'}));
+    svg.appendChild(el('path',{class:'anatomy-lobe parietal',d:'M202 136 C154 108 102 112 74 146 C58 188 66 232 94 268 C126 244 168 232 214 238 C204 204 212 168 202 136 Z'}));
+    svg.appendChild(el('path',{class:'anatomy-lobe temporal',d:'M94 268 C126 314 186 324 226 304 C210 284 216 258 214 238 C168 232 126 244 94 268 Z'}));
+    svg.appendChild(el('path',{class:'anatomy-lobe frontal',d:'M238 58 C296 50 356 72 382 114 C356 106 304 108 258 136 C256 102 256 76 238 58 Z'}));
+    svg.appendChild(el('path',{class:'anatomy-lobe parietal',d:'M258 136 C306 108 358 112 386 146 C402 188 394 232 366 268 C334 244 292 232 246 238 C256 204 248 168 258 136 Z'}));
+    svg.appendChild(el('path',{class:'anatomy-lobe temporal',d:'M366 268 C334 314 274 324 234 304 C250 284 244 258 246 238 C292 232 334 244 366 268 Z'}));
+    svg.appendChild(el('path',{class:'brain-cut',d:'M230 54 C218 92 224 128 230 160 C238 196 220 226 230 258 C238 286 234 304 230 318'}));
+    addRealTopCortex(svg);
+    addFineCortex(svg,'top','topBrainClip');
+    [['frontal',154,104],['parietal',145,207],['temporal',168,294],['frontal',306,104],['parietal',315,207],['temporal',292,294]].forEach(([t,x,y])=>{
+      const txt=el('text',{class:'anatomy-label',x,y,'text-anchor':'middle'}); txt.textContent=t; svg.appendChild(txt);
+    });
+    svg.appendChild(el('path',{class:'nerve',d:'M230 342 C230 356 230 366 230 378'}));
+  } else {
+    const flip=viewName==='right';
+    const sx=flip?'scale(-1 1) translate(-360 0)':'';
+    const group=el('g',{transform:sx});
+    const sideOutline='M52 218 C44 170 66 126 108 98 C150 68 206 62 260 82 C312 102 340 144 338 190 C336 238 302 276 252 296 C198 318 132 308 88 280 C62 264 48 242 52 218 Z';
+    svg.appendChild(el('defs',{},[el('clipPath',{id:`${viewName}BrainClip`},[el('path',{d:sideOutline,transform:sx})])]));
+    group.appendChild(el('path',{class:'brain-paper',d:sideOutline}));
+    group.appendChild(el('path',{class:'brain-rim',d:'M64 214 C60 174 78 136 116 110 C154 84 204 78 252 96 C300 114 326 150 326 190 C326 232 294 266 248 284 C200 302 138 294 96 268 C74 254 62 234 64 214 Z'}));
+    group.appendChild(el('path',{class:'anatomy-lobe frontal',d:'M52 210 C50 158 76 118 120 96 C156 78 196 78 228 90 C190 112 170 148 168 188 C126 184 88 194 52 210 Z'}));
+    group.appendChild(el('path',{class:'anatomy-lobe parietal',d:'M168 188 C170 148 190 112 228 90 C278 102 318 136 332 176 C300 168 252 172 208 198 C194 192 180 188 168 188 Z'}));
+    group.appendChild(el('path',{class:'anatomy-lobe occipital',d:'M332 176 C344 220 320 258 272 286 C258 250 232 220 208 198 C252 172 300 168 332 176 Z'}));
+    group.appendChild(el('path',{class:'anatomy-lobe temporal',d:'M70 230 C112 204 162 190 208 198 C232 220 258 250 272 286 C222 310 152 306 98 280 C76 268 66 250 70 230 Z'}));
+    group.appendChild(el('path',{class:'anatomy-lobe limbic',d:'M132 218 C166 194 208 198 238 224 C206 222 176 234 148 258 C132 248 124 232 132 218 Z'}));
+    group.appendChild(el('path',{class:'cerebellum',d:'M236 270 C278 248 316 258 330 288 C308 320 258 322 224 300 C216 286 220 276 236 270 Z'}));
+    group.appendChild(el('path',{class:'brainstem',d:'M188 296 C184 322 164 344 154 376'}));
+    addRealSideCortex(group);
+    addFineCortex(group,viewName,`${viewName}BrainClip`);
+    [['frontal',130,134],['parietal',240,150],['occipital',286,222],['temporal',154,266],['cerebellum',268,294]].forEach(([t,x,y])=>{
+      const txt=el('text',{class:'anatomy-label',x,y,'text-anchor':'middle'}); txt.textContent=t; group.appendChild(txt);
+    });
+    svg.appendChild(group);
+  }
+  }
+  const [hubX,hubY]=viewCenters[viewName];
+  addNeuralNetwork(svg, viewName);
+  views[viewName].forEach(([id,cx,cy])=>{
+    const m=regionMeta(id);
+    const line=el('path',{class:'signal-link',d:`M${hubX} ${hubY} Q${(hubX+cx)/2} ${Math.min(hubY,cy)-18} ${cx} ${cy}`,stroke:m.color,'data-link':id});
+    svg.appendChild(line);
+  });
+  views[viewName].forEach(([id,cx,cy,rx,ry])=>{
+    const m=regionMeta(id);
+    const g=el('g',{'data-region':id});
+    const markerRx=Math.max(11,rx*.34);
+    const markerRy=Math.max(10,ry*.34);
+    const reg=el('ellipse',{class:'region',cx,cy,rx:markerRx,ry:markerRy,fill:m.color,style:`color:${m.color}`});
+    const core=el('circle',{class:'spark-core',cx,cy,r:Math.max(2.3,Math.min(markerRx,markerRy)*.28),fill:'#ffffff',stroke:m.color,'stroke-width':'1.35'});
+    const spark1=el('circle',{class:'spark s1',cx:cx-markerRx*.44,cy:cy-markerRy*.2,r:1.6,fill:m.color});
+    const spark2=el('circle',{class:'spark s2',cx:cx+markerRx*.38,cy:cy-markerRy*.08,r:1.35,fill:m.color});
+    const spark3=el('circle',{class:'spark s3',cx:cx-markerRx*.04,cy:cy+markerRy*.34,r:1.45,fill:m.color});
+    const spark4=el('circle',{class:'spark s4',cx:cx+markerRx*.12,cy:cy-markerRy*.44,r:1.1,fill:'#ffffff'});
+    const txt=el('text',{class:'region-label',x:cx,y:cy+3,'text-anchor':'middle'});
+    txt.textContent=id;
+    g.appendChild(reg); g.appendChild(core); g.appendChild(spark1); g.appendChild(spark2); g.appendChild(spark3); g.appendChild(spark4); g.appendChild(txt);
+    g.addEventListener('mouseenter',()=>showThoughtForRegion(id));
+    svg.appendChild(g);
+  });
+}
+
+function setMode(mode){
+  activeMode=mode;
+  intensities={...modes[mode].values};
+  document.querySelectorAll('button.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  document.getElementById('thoughtText').textContent=modes[mode].thought;
+  updateSignals();
+}
+
+function updateSignals(){
+  document.querySelectorAll('[data-region]').forEach(g=>{
+    const id=g.getAttribute('data-region');
+    const v=intensities[id]||0;
+    const reg=g.querySelector('.region');
+    const core=g.querySelector('.spark-core');
+    const sparks=[...g.querySelectorAll('.spark')];
+    reg.classList.toggle('active',v>.18);
+    core.classList.toggle('active',v>.42);
+    sparks.forEach((s,i)=>{
+      s.classList.toggle('active',v > (.30 + i*.12));
+      s.style.animationDuration=(1.55-v*.45)+'s';
+    });
+    reg.style.fillOpacity=.04+v*.18;
+    reg.style.strokeOpacity=.35+v*.55;
+  });
+  document.querySelectorAll('[data-link]').forEach(line=>{
+    const id=line.getAttribute('data-link');
+    const v=intensities[id]||0;
+    line.classList.toggle('active',v>.68);
+    line.style.opacity=v>.68 ? (.22+v*.42) : Math.max(.06,v*.16);
+  });
+  document.querySelectorAll('[data-edge]').forEach(line=>{
+    const [from,to]=line.getAttribute('data-edge').split(':');
+    const v=((intensities[from]||0)+(intensities[to]||0))/2;
+    line.classList.toggle('active',v>.34);
+    line.classList.toggle('hot',v>.72);
+    line.style.opacity=v>.34 ? (.3+v*.7) : Math.max(.08,v*.24);
+  });
+  document.querySelectorAll('[data-pulse]').forEach(pulse=>{
+    const [from,to]=pulse.getAttribute('data-pulse').split(':');
+    const v=((intensities[from]||0)+(intensities[to]||0))/2;
+    pulse.classList.toggle('active',v>.48);
+    pulse.style.opacity=v>.48 ? Math.min(1,.36+v*.76) : 0;
+  });
+  document.querySelectorAll('[data-synapse]').forEach(dot=>{
+    const id=dot.getAttribute('data-synapse');
+    const v=intensities[id]||0;
+    dot.classList.toggle('active',v>.36);
+    dot.style.opacity=v>.36 ? (.38+v*.62) : Math.max(.12,v*.24);
+  });
+  document.querySelectorAll('[data-readout]').forEach(row=>{
+    const id=row.dataset.readout;
+    const v=intensities[id]||0;
+    row.querySelector('.fill').style.width=Math.round(v*100)+'%';
+    row.querySelector('.num').textContent=Math.round(v*100);
+  });
+}
+
+function showThoughtForRegion(id){
+  const m=regionMeta(id);
+  document.getElementById('thoughtText').textContent=`${m.name}：${m.signal}。人類對應：${m.human}`;
+}
+
+function init(){
+  drawView('topSvg','top'); drawView('leftSvg','left'); drawView('rightSvg','right');
+  const btns=document.getElementById('modeButtons');
+  Object.entries(modes).forEach(([k,v])=>{
+    const b=document.createElement('button');
+    b.className='mode'; b.dataset.mode=k; b.textContent=v.label;
+    b.onclick=()=>setMode(k);
+    btns.appendChild(b);
+  });
+  const read=document.getElementById('readouts');
+  regions.forEach(r=>{
+    const row=document.createElement('div');
+    row.className='readout'; row.dataset.readout=r.id;
+    row.innerHTML=`<div><div class="readout-name" style="color:${r.color}">${r.name}</div><div class="track"><div class="fill" style="background:${r.color}"></div></div></div><div class="num">0</div>`;
+    read.appendChild(row);
+  });
+  const body=document.querySelector('#mappingTable tbody');
+  regions.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span class="tag" style="color:${r.color};border-color:${r.color}">${r.signal}</span></td><td>${r.name}</td><td>${r.human}</td>`;
+    body.appendChild(tr);
+  });
+  document.getElementById('tags').innerHTML=regions.map(r=>`<span class="tag" style="color:${r.color};border-color:${r.color}">${r.signal}</span>`).join('');
+  setMode('chat');
+  setInterval(()=>{
+    const m=modes[activeMode].values;
+    Object.keys(m).forEach(k=>{
+      intensities[k]=Math.max(0,Math.min(1,m[k]+(Math.random()-.5)*.12));
+    });
+    updateSignals();
+  },900);
+}
+init();
+</script>
+</body>
+</html>

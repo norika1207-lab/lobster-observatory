@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster 5-10 ply board lookahead curriculum
+
+[Timer]
+OnCalendar=*-*-* 02/4:12:00 Asia/Taipei
+Persistent=true
+RandomizedDelaySec=10m
+Unit=lobster-board-lookahead-curriculum.service
+
+[Install]
+WantedBy=timers.target

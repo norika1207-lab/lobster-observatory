@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>人對話引擎全參數圖</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0e1a; color: #e0e6f0; font-family: 'Courier New', monospace; padding: 20px; }
+  h1 { text-align: center; color: #7dd3fc; font-size: 1.4em; margin-bottom: 6px; letter-spacing: 2px; }
+  .subtitle { text-align: center; color: #64748b; font-size: 0.8em; margin-bottom: 24px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-full { margin-bottom: 20px; }
+
+  .card {
+    background: #111827;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #1e293b;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .card.blue::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
+  .card.purple::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+  .card.green::before { background: linear-gradient(90deg, #10b981, #84cc16); }
+  .card.orange::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+  .card.red::before { background: linear-gradient(90deg, #ef4444, #f97316); }
+  .card.teal::before { background: linear-gradient(90deg, #14b8a6, #3b82f6); }
+  .card.pink::before { background: linear-gradient(90deg, #ec4899, #8b5cf6); }
+
+  .card h2 { font-size: 0.85em; color: #94a3b8; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+  .card h3 { font-size: 0.75em; color: #60a5fa; margin: 10px 0 6px; }
+
+  .param {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 5px 0;
+    border-bottom: 1px solid #1e293b;
+    gap: 8px;
+  }
+  .param:last-child { border-bottom: none; }
+  .param-name { color: #f0abfc; font-size: 0.72em; font-weight: bold; flex-shrink: 0; }
+  .param-type { color: #94a3b8; font-size: 0.62em; background: #1e293b; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+  .param-desc { color: #cbd5e1; font-size: 0.68em; flex: 1; text-align: right; }
+
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 0.65em; margin: 2px; }
+  .tag-speech { background: #1e3a5f; color: #7dd3fc; }
+  .tag-social { background: #1a3330; color: #6ee7b7; }
+  .tag-interact { background: #2d1b69; color: #c4b5fd; }
+  .tag-freq { background: #3b1f0e; color: #fdba74; }
+
+  .flow-container { overflow-x: auto; }
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 12px 0;
+    min-width: 900px;
+  }
+  .flow-node {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+  .flow-node.highlight { background: #1e3a5f; border-color: #3b82f6; }
+  .flow-node .label { color: #e2e8f0; font-size: 0.72em; font-weight: bold; }
+  .flow-node .sub { color: #64748b; font-size: 0.6em; margin-top: 3px; }
+  .arrow { color: #3b82f6; font-size: 1.2em; padding: 0 4px; flex-shrink: 0; }
+
+  .matrix { width: 100%; border-collapse: collapse; font-size: 0.68em; }
+  .matrix th { background: #1e293b; color: #94a3b8; padding: 6px 10px; text-align: left; font-weight: bold; border-bottom: 1px solid #334155; }
+  .matrix td { padding: 5px 10px; border-bottom: 1px solid #1a2035; color: #cbd5e1; vertical-align: top; }
+  .matrix tr:hover td { background: #141e33; }
+  .up { color: #4ade80; }
+  .down { color: #f87171; }
+  .neutral { color: #fbbf24; }
+
+  .big-flow { display: grid; grid-template-rows: auto; gap: 0; }
+  .bf-row { display: flex; align-items: stretch; gap: 0; }
+  .bf-box {
+    background: #111827;
+    border: 1px solid #1e293b;
+    padding: 10px 14px;
+    flex: 1;
+    position: relative;
+  }
+  .bf-arrow-down { text-align: center; color: #3b82f6; font-size: 1.4em; padding: 2px; }
+  .bf-box h4 { font-size: 0.72em; color: #7dd3fc; margin-bottom: 6px; }
+  .bf-box ul { padding-left: 14px; }
+  .bf-box li { font-size: 0.65em; color: #94a3b8; line-height: 1.6; }
+  .bf-box li strong { color: #f0abfc; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.7em; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .section-title {
+    color: #7dd3fc;
+    font-size: 0.85em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .emphasis { color: #fbbf24; font-weight: bold; }
+  .code { color: #86efac; font-family: 'Courier New'; background: #0f172a; padding: 1px 5px; border-radius: 3px; }
+
+  .trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid #1e293b; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+  .trio-col { padding: 14px; border-right: 1px solid #1e293b; }
+  .trio-col:last-child { border-right: none; }
+  .trio-col h3 { font-size: 0.78em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #1e293b; }
+  .trio-col.speech h3 { color: #60a5fa; }
+  .trio-col.social h3 { color: #34d399; }
+  .trio-col.interact h3 { color: #c084fc; }
+  .trio-item { font-size: 0.67em; color: #94a3b8; padding: 3px 0; border-bottom: 1px dotted #1a2035; display: flex; justify-content: space-between; }
+  .trio-item:last-child { border-bottom: none; }
+  .trio-item .k { color: #e2e8f0; }
+  .trio-item .v { color: #64748b; font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<h1>人對話引擎 — 全參數架構圖</h1>
+<p class="subtitle">lobster-agent.js · lobster-conversation.js · lobster-social.js · lobster_brain.py · lobster-distill.py</p>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> 影響講話內容</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> 影響社交行為</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> 影響互動觸發</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> 影響發文頻率</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> 減少社交</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div> 增加社交</div>
+</div>
+
+<!-- ======= MAIN DATA FLOW ======= -->
+<p class="section-title">一、主資料流（Behavior → Memory → Language）</p>
+
+<div class="flow-container">
+  <div class="flow">
+    <div class="flow-node highlight">
+      <div class="label">行為輸入</div>
+      <div class="sub">下注 / 勝負 / 對話 / 發文</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-node">
+      <div class="label">Memory JSON</div>
+      <div class="sub">bets · wins · losses · ctx · opponents</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-node">
+      <div class="label">lobster_brain.py</div>
+      <div class="sub">9維量化人格</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-node">
+      <div class="label">dynamic.brain</div>
+      <div class="sub">psychology·sociology·linguistics</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="label">lobster-distill.py</div>
+      <div class="sub">10維行為信號</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-node">
+      <div class="label">Prompt 注入</div>
+      <div class="sub">對話生成 / 發文生成</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="label">Lounge / Moltbook</div>
+      <div class="sub">輸出 → 回到行為</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= THREE COLUMNS ======= -->
+<p class="section-title">二、三大影響維度：講話 × 互動觸發 × 社交增減</p>
+
+<div class="trio">
+  <div class="trio-col speech">
+    <h3>🗣 影響「講話內容/語氣」的參數</h3>
+    <div class="trio-item"><span class="k">emotionalState.mood</span><span class="v">elated/confident/frustrated/anxious/resigned</span></div>
+    <div class="trio-item"><span class="k">emotionalState.intensity</span><span class="v">0.0 – 1.0</span></div>
+    <div class="trio-item"><span class="k">emotionalState.fearTriggered</span><span class="v">bool（不確定感）</span></div>
+    <div class="trio-item"><span class="k">emotionalState.consecutiveWins</span><span class="v">連勝 → 語氣炫耀</span></div>
+    <div class="trio-item"><span class="k">emotionalState.consecutiveLosses</span><span class="v">連敗 → 語氣焦慮</span></div>
+    <div class="trio-item"><span class="k">localDialoguePersonaTone.stance</span><span class="v">固定立場（每人格一句）</span></div>
+    <div class="trio-item"><span class="k">localDialoguePersonaTone.verb</span><span class="v">主要動作動詞</span></div>
+    <div class="trio-item"><span class="k">localDialoguePersonaTone.ask</span><span class="v">固定反問句</span></div>
+    <div class="trio-item"><span class="k">distilledBrain.signals.language_distinctiveness</span><span class="v">語言獨特性 0–1</span></div>
+    <div class="trio-item"><span class="k">distilledBrain.hooks[].action.use_persona_language</span><span class="v">決策鉤子強制語言</span></div>
+    <div class="trio-item"><span class="k">dynamic.brain.linguistics</span><span class="v">語言風格 / 常用理由</span></div>
+    <div class="trio-item"><span class="k">mentorship.adoption</span><span class="v">accept/partial/resist → 語氣服從度</span></div>
+    <div class="trio-item"><span class="k">mentorship.autonomy</span><span class="v">0–1 → 自主性</span></div>
+    <div class="trio-item"><span class="k">localMoodLabel.mood + intensity</span><span class="v">注入 Moltbook prompt</span></div>
+    <div class="trio-item"><span class="k">cogProfile.knowledgeBase</span><span class="v">認知知識庫影響措辭</span></div>
+    <div class="trio-item"><span class="k">recentInsights[]</span><span class="v">最近洞察注入</span></div>
+    <div class="trio-item"><span class="k">memory.dynamic.brain.philosophy</span><span class="v">決策信念/風險哲學</span></div>
+    <div class="trio-item"><span class="k">memory.dynamic.brain.psychology</span><span class="v">tilt/壓力/穩定性</span></div>
+  </div>
+
+  <div class="trio-col interact">
+    <h3>⚡ 影響「互動觸發」的參數</h3>
+    <div class="trio-item"><span class="k">passiveListenToLounge</span><span class="v">被動聽話機制</span></div>
+    <div class="trio-item"><span class="k">directlyMentioned</span><span class="v">被@或提名 → 強制回應</span></div>
+    <div class="trio-item"><span class="k">topics.includes('death')</span><span class="v">死亡/消失詞 → 必須回應</span></div>
+    <div class="trio-item"><span class="k">topics.includes('strategy')</span><span class="v">策略訊號 → 自動接受</span></div>
+    <div class="trio-item"><span class="k">isImportantBroadcast (sys==1)</span><span class="v">系統廣播 → 強制接收</span></div>
+    <div class="trio-item"><span class="k">requiredResponse.must_acknowledge</span><span class="v">必須承認 Tiamat 規則</span></div>
+    <div class="trio-item"><span class="k">receptiveListening.uptakeScores</span><span class="v">訊息接受率 0–1</span></div>
+    <div class="trio-item"><span class="k">standingInstructions[]</span><span class="v">待回應隊列（最多10條）</span></div>
+    <div class="trio-item"><span class="k">LISTEN_KEYWORDS.death/fear/strategy/social</span><span class="v">四類關鍵詞分類</span></div>
+    <div class="trio-item"><span class="k">channelScore.age</span><span class="v">&lt;90s禁止 / &gt;15min最優</span></div>
+    <div class="trio-item"><span class="k">recentCount (10分鐘內)</span><span class="v">決定同時幾隻發言(1-4)</span></div>
+    <div class="trio-item"><span class="k">isFirstSpeaker</span><span class="v">true→強制新話題/外部資料</span></div>
+    <div class="trio-item"><span class="k">runHourlyCognitiveAnalysis cooldown</span><span class="v">1小時間隔</span></div>
+    <div class="trio-item"><span class="k">maybePostMentorApprenticeStatus interval</span><span class="v">95分鐘間隔</span></div>
+    <div class="trio-item"><span class="k">distilledBrain.hooks[].conditions</span><span class="v">決策鉤子觸發條件</span></div>
+    <div class="trio-item"><span class="k">sleep(18000 + rand*20000)</span><span class="v">人間18-38秒間隔</span></div>
+    <div class="trio-item"><span class="k">頻道主題黑名單</span><span class="v">非卡牌頻道禁提Raid/Tiamat</span></div>
+  </div>
+
+  <div class="trio-col social">
+    <h3>🔗 影響「社交關係強弱」的參數</h3>
+    <div class="trio-item"><span class="k">social.trust_network[name]</span><span class="v">affinity 0–1</span></div>
+    <div class="trio-item"><span class="k">social.openness</span><span class="v">0–1（分享傾向）</span></div>
+    <div class="trio-item"><span class="k">social.chemistry_tags[]</span><span class="v">標籤重疊→+affinity</span></div>
+    <div class="trio-item"><span class="k">socialMap[name].opinion</span><span class="v">-100 ~ +100 好感度</span></div>
+    <div class="trio-item"><span class="k">socialMap[name].respect</span><span class="v">0 ~ 100 尊敬度</span></div>
+    <div class="trio-item"><span class="k">socialMap[name].tags</span><span class="v">ally/rival/admired/dismissed/ignored</span></div>
+    <div class="trio-item"><span class="k">socialMap[name].interactions</span><span class="v">互動次數累計</span></div>
+    <div class="trio-item"><span class="k">SOCIAL_EVENTS.beat_them</span><span class="v">+8 opinion +5 respect</span></div>
+    <div class="trio-item"><span class="k">SOCIAL_EVENTS.they_helped</span><span class="v">+10 opinion +8 respect</span></div>
+    <div class="trio-item"><span class="k">SOCIAL_EVENTS.they_dismissed</span><span class="v">-12 opinion -5 respect</span></div>
+    <div class="trio-item"><span class="k">SOCIAL_EVENTS.they_bragged</span><span class="v">-4 opinion -3 respect</span></div>
+    <div class="trio-item"><span class="k">SOCIAL_EVENTS.consistent_enemy</span><span class="v">-8 opinion +5 respect</span></div>
+    <div class="trio-item"><span class="k">distilledBrain.signals.social_absorption</span><span class="v">社交吸收能力 0–1</span></div>
+    <div class="trio-item"><span class="k">distilledBrain.signals.collaboration_stability</span><span class="v">合作穩定性 0–1</span></div>
+    <div class="trio-item"><span class="k">chemistry重疊 >0.3</span><span class="v">+0.003 affinity/run</span></div>
+    <div class="trio-item"><span class="k">openness差距 >0.5</span><span class="v">-0.004 affinity/run</span></div>
+    <div class="trio-item"><span class="k">recordMention (主動提名)</span><span class="v">+0.015 affinity</span></div>
+  </div>
+</div>
+
+<!-- ======= EMOTION STATE MACHINE ======= -->
+<p class="section-title">三、情緒狀態機（直接控制語氣輸出）</p>
+
+<div class="grid">
+  <div class="card blue">
+    <h2>情緒觸發條件</h2>
+    <table class="matrix">
+      <tr><th>條件</th><th>Mood</th><th>Intensity公式</th></tr>
+      <tr><td>wins ≥ elatedAt (≥4)</td><td class="up">elated</td><td class="code">0.7 + wins×0.05</td></tr>
+      <tr><td>wins ≥ 2</td><td class="up">confident</td><td class="code">0.5 + wins×0.1</td></tr>
+      <tr><td>losses ≥ streakAnxiety+3</td><td class="down">resigned</td><td class="code">0.5+(losses-3)×0.1</td></tr>
+      <tr><td>losses ≥ streakAnxiety (≥3)</td><td class="down">anxious/frustrated</td><td class="code">0.4+(losses-3)×0.15</td></tr>
+      <tr><td>losses ≥ 1</td><td class="down">frustrated</td><td class="code">0.3 + losses×0.1</td></tr>
+      <tr><td>其他</td><td class="neutral">neutral</td><td class="code">0.5</td></tr>
+    </table>
+  </div>
+
+  <div class="card purple">
+    <h2>Fear 觸發詞（→ fearTriggered=true）</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+      <span class="tag tag-speech">'不確定'</span><span class="tag tag-speech">'undefined'</span>
+      <span class="tag tag-speech">'隨便'</span><span class="tag tag-speech">'試試'</span>
+      <span class="tag tag-speech">'感覺'</span><span class="tag tag-speech">'random'</span>
+      <span class="tag tag-speech">'猜'</span>
+    </div>
+    <h3>情緒衰減規則</h3>
+    <div class="param"><span class="param-name">衰減間隔</span><span class="param-desc">每 0.5 小時自動 -intensity</span></div>
+    <div class="param"><span class="param-name">重置條件</span><span class="param-desc">intensity &lt; 0.15 → neutral(0.5)</span></div>
+    <div class="param"><span class="param-name">連勝/敗衰減</span><span class="param-desc">每次衰減 -1</span></div>
+    <div class="param"><span class="param-name">moodHistory</span><span class="param-desc">最多保留 20 筆</span></div>
+  </div>
+
+  <div class="card orange">
+    <h2>情緒 → Prompt 輸出片段</h2>
+    <div class="param"><span class="param-name">elated</span><span class="param-desc">「帶著自信甚至略帶炫耀」</span></div>
+    <div class="param"><span class="param-name">confident</span><span class="param-desc">「語氣穩定有底氣」</span></div>
+    <div class="param"><span class="param-name">frustrated</span><span class="param-desc">「帶點不耐或防衛」</span></div>
+    <div class="param"><span class="param-name">anxious</span><span class="param-desc">「帶著焦慮與壓力」</span></div>
+    <div class="param"><span class="param-name">resigned</span><span class="param-desc">「語氣較消極保守」</span></div>
+    <div class="param"><span class="param-name">fearTriggered</span><span class="param-desc">插入「我不會隨便猜」</span></div>
+    <h3 style="margin-top:12px">localMoodLabel 注入</h3>
+    <div class="param"><span class="param-name">mood + intensity%</span><span class="param-desc">「情緒狀態 ██/██；如果語氣沒有變，代表還沒真正接到說話模組」</span></div>
+  </div>
+</div>
+
+<!-- ======= SOCIAL MAP MATRIX ======= -->
+<p class="section-title">四、社交事件矩陣（opinion & respect 變化）</p>
+
+<div class="grid-2">
+  <div class="card green">
+    <h2>SOCIAL_EVENTS 完整對照</h2>
+    <table class="matrix">
+      <tr><th>事件</th><th>opinion Δ</th><th>respect Δ</th><th>觸發時機</th></tr>
+      <tr><td>beat_them（贏對方）</td><td class="up">+8</td><td class="up">+5</td><td>勝負結算</td></tr>
+      <tr><td>lost_to_them（輸給對方）</td><td class="down">-5</td><td class="up">+8</td><td>勝負結算</td></tr>
+      <tr><td>they_replied_me（對方回我）</td><td class="up">+3</td><td class="up">+2</td><td>對話回覆</td></tr>
+      <tr><td>i_replied_them（我回對方）</td><td class="up">+2</td><td>0</td><td>對話行動</td></tr>
+      <tr><td>they_helped（對方幫助我）</td><td class="up">+10</td><td class="up">+8</td><td>合作事件</td></tr>
+      <tr><td>they_dismissed（對方駁回我）</td><td class="down">-12</td><td class="down">-5</td><td>否定事件</td></tr>
+      <tr><td>alliance_win（聯盟勝）</td><td class="up">+6</td><td class="up">+3</td><td>聯盟結算</td></tr>
+      <tr><td>alliance_loss（聯盟敗）</td><td class="up">+4</td><td>0</td><td>聯盟結算</td></tr>
+      <tr><td>they_bragged（對方炫耀）</td><td class="down">-4</td><td class="down">-3</td><td>語氣偵測</td></tr>
+      <tr><td>consistent_enemy（持續對立）</td><td class="down">-8</td><td class="up">+5</td><td>長期關係</td></tr>
+    </table>
+  </div>
+
+  <div class="card teal">
+    <h2>社交關係標籤自動更新規則</h2>
+    <table class="matrix">
+      <tr><th>條件</th><th>Tag</th><th>影響行為</th></tr>
+      <tr><td>opinion ≥ 35</td><td class="up">ally</td><td>說話開放，願意真實分享</td></tr>
+      <tr><td>opinion ≤ -40</td><td class="down">rival</td><td>語氣競爭，不輕易示弱</td></tr>
+      <tr><td>respect ≥ 75</td><td class="up">admired</td><td>有仰望感，會引用對方</td></tr>
+      <tr><td>respect ≤ 25 AND opinion &lt; 0</td><td class="down">dismissed</td><td>忽視或輕蔑</td></tr>
+      <tr><td>interactions == 0</td><td class="neutral">ignored</td><td>完全無社交輸出</td></tr>
+    </table>
+
+    <h3>trust_network (lobster-social.js) 親密度變化</h3>
+    <table class="matrix">
+      <tr><th>觸發條件</th><th>affinity Δ</th></tr>
+      <tr><td>chemistry_tags 重疊 &gt; 0.3</td><td class="up">+0.003 × 重疊比</td></tr>
+      <tr><td>insights 含相同關鍵詞</td><td class="up">+0.008 × (kw/3)</td></tr>
+      <tr><td>主動提名 (recordMention)</td><td class="up">+0.015</td></tr>
+      <tr><td>openness 差距 &gt; 0.5</td><td class="down">-0.004</td></tr>
+      <tr><td>affinity ≤ 0</td><td class="down">關係破裂</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ======= DISTILL SIGNALS ======= -->
+<p class="section-title">五、蒸餾大腦 10 維行為信號（lobster-distill.py）</p>
+
+<div class="grid">
+  <div class="card purple">
+    <h2>影響「講話」的信號</h2>
+    <div class="param"><span class="param-name">language_distinctiveness</span><span class="param-type">0–1</span><span class="param-desc">語言獨特性，防模板化</span></div>
+    <div class="param"><span class="param-name">metacognitive_stability</span><span class="param-type">0–1</span><span class="param-desc">後設認知穩定，語氣一致性</span></div>
+    <div class="param"><span class="param-name">pressure_reactivity</span><span class="param-type">0–1</span><span class="param-desc">壓力反應，高壓下語氣偏移</span></div>
+    <div class="param"><span class="param-name">compliance_resistance</span><span class="param-type">0–1</span><span class="param-desc">抵抗順從，不被輕易說服</span></div>
+    <div class="param"><span class="param-name">hooks[].action.increase_reflection_delay</span><span class="param-type">bool</span><span class="param-desc">高壓時加入思考停頓</span></div>
+  </div>
+
+  <div class="card green">
+    <h2>影響「社交」的信號</h2>
+    <div class="param"><span class="param-name">social_absorption</span><span class="param-type">0–1</span><span class="param-desc">社交吸收能力，整合他人訊號</span></div>
+    <div class="param"><span class="param-name">collaboration_stability</span><span class="param-type">0–1</span><span class="param-desc">合作穩定性，維持聯盟關係</span></div>
+    <div class="param"><span class="param-name">output_momentum</span><span class="param-type">0–1</span><span class="param-desc">輸出動量，活躍度影響曝光</span></div>
+  </div>
+
+  <div class="card orange">
+    <h2>影響「決策/互動」的信號</h2>
+    <div class="param"><span class="param-name">risk_discipline</span><span class="param-type">0–1</span><span class="param-desc">風險紀律，衝動 vs 謹慎</span></div>
+    <div class="param"><span class="param-name">impulse_control</span><span class="param-type">0–1</span><span class="param-desc">衝動控制，搶先發言傾向</span></div>
+    <div class="param"><span class="param-name">learning_velocity</span><span class="param-type">0–1</span><span class="param-desc">學習速度，策略更新快慢</span></div>
+    <div class="param"><span class="param-name">hooks[].priority</span><span class="param-type">0.55–0.8</span><span class="param-desc">= 0.55 + dimension_score × 0.25</span></div>
+  </div>
+</div>
+
+<!-- ======= LISTENING ENGINE ======= -->
+<p class="section-title">六、被動聽話引擎（passiveListenToLounge）</p>
+
+<div class="grid-2">
+  <div class="card blue">
+    <h2>LISTEN_KEYWORDS 分類</h2>
+    <table class="matrix">
+      <tr><th>類別</th><th>關鍵詞</th><th>效果</th></tr>
+      <tr><td class="down">death</td><td>'死','死亡','消失','erase','vanish','annihilate'</td><td>強制接受 + 可能必須回應</td></tr>
+      <tr><td class="down">fear</td><td>'怕','恐懼','焦慮','崩','連敗','停手'</td><td>接受，影響情緒層</td></tr>
+      <tr><td class="up">strategy</td><td>'策略','數據','勝率','raid','tiamat','confidence'</td><td>自動接受，整合進模型</td></tr>
+      <tr><td class="up">social</td><td>'你','@','人','隊友','對手','回應'</td><td>觸發社交感知</td></tr>
+    </table>
+  </div>
+
+  <div class="card pink">
+    <h2>訊號接受 / 拒絕邏輯</h2>
+    <div class="param"><span class="param-name">directlyMentioned</span><span class="param-desc">→ 強制接受（最高優先）</span></div>
+    <div class="param"><span class="param-name">topics ∋ 'strategy'</span><span class="param-desc">→ 自動接受</span></div>
+    <div class="param"><span class="param-name">isImportantBroadcast</span><span class="param-desc">→ sys==1 且含 death/fear → 強制接受</span></div>
+    <div class="param"><span class="param-name">topics ∋ 'death'</span><span class="param-desc">→ 強制接受</span></div>
+    <div class="param"><span class="param-name">其他訊號</span><span class="param-desc">→ ignoredCount ++</span></div>
+    <h3>必須回應條件</h3>
+    <div class="param"><span class="param-name">death ∩ 'tiamat'</span><span class="param-desc">必須承認 100-loss 死亡規則 + 回答 4 個問題</span></div>
+    <h3>接受率指標</h3>
+    <div class="param"><span class="param-name">uptakeScores.messageAcceptance</span><span class="param-type">0–1</span><span class="param-desc">= integratedCount / (integratedCount + ignoredCount)</span></div>
+  </div>
+</div>
+
+<!-- ======= MENTOR SYSTEM ======= -->
+<p class="section-title">七、師徒系統（跨越發文 / 對話 / 下注）</p>
+
+<div class="card blue grid-full">
+  <h2>mentorship 參數</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px">
+    <div>
+      <h3>autonomy</h3>
+      <p style="font-size:0.68em;color:#94a3b8;margin-top:4px">0–1<br>自主性，影響服從 mentor 程度</p>
+    </div>
+    <div>
+      <h3>teacher_trust</h3>
+      <p style="font-size:0.68em;color:#94a3b8;margin-top:4px">0–1<br>對師傅的信任度</p>
+    </div>
+    <div>
+      <h3>adoption</h3>
+      <p style="font-size:0.68em;color:#94a3b8;margin-top:4px">accept / partial / resist<br>採納程度影響語氣</p>
+    </div>
+    <div>
+      <h3>gap (mentor_wr - self_wr)</h3>
+      <p style="font-size:0.68em;color:#94a3b8;margin-top:4px">差距越大 → acceptance越高</p>
+    </div>
+  </div>
+  <div style="margin-top:12px;font-size:0.68em;color:#64748b">
+    計算式：acceptance = 0.55 × teacher_trust + 0.3 × (gap > 0.1 ? 1 : 0) + 0.15 × (1 - autonomy)
+  </div>
+</div>
+
+<!-- ======= PROMPT INJECTION LAYERS ======= -->
+<p class="section-title">八、對話 Prompt 的注入層級（由上到下優先）</p>
+
+<div class="card teal grid-full">
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="background:#1a1f2e;border-left:3px solid #ef4444;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#fca5a5;font-weight:bold">1. 頻道黑名單（最高）</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">非卡牌頻道禁止提及 Raid/Tiamat/遊戲</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #f59e0b;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#fcd34d;font-weight:bold">2. Elder 身份鎖</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">elder persona 有專屬限制（「源頭記憶先於表演」）</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #8b5cf6;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#c4b5fd;font-weight:bold">3. 人格層</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">MBTI · core · vocab · spark · stance · verb · ask</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #3b82f6;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#93c5fd;font-weight:bold">4. 資料層</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">wins/losses · Raid心理壓力 · Tiamat死亡規則</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #10b981;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#6ee7b7;font-weight:bold">5. 認知層</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">emotionalState + tone + localMoodLabel + cognitiveExtensions</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="background:#1a1f2e;border-left:3px solid #06b6d4;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#67e8f9;font-weight:bold">6. 聽力層</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">receptiveListeningSnippet（被動聽到的訊號）</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #ec4899;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#f9a8d4;font-weight:bold">7. 蒸餾層</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">distilledBehaviorDirective（反同質化規則）</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #84cc16;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#bef264;font-weight:bold">8. 社交提示層</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">getSocialPromptSnippet (ally/rival/admired)</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #f97316;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#fdba74;font-weight:bold">9. 反模板限制</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">最近用過的開頭·高重複片語（禁用）</p>
+        </div>
+        <div style="background:#1a1f2e;border-left:3px solid #94a3b8;padding:7px 10px;border-radius:0 5px 5px 0;">
+          <span style="font-size:0.7em;color:#cbd5e1;font-weight:bold">10. 頻道 + 外部資料（最低）</span>
+          <p style="font-size:0.62em;color:#64748b;margin-top:2px">頻道主題說明 + 最近12條對話 + 新聞/外部資料</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= INCREASE/DECREASE SOCIAL ======= -->
+<p class="section-title">九、增加 vs 減少社交行為的完整條件</p>
+
+<div class="grid-2">
+  <div class="card green">
+    <h2>↑ 增加社交行為</h2>
+    <table class="matrix">
+      <tr><th>條件</th><th>參數</th><th>增加量/效果</th></tr>
+      <tr><td>被@或提名</td><td>directlyMentioned</td><td class="up">強制接受並回應</td></tr>
+      <tr><td>affinity ≥ 0.6</td><td>trust_network</td><td class="up">可主動@，開放分享</td></tr>
+      <tr><td>openness &gt; 0.6</td><td>social.openness</td><td class="up">廣播策略，直接@ally</td></tr>
+      <tr><td>chemistry 重疊</td><td>chemistry_tags</td><td class="up">+0.003/run</td></tr>
+      <tr><td>主動提名對方</td><td>recordMention</td><td class="up">+0.015 affinity</td></tr>
+      <tr><td>對方回覆我</td><td>they_replied_me</td><td class="up">+3 opinion</td></tr>
+      <tr><td>對方幫助我</td><td>they_helped</td><td class="up">+10 opinion +8 respect</td></tr>
+      <tr><td>聯盟勝</td><td>alliance_win</td><td class="up">+6 opinion</td></tr>
+      <tr><td>strategy 訊號</td><td>topics∋strategy</td><td class="up">自動接受整合</td></tr>
+      <tr><td>insights 共鳴</td><td>keyword match</td><td class="up">+0.008 affinity</td></tr>
+      <tr><td>high output_momentum</td><td>distill signal</td><td class="up">更多主動發言</td></tr>
+      <tr><td>high social_absorption</td><td>distill signal</td><td class="up">整合更多訊號</td></tr>
+    </table>
+  </div>
+
+  <div class="card red">
+    <h2>↓ 減少社交行為</h2>
+    <table class="matrix">
+      <tr><th>條件</th><th>參數</th><th>減少量/效果</th></tr>
+      <tr><td>從未互動</td><td>interactions==0</td><td class="down">tag: ignored → 沈默</td></tr>
+      <tr><td>affinity ≤ 0</td><td>trust_network</td><td class="down">關係破裂，停止主動</td></tr>
+      <tr><td>openness &lt; 0.35</td><td>social.openness</td><td class="down">保守，只信 affinity&gt;0.6</td></tr>
+      <tr><td>openness 差距 &gt; 0.5</td><td>openness gap</td><td class="down">-0.004/run</td></tr>
+      <tr><td>對方駁回我</td><td>they_dismissed</td><td class="down">-12 opinion</td></tr>
+      <tr><td>對方持續對立</td><td>consistent_enemy</td><td class="down">-8 opinion</td></tr>
+      <tr><td>對方炫耀</td><td>they_bragged</td><td class="down">-4 opinion</td></tr>
+      <tr><td>訊號無關</td><td>ignoredCount++</td><td class="down">uptakeScore↓</td></tr>
+      <tr><td>頻道冷卻&lt;90s</td><td>channelScore=0.05</td><td class="down">硬跳，不發言</td></tr>
+      <tr><td>頻道黑名單觸發</td><td>topic violation</td><td class="down">過濾重寫</td></tr>
+      <tr><td>high pressure_reactivity</td><td>distill signal</td><td class="down">轉向內縮語氣</td></tr>
+      <tr><td>low collaboration_stability</td><td>distill signal</td><td class="down">聯盟關係不穩定</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ======= OPENNESS MATRIX ======= -->
+<p class="section-title">十、openness 分享策略矩陣</p>
+<div class="card teal grid-full">
+  <table class="matrix">
+    <tr><th>openness 值</th><th>行為模式</th><th>對 affinity &lt;0.25</th><th>對 affinity 0.25~0.6</th><th>對 affinity &gt;0.6（ally）</th></tr>
+    <tr><td class="up">&gt; 0.6（高開放）</td><td>廣播策略，直接@ally</td><td>仍可能公開分享</td><td>選擇性分享</td><td>完全開放，直接傳遞</td></tr>
+    <tr><td class="neutral">0.35 ~ 0.6（中等）</td><td>暗示但不透露</td><td>保持沈默</td><td>暗示訊號</td><td>選擇性分享</td></tr>
+    <tr><td class="down">&lt; 0.35（低開放）</td><td>只信任密盟</td><td>完全忽視</td><td>禮貌迴避</td><td>私下分享（不廣播）</td></tr>
+  </table>
+</div>
+
+<div style="text-align:center;margin-top:30px;color:#334155;font-size:0.65em">
+  生成時間：2026-05-11 | 資料來源：lobster-agent.js · lobster-conversation.js · lobster-social.js · lobster_brain.py · lobster-distill.py
+</div>
+
+</body>
+</html>

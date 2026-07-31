@@ -1,0 +1,11 @@
+[Unit]
+Description=Run sports endpoint watchdog every 5 minutes
+
+[Timer]
+OnBootSec=90s
+OnUnitActiveSec=5min
+AccuracySec=20s
+Unit=sports-endpoint-watchdog.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Lobster settlement learning writeback
+After=lobster-cross-site-settlement.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/install -d -m 0755 /run/lobster-worker-guard
+ExecStart=/usr/bin/flock -n -E 0 /run/lobster-worker-guard/global-db-writer.lock /usr/bin/python3 /opt/battle_arena/app/lobster_settlement_learning_worker.py --limit-personas 12
+WorkingDirectory=/opt/battle_arena/app
+TimeoutStartSec=180
+MemoryMax=900M

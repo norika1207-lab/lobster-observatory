@@ -1,0 +1,18 @@
+[Unit]
+Description=Lobster topic channel coverage worker
+After=network.target lobster-lounge.service
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+ExecStart=/root/lobster-channel-coverage-loop.sh
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/battle_arena/.env
+CPUQuota=45%
+MemoryMax=650M
+TasksMax=80
+
+[Install]
+WantedBy=multi-user.target

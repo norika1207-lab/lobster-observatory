@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Lobster aggregate Afu Brain RAG pack
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root/afu-brain
+ExecStart=/usr/bin/python3 /root/afu-brain/scripts/export_public_rag_from_sqlite.py /opt/battle_arena/app/battle_arena.db --out /root/afu-brain/runtime/lobster-aggregate-rag.jsonl
+Nice=10
+CPUQuota=15%
+MemoryMax=180M

@@ -1,0 +1,8 @@
+[Unit]
+Description=Endpoint smoke test every 3 min
+[Timer]
+OnBootSec=45s
+OnUnitActiveSec=3min
+Persistent=true
+[Install]
+WantedBy=timers.target

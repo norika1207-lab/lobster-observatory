@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster reading comprehension engine every 5 minutes
+
+[Timer]
+OnBootSec=4min
+OnUnitActiveSec=5min
+AccuracySec=45s
+Unit=lobster-reading-comprehension.service
+
+[Install]
+WantedBy=timers.target

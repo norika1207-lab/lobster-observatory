@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster scattered file archive cleanup every 6 hours
+
+[Timer]
+OnBootSec=20min
+OnUnitActiveSec=6h
+Persistent=true
+Unit=lobster-sprawl-archive.service
+
+[Install]
+WantedBy=timers.target

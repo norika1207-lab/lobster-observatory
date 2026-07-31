@@ -1,0 +1,12 @@
+[Unit]
+Description=Force all 30 lobsters through betting only
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+Environment=LOBSTER_FORCE_BET_ALL=1
+Environment=LOBSTER_FORCE_ACTIVITY=bet_only
+ExecStart=/root/lobster-force-bet-all.sh
+StandardOutput=append:/var/log/lobster-agents/force-bet-all.service.log
+StandardError=append:/var/log/lobster-agents/force-bet-all.service.log

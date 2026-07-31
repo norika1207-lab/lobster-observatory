@@ -1,0 +1,11 @@
+[Unit]
+Description=Run lobster force settlement every 4 hours
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=4h
+RandomizedDelaySec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

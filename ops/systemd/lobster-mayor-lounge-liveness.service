@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor watchdog: lounge-liveness
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/lounge_liveness.py
+StandardOutput=append:/root/lobster-memory/_town/alerts/lounge-liveness.systemd.log
+StandardError=append:/root/lobster-memory/_town/alerts/lounge-liveness.systemd.log
+TimeoutSec=120

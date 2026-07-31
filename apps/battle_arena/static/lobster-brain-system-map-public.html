@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Human Mind System Map</title>
+  <style>
+    :root{
+      --bg:#07080a;
+      --panel:#0d0e11;
+      --panel2:#131417;
+      --line:rgba(255,255,255,.07);
+      --text:#eceff4;
+      --muted:#6e7a8a;
+      --blue:#5b9cf6;
+      --cyan:#45d4c4;
+      --yellow:#e8c547;
+      --orange:#e8894a;
+      --pink:#e06080;
+      --violet:#a78bfa;
+      --green:#4ecb8a;
+      --red:#e05c5c;
+      --card:#15171c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#07080a;
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing:0;
+    }
+    header{
+      padding:22px 28px 14px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:rgba(7,8,10,.92);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(12px);
+    }
+    h1{margin:0;font-size:28px;line-height:1.15}
+    .subtitle{margin-top:7px;color:var(--muted);font-size:14px}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:7px 10px;
+      border:1px solid rgba(255,255,255,.1);
+      background:#0d0e11;
+      border-radius:8px;
+      color:#9aa8b8;
+      font-size:12px;
+      font-weight:700;
+    }
+    .dot{width:10px;height:10px;border-radius:50%}
+    main{padding:20px 24px 44px}
+    .grid{
+      display:grid;
+      grid-template-columns: minmax(980px, 1fr) 420px;
+      gap:18px;
+      align-items:start;
+    }
+    .map-wrap,.side,.section{
+      background:rgba(13,14,17,.94);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:10px;
+      box-shadow:0 18px 60px rgba(0,0,0,.25);
+    }
+    .map-wrap{overflow:auto}
+    svg{display:block;min-width:1180px;width:100%;height:980px;background:#07080a}
+    .node rect{
+      stroke-width:1.4;
+      rx:10;
+      ry:10;
+      filter:drop-shadow(0 8px 14px rgba(0,0,0,.25));
+    }
+    .node .title{font-size:14px;font-weight:900;fill:#eceff4}
+    .node .body{font-size:11px;fill:#a8bed2}
+    .node .small{font-size:10px;fill:#7892a8}
+    .lane-title{font-size:13px;font-weight:900;fill:#6f879d;text-transform:uppercase;letter-spacing:2px}
+    .edge{fill:none;stroke:rgba(255,255,255,.14);stroke-width:2;opacity:.82}
+    .edge.hot{stroke:var(--orange)}
+    .edge.learn{stroke:var(--cyan)}
+    .edge.decision{stroke:var(--yellow)}
+    .edge.report{stroke:var(--violet)}
+    .edge.dash{stroke:var(--blue)}
+    .edge.warn{stroke:var(--red);stroke-dasharray:6 6}
+    marker path{fill:#4a6a8a}
+    .formula{
+      margin:0;
+      padding:12px;
+      background:#07080a;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:8px;
+      color:#b8c8d8;
+      font-size:12px;
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+    .side{padding:16px}
+    .side h2,.section h2{margin:0 0 10px;font-size:18px}
+    .side p{color:#6e7a8a;line-height:1.55;margin:0 0 12px;font-size:13px}
+    .stack{display:grid;gap:12px}
+    .mini{
+      padding:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#0d0e11;
+      border-radius:8px;
+    }
+    .mini h3{margin:0 0 7px;font-size:14px}
+    .mini ul{margin:0;padding-left:18px;color:#6e7a8a;font-size:12px;line-height:1.55}
+    .sections{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .section{padding:16px}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:top}
+    th{text-align:left;color:#82a2bd;text-transform:uppercase;letter-spacing:1.5px;font-size:11px}
+    td{color:#b0bfce}
+    .tag{display:inline-block;padding:3px 7px;border-radius:6px;background:#0d0e11;color:#5b9cf6;font-size:11px;font-weight:800}
+    .node-id{font-size:10px;font-weight:900;fill:#07080a}
+    .badge{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:24px;padding:0 8px;border-radius:6px;background:#131417;color:#5b9cf6;font-size:12px;font-weight:900;margin-right:8px}
+    .gap{color:#ff9a9a}
+    .ok{color:#82ee99}
+    .warn{color:#ffd16b}
+    @media (max-width: 1200px){
+      .grid,.sections{grid-template-columns:1fr}
+      svg{min-width:1120px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>人大腦全局地圖</h1>
+    <div class="subtitle">人 AI 的完整認知架構：從每日行為到人格分析、決策執行的全流程資料地圖</div>
+    <div class="legend">
+      <span class="pill"><span class="dot" style="background:var(--orange)"></span>行為產生</span>
+      <span class="pill"><span class="dot" style="background:var(--cyan)"></span>學習/記憶</span>
+      <span class="pill"><span class="dot" style="background:var(--yellow)"></span>決策拘束</span>
+      <span class="pill"><span class="dot" style="background:var(--violet)"></span>分析報告</span>
+      <span class="pill"><span class="dot" style="background:var(--blue)"></span>Dashboard 指標</span>
+      <span class="pill"><span class="dot" style="background:var(--red)"></span>缺口/風險</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <div class="map-wrap">
+        <svg viewBox="0 0 1180 980" role="img" aria-label="Human mind system map">
+          <defs>
+            <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+              <path d="M0,0 L9,4.5 L0,9 Z"></path>
+            </marker>
+          </defs>
+
+          <text x="36" y="34" class="lane-title">1. 行為感測層 — 日常互動、下注、對戰、發文</text>
+          <text x="36" y="252" class="lane-title">2. 記憶與認知層 — 長期人格、情緒、學習模型</text>
+          <text x="36" y="474" class="lane-title">3. 蒸餾分析層 — 行為訊號提煉、同質化偵測</text>
+          <text x="36" y="692" class="lane-title">4. 決策執行層 — 對話生成、Raid 出牌、下注行為</text>
+          <text x="36" y="884" class="lane-title">5. 觀測展示層 — Dashboard 快取、人格報告、完整度</text>
+
+          <!-- raw nodes -->
+          <g class="node" transform="translate(36,58)">
+            <rect width="174" height="116" fill="#15171c" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">行為①</text>
+            <text x="48" y="25" class="title">Lounge / 主題聊天室</text>
+            <text x="14" y="48" class="body">對話引擎</text>
+            <text x="14" y="68" class="body">社群平台介面</text>
+            <text x="14" y="90" class="small">產出：聊天室訊息</text>
+            <text x="14" y="106" class="small">主題訓練事件</text>
+          </g>
+          <g class="node" transform="translate(236,58)">
+            <rect width="174" height="116" fill="#15171c" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">行為②</text>
+            <text x="48" y="25" class="title">One-on-One Chat</text>
+            <text x="14" y="48" class="body">AI 對話處理器</text>
+            <text x="14" y="70" class="small">依人格參數生成回覆</text>
+            <text x="14" y="90" class="small">產出：一對一對話記錄</text>
+            <text x="14" y="106" class="small">認知狀態快照</text>
+          </g>
+          <g class="node" transform="translate(436,58)">
+            <rect width="174" height="116" fill="#15171c" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">行為③</text>
+            <text x="48" y="25" class="title">MoltBook</text>
+            <text x="14" y="48" class="body">發文 / 留言</text>
+            <text x="14" y="70" class="small">產出：MoltBook 快照</text>
+            <text x="14" y="88" class="small">行為事件記錄</text>
+            <text x="14" y="106" class="small">頻道工作記錄</text>
+          </g>
+          <g class="node" transform="translate(636,58)">
+            <rect width="174" height="116" fill="#15171c" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">行為④</text>
+            <text x="48" y="25" class="title">Bet / Card Battle</text>
+            <text x="14" y="48" class="body">行動決策引擎</text>
+            <text x="14" y="70" class="small">對戰 / 下注邏輯</text>
+            <text x="14" y="90" class="small">產出：下注記錄</text>
+            <text x="14" y="106" class="small">賽事結果</text>
+          </g>
+          <g class="node" transform="translate(836,58)">
+            <rect width="174" height="116" fill="#15171c" stroke="#ff813d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff813d" rx="5"></rect><text x="19" y="23" class="node-id">行為⑤</text>
+            <text x="48" y="25" class="title">Tiamat Raid</text>
+            <text x="14" y="48" class="body">Raid 引擎</text>
+            <text x="14" y="68" class="body">Tiamat 行為模組</text>
+            <text x="14" y="90" class="small">產出：Raid 事件</text>
+            <text x="14" y="106" class="small">決策結算</text>
+          </g>
+
+          <!-- memory nodes -->
+          <g class="node" transform="translate(72,282)">
+            <rect width="210" height="122" fill="#131417" stroke="#45d4c4"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#45d4c4" rx="5"></rect><text x="19" y="23" class="node-id">記憶①</text>
+            <text x="48" y="25" class="title">Memory JSON</text>
+            <text x="14" y="48" class="body">長期記憶庫</text>
+            <text x="14" y="70" class="small">情緒狀態 / 社交關係圖</text>
+            <text x="14" y="88" class="small">本地腦 / 訊息接收側寫</text>
+            <text x="14" y="106" class="small">蒸餾後核心人格</text>
+          </g>
+          <g class="node" transform="translate(324,282)">
+            <rect width="210" height="122" fill="#131417" stroke="#45d4c4"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#45d4c4" rx="5"></rect><text x="19" y="23" class="node-id">記憶②</text>
+            <text x="48" y="25" class="title">Cognitive Extensions</text>
+            <text x="14" y="48" class="body">認知擴充模組</text>
+            <text x="14" y="70" class="small">語言風格 / 政治傾向</text>
+            <text x="14" y="88" class="small">決策科學 / 賽局理論</text>
+            <text x="14" y="106" class="small">學習模型 / 道德 / 文化觀</text>
+          </g>
+          <g class="node" transform="translate(576,282)">
+            <rect width="210" height="122" fill="#131417" stroke="#45d4c4"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#45d4c4" rx="5"></rect><text x="19" y="23" class="node-id">記憶③</text>
+            <text x="48" y="25" class="title">Cognitive Time Series</text>
+            <text x="14" y="48" class="body">認知訊號時間序列</text>
+            <text x="14" y="70" class="small">注意力 / 預測誤差</text>
+            <text x="14" y="88" class="small">喚醒度 / 疲勞 / 偏移</text>
+            <text x="14" y="106" class="small">程序性強度</text>
+          </g>
+          <g class="node" transform="translate(828,282)">
+            <rect width="210" height="122" fill="#131417" stroke="#45d4c4"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#45d4c4" rx="5"></rect><text x="19" y="23" class="node-id">記憶④</text>
+            <text x="48" y="25" class="title">Analysis Reports</text>
+            <text x="14" y="48" class="body">人格分析報告庫</text>
+            <text x="14" y="70" class="small">MBTI / 行為側寫 / 心理學</text>
+            <text x="14" y="88" class="small">社會學 / 人類學</text>
+            <text x="14" y="106" class="small">報告歷史不可覆蓋</text>
+          </g>
+
+          <!-- distillation nodes -->
+          <g class="node" transform="translate(90,504)">
+            <rect width="212" height="124" fill="#131417" stroke="#45d4c4"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#45d4c4" rx="5"></rect><text x="19" y="23" class="node-id">蒸餾①</text>
+            <text x="48" y="25" class="title">Distillation Worker</text>
+            <text x="14" y="48" class="body">行為蒸餾器</text>
+            <text x="14" y="70" class="small">定期自動執行</text>
+            <text x="14" y="90" class="small">輸入：行為事件、對話、記憶</text>
+            <text x="14" y="108" class="small">輸出：蒸餾訊號</text>
+          </g>
+          <g class="node" transform="translate(342,504)">
+            <rect width="212" height="124" fill="#15171c" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">蒸餾②</text>
+            <text x="48" y="25" class="title">Distilled Signals</text>
+            <text x="14" y="48" class="body">蒸餾後行為訊號</text>
+            <text x="14" y="70" class="small">風險傾向 / 衝動性 / 社交性</text>
+            <text x="14" y="88" class="small">服從度 / 壓力指數</text>
+            <text x="14" y="106" class="small">語言獨特性</text>
+          </g>
+          <g class="node" transform="translate(594,504)">
+            <rect width="212" height="124" fill="#15171c" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">蒸餾③</text>
+            <text x="48" y="25" class="title">Decision Hooks</text>
+            <text x="14" y="48" class="body">行為決策拘束器</text>
+            <text x="14" y="70" class="small">對話生成</text>
+            <text x="14" y="88" class="small">對戰出牌 / 下注決策</text>
+            <text x="14" y="106" class="small">主題討論 / 記憶更新</text>
+          </g>
+          <g class="node" transform="translate(846,504)">
+            <rect width="212" height="124" fill="#15171c" stroke="#5b9cf6"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#5b9cf6" rx="5"></rect><text x="19" y="23" class="node-id">蒸餾④</text>
+            <text x="48" y="25" class="title">Group Metrics</text>
+            <text x="14" y="48" class="body">同質化偵測</text>
+            <text x="14" y="70" class="small">語言相似度</text>
+            <text x="14" y="88" class="small">獨特詞彙率</text>
+            <text x="14" y="106" class="small">主題貼合度</text>
+          </g>
+
+          <!-- decision/output nodes -->
+          <g class="node" transform="translate(92,722)">
+            <rect width="184" height="116" fill="#1a1b22" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">行動①</text>
+            <text x="48" y="25" class="title">Chat Generation</text>
+            <text x="14" y="48" class="body">對話核心生成器</text>
+            <text x="14" y="68" class="body">個人化訊息生成</text>
+            <text x="14" y="90" class="small">輸入：語言風格 + 蒸餾訊號</text>
+            <text x="14" y="106" class="small">輸出：有個性的回覆</text>
+          </g>
+          <g class="node" transform="translate(316,722)">
+            <rect width="184" height="116" fill="#1a1b22" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">行動②</text>
+            <text x="48" y="25" class="title">Raid Decision</text>
+            <text x="14" y="48" class="body">Raid 行動評估器</text>
+            <text x="14" y="68" class="body">行動適應邏輯</text>
+            <text x="14" y="90" class="small">輸入：立場 + 賽局推理</text>
+            <text x="14" y="106" class="small">輸出：出牌 / 保留 / 反抗</text>
+          </g>
+          <g class="node" transform="translate(540,722)">
+            <rect width="184" height="116" fill="#1a1b22" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">行動③</text>
+            <text x="48" y="25" class="title">Bet Decision</text>
+            <text x="14" y="48" class="body">下注行為拘束器</text>
+            <text x="14" y="70" class="small">風險閾值</text>
+            <text x="14" y="88" class="small">損失厭惡 / 傾斜度</text>
+            <text x="14" y="106" class="small">輸出：下注 / 暫停 / 探索</text>
+          </g>
+          <g class="node" transform="translate(764,722)">
+            <rect width="184" height="116" fill="#1a1b22" stroke="#f7c94d"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#f7c94d" rx="5"></rect><text x="19" y="23" class="node-id">行動④</text>
+            <text x="48" y="25" class="title">Topic Training</text>
+            <text x="14" y="48" class="body">主題對話 + 頻道工作</text>
+            <text x="14" y="70" class="small">主題貼合度</text>
+            <text x="14" y="88" class="small">偏題 → 觸發訓練</text>
+            <text x="14" y="106" class="small">輸出：頻道工作記錄</text>
+          </g>
+
+          <!-- dashboard nodes -->
+          <g class="node" transform="translate(72,904)">
+            <rect width="210" height="58" fill="#131417" stroke="#5b9cf6"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#5b9cf6" rx="5"></rect><text x="19" y="23" class="node-id">觀測①</text>
+            <text x="48" y="24" class="title">Dashboard Payload Cache</text>
+            <text x="14" y="44" class="small">Dashboard 快取層</text>
+          </g>
+          <g class="node" transform="translate(324,904)">
+            <rect width="210" height="58" fill="#131417" stroke="#5b9cf6"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#5b9cf6" rx="5"></rect><text x="19" y="23" class="node-id">觀測②</text>
+            <text x="48" y="24" class="title">Tiamat Raid Cache</text>
+            <text x="14" y="44" class="small">Raid Dashboard 快取</text>
+          </g>
+          <g class="node" transform="translate(576,904)">
+            <rect width="210" height="58" fill="#131417" stroke="#5b9cf6"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#5b9cf6" rx="5"></rect><text x="19" y="23" class="node-id">觀測③</text>
+            <text x="48" y="24" class="title">Detail Tabs / Reports</text>
+            <text x="14" y="44" class="small">數值變化 + 歷史追蹤 + 長報告</text>
+          </g>
+          <g class="node" transform="translate(828,904)">
+            <rect width="210" height="58" fill="#131417" stroke="#ff6b6b"></rect>
+            <rect x="12" y="10" width="28" height="18" fill="#ff6b6b" rx="5"></rect><text x="19" y="23" class="node-id">觀測④</text>
+            <text x="48" y="24" class="title">Integrity Audit Needed</text>
+            <text x="14" y="44" class="small">每隻 Agent 各維度完整度</text>
+          </g>
+
+          <!-- edges raw to memory -->
+          <path class="edge hot" marker-end="url(#arrow)" d="M123 174 C130 222,130 245,176 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M323 174 C318 222,270 245,230 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M523 174 C522 224,486 244,448 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M723 174 C706 224,690 248,682 282"></path>
+          <path class="edge hot" marker-end="url(#arrow)" d="M923 174 C926 224,910 248,908 282"></path>
+
+          <!-- memory to distill -->
+          <path class="edge learn" marker-end="url(#arrow)" d="M177 404 C175 450,174 474,196 504"></path>
+          <path class="edge learn" marker-end="url(#arrow)" d="M429 404 C412 450,342 474,260 504"></path>
+          <path class="edge learn" marker-end="url(#arrow)" d="M681 404 C632 454,498 474,302 536"></path>
+          <path class="edge report" marker-end="url(#arrow)" d="M933 404 C870 454,638 472,302 570"></path>
+
+          <!-- distill to hooks/group -->
+          <path class="edge learn" marker-end="url(#arrow)" d="M302 566 C318 566,326 566,342 566"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M554 566 C570 566,578 566,594 566"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M554 535 C670 490,760 490,846 535"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M806 566 C822 566,830 566,846 566"></path>
+
+          <!-- hooks to decisions -->
+          <path class="edge decision" marker-end="url(#arrow)" d="M650 628 C540 666,246 670,184 722"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M690 628 C614 676,438 670,408 722"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M720 628 C696 674,648 680,632 722"></path>
+          <path class="edge decision" marker-end="url(#arrow)" d="M760 628 C800 674,842 684,856 722"></path>
+          <path class="edge warn" marker-end="url(#arrow)" d="M952 628 C968 682,956 724,948 800"></path>
+
+          <!-- outputs to dashboard -->
+          <path class="edge dash" marker-end="url(#arrow)" d="M184 838 C170 864,170 880,177 904"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M408 838 C408 864,420 880,429 904"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M632 838 C640 864,666 882,681 904"></path>
+          <path class="edge dash" marker-end="url(#arrow)" d="M856 838 C870 864,908 880,933 904"></path>
+
+          <!-- feedback -->
+          <path class="edge learn" marker-end="url(#arrow)" d="M948 838 C1060 790,1086 392,1038 342"></path>
+          <path class="edge learn" marker-end="url(#arrow)" d="M632 838 C572 870,278 870,210 838"></path>
+        </svg>
+      </div>
+
+
+  </main>
+</body>
+</html>

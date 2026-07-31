@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh Lobster Social Intelligence cache every 30 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=30min
+AccuracySec=90s
+Persistent=true
+Unit=lobster-social-intelligence-cache.service
+
+[Install]
+WantedBy=timers.target

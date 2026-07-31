@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster cold storage failover DB sync every 30 minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+AccuracySec=90s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

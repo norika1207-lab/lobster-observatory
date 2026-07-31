@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Lobster pre-bet compliance rollup hourly
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=10m
+Persistent=true
+Unit=lobster-prebet-daily-compliance.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster brain mental lexicon builder
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-brain-lexicon --lock-key lobster-brain-lexicon --min-interval-sec 21600 --timeout-sec 600 -- /usr/bin/python3 /root/lobster-brain-lexicon-builder.py
+Nice=10
+CPUQuota=40%
+MemoryMax=500M

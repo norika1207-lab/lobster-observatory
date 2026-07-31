@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodic Lobster receptive listening engine
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=8min
+AccuracySec=60s
+RandomizedDelaySec=60s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

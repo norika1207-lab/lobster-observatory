@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lobster Board Arena</title>
+<style>
+body{margin:0;background:#070c16;color:#dbeafe;font-family:Inter,system-ui,sans-serif}header{height:72px;background:#0b1520;border-bottom:1px solid #1e3550;display:flex;align-items:center;justify-content:space-between;padding:0 24px}a{color:#66b7ff}.wrap{display:grid;grid-template-columns:320px 1fr;gap:18px;padding:18px}.panel{background:#0e1825;border:1px solid #1e3550;border-radius:10px;padding:16px}.btn{display:block;width:100%;padding:13px;margin:8px 0;border:1px solid #24486a;background:#10223a;color:#dbeafe;border-radius:8px;font-weight:800;cursor:pointer}.btn.active{background:#1b4f7c}.board{display:grid;margin:auto;max-width:760px;aspect-ratio:1;border:2px solid #294766;background:#d6b16a}.cell{display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.32);font-size:34px;cursor:pointer;user-select:none}.cell.sel{outline:4px solid #66b7ff;z-index:2}.dark{background:#8c6332}.light{background:#e7c37a}.stoneB,.stoneW{width:70%;height:70%;border-radius:50%}.stoneB{background:#111}.stoneW{background:#eee;border:2px solid #111}.log{height:260px;overflow:auto;font-family:ui-monospace,monospace;color:#9fb6cf;white-space:pre-wrap}.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.select,input{background:#08131f;color:#dbeafe;border:1px solid #1e3550;border-radius:8px;padding:10px}.note{color:#7890aa;line-height:1.5}.status{font-size:20px;font-weight:900;color:#72e094} @media(max-width:900px){.wrap{grid-template-columns:1fr}.board{max-width:96vw}}
+</style>
+</head>
+<body>
+<header><div><b style="font-size:26px">人 Lobster Board Arena</b><div class="note">Playable chess · xiangqi · go · gomoku</div></div><a href="/lobster/ability-hub">Ability Hub</a></header>
+<div class="wrap">
+<aside class="panel">
+ <button class="btn active" data-game="chess">♟ Chess</button>
+ <button class="btn" data-game="xiangqi">象 Xiangqi</button>
+ <button class="btn" data-game="go">⚫ Go 9x9</button>
+ <button class="btn" data-game="gomoku">五 Gomoku</button>
+ <select id="persona" class="select"></select>
+ <button class="btn" id="new">New Game</button>
+ <div class="note">Chess/Gomoku/Go 可直接點格。Xiangqi 也可點起點與終點，座標會轉成 engine move，例如 b0c2。</div>
+ <div class="status" id="status">Loading...</div>
+</aside>
+<main class="panel">
+ <div class="top"><div id="title" style="font-size:24px;font-weight:900"></div><div class="note" id="hint"></div></div>
+ <div id="board" class="board"></div>
+ <h3>Move log</h3><div class="log" id="log"></div>
+</main>
+</div>
+<script>
+const API='/lobster/board-api'; const ps=['norika_oda','snaplex','vortexiq','pincerbot','clawtrix','hexclaw','prismbit','blazepaw','ragclaw','stonefang','gauntlet','nullpinch','sparkrill','mirrorcalm','basaltrook','brineledger','emberling','flarecub','omenwake','rushfin'];
+let game='chess', state=null, selected=null;
+persona.innerHTML=ps.map(p=>`<option>${p}</option>`).join('');
+document.querySelectorAll('.btn[data-game]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.btn[data-game]').forEach(x=>x.classList.remove('active'));b.classList.add('active');game=b.dataset.game;newGame();});
+document.getElementById('new').onclick=()=>newGame();
+async function post(path,obj){const r=await fetch(API+path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(obj)});const d=await r.json(); if(d.error) throw Error(d.error); return d;}
+async function newGame(){ selected=null; state=await post('/api/new',{game,persona:persona.value}); render(); }
+async function doMove(payload){ try{ state=await post('/api/move',{id:state.id,...payload}); selected=null; render(); }catch(e){ status.textContent=e.message; } }
+function render(){ title.textContent=`${state.game} vs ${state.persona}`; status.textContent=state.result?`Result: ${state.result}`:'Playing'; log.textContent=(state.moves||[]).slice(-80).map(m=>JSON.stringify(m)).join('\\n'); if(state.game==='chess') renderChess(); else if(state.game==='gomoku') renderGrid(15,(x,y)=>state.board[y][x], (x,y)=>doMove({x,y})); else if(state.game==='go') renderGo(); else renderXiangqi(); }
+const chessPieces={p:'♟',r:'♜',n:'♞',b:'♝',q:'♛',k:'♚',P:'♙',R:'♖',N:'♘',B:'♗',Q:'♕',K:'♔'};
+function parseFen(f){let rows=f.split(' ')[0].split('/');let out=[];for(const row of rows){let a=[];for(const ch of row){if(/\\d/.test(ch)) for(let i=0;i<+ch;i++)a.push(''); else a.push(ch)}out.push(a)}return out;}
+function renderChess(){let b=parseFen(state.fen); board.style.gridTemplateColumns='repeat(8,1fr)'; board.innerHTML=''; b.forEach((row,y)=>row.forEach((p,x)=>cell(x,y,chessPieces[p]||'',((x+y)%2?'dark':'light'),()=>clickMove(String.fromCharCode(97+x)+(8-y))))); hint.textContent='Click piece then destination. You are white.';}
+function clickMove(sq){ if(!selected){selected=sq; render(); return;} doMove({from:selected,to:sq}); }
+function renderGrid(n,get,on){board.style.gridTemplateColumns=`repeat(${n},1fr)`;board.innerHTML='';for(let y=0;y<n;y++)for(let x=0;x<n;x++){let v=get(x,y), html=v==='X'?'<div class="stoneB"></div>':v==='O'?'<div class="stoneW"></div>':v||''; cell(x,y,html,'',()=>on(x,y),true)} hint.textContent='Black is human. White is lobster.';}
+function renderGo(){let map={};(state.board||[]).forEach(i=>map[i.x+','+i.y]=i.value); renderGrid(9,(x,y)=>map[x+','+y]==='black'?'X':map[x+','+y]==='white'?'O':'',(x,y)=>doMove({x,y})); hint.textContent='Black is human on 9x9 Go.';}
+const xPieces={r:'車',n:'馬',b:'象',a:'士',k:'將',c:'砲',p:'卒',R:'俥',N:'傌',B:'相',A:'仕',K:'帥',C:'炮',P:'兵'};
+function renderXiangqi(){board.style.gridTemplateColumns='repeat(9,1fr)';board.innerHTML='';for(let y=0;y<10;y++)for(let x=0;x<9;x++){let rank=9-y, key='abcdefghi'[x]+rank, p=state.board[key];cell(x,y,p?xPieces[p]:'','',()=>{ if(!selected){selected=key;render()}else doMove({move:selected+key}); });} hint.textContent='Click source then destination. Coordinates follow a0-i9.';}
+function cell(x,y,html,cls,on,raw=false){let d=document.createElement('div');d.className='cell '+cls; if(selected){let key=game==='chess'?String.fromCharCode(97+x)+(8-y):game==='xiangqi'?'abcdefghi'[x]+(9-y):''; if(key===selected)d.classList.add('sel')} d.innerHTML=raw?html:html; d.onclick=on; board.appendChild(d);}
+newGame();
+</script>
+</body></html>

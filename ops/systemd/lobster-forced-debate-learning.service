@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster forced math and philosophy debate learning writer
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_forced_debate_learning_worker.py
+StandardOutput=append:/var/log/lobster-forced-debate-learning.log
+StandardError=append:/var/log/lobster-forced-debate-learning.log
+

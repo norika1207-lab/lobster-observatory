@@ -1,0 +1,10 @@
+[Unit]
+Description=Charenix Dashboard failover watchdog
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --name charenix-dashboard-failover-watchdog --lock-key charenix-dashboard-failover-watchdog --min-interval-sec 45 --timeout-sec 45 -- /usr/local/bin/charenix-dashboard-failover-watchdog
+CPUQuota=20%
+MemoryMax=180M

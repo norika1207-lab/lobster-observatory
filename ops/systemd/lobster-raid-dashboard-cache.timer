@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh Lobster Tiamat Raid Dashboard Cache every 5 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min
+AccuracySec=1min
+Persistent=true
+Unit=lobster-raid-dashboard-cache.service
+
+[Install]
+WantedBy=timers.target

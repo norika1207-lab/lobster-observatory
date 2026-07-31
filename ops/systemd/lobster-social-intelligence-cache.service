@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Lobster Social Intelligence dashboard cache
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/python3 /root/update_social_intelligence_cache.py 3
+StandardOutput=append:/tmp/lobster-social-intelligence-cache.log
+StandardError=append:/tmp/lobster-social-intelligence-cache.log

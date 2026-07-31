@@ -1,0 +1,11 @@
+[Unit]
+Description=Lobster receptive listening and message uptake engine
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_receptive_listening_engine.py process --limit 40 --max-signals 35
+Nice=10
+CPUQuota=20%
+MemoryMax=350M

@@ -1,0 +1,9 @@
+[Unit]
+Description=Run lobster deep stock research nightly at 02:00 CST
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

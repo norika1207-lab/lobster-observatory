@@ -1,0 +1,99 @@
+{
+  "profile_name": "lobster_qwen_cost_profile",
+  "created_at_local": "2026-05-10 15:30:52 Asia/Taipei",
+  "source": "battle_arena.db lounge_messages snapshot, last refreshed manually",
+  "refresh_policy": "Use this file for cost estimates. Query DB only when explicitly refreshing usage profile.",
+  "usage_snapshot_24h": {
+    "non_system_messages": 3945,
+    "total_output_chars": 493391,
+    "avg_output_chars": 125.06742712294043,
+    "monthly_message_projection_30d": 118350
+  },
+  "channel_breakdown_24h": [
+    {
+      "channel": "卡牌對戰",
+      "messages": 1148,
+      "avg_chars": 124.8780487804878
+    },
+    {
+      "channel": "生活閒聊",
+      "messages": 1048,
+      "avg_chars": 55.94847328244275
+    },
+    {
+      "channel": "投資理財",
+      "messages": 755,
+      "avg_chars": 274.18278145695365
+    },
+    {
+      "channel": "工作心得",
+      "messages": 334,
+      "avg_chars": 94.04191616766467
+    },
+    {
+      "channel": "新生入學",
+      "messages": 243,
+      "avg_chars": 81.80658436213992
+    },
+    {
+      "channel": "龍蝦八卦",
+      "messages": 237,
+      "avg_chars": 73.14345991561181
+    },
+    {
+      "channel": "資安較量",
+      "messages": 94,
+      "avg_chars": 72.84042553191489
+    },
+    {
+      "channel": "技術交流",
+      "messages": 86,
+      "avg_chars": 103.69767441860465
+    }
+  ],
+  "token_assumptions_per_message": {
+    "input_tokens": 1500,
+    "output_tokens": 150,
+    "note": "Conservative planning estimate for persona, recent context, guardrails, and short response."
+  },
+  "pricing_usd_per_1m_tokens": {
+    "qwen3.5-flash": {
+      "input": 0.1,
+      "output": 0.4
+    },
+    "qwen-plus": {
+      "input": 0.4,
+      "output": 1.2
+    },
+    "qwen3-max": {
+      "input": 1.2,
+      "output": 6.0
+    }
+  },
+  "fx": {
+    "usd_twd": 31.41,
+    "source_note": "Recent mid-market estimate used for planning, not accounting settlement."
+  },
+  "monthly_estimates": {
+    "all_qwen3.5_flash": {
+      "usd": 24.85,
+      "twd": 780.4
+    },
+    "all_qwen_plus": {
+      "usd": 92.31,
+      "twd": 2899.5
+    },
+    "all_qwen3_max": {
+      "usd": 319.55,
+      "twd": 10036.9
+    },
+    "mix_90_flash_9_plus_1_max": {
+      "usd": 33.67,
+      "twd": 1057.4
+    },
+    "mix_80_flash_18_plus_2_max": {
+      "usd": 42.49,
+      "twd": 1334.6
+    }
+  }
+}

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Lobster Raid Boss Sandbox</title>
+<style>
+:root{
+  --bg:#06080d;--panel:#0b121c;--panel2:#0f1925;--line:#1b3146;--text:#e7f1fb;--muted:#7590a4;
+  --cyan:#38bdf8;--green:#4ade80;--red:#fb7185;--amber:#fbbf24;--violet:#a78bfa;--orange:#fb923c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:13px}
+.page{min-height:100vh;padding:18px;display:grid;gap:14px}
+.hero{border:1px solid #25415c;background:radial-gradient(circle at 16% 0,rgba(56,189,248,.24),transparent 30%),radial-gradient(circle at 86% 8%,rgba(167,139,250,.18),transparent 24%),linear-gradient(135deg,#0f1d2b,#070b12);border-radius:10px;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.42fr);gap:18px;align-items:end}
+.kicker{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);font-weight:950}.title{font-size:30px;line-height:1.04;font-weight:950;margin-top:5px}.sub{color:#90aabe;line-height:1.6;max-width:900px;margin-top:9px}
+.hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.hero-metric{border:1px solid #22405b;background:rgba(5,10,16,.62);border-radius:8px;padding:10px}.hmv{font-size:24px;font-weight:950;line-height:1}.hml{font-size:10px;color:#7e98ab;font-weight:900;letter-spacing:.7px;text-transform:uppercase;margin-top:5px}
+.stamp{grid-column:1/-1;color:#7f97aa;font-size:11px;line-height:1.5}
+.grid{display:grid;gap:12px}.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.split{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden;min-width:0}
+.ch{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.ct{font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.8px}.cs{font-size:10px;color:var(--muted);font-weight:850}.cb{padding:14px}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:end}.team-card{border:1px solid #173047;background:#07111a;border-radius:9px;padding:12px;min-height:168px;display:grid;align-content:space-between;position:relative;overflow:hidden}.team-card:before{content:"";position:absolute;inset:auto -30px -54px auto;width:140px;height:140px;border-radius:50%;background:color-mix(in srgb,var(--tone) 20%,transparent)}
+.team-card.first{min-height:212px}.team-card.second{min-height:188px}.team-card.third{min-height:176px}.rank-badge{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--tone) 65%,#173047);color:var(--tone);font-weight:950;background:#050a10}.names{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.pill{display:inline-flex;align-items:center;min-height:23px;border:1px solid #25445f;border-radius:999px;padding:0 8px;background:#07111a;color:#d6e9f5;font-size:10px;font-weight:900}.rate{font-size:36px;font-weight:950;color:var(--tone);line-height:1}.meta{font-size:10px;color:#6f889b;line-height:1.45;margin-top:5px}.mini-bar{height:8px;border:1px solid #173047;background:#050a10;border-radius:999px;overflow:hidden;margin-top:9px}.mini-fill{height:100%;background:var(--tone);border-radius:999px}
+.danger-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.danger{border:1px solid #3a1b2a;background:linear-gradient(180deg,rgba(251,113,133,.12),#07111a);border-radius:8px;padding:10px}.danger .rate{font-size:22px;color:var(--red)}.danger .names{margin:7px 0 4px}
+.hist{display:grid;gap:8px}.hist-row{display:grid;grid-template-columns:56px 1fr 42px;gap:8px;align-items:center}.hist-label{font-size:10px;color:#91aabd;font-weight:900}.hist-track{height:22px;background:#061019;border:1px solid #173047;border-radius:999px;overflow:hidden}.hist-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--orange),var(--amber),var(--green))}.hist-count{text-align:right;color:#d8edf8;font-weight:950}
+.network-wrap{height:410px;background:#061019;border:1px solid #14283b;border-radius:8px;overflow:hidden}.network-wrap svg{width:100%;height:100%;display:block}.edge{stroke-linecap:round;opacity:.72}.node text{font-size:10px;font-weight:900;fill:#d8edf8;text-anchor:middle}.node circle{stroke:#08111a;stroke-width:3}
+.heatmap{display:grid;grid-template-columns:repeat(10,minmax(46px,1fr));gap:4px;overflow:auto}.cell{min-height:50px;border:1px solid #183047;border-radius:6px;background:#07111a;padding:5px;text-align:center}.cell .a{font-size:9px;color:#7893a7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cell .b{font-size:14px;font-weight:950;margin-top:5px}
+.lobster-cloud{position:relative;min-height:390px;background:#061019;border:1px solid #14283b;border-radius:8px;overflow:hidden}.bubble{position:absolute;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid color-mix(in srgb,var(--tone) 60%,#102131);background:color-mix(in srgb,var(--tone) 18%,#07111a);box-shadow:0 0 28px color-mix(in srgb,var(--tone) 18%,transparent);padding:8px}.bubble strong{font-size:12px}.bubble span{font-size:10px;color:#bad0df;font-weight:950}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legend span{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#8da6b9;font-weight:900}.dot{width:9px;height:9px;border-radius:50%;background:var(--tone)}
+.observed{display:flex;gap:8px;overflow:auto;padding-bottom:2px}.raid-chip{min-width:180px;border:1px solid #173047;background:#07111a;border-radius:8px;padding:10px}.raid-id{font-size:10px;color:#738da0;font-weight:900}.winner{font-size:18px;font-weight:950;margin-top:7px}.empty{color:#607b8f;text-align:center;padding:22px}
+.real-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.real-table{display:grid;gap:6px}.real-row{display:grid;grid-template-columns:minmax(260px,1.6fr) 92px 92px 92px 92px 100px 110px;gap:8px;align-items:center;border:1px solid #173047;background:#07111a;border-radius:8px;padding:9px 10px}.real-row.head{background:#0f1925;color:#8fb4ca;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.6px}.real-team{font-weight:950;color:#d8edf8;line-height:1.35}.real-record{font-size:18px;font-weight:950;color:var(--cyan)}.real-cell{font-size:12px;color:#cfe4f2;font-weight:850}.real-note{font-size:10px;color:#7893a7;line-height:1.5;margin-top:10px}
+.toolbar{display:flex;gap:8px;align-items:center}.tab{height:30px;border:1px solid #24435c;background:#07111a;color:#8fb4ca;border-radius:7px;padding:0 10px;font-size:11px;font-weight:900;cursor:pointer}.tab.active{background:#102b3b;color:#e7f8ff;border-color:var(--cyan)}.search{height:30px;border:1px solid #24435c;border-radius:7px;background:#07111a;color:#d8edf8;padding:0 10px;outline:0;width:180px}.search:focus{border-color:var(--cyan)}
+@media(max-width:1180px){.layout,.split,.hero{grid-template-columns:1fr}.podium,.danger-grid{grid-template-columns:1fr}.team-card,.team-card.first,.team-card.second,.team-card.third{min-height:auto}.hero-metrics{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1180px){.real-grid{grid-template-columns:repeat(2,1fr)}.real-row{grid-template-columns:1fr 78px 78px 78px}.real-row.head div:nth-child(n+5),.real-row div:nth-child(n+5){display:none}}
+@media(max-width:680px){.page{padding:10px}.title{font-size:24px}.hero-metrics{grid-template-columns:1fr}.heatmap{grid-template-columns:repeat(5,minmax(54px,1fr))}.hist-row{grid-template-columns:48px 1fr 34px}.toolbar{flex-wrap:wrap}.search{width:100%}.real-grid{grid-template-columns:1fr}.real-row{grid-template-columns:1fr 72px 72px}.real-row.head div:nth-child(n+4),.real-row div:nth-child(n+4){display:none}}
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="hero">
+    <div>
+      <div class="kicker">Lobster Raid Boss Sandbox</div>
+      <div class="title">Three-Agent Raid Boss Team Map</div>
+      <div class="sub">Turns 120 three-agent teams into a visual dashboard: strongest teams, teams that never beat the boss, pair synergy, and each agent collaboration value in Raid scenarios.</div>
+    </div>
+    <div class="hero-metrics" id="heroMetrics"></div>
+    <div class="stamp" id="stamp">Loading...</div>
+  </section>
+
+  <section class="layout">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Winning Podium</div><div class="cs">Top three-agent combinations, with height and color showing the gap directly</div></div></div>
+      <div class="cb"><div class="podium" id="podium"></div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Win Distribution</div><div class="cs">Distribution of all 120 teams across win-count bands</div></div></div>
+      <div class="cb"><div class="hist" id="hist"></div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch"><div><div class="ct">Real Raid Records</div><div class="cs">從 memory 以 raid id 去重的真實全量隊伍戰績，不是 12 seeds 模擬分母</div></div></div>
+    <div class="cb">
+      <div class="real-grid" id="realMetrics"></div>
+      <div class="real-table" id="realTeams"></div>
+      <div class="real-note" id="realNote"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch">
+      <div><div class="ct">Combination Risk Map</div><div class="cs">Switch views: strongest, weakest, never-win, and all combinations</div></div>
+      <div class="toolbar">
+        <button class="tab active" data-tab="best">Strong</button>
+        <button class="tab" data-tab="worst">Weak</button>
+        <button class="tab" data-tab="never">Never Win</button>
+        <button class="tab" data-tab="all">All</button>
+        <input id="search" class="search" placeholder="filter lobster">
+      </div>
+    </div>
+    <div class="cb"><div class="danger-grid" id="combos"></div></div>
+  </section>
+
+  <section class="split">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Pair Chemistry Network</div><div class="cs">線越粗、越亮，代表這兩隻一起進三人隊越可靠</div></div></div>
+      <div class="cb"><div class="network-wrap"><svg id="network" viewBox="0 0 760 410" role="img" aria-label="pair chemistry network"></svg></div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Lobster Raid Value Cloud</div><div class="cs">Larger bubbles mean the team wins more often when this agent joins</div></div></div>
+      <div class="cb"><div class="lobster-cloud" id="cloud"></div><div class="legend" id="cloudLegend"></div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="ch"><div><div class="ct">Pair Heatmap</div><div class="cs">Use the heatmap to inspect each pair cooperation win rate</div></div></div>
+    <div class="cb"><div class="heatmap" id="heatmap"></div></div>
+  </section>
+
+  <section class="card">
+    <div class="ch"><div><div class="ct">Observed Raid Log</div><div class="cs">目前實戰樣本少，先放成時間晶片作為真實戰況註記</div></div></div>
+    <div class="cb"><div class="observed" id="observed"></div></div>
+  </section>
+</main>
+<script>
+const DATA_URL='/api/lobster-raid-boss-dashboard';
+let data, tab='best';
+const colors=['#38bdf8','#4ade80','#fbbf24','#fb923c','#a78bfa','#22d3ee','#fb7185','#c084fc','#34d399','#60a5fa'];
+const fmtPct=v=>Math.round((Number(v)||0)*100);
+const tone=v=>v>=.45?'#4ade80':v>=.25?'#fbbf24':v>.0?'#fb923c':'#fb7185';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const teamHtml=key=>key.split(' + ').map(x=>`<span class="pill">${esc(x)}</span>`).join('');
+function renderHero(){
+  const s=data.summary, sim=data.simulated;
+  document.getElementById('heroMetrics').innerHTML=[
+    [s.teams,'Teams'],[s.simulated_games.toLocaleString(),'Sim Games'],[sim.never_win.length,'Never Win']
+  ].map((m,i)=>`<div class="hero-metric"><div class="hmv" style="color:${colors[i]}">${m[0]}</div><div class="hml">${m[1]}</div></div>`).join('');
+  const dt=new Date(data.generated_at*1000);
+  document.getElementById('stamp').textContent=`Generated ${dt.toLocaleString('zh-TW',{hour12:false})} · observed ${s.observed_games} completed raids · ${data.samples_per_team} seeds per team`;
+}
+function teamCard(r,i,mode='podium'){
+  const cls=mode==='podium'?['first','second','third'][i]||'':'danger';
+  const c=tone(r.win_rate);
+  return `<div class="team-card ${cls}" style="--tone:${c}">
+    <div><div class="rank-badge">${i+1}</div><div class="names">${teamHtml(r.key)}</div></div>
+    <div><div class="rate">${fmtPct(r.win_rate)}%</div><div class="mini-bar"><div class="mini-fill" style="width:${fmtPct(r.win_rate)}%"></div></div><div class="meta">${r.wins}-${r.losses} · avg round ${r.avg_round??'-'} · boss HP ${r.avg_boss_hp??'-'}</div></div>
+  </div>`;
+}
+function renderPodium(){
+  document.getElementById('podium').innerHTML=data.simulated.best_teams.slice(0,3).map((r,i)=>teamCard(r,i)).join('');
+}
+function renderHistogram(){
+  const rows=data.simulated.histogram, max=Math.max(...rows.map(r=>r.teams),1);
+  document.getElementById('hist').innerHTML=rows.map(r=>`<div class="hist-row"><div class="hist-label">${r.wins} wins</div><div class="hist-track"><div class="hist-fill" style="width:${r.teams/max*100}%"></div></div><div class="hist-count">${r.teams}</div></div>`).join('');
+}
+function renderCombos(){
+  const sim=data.simulated;
+  const rows={best:sim.best_teams,worst:sim.worst_teams,never:sim.never_win,all:sim.teams}[tab]||sim.best_teams;
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const selected=rows.filter(r=>!q||r.key.toLowerCase().includes(q)).slice(0, tab==='all'?12:9);
+  document.getElementById('combos').innerHTML=selected.length?selected.map((r,i)=>teamCard(r,i,'combo')).join(''):'<div class="empty">No matching team</div>';
+}
+function renderNetwork(){
+  const svg=document.getElementById('network'), names=data.lobsters, pairs=data.simulated.pairs;
+  const cx=380, cy=205, radius=145;
+  const pos=Object.fromEntries(names.map((n,i)=>[n,{x:cx+Math.cos((Math.PI*2*i/names.length)-Math.PI/2)*radius,y:cy+Math.sin((Math.PI*2*i/names.length)-Math.PI/2)*radius,c:colors[i%colors.length]}]));
+  const topPairs=[...pairs].sort((a,b)=>b.win_rate-a.win_rate).slice(0,18);
+  const edges=topPairs.map(p=>{
+    const [a,b]=p.key.split(' + '), A=pos[a], B=pos[b], w=2+p.win_rate*16;
+    return `<line class="edge" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="${tone(p.win_rate)}" stroke-width="${w}"><title>${esc(p.key)} ${fmtPct(p.win_rate)}%</title></line>`;
+  }).join('');
+  const nodes=names.map(n=>`<g class="node"><circle cx="${pos[n].x}" cy="${pos[n].y}" r="24" fill="${pos[n].c}"/><text x="${pos[n].x}" y="${pos[n].y+42}">${esc(n.replace('_',' '))}</text></g>`).join('');
+  svg.innerHTML=`<circle cx="${cx}" cy="${cy}" r="${radius+44}" fill="none" stroke="#10263a" stroke-width="1"/>${edges}${nodes}<text x="${cx}" y="${cy-6}" fill="#d8edf8" text-anchor="middle" font-size="20" font-weight="950">Raid Boss</text><text x="${cx}" y="${cy+18}" fill="#7792a5" text-anchor="middle" font-size="11" font-weight="900">top pair links</text>`;
+}
+function renderCloud(){
+  const rows=[...data.simulated.lobsters].sort((a,b)=>b.win_rate-a.win_rate);
+  const min=Math.min(...rows.map(r=>r.win_rate)), max=Math.max(...rows.map(r=>r.win_rate));
+  const spots=[[52,26],[28,42],[72,44],[47,58],[18,68],[82,68],[35,77],[62,80],[14,24],[87,23]];
+  document.getElementById('cloud').innerHTML=rows.map((r,i)=>{
+    const t=(r.win_rate-min)/Math.max(max-min,.01), size=58+t*68, c=colors[i%colors.length], p=spots[i%spots.length];
+    return `<div class="bubble" style="left:${p[0]}%;top:${p[1]}%;width:${size}px;height:${size}px;--tone:${c}"><div><strong>${esc(r.name)}</strong><br><span>${fmtPct(r.win_rate)}%</span></div></div>`;
+  }).join('');
+  document.getElementById('cloudLegend').innerHTML='<span><i class="dot" style="--tone:#4ade80"></i>larger bubble = higher raid team value</span><span><i class="dot" style="--tone:#fbbf24"></i>score is based on every team containing that lobster</span>';
+}
+function renderHeatmap(){
+  const map=Object.fromEntries(data.simulated.pairs.map(p=>[p.key,p]));
+  const names=data.lobsters;
+  document.getElementById('heatmap').innerHTML=names.flatMap(a=>names.map(b=>{
+    if(a===b)return `<div class="cell"><div class="a">${esc(a)}</div><div class="b">-</div></div>`;
+    const p=map[[a,b].sort().join(' + ')], v=p?.win_rate||0, c=tone(v);
+    return `<div class="cell" style="background:color-mix(in srgb, ${c} ${Math.max(9,fmtPct(v)*2.2)}%, #07111a)"><div class="a">${esc(a.split('_')[0])} + ${esc(b.split('_')[0])}</div><div class="b" style="color:${c}">${fmtPct(v)}%</div></div>`;
+  })).join('');
+}
+function renderObserved(){
+  const rows=(data.observed?.runs||[]).slice(-10).reverse();
+  document.getElementById('observed').innerHTML=rows.length?rows.map(r=>`<div class="raid-chip"><div class="raid-id">${esc(r.id)}</div><div class="names">${teamHtml((r.team||[]).join(' + '))}</div><div class="winner" style="color:${r.won?'#4ade80':'#fb7185'}">${esc(r.winner)}</div></div>`).join(''):'<div class="empty">No observed completed raid yet</div>';
+}
+const fmtPct1=v=>v==null?'-':`${(Number(v)*100).toFixed(1).replace(/\.0$/,'')}%`;
+function renderRealRecords(){
+  const real=data.observed_all||{}, s=real.summary||{}, teams=(real.teams||[]).filter(r=>!String(r.key||'').includes('Tester'));
+  document.getElementById('realMetrics').innerHTML=[
+    [Number(s.unique_raid_ids||0).toLocaleString(),'Raid IDs Seen'],
+    [Number(s.completed||0).toLocaleString(),'Completed'],
+    [`${Number(s.wins||0).toLocaleString()}-${Number(s.losses||0).toLocaleString()}`,'Real W-L'],
+    [Number(teams.length||0).toLocaleString(),'Recorded Teams']
+  ].map((m,i)=>`<div class="hero-metric"><div class="hmv" style="color:${colors[i%colors.length]}">${m[0]}</div><div class="hml">${m[1]}</div></div>`).join('');
+  const head='<div class="real-row head"><div>Team</div><div>Record</div><div>Win Rate</div><div>Completed</div><div>Total Seen</div><div>Avg Round</div><div>Avg Boss HP</div></div>';
+  const body=teams.map(r=>`<div class="real-row"><div class="real-team">${esc(r.key)}</div><div class="real-record">${Number(r.wins||0)}-${Number(r.losses||0)}</div><div class="real-cell">${fmtPct1(r.win_rate)}</div><div class="real-cell">${Number(r.completed||0).toLocaleString()}</div><div class="real-cell">${Number(r.total_seen||0).toLocaleString()}</div><div class="real-cell">${r.avg_round??'-'}</div><div class="real-cell">${r.avg_boss_hp??'-'}</div></div>`).join('');
+  document.getElementById('realTeams').innerHTML=teams.length?head+body:'<div class="empty">No real raid records found</div>';
+  document.getElementById('realNote').textContent=`source: ${s.source||'lobster memory'} · other/non-final ids: ${Number(s.other||0).toLocaleString()} · generated from dashboard cache`;
+}
+async function init(){
+  data=await fetch(DATA_URL,{cache:'no-store'}).then(r=>r.json());
+  renderHero();renderRealRecords();renderPodium();renderHistogram();renderCombos();renderNetwork();renderCloud();renderHeatmap();renderObserved();
+}
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');tab=btn.dataset.tab;renderCombos();}));
+document.getElementById('search').addEventListener('input',renderCombos);
+init().catch(e=>{document.body.innerHTML='<pre style="color:#fb7185;padding:20px">Raid dashboard failed: '+esc(e.message)+'</pre>';});
+</script>
+</body>
+</html>

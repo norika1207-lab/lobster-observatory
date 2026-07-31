@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster brain mental lexicon graph builder — daily lexicon rebuild
+
+[Timer]
+OnCalendar=*-*-* 04:50:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=Run authoritative lobster MoltBook posting orchestrator
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*-*-* *:00/30:00
+AccuracySec=1min
+Persistent=true
+Unit=lobster-moltbook-poster.service
+
+[Install]
+WantedBy=timers.target

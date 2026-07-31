@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Lobster philosophy debate absorption every 30 minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+AccuracySec=2min
+Persistent=true
+RandomizedDelaySec=90
+Unit=lobster-philosophy-debate.service
+
+[Install]
+WantedBy=timers.target

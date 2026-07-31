@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Lobster quality follow-up every 4 hours
+
+[Timer]
+OnCalendar=*-*-* 00/4:20:00 Asia/Taipei
+Persistent=true
+RandomizedDelaySec=10m
+
+[Install]
+WantedBy=timers.target

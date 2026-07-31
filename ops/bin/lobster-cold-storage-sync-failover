@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import pathlib
+import shutil
+import sqlite3
+import subprocess
+import sys
+import time
+
+SRC = "/opt/battle_arena/app/lobster_cold_storage.db"
+SNAP = "/tmp/lobster_cold_storage_failover_snapshot.db"
+REMOTE_HOST = "root@167.88.45.137"
+REMOTE_DIR = "/opt/battle_arena_failover/app"
+REMOTE = f"{REMOTE_HOST}:{REMOTE_DIR}/lobster_cold_storage.db"
+LOG = pathlib.Path("/var/log/lobster-cold-storage-failover-sync.log")
+MIN_FREE_MARGIN_BYTES = 5 * 1024 * 1024 * 1024
+
+
+def log(msg: str) -> None:
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    with LOG.open("a", encoding="utf-8") as f:
+        f.write(time.strftime("%Y-%m-%dT%H:%M:%S%z ") + msg + "\n")
+
+
+def remote_free_bytes() -> int:
+    out = subprocess.check_output(
+        [
+            "ssh",
+            "-o",
+            "BatchMode=yes",
+            "-o",
+            "ConnectTimeout=8",
+            REMOTE_HOST,
+            "df",
+            "-PB1",
+            REMOTE_DIR,
+        ],
+        text=True,
+    )
+    lines = [ln.split() for ln in out.splitlines() if ln.strip()]
+    if len(lines) < 2 or len(lines[-1]) < 4:
+        raise RuntimeError("cannot parse remote df output")
+    return int(lines[-1][3])
+
+
+def main() -> int:
+    try:
+        src = pathlib.Path(SRC)
+        if not src.exists():
+            log(f"sync skipped: missing source {SRC}")
+            return 0
+        src_size = src.stat().st_size
+        local_free = shutil.disk_usage("/tmp").free
+        remote_free = remote_free_bytes()
+        if src_size + MIN_FREE_MARGIN_BYTES > local_free:
+            log(f"sync skipped degraded: source size={src_size} local_tmp_free={local_free}")
+            return 0
+        if src_size + MIN_FREE_MARGIN_BYTES > remote_free:
+            log(f"sync skipped degraded: source size={src_size} remote_free={remote_free}")
+            return 0
+
+        pathlib.Path(SNAP).unlink(missing_ok=True)
+        con = sqlite3.connect(SRC, timeout=60)
+        out = sqlite3.connect(SNAP)
+        con.backup(out, pages=2000, sleep=0.02)
+        out.close()
+        con.close()
+        subprocess.check_call(["rsync", "-az", "--inplace", "--partial", SNAP, REMOTE])
+        log(f"sync ok size={pathlib.Path(SNAP).stat().st_size}")
+        pathlib.Path(SNAP).unlink(missing_ok=True)
+        return 0
+    except Exception as exc:
+        log(f"sync failed: {exc!r}")
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>人 Charenix Town · live village of 31 residents</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06121d">
+<style>
+:root{
+  --bg:#06121d;
+  --ink:#dbe9f5;
+  --ink2:#8fa3b8;
+  --ink3:#4f6479;
+  --c-old:#facc15;
+  --c-student:#e2e8f0;
+  --c-transfer:#a78bfa;
+  --grass:#1d3a2a;
+  --grass2:#234735;
+  --path:#3d3225;
+  --water:#1c3a52;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;cursor:grab}
+body.dragging{cursor:grabbing}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#sky-tint{position:fixed;inset:0;pointer-events:none;mix-blend-mode:multiply;transition:background-color .5s linear;z-index:2}
+
+.hud{position:fixed;left:18px;top:14px;display:flex;align-items:center;gap:12px;z-index:6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;pointer-events:none}
+.hud-logo{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(8,17,28,.7);border-radius:8px;border:1px solid rgba(45,212,191,.25)}
+.hud-title{font-size:11px;color:var(--ink2);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.hud-title b{color:#2dd4bf;font-weight:900}
+.hud-sub{font-size:9px;color:var(--ink3);font-weight:600;letter-spacing:1.6px;margin-top:2px}
+
+.live{position:fixed;right:18px;top:14px;display:flex;align-items:center;gap:8px;z-index:6;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--ink2);letter-spacing:1.5px;text-transform:uppercase;pointer-events:none}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#2dd4bf;box-shadow:0 0 0 0 rgba(45,212,191,.6);animation:livePulse 1.2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(.8);box-shadow:0 0 0 0 rgba(45,212,191,.6)}50%{transform:scale(1.2);box-shadow:0 0 0 12px rgba(45,212,191,0)}}
+
+.clock{position:fixed;left:50%;top:14px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:6;font-family:ui-monospace,Menlo,monospace;background:rgba(8,17,28,.7);border:1px solid rgba(45,212,191,.18);backdrop-filter:blur(10px);border-radius:999px;padding:7px 16px;pointer-events:auto}
+.clock-time{font-size:14px;font-weight:900;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:1px}
+.clock-day{font-size:9px;color:var(--ink3);letter-spacing:1.4px;text-transform:uppercase;font-weight:700}
+.speed{display:flex;gap:4px;margin-left:8px;padding-left:12px;border-left:1px solid rgba(255,255,255,.08)}
+.speed-btn{font-size:9px;color:var(--ink2);font-weight:800;letter-spacing:1px;padding:3px 7px;border-radius:6px;cursor:pointer;user-select:none}
+.speed-btn.active{background:rgba(45,212,191,.18);color:#2dd4bf}
+
+.legend{position:fixed;right:18px;bottom:14px;display:flex;gap:14px;z-index:6;font-family:ui-monospace,Menlo,monospace;pointer-events:none;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink3)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{display:block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 8px currentColor}
+
+.stats{position:fixed;left:18px;bottom:14px;display:flex;gap:18px;z-index:6;font-family:ui-monospace,Menlo,monospace;pointer-events:none}
+.stat{display:flex;flex-direction:column;gap:3px}
+.stat-k{font-size:9px;color:var(--ink3);letter-spacing:1.4px;text-transform:uppercase;font-weight:700}
+.stat-v{font-size:15px;color:var(--ink);font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 0 12px rgba(45,212,191,.25)}
+.stat-v.red{color:#fb7185}.stat-v.green{color:#4ade80}.stat-v.amber{color:#fbbf24}
+
+.hint{position:fixed;left:50%;bottom:60px;transform:translateX(-50%);font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--ink3);letter-spacing:1.8px;text-transform:uppercase;pointer-events:none;z-index:5;opacity:0;transition:opacity .8s ease}
+.hint.show{opacity:1}
+
+/* tooltip + side panel */
+.tooltip{position:fixed;pointer-events:none;background:rgba(4,9,16,.94);backdrop-filter:blur(10px);border:1px solid rgba(45,212,191,.35);border-radius:8px;padding:9px 12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink);z-index:8;box-shadow:0 14px 40px rgba(0,0,0,.55);opacity:0;transform:translate(-50%,-100%) translateY(-10px);transition:opacity .12s ease;line-height:1.4;white-space:nowrap}
+.tooltip.visible{opacity:1}
+.tooltip b{color:#2dd4bf}
+
+.panel{position:fixed;right:0;top:0;bottom:0;width:360px;background:linear-gradient(180deg,#08121d,#040810);border-left:1px solid rgba(45,212,191,.22);z-index:20;display:flex;flex-direction:column;transform:translateX(110%);transition:transform .4s cubic-bezier(.22,1,.36,1);box-shadow:-20px 0 60px rgba(0,0,0,.5)}
+.panel.visible{transform:translateX(0)}
+.panel-close{position:absolute;top:14px;right:14px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(8,17,28,.7);border:1px solid rgba(45,212,191,.25);border-radius:50%;color:var(--ink2);font-family:ui-monospace,Menlo,monospace;font-size:18px;cursor:pointer;z-index:2}
+.panel-close:hover{color:var(--ink);border-color:rgba(45,212,191,.5)}
+.panel-head{padding:28px 22px 18px;border-bottom:1px solid rgba(255,255,255,.06)}
+.panel-name{font-size:30px;font-weight:900;letter-spacing:-.8px;color:var(--ink);text-shadow:0 0 20px rgba(45,212,191,.25)}
+.panel-cohort{font-size:9px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;padding:4px 10px;border-radius:999px;display:inline-block;margin-top:8px}
+.panel-cohort.old{background:rgba(250,204,21,.15);color:#facc15;border:1px solid rgba(250,204,21,.4)}
+.panel-cohort.student{background:rgba(226,232,240,.10);color:#e2e8f0;border:1px solid rgba(226,232,240,.3)}
+.panel-cohort.transfer{background:rgba(167,139,250,.15);color:#a78bfa;border:1px solid rgba(167,139,250,.4)}
+.panel-occupation{font-size:11px;color:var(--ink3);font-family:ui-monospace,Menlo,monospace;margin-top:14px;letter-spacing:.6px}
+.panel-occupation b{color:#2dd4bf}
+
+.panel-status{margin:18px 22px;padding:14px 16px;background:rgba(45,212,191,.06);border:1px dashed rgba(45,212,191,.30);border-radius:10px;font-size:12px;color:var(--ink2);line-height:1.55;letter-spacing:.2px}
+.panel-status b{color:#2dd4bf}
+.panel-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 22px}
+.pm{background:rgba(8,17,28,.7);border:1px solid rgba(45,212,191,.12);border-radius:8px;padding:10px 12px}
+.pm-k{font-size:9px;color:var(--ink3);font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+.pm-v{font-size:18px;color:var(--ink);font-weight:900;margin-top:5px;font-variant-numeric:tabular-nums}
+.pm-v.red{color:#fb7185}.pm-v.green{color:#4ade80}.pm-v.amber{color:#fbbf24}
+.panel-thought{margin:10px 22px 0;padding:12px 14px;background:rgba(45,212,191,.04);border-left:3px solid rgba(45,212,191,.4);border-radius:6px;font-size:12px;color:var(--ink2);line-height:1.55;font-style:italic}
+.panel-thought-label{font-size:9px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#2dd4bf;font-style:normal;margin-bottom:6px;display:block}
+.panel-identity{margin-top:8px;font-size:11px;color:var(--ink2);line-height:1.5}
+.panel-identity b{color:#2dd4bf}
+.panel-bio{margin-top:8px;font-size:12px;color:var(--ink2);line-height:1.55}
+.panel-foot{margin-top:auto;padding:18px 22px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.panel-btn{font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;padding:8px 14px;border-radius:999px;border:1px solid rgba(45,212,191,.32);background:rgba(45,212,191,.06);color:var(--ink2);cursor:pointer;font-family:ui-monospace,Menlo,monospace}
+.panel-btn:hover{color:#2dd4bf;border-color:rgba(45,212,191,.6)}
+.panel-journal{margin:0 22px 16px;font-size:11px;color:var(--ink3);font-family:ui-monospace,Menlo,monospace;letter-spacing:.3px;line-height:1.55;max-height:180px;overflow:auto}
+.panel-journal-row{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.panel-journal-row:last-child{border-bottom:none}
+.panel-journal-t{color:#2dd4bf;font-weight:800}
+
+.boot{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:50;flex-direction:column;gap:18px;transition:opacity .4s ease}
+.boot.hidden{opacity:0;pointer-events:none}
+.boot-pulse{width:14px;height:14px;border-radius:50%;background:#2dd4bf;box-shadow:0 0 30px #2dd4bf;animation:livePulse 1s ease-in-out infinite}
+.boot-text{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink2);letter-spacing:2px;text-transform:uppercase}
+
+@media(max-width:760px){.panel{width:100%}.stats{flex-wrap:wrap;gap:14px}}
+</style>
+</head>
+<body>
+
+<div class="boot" id="boot">
+  <div class="boot-pulse"></div>
+  <div class="boot-text">building the town · 31 residents · 31 homes</div>
+</div>
+
+<canvas id="canvas"></canvas>
+<div id="sky-tint"></div>
+
+<div class="hud">
+  <div class="hud-logo">人</div>
+  <div>
+    <div class="hud-title"><b>LOBSTER TOWN</b> · live village</div>
+    <div class="hud-sub">31 minds with bodies, homes, and a town to roam</div>
+  </div>
+</div>
+
+<div class="live">SYNC · <span id="sync-age">--</span></div>
+
+<div class="clock">
+  <div>
+    <div class="clock-time" id="clock-time">--:--</div>
+    <div class="clock-day" id="clock-day">DAY --</div>
+  </div>
+  <div class="speed">
+    <span class="speed-btn" data-sp="1">1×</span>
+    <span class="speed-btn active" data-sp="4">4×</span>
+    <span class="speed-btn" data-sp="16">16×</span>
+    <span class="speed-btn" data-sp="0">⏸</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-k">Network P&L</div><div class="stat-v red" id="s-pnl">--</div></div>
+  <div class="stat"><div class="stat-k">Avg Stress</div><div class="stat-v amber" id="s-stress">--</div></div>
+  <div class="stat"><div class="stat-k">Top Resident</div><div class="stat-v green" id="s-top">--</div></div>
+  <div class="stat"><div class="stat-k">At Home</div><div class="stat-v" id="s-home">--</div></div>
+  <div class="stat"><div class="stat-k">In Crisis</div><div class="stat-v red" id="s-crisis">--</div></div>
+</div>
+
+<div class="legend">
+  <span style="color:#facc15"><i></i>Mentor</span>
+  <span style="color:#e2e8f0"><i></i>Student</span>
+  <span style="color:#a78bfa"><i></i>Transfer</span>
+</div>
+
+<div class="hint" id="hint">drag = pan · scroll = zoom · click person = follow & briefing</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<aside class="panel" id="panel">
+  <div class="panel-close" id="panel-close">×</div>
+  <div class="panel-head">
+    <div class="panel-name" id="p-name">--</div>
+    <span id="p-cohort" class="panel-cohort old">--</span>
+    <div class="panel-occupation" id="p-occu">--</div>
+  </div>
+  <div class="panel-status" id="p-status">--</div>
+  <div class="panel-thought" id="p-thought" style="display:none">
+    <span class="panel-thought-label">最近想過的事</span>
+    <span id="p-thought-text">--</span>
+  </div>
+  <div class="panel-metrics">
+    <div class="pm"><div class="pm-k">Score</div><div class="pm-v" id="p-score">--</div></div>
+    <div class="pm"><div class="pm-k">Stress</div><div class="pm-v red" id="p-stress">--</div></div>
+    <div class="pm"><div class="pm-k">Stock P&L</div><div class="pm-v" id="p-pnl">--</div></div>
+    <div class="pm"><div class="pm-k">Bet WR</div><div class="pm-v amber" id="p-betwr">--</div></div>
+  </div>
+  <div style="margin:14px 22px 0;font-size:10px;color:var(--ink3);font-family:ui-monospace,Menlo,monospace;letter-spacing:1.2px;text-transform:uppercase;font-weight:800">RECENT ACTIONS</div>
+  <div class="panel-journal" id="p-journal"></div>
+  <div class="panel-foot">
+    <button class="panel-btn" id="p-speak">🎙 SPEAK</button>
+    <button class="panel-btn" id="p-follow">👁 FOLLOW</button>
+    <button class="panel-btn" id="p-goto-home">🏠 HOME</button>
+  </div>
+</aside>
+
+<script>
+"use strict";
+
+// === Charenix Town: rich resident metadata (loaded from server) ===
+const PEOPLE = {};
+let PEOPLE_LOADED = false;
+fetch('/static/charenix-town-people.json?ts=' + Date.now(), {cache: 'no-store'})
+  .then(r => r.json())
+  .then(j => { Object.assign(PEOPLE, j.people || {}); PEOPLE_LOADED = true; })
+  .catch(err => console.warn('town-people.json load failed', err));
+
+function person(legacyId){
+  return PEOPLE[legacyId] || {
+    humanName: legacyId, pronounEn: 'they/them', pronounZh: 'ta',
+    genderIdentity: 'unknown', mbti: '?', archetype: '',
+    cohort: 'old', cohortLabel: 'Resident',
+    oneLineBio: '', recentThought: ''
+  };
+}
+
+const PLACE_ACTIVITY_EN = {
+  casino:  'at the casino, hands on a chip',
+  library: 'in the library, deep in a book',
+  gym:     'at the gym, working the heavy bag',
+  clinic:  'at the clinic, talking to the doctor',
+  plaza:   'in the plaza, mid-conversation',
+  home:    'home, away from the noise',
+};
+const PLACE_ACTIVITY_ZH = {
+  casino:  '在賭場，籌碼還在手上',
+  library: '在圖書館，埋進書裡',
+  gym:     '在健身房，揮著沙包',
+  clinic:  '在診所，跟醫生講話',
+  plaza:   '在廣場，正聊著',
+  home:    '在家，避開吵鬧',
+};
+
+function moodEn(s){
+  if(s>0.85) return 'overwhelmed';
+  if(s>0.65) return 'on edge';
+  if(s>0.4)  return 'holding steady';
+  if(s>0.2)  return 'doing okay';
+  return 'at ease';
+}
+function moodZh(s){
+  if(s>0.85) return '快撐不住了';
+  if(s>0.65) return '心很緊';
+  if(s>0.4)  return '撐著';
+  if(s>0.2)  return '還算穩';
+  return '輕鬆';
+}
+function placeOf(p){
+  return p.target?.placeId || p.currentPlace || 'home';
+}
+function possessiveOf(pronounEn){
+  if(/she/i.test(pronounEn)) return 'Her';
+  if(/he\b/i.test(pronounEn)) return 'His';
+  return 'Their';
+}
+
+
+// === cohort lists from v2 ===
+const TRANSFER = new Set(['ashveil','cindersnap','glintmaw','mirebyte','quartzclaw','reefblade','riftpinch','silkbarb','stormledger','tidehook']);
+const STUDENT  = new Set(['basaltrook','brineledger','emberling','flarecub','gauntlet','mirrorcalm','nullpinch','omenwake','rushfin','sparkrill']);
+const COHORT_COLOR = {old:'#facc15', student:'#e2e8f0', transfer:'#a78bfa'};
+const COHORT_LABEL = {old:'Mentor', student:'Student', transfer:'Transfer'};
+function cohortOf(name){
+  if(TRANSFER.has(name)) return 'transfer';
+  if(STUDENT.has(name)) return 'student';
+  return 'old';
+}
+
+// === world constants ===
+const TILE = 1;          // 1 world unit
+const WORLD_W = 2200;
+const WORLD_H = 1500;
+const WALK_SPEED = 28;   // units / sec
+const HOME_SIZE = 56;
+const POLL_MS = 3000;
+
+// shared buildings
+const PLACES = [
+  {id:'casino',  name:'Casino',   zh:'賭場',     x:WORLD_W*0.30, y:WORLD_H*0.30, w:160, h:110, color:'#a855f7', glyph:'♠'},
+  {id:'library', name:'Library',  zh:'圖書館',   x:WORLD_W*0.70, y:WORLD_H*0.32, w:180, h:110, color:'#60a5fa', glyph:'📚'},
+  {id:'gym',     name:'Gym',      zh:'健身房',   x:WORLD_W*0.30, y:WORLD_H*0.70, w:160, h:110, color:'#fb7185', glyph:'🥊'},
+  {id:'clinic',  name:'Clinic',   zh:'醫院',     x:WORLD_W*0.70, y:WORLD_H*0.70, w:170, h:110, color:'#4ade80', glyph:'＋'},
+  {id:'plaza',   name:'Plaza',    zh:'廣場',     x:WORLD_W*0.50, y:WORLD_H*0.50, w:240, h:160, color:'#2dd4bf', glyph:'◯'},
+];
+function placeById(id){ return PLACES.find(p=>p.id===id); }
+
+const POLL_MS_REAL = 3000;
+const GAME_MIN_PER_REAL_SEC_AT_1X = 1.0;  // 1× = 1 game-min per real-sec → 1 day = 24 real-min
+
+// === STATE ===
+const STATE = {
+  samples: [],
+  latest: {},
+  display: {},
+  residents: [],          // 31 humanoids
+  homes: {},              // name -> {x,y,w,h}
+  cam: {x:WORLD_W/2, y:WORLD_H/2, zoom:0.6, tx:WORLD_W/2, ty:WORLD_H/2, tz:0.6},
+  drag: {active:false, sx:0, sy:0, camX0:0, camY0:0},
+  hovered: null,
+  selected: null,
+  follow: false,
+  width: 0, height: 0,
+  startTime: performance.now(),
+  lastPollTs: 0,
+  // game time
+  gameMinutes: 8 * 60,    // start at 08:00
+  day: 1,
+  speed: 4,
+  // chat/log
+  journal: {},            // name -> [{t, txt}]
+};
+
+const cv = document.getElementById('canvas');
+const ctx = cv.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+const panel = document.getElementById('panel');
+
+function resize(){
+  const dpr = window.devicePixelRatio || 1;
+  const r = cv.getBoundingClientRect();
+  STATE.width = r.width; STATE.height = r.height;
+  cv.width = r.width * dpr;
+  cv.height = r.height * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+function lerp(a,b,t){return a+(b-a)*t}
+function clamp(v,lo,hi){return Math.min(hi,Math.max(lo,v))}
+function dist(a,b){const dx=a.x-b.x,dy=a.y-b.y;return Math.sqrt(dx*dx+dy*dy)}
+function fmtMoney(v){
+  const s=v<0?'-':''; const a=Math.abs(v);
+  if(a>=1e6) return s+'$'+(a/1e6).toFixed(2)+'M';
+  if(a>=1e3) return s+'$'+(a/1e3).toFixed(1)+'K';
+  return s+'$'+a.toFixed(0);
+}
+function fmtTime(){
+  const h = Math.floor(STATE.gameMinutes/60)%24;
+  const m = Math.floor(STATE.gameMinutes%60);
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+function isNight(){
+  const h = Math.floor(STATE.gameMinutes/60)%24;
+  return h<6 || h>=20;
+}
+
+async function bootData(){
+  try{
+    const r = await fetch('/static/lobster-dashboard-v2-vitals.json?ts='+Date.now(),{cache:'no-store'});
+    const j = await r.json();
+    STATE.samples = j.samples || [];
+    rebuildLatest();
+  } catch(e){
+    console.error('vitals load failed', e);
+    document.getElementById('boot').querySelector('.boot-text').textContent = 'vitals load failed';
+    throw e;
+  }
+  buildTown();
+  setTimeout(()=>{
+    document.getElementById('boot').classList.add('hidden');
+    document.getElementById('hint').classList.add('show');
+    setTimeout(()=>document.getElementById('hint').classList.remove('show'), 6000);
+  }, 350);
+  STATE.lastPollTs = Date.now();
+}
+
+function rebuildLatest(){
+  if(!STATE.samples.length) return;
+  const last = STATE.samples[STATE.samples.length-1].lobsters || {};
+  for(const [name, v] of Object.entries(last)){
+    STATE.latest[name] = {
+      score:v.score||0, stress:v.stress||0, betWR:v.betWR||0,
+      stockPnL:v.stockPnL||0, output:v.output||0, health:v.health||'normal',
+    };
+    if(!STATE.display[name]) STATE.display[name] = {...STATE.latest[name]};
+  }
+}
+
+// === BUILD TOWN ===
+function buildTown(){
+  // distribute homes in 3 districts
+  const districts = {
+    old:      {cx:WORLD_W*0.18, cy:WORLD_H*0.18, names:[]},
+    student:  {cx:WORLD_W*0.82, cy:WORLD_H*0.18, names:[]},
+    transfer: {cx:WORLD_W*0.50, cy:WORLD_H*0.85, names:[]},
+  };
+  for(const name of Object.keys(STATE.latest)){
+    districts[cohortOf(name)].names.push(name);
+  }
+  for(const [k, d] of Object.entries(districts)){
+    const n = d.names.length;
+    const cols = Math.ceil(Math.sqrt(n));
+    const rows = Math.ceil(n/cols);
+    const SP = 90;
+    const startX = d.cx - (cols-1)*SP/2;
+    const startY = d.cy - (rows-1)*SP/2;
+    d.names.forEach((name, i)=>{
+      const c = i%cols, r = Math.floor(i/cols);
+      const x = startX + c*SP + (Math.random()-.5)*8;
+      const y = startY + r*SP + (Math.random()-.5)*8;
+      STATE.homes[name] = {x:x-HOME_SIZE/2, y:y-HOME_SIZE/2, w:HOME_SIZE, h:HOME_SIZE, doorX:x, doorY:y+HOME_SIZE/2+8};
+    });
+  }
+  // create residents
+  STATE.residents = Object.keys(STATE.latest).map(name=>{
+    const home = STATE.homes[name];
+    const c = cohortOf(name);
+    return {
+      name, cohort:c, color:COHORT_COLOR[c],
+      x:home.doorX, y:home.doorY,
+      vx:0, vy:0,
+      target:null,             // {x,y,placeId,phase:'going'|'inside'|'leaving',until?}
+      anim:Math.random()*Math.PI*2,  // walk-cycle phase
+      hairHash: hash(name) % 360,
+      lastDecisionMin: -999,
+      currentPlace: 'home',
+    };
+  });
+}
+
+function hash(s){let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return h}
+
+// === MOVEMENT ===
+function decideActivity(p){
+  // re-decide every 30 game-minutes
+  if(STATE.gameMinutes - p.lastDecisionMin < 30) return;
+  p.lastDecisionMin = STATE.gameMinutes;
+  const d = STATE.display[p.name];
+  if(!d) return;
+  const stress = d.stress, score = d.score, betWR = d.betWR, health = STATE.latest[p.name]?.health;
+  const hour = Math.floor(STATE.gameMinutes/60)%24;
+
+  // night → home (unless in crisis they might stay anywhere)
+  if(hour >= 22 || hour < 6){
+    sendHome(p);
+    return;
+  }
+
+  // health crisis → clinic
+  if(health === 'crisis' && Math.random() < 0.35){
+    sendTo(p, 'clinic', 60);
+    log(p, '走到醫院 · health crisis');
+    return;
+  }
+  // high stress → home
+  if(stress > 0.85 && Math.random() < 0.55){
+    sendHome(p);
+    log(p, '回家躲壓力 · stress '+(stress*100|0)+'%');
+    return;
+  }
+  // betting impulse
+  if(betWR > 0.3 && Math.random() < 0.25){
+    sendTo(p, 'casino', 90);
+    log(p, '去賭場下注 · betWR '+(betWR*100|0)+'%');
+    return;
+  }
+  // studying — students more often
+  if((p.cohort === 'student' && Math.random() < 0.35) || Math.random() < 0.10){
+    sendTo(p, 'library', 80);
+    log(p, '去圖書館學習');
+    return;
+  }
+  // gym
+  if(score > 60 && Math.random() < 0.15){
+    sendTo(p, 'gym', 70);
+    log(p, '去健身房');
+    return;
+  }
+  // socialize — old more often visit plaza
+  if((p.cohort==='old' && Math.random() < 0.25) || Math.random() < 0.12){
+    sendTo(p, 'plaza', 100);
+    log(p, '去廣場閒聊');
+    return;
+  }
+  // chill at home
+  if(Math.random() < 0.35) sendHome(p);
+}
+
+function sendTo(p, placeId, durationMin){
+  const pl = placeById(placeId);
+  if(!pl) return;
+  // pick a random point inside the building
+  const tx = pl.x + (Math.random()*0.6 + 0.2) * pl.w - pl.w/2;
+  const ty = pl.y + (Math.random()*0.6 + 0.2) * pl.h - pl.h/2;
+  p.target = {x:tx, y:ty, placeId, phase:'going', untilMin: STATE.gameMinutes + durationMin};
+}
+function sendHome(p){
+  const home = STATE.homes[p.name];
+  p.target = {x:home.doorX, y:home.y + home.h*0.6, placeId:'home', phase:'going', untilMin: STATE.gameMinutes + 60};
+}
+
+function log(p, txt){
+  if(!STATE.journal[p.name]) STATE.journal[p.name] = [];
+  STATE.journal[p.name].unshift({t:fmtTime(), txt});
+  if(STATE.journal[p.name].length > 30) STATE.journal[p.name].length = 30;
+  // if panel is open for this person, update
+  if(STATE.selected && STATE.selected.name === p.name) renderJournal(p.name);
+}
+
+function updateResident(p, dt){
+  decideActivity(p);
+  // walk toward target
+  if(p.target){
+    const dx = p.target.x - p.x;
+    const dy = p.target.y - p.y;
+    const dd = Math.sqrt(dx*dx + dy*dy);
+    if(dd < 4){
+      p.vx = 0; p.vy = 0;
+      // arrived; if going, switch to inside
+      if(p.target.phase === 'going'){
+        p.target.phase = 'inside';
+        p.currentPlace = p.target.placeId;
+      }
+      // leave when time up
+      if(STATE.gameMinutes >= p.target.untilMin && p.target.placeId !== 'home'){
+        // pick next thing
+        sendHome(p);
+      } else if(p.target.placeId === 'home' && STATE.gameMinutes >= p.target.untilMin){
+        // re-decide
+        p.target = null;
+      }
+    } else {
+      const speed = WALK_SPEED;
+      p.vx = (dx/dd) * speed;
+      p.vy = (dy/dd) * speed;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.anim += dt * 8;
+    }
+  } else {
+    p.vx = 0; p.vy = 0;
+  }
+}
+
+// === RENDER ===
+function worldToScreen(wx, wy){
+  return {
+    x:(wx - STATE.cam.x)*STATE.cam.zoom + STATE.width/2,
+    y:(wy - STATE.cam.y)*STATE.cam.zoom + STATE.height/2,
+  };
+}
+function screenToWorld(sx, sy){
+  return {
+    x:(sx - STATE.width/2)/STATE.cam.zoom + STATE.cam.x,
+    y:(sy - STATE.height/2)/STATE.cam.zoom + STATE.cam.y,
+  };
+}
+
+function drawGround(){
+  // dark green base
+  ctx.fillStyle = '#162e22';
+  ctx.fillRect(0, 0, STATE.width, STATE.height);
+  // checker grass pattern (cheap)
+  const z = STATE.cam.zoom;
+  const tile = 80 * z;
+  const offX = (-STATE.cam.x*z + STATE.width/2) % tile;
+  const offY = (-STATE.cam.y*z + STATE.height/2) % tile;
+  ctx.fillStyle = '#1b3a2a';
+  for(let y=offY-tile; y<STATE.height; y+=tile){
+    for(let x=offX-tile + ((Math.floor(y/tile)%2)?tile/2:0); x<STATE.width; x+=tile){
+      ctx.fillRect(x, y, tile/2, tile/2);
+    }
+  }
+  // central plaza ground (cobblestone)
+  const pl = placeById('plaza');
+  if(pl){
+    const s = worldToScreen(pl.x - pl.w*1.2, pl.y - pl.h*1.2);
+    const w = pl.w * 2.4 * STATE.cam.zoom;
+    const h = pl.h * 2.4 * STATE.cam.zoom;
+    ctx.fillStyle = '#4a3e2c';
+    ctx.beginPath();
+    ctx.ellipse(s.x+w/2, s.y+h/2, w/2, h/2, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+  // paths from districts to plaza
+  ctx.strokeStyle = '#3d3225';
+  ctx.lineWidth = 18 * STATE.cam.zoom;
+  ctx.lineCap = 'round';
+  const centers = [
+    {x:WORLD_W*0.18, y:WORLD_H*0.18},
+    {x:WORLD_W*0.82, y:WORLD_H*0.18},
+    {x:WORLD_W*0.50, y:WORLD_H*0.85},
+  ];
+  const center = {x:WORLD_W*0.50, y:WORLD_H*0.50};
+  ctx.beginPath();
+  for(const c of centers){
+    const a = worldToScreen(c.x, c.y);
+    const b = worldToScreen(center.x, center.y);
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+  }
+  ctx.stroke();
+}
+
+function drawShared(){
+  for(const pl of PLACES){
+    const tl = worldToScreen(pl.x - pl.w/2, pl.y - pl.h/2);
+    const w = pl.w * STATE.cam.zoom;
+    const h = pl.h * STATE.cam.zoom;
+    // shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(tl.x+4, tl.y+6, w, h);
+    // body
+    const grad = ctx.createLinearGradient(tl.x, tl.y, tl.x, tl.y+h);
+    grad.addColorStop(0, '#1f2c3a');
+    grad.addColorStop(1, '#0e1622');
+    ctx.fillStyle = grad;
+    ctx.fillRect(tl.x, tl.y, w, h);
+    // colored stripe on top
+    ctx.fillStyle = pl.color;
+    ctx.fillRect(tl.x, tl.y, w, Math.max(3, 6*STATE.cam.zoom));
+    // glyph
+    if(STATE.cam.zoom > 0.45){
+      ctx.font = 'bold '+(28*STATE.cam.zoom)+'px ui-monospace,Menlo,monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = pl.color;
+      ctx.fillText(pl.glyph, tl.x+w/2, tl.y+h/2);
+    }
+    // label
+    if(STATE.cam.zoom > 0.35){
+      ctx.font = 'bold '+(10*STATE.cam.zoom)+'px ui-monospace,Menlo,monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(219,233,245,0.85)';
+      ctx.fillText(pl.zh, tl.x+w/2, tl.y+h+ 14*STATE.cam.zoom);
+    }
+  }
+}
+
+function drawHomes(){
+  for(const [name, h] of Object.entries(STATE.homes)){
+    const tl = worldToScreen(h.x, h.y);
+    const w = h.w * STATE.cam.zoom;
+    const ht = h.h * STATE.cam.zoom;
+    const c = cohortOf(name);
+    const col = COHORT_COLOR[c];
+    // shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(tl.x+3, tl.y+5, w, ht);
+    // walls
+    ctx.fillStyle = '#0e1a26';
+    ctx.fillRect(tl.x, tl.y+ht*0.35, w, ht*0.65);
+    // roof — colored triangle by cohort
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.moveTo(tl.x - w*0.05, tl.y+ht*0.4);
+    ctx.lineTo(tl.x + w*0.5, tl.y);
+    ctx.lineTo(tl.x + w*1.05, tl.y+ht*0.4);
+    ctx.closePath();
+    ctx.fill();
+    // door
+    ctx.fillStyle = '#1f2c3a';
+    ctx.fillRect(tl.x + w*0.42, tl.y+ht*0.65, w*0.16, ht*0.35);
+    // window (lit if at home & night, else dim)
+    const resident = STATE.residents.find(r=>r.name===name);
+    const isHome = resident && (resident.currentPlace==='home' || dist(resident, {x:h.doorX,y:h.doorY}) < 30);
+    const lit = isNight() && isHome;
+    ctx.fillStyle = lit ? '#fbbf24' : '#1f2c3a';
+    ctx.fillRect(tl.x + w*0.12, tl.y+ht*0.5, w*0.18, ht*0.18);
+    ctx.fillRect(tl.x + w*0.70, tl.y+ht*0.5, w*0.18, ht*0.18);
+    // name label
+    if(STATE.cam.zoom > 0.55){
+      ctx.font = 'bold '+(8*STATE.cam.zoom)+'px ui-monospace,Menlo,monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(159,178,196,0.75)';
+      ctx.fillText(name, tl.x+w/2, tl.y+ht+12*STATE.cam.zoom);
+    }
+  }
+}
+
+function drawResidents(){
+  // depth sort by y
+  const sorted = STATE.residents.slice().sort((a,b)=>a.y-b.y);
+  for(const p of sorted){
+    const s = worldToScreen(p.x, p.y);
+    const z = STATE.cam.zoom;
+    const bodyW = 8 * z;
+    const bodyH = 14 * z;
+    const headR = 5 * z;
+    const isHover = STATE.hovered === p;
+    const isSel = STATE.selected === p;
+    // shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.beginPath();
+    ctx.ellipse(s.x, s.y+bodyH/2+2*z, bodyW*0.6, 2.6*z, 0, 0, Math.PI*2);
+    ctx.fill();
+    // selected/hover halo
+    if(isSel || isHover){
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, bodyH*0.9, 0, Math.PI*2);
+      ctx.fillStyle = isSel ? 'rgba(45,212,191,0.18)' : 'rgba(45,212,191,0.10)';
+      ctx.fill();
+      if(isSel){
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, bodyH*0.9, 0, Math.PI*2);
+        ctx.strokeStyle = '#2dd4bf';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    }
+    // body
+    const walkY = (Math.abs(p.vx)+Math.abs(p.vy)) > 1 ? Math.sin(p.anim)*1.4*z : 0;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(s.x - bodyW/2, s.y - bodyH/4 + walkY, bodyW, bodyH*0.75);
+    // head
+    ctx.fillStyle = '#f4d9b8';
+    ctx.beginPath();
+    ctx.arc(s.x, s.y - bodyH/2 + walkY, headR, 0, Math.PI*2);
+    ctx.fill();
+    // hair (a cap of color)
+    ctx.fillStyle = `hsl(${p.hairHash},40%,30%)`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y - bodyH/2 + walkY, headR, Math.PI*1.05, Math.PI*1.95);
+    ctx.fill();
+    // crisis indicator (red dot above head)
+    if(STATE.latest[p.name]?.health === 'crisis'){
+      ctx.fillStyle = '#fb7185';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y - bodyH/2 - 7*z + walkY, 1.6*z, 0, Math.PI*2);
+      ctx.fill();
+    }
+    // name (only when zoomed in or hovered)
+    if(isHover || isSel || STATE.cam.zoom > 0.85){
+      ctx.font = 'bold '+(9*z)+'px ui-monospace,Menlo,monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = isHover||isSel ? '#eef6fb' : 'rgba(159,178,196,0.8)';
+      ctx.fillText(p.name, s.x, s.y+bodyH*0.95);
+    }
+  }
+}
+
+function draw(){
+  ctx.fillStyle = '#06121d';
+  ctx.fillRect(0,0,STATE.width,STATE.height);
+  drawGround();
+  drawShared();
+  drawHomes();
+  drawResidents();
+}
+
+// === HUD repaint ===
+function paintStats(){
+  const all = Object.values(STATE.display);
+  if(!all.length) return;
+  let pnl=0, stress=0, topName='--', topPnL=-Infinity, atHome=0, crisis=0;
+  for(const [name, v] of Object.entries(STATE.display)){
+    pnl += v.stockPnL; stress += v.stress;
+    if(v.stockPnL > topPnL){ topPnL=v.stockPnL; topName=name; }
+  }
+  for(const p of STATE.residents){
+    if(p.currentPlace === 'home') atHome++;
+    if(STATE.latest[p.name]?.health === 'crisis') crisis++;
+  }
+  const n = Object.keys(STATE.display).length;
+  document.getElementById('s-pnl').textContent = fmtMoney(pnl);
+  document.getElementById('s-stress').textContent = (stress/n*100).toFixed(0)+'%';
+  document.getElementById('s-top').textContent = (function(){ const _n = topName; const _m = PEOPLE[_n]; return _m ? _m.humanName : (_n || '--'); })();
+  document.getElementById('s-home').textContent = atHome+' / '+n;
+  document.getElementById('s-crisis').textContent = crisis+' / '+n;
+  document.getElementById('sync-age').textContent = ((Date.now()-STATE.lastPollTs)/1000).toFixed(1)+'s';
+  document.getElementById('clock-time').textContent = fmtTime();
+  document.getElementById('clock-day').textContent = 'DAY '+STATE.day;
+  // sky tint
+  const h = Math.floor(STATE.gameMinutes/60)%24;
+  let tint = 'rgba(0,0,0,0)';
+  if(h<6) tint = 'rgba(2,8,40,0.55)';
+  else if(h<8) tint = 'rgba(50,30,80,0.30)';
+  else if(h>=18 && h<20) tint = 'rgba(120,50,20,0.22)';
+  else if(h>=20) tint = 'rgba(8,12,40,0.5)';
+  document.getElementById('sky-tint').style.background = tint;
+}
+
+// === TICK ===
+let lastFrame = performance.now();
+function tick(now){
+  const realDt = Math.min(0.1, (now - lastFrame)/1000);
+  lastFrame = now;
+
+  // smooth display vitals
+  for(const [name, target] of Object.entries(STATE.latest)){
+    const d = STATE.display[name] = STATE.display[name] || {...target};
+    d.score = lerp(d.score, target.score, 0.04);
+    d.stress = lerp(d.stress, target.stress, 0.04);
+    d.stockPnL = lerp(d.stockPnL, target.stockPnL, 0.04);
+    d.betWR = lerp(d.betWR, target.betWR, 0.04);
+    d.output = lerp(d.output, target.output, 0.05);
+  }
+
+  // advance game time
+  const gameDt = realDt * STATE.speed * GAME_MIN_PER_REAL_SEC_AT_1X;
+  STATE.gameMinutes += gameDt;
+  while(STATE.gameMinutes >= 24*60){ STATE.gameMinutes -= 24*60; STATE.day++; }
+
+  // residents
+  for(const p of STATE.residents) updateResident(p, realDt * Math.max(1, STATE.speed));
+
+  // camera ease
+  STATE.cam.x = lerp(STATE.cam.x, STATE.cam.tx, 0.12);
+  STATE.cam.y = lerp(STATE.cam.y, STATE.cam.ty, 0.12);
+  STATE.cam.zoom = lerp(STATE.cam.zoom, STATE.cam.tz, 0.12);
+
+  // follow mode
+  if(STATE.follow && STATE.selected){
+    STATE.cam.tx = STATE.selected.x;
+    STATE.cam.ty = STATE.selected.y;
+  }
+
+  draw();
+  paintStats();
+  if(STATE.selected) updatePanel();
+  requestAnimationFrame(tick);
+}
+
+// === input ===
+let mouseDownAt = null;
+cv.addEventListener('mousedown', e=>{
+  mouseDownAt = {x:e.clientX, y:e.clientY, t:performance.now()};
+  if(STATE.hovered) return;
+  STATE.drag.active = true;
+  STATE.drag.sx = e.clientX; STATE.drag.sy = e.clientY;
+  STATE.drag.camX0 = STATE.cam.tx; STATE.drag.camY0 = STATE.cam.ty;
+  document.body.classList.add('dragging');
+});
+window.addEventListener('mousemove', e=>{
+  if(STATE.drag.active){
+    const dx = (e.clientX - STATE.drag.sx)/STATE.cam.zoom;
+    const dy = (e.clientY - STATE.drag.sy)/STATE.cam.zoom;
+    STATE.cam.tx = STATE.drag.camX0 - dx;
+    STATE.cam.ty = STATE.drag.camY0 - dy;
+    STATE.follow = false;
+    return;
+  }
+  const rect = cv.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  let hit = null, hitDist = Infinity;
+  for(const p of STATE.residents){
+    const sc = worldToScreen(p.x, p.y);
+    const dx = mx - sc.x, dy = my - sc.y;
+    const dd = Math.sqrt(dx*dx + dy*dy);
+    const radius = 18 * STATE.cam.zoom;
+    if(dd < Math.max(14, radius) && dd < hitDist){ hit = p; hitDist = dd; }
+  }
+  STATE.hovered = hit;
+  if(hit){
+    showTooltip(hit, e.clientX, e.clientY);
+    cv.style.cursor = 'pointer';
+  } else {
+    tooltip.classList.remove('visible');
+    cv.style.cursor = STATE.drag.active ? 'grabbing' : 'grab';
+  }
+});
+window.addEventListener('mouseup', e=>{
+  if(STATE.drag.active){
+    STATE.drag.active = false;
+    document.body.classList.remove('dragging');
+  }
+  if(mouseDownAt){
+    const dx = e.clientX - mouseDownAt.x, dy = e.clientY - mouseDownAt.y;
+    const dt = performance.now() - mouseDownAt.t;
+    if(Math.sqrt(dx*dx+dy*dy) < 5 && dt < 320 && STATE.hovered){
+      selectResident(STATE.hovered);
+    }
+    mouseDownAt = null;
+  }
+});
+cv.addEventListener('wheel', e=>{
+  e.preventDefault();
+  const rect = cv.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const before = screenToWorld(mx, my);
+  const factor = Math.exp(-e.deltaY * 0.0014);
+  STATE.cam.tz = clamp(STATE.cam.tz * factor, 0.18, 3.5);
+  STATE.cam.zoom = STATE.cam.tz;
+  const after = screenToWorld(mx, my);
+  STATE.cam.tx += before.x - after.x;
+  STATE.cam.ty += before.y - after.y;
+  STATE.cam.x = STATE.cam.tx; STATE.cam.y = STATE.cam.ty;
+}, {passive:false});
+
+function showTooltip(p, cx, cy){
+  const d = STATE.display[p.name]; if(!d) return;
+  const meta = person(p.name);
+  const place = placeOf(p);
+  const actZh = PLACE_ACTIVITY_ZH[place] || '在城裡走';
+  const mZh = moodZh(d.stress);
+  tooltip.innerHTML = `
+    <div style="font-size:13px;font-weight:900">${meta.humanName} <span style="font-size:9px;color:#8fa3b8;font-weight:600">· ${meta.pronounEn}</span></div>
+    <div style="margin-top:3px;color:#647a8e;font-size:10px">${meta.cohortLabel} · ${meta.mbti||''}</div>
+    <div style="margin-top:5px;color:#2dd4bf">${actZh}</div>
+    <div style="margin-top:2px;color:#facc15">${mZh}</div>
+    <div style="margin-top:5px;font-size:9px;color:var(--ink3);letter-spacing:1.3px;text-transform:uppercase">點看完整生平</div>
+  `;
+  tooltip.style.left = cx + 'px';
+  tooltip.style.top = (cy - 12) + 'px';
+  tooltip.classList.add('visible');
+}
+
+function selectResident(p){
+  STATE.selected = p;
+  panel.classList.add('visible');
+  updatePanel();
+  renderJournal(p.name);
+  speak(buildBriefing(p));
+}
+
+function updatePanel(){
+  const p = STATE.selected;
+  if(!p) return;
+  const d = STATE.display[p.name]; if(!d) return;
+  const meta = person(p.name);
+  // primary identity
+  document.getElementById('p-name').textContent = meta.humanName;
+  const cohortEl = document.getElementById('p-cohort');
+  cohortEl.textContent = meta.cohortLabel.toUpperCase();
+  cohortEl.className = 'panel-cohort '+meta.cohort;
+  // identity sub-line + bio
+  const place = placeOf(p);
+  const locZh = ({home:'家', casino:'賭場', library:'圖書館', gym:'健身房', clinic:'醫院', plaza:'廣場'})[place] || place;
+  const archetypeLine = meta.archetype ? `<b>${meta.archetype}</b> · ` : '';
+  document.getElementById('p-occu').innerHTML = `
+    <div class="panel-identity">${meta.mbti||''} · ${archetypeLine}${meta.pronounEn}</div>
+    ${meta.oneLineBio ? `<div class="panel-bio">${meta.oneLineBio}</div>` : ''}
+    <div style="margin-top:8px;font-size:11px;color:var(--ink3)">現在在 <b style="color:#2dd4bf">${locZh}</b></div>
+  `;
+  // status line — natural language
+  document.getElementById('p-status').innerHTML = buildStatusLine(p, d);
+  // recent thought
+  const thoughtEl = document.getElementById('p-thought');
+  const thoughtTx = document.getElementById('p-thought-text');
+  if(meta.recentThought){
+    thoughtEl.style.display = '';
+    thoughtTx.textContent = meta.recentThought;
+  } else { thoughtEl.style.display = 'none'; }
+  document.getElementById('p-score').textContent = (d.score|0);
+  document.getElementById('p-stress').textContent = (d.stress*100|0)+'%';
+  const pnlEl = document.getElementById('p-pnl');
+  pnlEl.textContent = fmtMoney(d.stockPnL);
+  pnlEl.className = 'pm-v ' + (d.stockPnL>=0?'green':'red');
+  document.getElementById('p-betwr').textContent = d.betWR.toFixed(1)+'%';
+}
+
+function renderJournal(name){
+  const rows = STATE.journal[name] || [];
+  document.getElementById('p-journal').innerHTML = rows.slice(0,12).map(r=>
+    `<div class="panel-journal-row"><span class="panel-journal-t">${r.t}</span> · ${r.txt}</div>`
+  ).join('') || '<div style="color:var(--ink3)">尚無事件記錄…</div>';
+}
+
+function buildStatusLine(p, d){
+  const meta = person(p.name);
+  const mZh = moodZh(d.stress);
+  const actZh = PLACE_ACTIVITY_ZH[placeOf(p)] || '在路上';
+  let financial = '';
+  if(Math.abs(d.stockPnL) > 5000){
+    financial = d.stockPnL > 0
+      ? `投資悄悄上升 (${fmtMoney(d.stockPnL)})`
+      : `投資吃了一刀 (${fmtMoney(d.stockPnL)})`;
+  }
+  return `<div style="line-height:1.6"><b style="color:#2dd4bf">${actZh}</b>。<b style="color:#facc15">${mZh}</b>。${financial ? '<br>' + financial + '。' : ''}</div>`;
+}
+
+function buildBriefing(p){
+  const d = STATE.display[p.name] || {};
+  const meta = person(p.name);
+  const actEn = PLACE_ACTIVITY_EN[placeOf(p)] || 'walking through town';
+  const mEn = moodEn(d.stress || 0);
+  return `${meta.humanName}, a ${meta.cohortLabel.toLowerCase()}, is ${actEn}, ${mEn}.`;
+}
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-GB';
+    u.rate = 0.95; u.pitch = 0.85;
+    // try Daniel (UK male) if available
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v=>/Daniel|Oliver|Arthur|UK/i.test(v.name+v.lang)) || voices.find(v=>v.lang.startsWith('en'));
+    if(preferred) u.voice = preferred;
+    window.speechSynthesis.speak(u);
+  } catch(e){ console.warn('speak failed', e); }
+}
+
+// panel controls
+document.getElementById('panel-close').addEventListener('click', ()=>{
+  panel.classList.remove('visible');
+  STATE.selected = null;
+  STATE.follow = false;
+  window.speechSynthesis?.cancel();
+});
+document.getElementById('p-speak').addEventListener('click', ()=>{
+  if(STATE.selected) speak(buildBriefing(STATE.selected) + ' ' + STATE.selected.name + ' is currently at ' + (STATE.selected.currentPlace||'home') + '.');
+});
+document.getElementById('p-follow').addEventListener('click', ()=>{
+  STATE.follow = !STATE.follow;
+  if(STATE.follow){ STATE.cam.tz = 1.4; }
+});
+document.getElementById('p-goto-home').addEventListener('click', ()=>{
+  if(STATE.selected){
+    const h = STATE.homes[STATE.selected.name];
+    STATE.cam.tx = h.x + h.w/2;
+    STATE.cam.ty = h.y + h.h/2;
+    STATE.cam.tz = 1.6;
+  }
+});
+
+// speed buttons
+document.querySelectorAll('.speed-btn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.speed-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    STATE.speed = parseFloat(b.dataset.sp);
+  });
+});
+
+// polling
+async function poll(){
+  try{
+    const r = await fetch('/static/lobster-dashboard-v2-vitals.json?ts='+Date.now(),{cache:'no-store'});
+    const j = await r.json();
+    STATE.samples = j.samples || [];
+    rebuildLatest();
+    STATE.lastPollTs = Date.now();
+  } catch(e){ console.warn('poll fail', e); }
+}
+setInterval(poll, POLL_MS);
+
+// boot
+bootData().then(()=>{
+  requestAnimationFrame(tick);
+}).catch(e=>{
+  document.getElementById('boot').querySelector('.boot-text').textContent = 'boot failed: '+(e.message||e);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import pathlib, shutil, sqlite3, subprocess, sys, time
+SRC = '/opt/battle_arena/app/battle_arena.db'
+SNAP = '/tmp/battle_arena_failover_snapshot.db'
+REMOTE = 'root@167.88.45.137:/opt/battle_arena_failover/app/battle_arena.db'
+REMOTE_HOST = 'root@167.88.45.137'
+REMOTE_DIR = '/opt/battle_arena_failover/app'
+LOG = pathlib.Path('/var/log/charenix-dashboard-failover-sync.log')
+MIN_FREE_MARGIN_BYTES = 5 * 1024 * 1024 * 1024
+
+def log(msg):
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    with LOG.open('a', encoding='utf-8') as f:
+        f.write(time.strftime('%Y-%m-%dT%H:%M:%S%z ') + msg + '\n')
+
+def remote_free_bytes():
+    out = subprocess.check_output([
+        'ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=8',
+        REMOTE_HOST, 'df', '-PB1', REMOTE_DIR,
+    ], text=True)
+    lines = [ln.split() for ln in out.splitlines() if ln.strip()]
+    if len(lines) < 2 or len(lines[-1]) < 4:
+        raise RuntimeError('cannot parse remote df output')
+    return int(lines[-1][3])
+
+try:
+    src_size = pathlib.Path(SRC).stat().st_size
+    local_free = shutil.disk_usage('/tmp').free
+    remote_free = remote_free_bytes()
+    if src_size + MIN_FREE_MARGIN_BYTES > local_free:
+        log('sync skipped degraded: source size=%s local_tmp_free=%s needs cold split' % (src_size, local_free))
+        sys.exit(0)
+    if src_size + MIN_FREE_MARGIN_BYTES > remote_free:
+        log('sync skipped degraded: source size=%s remote_free=%s needs cold split' % (src_size, remote_free))
+        sys.exit(0)
+    pathlib.Path(SNAP).unlink(missing_ok=True)
+    con = sqlite3.connect(SRC, timeout=30)
+    out = sqlite3.connect(SNAP)
+    con.backup(out, pages=2000, sleep=0.02)
+    out.close(); con.close()
+    subprocess.check_call(['rsync','-az','--inplace','--partial',SNAP,REMOTE])
+    subprocess.call(['ssh','root@167.88.45.137','systemctl','restart','charenix-dashboard-failover.service'])
+    log('sync ok size=%s' % pathlib.Path(SNAP).stat().st_size)
+    pathlib.Path(SNAP).unlink(missing_ok=True)
+except Exception as e:
+    log('sync failed: %r' % (e,))
+    sys.exit(1)

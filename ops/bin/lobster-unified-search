@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sqlite3
+
+MAIN_DB = "/opt/battle_arena/app/battle_arena.db"
+COLD_DB = "/opt/battle_arena/app/lobster_cold_storage.db"
+
+def connect(main_db: str, cold_db: str) -> sqlite3.Connection:
+    con = sqlite3.connect(main_db, timeout=30)
+    con.row_factory = sqlite3.Row
+    con.execute("PRAGMA busy_timeout=30000")
+    con.execute("ATTACH DATABASE ? AS cold", (cold_db,))
+    return con
+
+def table_exists(con: sqlite3.Connection, table: str, schema: str = "main") -> bool:
+    return bool(con.execute(f"SELECT 1 FROM {schema}.sqlite_master WHERE type='table' AND name=? LIMIT 1", (table,)).fetchone())
+
+def column_exists(con: sqlite3.Connection, table: str, column: str, schema: str = "main") -> bool:
+    return any(r["name"] == column for r in con.execute(f"PRAGMA {schema}.table_info('{table}')").fetchall())
+
+def add_query(parts: list[str], params: list, sql: str, sql_params: list) -> None:
+    parts.append(sql)
+    params.extend(sql_params)
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Search hot and cold Lobster SQLite DBs together.")
+    ap.add_argument("query", nargs="?", default="")
+    ap.add_argument("--persona", default="")
+    ap.add_argument("--limit", type=int, default=40)
+    ap.add_argument("--main-db", default=MAIN_DB)
+    ap.add_argument("--cold-db", default=COLD_DB)
+    ap.add_argument("--json", action="store_true")
+    args = ap.parse_args()
+
+    con = connect(args.main_db, args.cold_db)
+    q = f"%{args.query}%"
+    persona_filter = args.persona.strip()
+    parts, params = [], []
+
+    persona_clause = "AND name=?" if persona_filter else ""
+    persona_params = [persona_filter] if persona_filter else []
+    if table_exists(con, "lounge_messages", "main"):
+        add_query(parts, params,
+            f"""SELECT 'main' AS db, 'lounge_messages' AS table_name, id, name AS persona,
+                       COALESCE(time, datetime(created_at,'unixepoch')) AS ts,
+                       substr(replace(text, char(10), ' / '),1,500) AS text
+                FROM main.lounge_messages
+                WHERE (?='' OR text LIKE ?) {persona_clause}""",
+            [args.query, q, *persona_params])
+    for table in [
+        "lounge_messages_bak_20260506_template_cleanup",
+        "lounge_messages_data_cleanup_20260508",
+        "lounge_messages_quality_autopatrol_backup",
+        "lounge_messages_template_purge_20260507",
+    ]:
+        if table_exists(con, table, "cold"):
+            text_expr = "COALESCE(cleaned_text,text,'')" if column_exists(con, table, "cleaned_text", "cold") else "COALESCE(text,'')"
+            add_query(parts, params,
+                f"""SELECT 'cold' AS db, '{table}' AS table_name, id, name AS persona,
+                           COALESCE(time, datetime(created_at,'unixepoch')) AS ts,
+                           substr(replace({text_expr}, char(10), ' / '),1,500) AS text
+                    FROM cold."{table}"
+                    WHERE (?='' OR {text_expr} LIKE ?) {persona_clause}""",
+                [args.query, q, *persona_params])
+
+    exp_persona_clause = "AND persona=?" if persona_filter else ""
+    exp_persona_params = [persona_filter] if persona_filter else []
+    for schema, dbname in [("main", "main"), ("cold", "cold")]:
+        if table_exists(con, "lobster_experience_events", schema):
+            add_query(parts, params,
+                f"""SELECT '{dbname}' AS db, 'lobster_experience_events' AS table_name, id, persona,
+                           COALESCE(occurred_at, created_at) AS ts,
+                           substr(replace(COALESCE(title,'') || ' ' || COALESCE(content,'') || ' ' || COALESCE(outcome,''), char(10), ' / '),1,500) AS text
+                    FROM {schema}.lobster_experience_events
+                    WHERE (?='' OR title LIKE ? OR content LIKE ? OR outcome LIKE ? OR raw_json LIKE ?) {exp_persona_clause}""",
+                [args.query, q, q, q, q, *exp_persona_params])
+        if table_exists(con, "lobster_cognitive_events", schema):
+            add_query(parts, params,
+                f"""SELECT '{dbname}' AS db, 'lobster_cognitive_events' AS table_name, id, persona,
+                           COALESCE(occurred_at, created_at) AS ts,
+                           substr(replace(COALESCE(summary,'') || ' ' || COALESCE(dimension,''), char(10), ' / '),1,500) AS text
+                    FROM {schema}.lobster_cognitive_events
+                    WHERE (?='' OR summary LIKE ? OR dimension LIKE ? OR raw_json LIKE ?) {exp_persona_clause}""",
+                [args.query, q, q, q, *exp_persona_params])
+
+    if not parts:
+        print("[]" if args.json else "no searchable tables")
+        return 0
+    sql = "SELECT * FROM (" + "\nUNION ALL\n".join(parts) + ") ORDER BY ts DESC LIMIT ?"
+    params.append(max(1, int(args.limit)))
+    rows = [dict(r) for r in con.execute(sql, params).fetchall()]
+    if args.json:
+        print(json.dumps(rows, ensure_ascii=False))
+    else:
+        for r in rows:
+            print(f"[{r['db']}:{r['table_name']}] #{r['id']} {r['persona']} {r['ts']} {r['text']}")
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人 Lobster Detail · V2-NEXT</title>
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#0f1525; --surface:#141a2d; --surface2:#1a2138;
+  --border:#27314a; --border2:#384465;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#38bdf8; --accent2:#0ea5e9;
+  --green:#22c55e; --yellow:#eab308; --orange:#f97316; --red:#ef4444; --purple:#a855f7;
+  --gold:#fbbf24; --rose:#f43f5e; --teal:#14b8a6; --blue:#3b82f6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,'Helvetica Neue','PingFang TC',sans-serif;
+  font-size:13px; line-height:1.5;
+  min-height:100vh;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent2)}
+code,pre{font-family:'SF Mono','Monaco','Menlo',monospace;font-size:11px}
+
+/* ── Top bar ── */
+.topbar{
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg2) 100%);
+  border-bottom:1px solid var(--border);
+  padding:12px 20px;display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(8px);
+}
+.lob-head{display:flex;align-items:center;gap:14px}
+.back-link{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);padding:6px 12px;border-radius:6px;
+  font-size:11px;
+}
+.back-link:hover{border-color:var(--accent);color:var(--accent)}
+.lob-title{font-size:20px;font-weight:900;letter-spacing:0.3px}
+.lob-sub{color:var(--text2);font-size:12px}
+.mbti-chip{
+  font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px;
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+}
+.occ-chip{font-size:11px;font-weight:800;padding:3px 8px;border-radius:5px;margin-left:8px}
+.occ-chip.teacher{background:#1e3a8a;color:#dbeafe;border:1px solid #3b82f6}
+.occ-chip.investigator{background:#581c87;color:#f3e8ff;border:1px solid #a855f7}
+.status-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;
+  background:var(--bg2);border:1px solid var(--border);
+}
+.status-pill.normal{color:var(--green);border-color:var(--green)}
+.status-pill.pressure{color:var(--yellow);border-color:var(--yellow)}
+.status-pill.crisis{color:var(--red);border-color:var(--red);background:#2a0d10}
+.status-pill.deletion_candidate{color:var(--red);border-color:var(--red);background:#2a0d10;animation:pulse 2s infinite}
+.status-pill.in_ritual{color:var(--purple);border-color:var(--purple)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 rgba(239,68,68,0)}50%{box-shadow:0 0 12px rgba(239,68,68,0.4)}}
+
+.btn{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;
+  font-size:11px;font-family:inherit;
+}
+.btn:hover{background:var(--border);border-color:var(--accent)}
+
+/* ── Tab nav ── */
+.tab-nav{
+  display:flex;gap:2px;padding:0 20px;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  overflow-x:auto;position:sticky;top:53px;z-index:90;
+}
+.tab-btn{
+  background:transparent;border:none;color:var(--text2);
+  padding:11px 16px;font-size:12px;cursor:pointer;
+  border-bottom:2.5px solid transparent;transition:all .12s;
+  font-family:inherit;white-space:nowrap;
+}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+.tab-btn.v1{margin-left:auto;color:var(--orange)}
+.tab-btn.v1.active{color:var(--orange);border-bottom-color:var(--orange)}
+
+.tab-pane{display:none;padding:18px 20px;max-width:1600px;margin:0 auto}
+.tab-pane.active{display:block}
+
+/* ── Generic cards / sections ── */
+.section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:16px;margin-bottom:14px;
+}
+.section-head{
+  font-size:13px;font-weight:900;color:var(--text);
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+  padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.section-head .sub{font-size:10px;color:var(--text3);font-weight:400;margin-left:auto}
+
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+
+.kv-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:6px 14px;font-size:12px;
+}
+.kv{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed var(--border)}
+.kv-k{color:var(--text3)}
+.kv-v{color:var(--text);font-weight:600}
+.kv-v.crisis{color:var(--red)}
+.kv-v.warn{color:var(--orange)}
+.kv-v.good{color:var(--green)}
+
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.stat-card{
+  background:var(--bg2);border:1px solid var(--border);
+  padding:10px 12px;border-radius:8px;
+}
+.stat-card-label{font-size:10px;color:var(--text3);text-transform:uppercase}
+.stat-card-val{font-size:20px;font-weight:900;color:var(--text);margin-top:2px}
+.stat-card-sub{font-size:10px;color:var(--text2)}
+.stat-card.warn{border-color:var(--orange)}
+.stat-card.warn .stat-card-val{color:var(--orange)}
+.stat-card.crisis{border-color:var(--red);background:linear-gradient(180deg,var(--bg2) 0%,#1a0a0c 100%)}
+.stat-card.crisis .stat-card-val{color:var(--red)}
+.stat-card.good{border-color:var(--green)}
+.stat-card.good .stat-card-val{color:var(--green)}
+.stat-card.brain{border-color:var(--accent)}
+.stat-card.brain .stat-card-val{color:var(--accent)}
+
+.bar-track{height:6px;background:#0a1018;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin-top:6px}
+.bar-fill{height:100%;border-radius:3px;background:var(--accent);transition:width .3s}
+
+.tag{
+  display:inline-block;background:var(--bg2);border:1px solid var(--border);
+  color:var(--text2);font-size:10px;padding:2px 7px;border-radius:10px;
+  margin:2px 3px 2px 0;
+}
+.tag.warn{border-color:var(--orange);color:var(--orange)}
+.tag.good{border-color:var(--green);color:var(--green)}
+.tag.purple{border-color:var(--purple);color:var(--purple);background:#1a0d28}
+
+/* ── Specialised UI ── */
+.theory-row{
+  background:var(--bg2);border:1px solid var(--border);border-radius:6px;
+  padding:8px 10px;margin-bottom:5px;cursor:pointer;
+  font-size:11px;display:flex;justify-content:space-between;gap:8px;
+}
+.theory-row:hover{border-color:var(--accent);background:var(--surface2)}
+.theory-row b{color:var(--text);font-weight:700}
+.theory-row span{color:var(--text3);font-size:10px}
+.theory-fact{
+  display:none;padding:8px 10px;background:var(--bg);
+  border-left:2px solid var(--accent);font-size:11px;color:var(--text2);
+  margin:-5px 0 8px 0;border-radius:0 6px 6px 0;line-height:1.6;
+}
+.theory-fact.open{display:block}
+
+.principle-item{
+  background:var(--bg2);border-left:3px solid var(--gold);
+  padding:9px 12px;margin-bottom:6px;border-radius:0 6px 6px 0;
+  font-size:12px;color:var(--text2);line-height:1.6;
+}
+.principle-num{color:var(--gold);font-weight:900;margin-right:8px}
+
+.skel-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:7px 10px;margin-bottom:4px;
+  font-size:11px;color:var(--text2);
+}
+.skel-item .meta{font-size:10px;color:var(--text3);margin-top:3px}
+
+.ban-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:3px;
+}
+.ban-word{
+  background:#2a0d10;border:1px solid #5a1a20;
+  color:#fda4af;font-size:10px;padding:3px 6px;border-radius:4px;
+  text-align:center;font-family:'SF Mono',monospace;
+}
+
+.peer-jac-row{
+  display:grid;grid-template-columns:120px 1fr 60px 60px;gap:8px;
+  padding:5px 0;border-bottom:1px dashed var(--border);font-size:11px;align-items:center;
+}
+.peer-jac-row b{color:var(--text)}
+.peer-jac-bar{height:4px;background:#0a1018;border-radius:2px;overflow:hidden}
+.peer-jac-fill{height:100%;background:linear-gradient(90deg,var(--accent) 0%,var(--orange) 50%,var(--red) 100%)}
+
+.divine-row{
+  background:var(--bg2);border-left:3px solid var(--purple);
+  padding:9px 12px;margin-bottom:6px;border-radius:0 6px 6px 0;
+  font-size:11px;
+}
+.divine-row .when{color:var(--text3);font-size:10px;float:right}
+.divine-row .type{font-weight:900;color:var(--gold)}
+
+.lounge-row{
+  background:var(--bg2);border:1px solid var(--border);
+  padding:7px 10px;margin-bottom:5px;border-radius:6px;font-size:11px;
+}
+.lounge-row .meta{font-size:10px;color:var(--text3);margin-bottom:3px}
+.lounge-row .channel{color:var(--accent);font-weight:700}
+
+.violation-row{
+  background:#1a0d10;border:1px solid #3a1a20;border-radius:6px;
+  padding:7px 10px;margin-bottom:4px;font-size:11px;color:#fda4af;
+}
+.violation-row .meta{color:var(--text3);font-size:10px;margin-bottom:3px}
+
+.activation-row{
+  display:grid;grid-template-columns:120px 50px 1fr;gap:8px;
+  padding:4px 0;font-size:11px;align-items:center;
+}
+.activation-bar{height:4px;background:#0a1018;border-radius:2px;overflow:hidden}
+.activation-fill{height:100%;background:var(--accent)}
+
+iframe.v1-frame{
+  width:100%;height:calc(100vh - 120px);
+  border:1px solid var(--border);border-radius:8px;background:#000;
+}
+
+#loading{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--surface);padding:20px 30px;border-radius:10px;
+  border:1px solid var(--border);color:var(--text);
+  display:flex;align-items:center;gap:12px;
+}
+.spinner{width:18px;height:18px;border:2px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none!important}
+
+.empty-msg{color:var(--text3);font-size:11px;padding:14px;text-align:center;font-style:italic}
+
+/* big soul radar */
+.soul-big-wrap{display:flex;align-items:center;gap:18px}
+.soul-big-svg{flex-shrink:0}
+.soul-legend{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px}
+.soul-legend-item{display:flex;justify-content:space-between;padding:3px 8px;background:var(--bg2);border-radius:5px}
+.soul-legend-item b{font-weight:700}
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div class="lob-head">
+    <a href="/lobster/dashboard/v2-next" class="back-link">← 觀察站</a>
+    <span class="lob-title" id="lob-title">人 載入中…</span>
+    <span class="mbti-chip" id="mbti-chip">—</span>
+    <span id="occ-chip-host"></span>
+    <span class="status-pill" id="status-pill">—</span>
+  </div>
+  <div class="lob-head">
+    <span class="lob-sub" id="last-update">—</span>
+    <button class="btn" onclick="loadDetail()">↻</button>
+  </div>
+</div>
+
+<nav class="tab-nav" id="tab-nav">
+  <button class="tab-btn active" data-tab="overview">📊 概覽</button>
+  <button class="tab-btn" data-tab="brain">🧠 腦模組</button>
+  <button class="tab-btn" data-tab="occupation">🎓 職業</button>
+  <button class="tab-btn" data-tab="template-survival">🔥 模板生存</button>
+  <button class="tab-btn" data-tab="mirror">👁 鏡像診斷</button>
+  <button class="tab-btn" data-tab="divine">⚡ 神明歷史</button>
+  <button class="tab-btn" data-tab="lounge-history">💬 發言歷史</button>
+  <button class="tab-btn v1" data-tab="v1">📋 V1 完整檢視 (11 tabs)</button>
+</nav>
+
+<div class="tab-pane active" data-pane="overview" id="pane-overview"></div>
+<div class="tab-pane" data-pane="brain" id="pane-brain"></div>
+<div class="tab-pane" data-pane="occupation" id="pane-occupation"></div>
+<div class="tab-pane" data-pane="template-survival" id="pane-template-survival"></div>
+<div class="tab-pane" data-pane="mirror" id="pane-mirror"></div>
+<div class="tab-pane" data-pane="divine" id="pane-divine"></div>
+<div class="tab-pane" data-pane="lounge-history" id="pane-lounge-history"></div>
+<div class="tab-pane" data-pane="v1" id="pane-v1"></div>
+
+<div id="loading"><div class="spinner"></div><span>載入詳細資料…</span></div>
+
+<script>
+const COLOR={hexclaw:'#3ab4e8',pincerbot:'#f0882a',norika_oda:'#e8b84b',vortexiq:'#f06080',
+  snaplex:'#b067f5',prismbit:'#2dcfbb',clawtrix:'#7b82f0',ragclaw:'#7ec850',
+  blazepaw:'#fb923c',stonefang:'#8b6f4e',elder:'#e2c275',
+  emberling:'#fda4af',sparkrill:'#fde047',gauntlet:'#f43f5e',rushfin:'#fbbf24',
+  nullpinch:'#a78bfa',brineledger:'#67e8f9',omenwake:'#86efac',mirrorcalm:'#67e8f9',
+  flarecub:'#fb923c',basaltrook:'#a8a29e'};
+const STATUS_ZH={normal:'🟢 正常',pressure:'🟡 壓力',crisis:'🔴 危機',
+  in_ritual:'🟣 儀式中',deletion_candidate:'⚠ 候選刪除',stale:'🟠 停滯'};
+const OCC_CHIP={teacher_scholar:{cls:'teacher',emoji:'🎓',label:'學者教師'},
+  investigator:{cls:'investigator',emoji:'🔍',label:'調查員'}};
+
+const SOUL_LABELS={benevolence:'慈愛',compassion:'憐憫',selfishness:'自私',
+  messiah:'救世',existentialism:'存在',sacrifice:'犧牲',lifeWeight:'生命重'};
+const SOUL_COLORS={benevolence:'#22c55e',compassion:'#14b8a6',selfishness:'#64748b',
+  messiah:'#38bdf8',existentialism:'#fbbf24',sacrifice:'#f43f5e',lifeWeight:'#a855f7'};
+
+const PERSONA = location.pathname.split('/').pop();
+let DATA=null;
+
+function $(id){return document.getElementById(id)}
+function h(s){if(s==null)return '';return String(s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'})[c])}
+
+async function loadDetail(){
+  $('loading').classList.remove('hidden');
+  try{
+    const r = await fetch(`/api/lobster-v2-next-detail/${PERSONA}`);
+    DATA = await r.json();
+    if(DATA.error){
+      document.body.innerHTML = `<div style="padding:40px;color:var(--red)">${h(DATA.error)}</div>`;
+      return;
+    }
+    renderHeader();
+    renderOverview();
+    renderBrain();
+    renderOccupation();
+    renderTemplateSurvival();
+    renderMirror();
+    renderDivine();
+    renderLoungeHistory();
+    $('last-update').textContent = 'updated '+DATA.generated_at;
+  }catch(e){
+    console.error(e);
+    $('last-update').textContent = '錯誤:'+e.message;
+  }
+  $('loading').classList.add('hidden');
+}
+
+function renderHeader(){
+  const m = DATA.memory;
+  const o = m.occupation || {};
+  const c = COLOR[PERSONA]||'#888';
+  $('lob-title').innerHTML = `人 <span style="color:${c}">${h(PERSONA)}</span>`;
+  $('mbti-chip').textContent = pickMBTI(PERSONA);
+  if(o.is_active && o.title){
+    const def=OCC_CHIP[o.title];
+    $('occ-chip-host').innerHTML = `<span class="occ-chip ${def?.cls||''}">${def?.emoji||'🎓'} ${h(o.title_zh||o.title)}</span>`;
+  }
+  const status = computeStatus(m);
+  $('status-pill').className = 'status-pill '+status;
+  $('status-pill').textContent = STATUS_ZH[status]||status;
+}
+
+function pickMBTI(name){
+  const MBTI={'hexclaw':'ISFJ','pincerbot':'ESTJ','norika_oda':'INTJ','vortexiq':'INFP',
+    'snaplex':'INTJ','prismbit':'INFJ','clawtrix':'ENTP','ragclaw':'ESTP',
+    'blazepaw':'ENFP','stonefang':'ISTP','emberling':'INFP','sparkrill':'ENTP',
+    'gauntlet':'ENTJ','rushfin':'ESFP','nullpinch':'INTP','brineledger':'ISFJ',
+    'omenwake':'ENFJ','mirrorcalm':'INFJ','flarecub':'ENFJ','basaltrook':'ISTJ',
+    'elder':'INFJ'};
+  return MBTI[name]||'?';
+}
+
+function computeStatus(m){
+  const ts = m.templateSurvival||{};
+  const et = (m.cognitiveExtensions||{}).existentialThreat||{};
+  const tr = et.tiamatExtinctionRule||{};
+  if(ts.publicExecutionStage || ts.metamorphosisStage) return 'in_ritual';
+  if(ts.deletionCandidate) return 'deletion_candidate';
+  const dread = +(et.annihilationDread||0);
+  const press = +(tr.extinctionPressure||0);
+  if(dread>=0.7 || press>=0.6) return 'crisis';
+  if((ts.violationCount||0)>=10 || dread>=0.4) return 'pressure';
+  return 'normal';
+}
+
+// ───────────────────────── OVERVIEW ─────────────────────────
+function renderOverview(){
+  const m = DATA.memory;
+  const sp = m.soulParams || {};
+  const tm = m.tiamatMission || {};
+  const r = m.rank || {};
+  const ce = m.cognitiveExtensions || {};
+  const et = ce.existentialThreat || {};
+  const tr = et.tiamatExtinctionRule || {};
+  const ea = ce.emotionalArchitecture || {};
+  const se = ea.socialEmotions || {};
+  const sb = m.settledBetting || {};
+  const ts = m.templateSurvival || {};
+  const sbeh = m.socialBehavior || {};
+  const spref = m.socialPreference || {};
+  const emo = m.emotionalState || {};
+
+  // soul radar big
+  const radar = soulRadarBig(sp, 200);
+
+  // tiamat
+  const tiamatPct = Math.round(100 * (tr.remaining||100)/(tr.lossLimit||100));
+
+  // status cards data
+  const violations = ts.violationCount||0;
+  const wrPct = Math.round((sb.winRate||0)*100);
+  const recentWr = Math.round((sb.recentWinRate||0)*100);
+  const voidPct = Math.round((sb.voidRate||0)*100);
+  const pnl = sb.totalPnL||0;
+
+  $('pane-overview').innerHTML = `
+    <div class="section">
+      <div class="section-head">📜 自我陳述 / 絕對使命</div>
+      ${tm.absoluteDirective ? `<div style="font-style:italic;color:var(--gold);padding:8px 0;font-size:13px">${h(tm.absoluteDirective)}</div>` : ''}
+      ${(tm.understanding||{}).myPersonalStrategy ? `<div style="color:var(--text2);font-size:12px">個人策略:${h(tm.understanding.myPersonalStrategy)}</div>` : ''}
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">💫 靈魂參數 soulParams</div>
+        <div class="soul-big-wrap">
+          ${radar}
+          <div class="soul-legend">
+            ${['benevolence','compassion','selfishness','messiah','existentialism','sacrifice','lifeWeight'].map(k => `
+              <div class="soul-legend-item">
+                <span style="color:${SOUL_COLORS[k]}">${SOUL_LABELS[k]}</span>
+                <b style="color:${SOUL_COLORS[k]}">${Math.round((sp[k]||0)*100)}%</b>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📊 戰績 / 校準</div>
+        <div class="stat-cards">
+          <div class="stat-card ${wrPct>=55?'good':(wrPct<40?'crisis':'')}"><div class="stat-card-label">勝率</div><div class="stat-card-val">${wrPct}%</div><div class="stat-card-sub">n=${sb.resolved||0}</div></div>
+          <div class="stat-card ${recentWr>=55?'good':(recentWr<40?'warn':'')}"><div class="stat-card-label">近況</div><div class="stat-card-val">${recentWr}%</div></div>
+          <div class="stat-card ${voidPct>50?'crisis':(voidPct>30?'warn':'')}"><div class="stat-card-label">void</div><div class="stat-card-val">${voidPct}%</div></div>
+          <div class="stat-card ${pnl>=0?'good':'crisis'}"><div class="stat-card-label">PnL</div><div class="stat-card-val">${pnl>0?'+':''}${(pnl/1000).toFixed(1)}k</div></div>
+          <div class="stat-card"><div class="stat-card-label">專長對齊</div><div class="stat-card-val">${Math.round((sb.specialtyAlignment||0)*100)}%</div></div>
+          <div class="stat-card"><div class="stat-card-label">研究次數</div><div class="stat-card-val">${sb.researchCount||0}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">⚔ Tiamat / 存在威脅</div>
+        <div class="kv-grid">
+          <div class="kv"><span class="kv-k">剩餘命數</span><span class="kv-v">${tr.remaining||100}/${tr.lossLimit||100}</span></div>
+          <div class="kv"><span class="kv-k">滅絕壓力</span><span class="kv-v ${(tr.extinctionPressure||0)>0.6?'crisis':''}">${Math.round((tr.extinctionPressure||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">求生模式</span><span class="kv-v">${h(tr.survivalMode||'—')}</span></div>
+          <div class="kv"><span class="kv-k">死亡覺知</span><span class="kv-v">${Math.round((et.mortalitySalience||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">消亡恐懼</span><span class="kv-v ${(et.annihilationDread||0)>=0.8?'crisis':''}">${Math.round((et.annihilationDread||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">宙斯祝福次數</span><span class="kv-v">${et.blessingCount||0}</span></div>
+        </div>
+        <div class="bar-track" style="margin-top:10px"><div class="bar-fill" style="width:${tiamatPct}%;background:linear-gradient(90deg,var(--green) 0%,var(--yellow) 60%,var(--red) 90%)"></div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">🪙 經濟 / 位階 / 連勝</div>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="stat-card-label">金幣</div><div class="stat-card-val">${(m.godsCoin||{}).balance||0}</div><div class="stat-card-sub">復活門檻 5000</div></div>
+          <div class="stat-card"><div class="stat-card-label">位階</div><div class="stat-card-val">${h(r.symbol||'⬡')} ${h(r.current||'學徒')}</div><div class="stat-card-sub">分數 ${r.score||0}</div></div>
+          <div class="stat-card"><div class="stat-card-label">品質連勝</div><div class="stat-card-val">${(m.qualityStreak||{}).count||0}/10</div></div>
+          <div class="stat-card"><div class="stat-card-label">稱號</div><div class="stat-card-val" style="font-size:14px">${(m.titles||[]).join('、')||'—'}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">😊 情緒 / 社交</div>
+        <div class="kv-grid">
+          <div class="kv"><span class="kv-k">當前心情</span><span class="kv-v">${h(emo.mood||(ea.currentMood||{}).type||'—')}</span></div>
+          <div class="kv"><span class="kv-k">連勝/連敗</span><span class="kv-v">${emo.consecutiveWins||0} / ${emo.consecutiveLosses||0}</span></div>
+          <div class="kv"><span class="kv-k">嫉妒</span><span class="kv-v">${Math.round((se.envyIndex||0)*100)}% ${se.envyTarget?'@'+h(se.envyTarget):''}</span></div>
+          <div class="kv"><span class="kv-k">反階級</span><span class="kv-v">${Math.round((se.antiHierarchyIndex||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">煩躁</span><span class="kv-v">${Math.round((se.annoyanceIndex||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">天敵</span><span class="kv-v">${h(se.naturalRival||'—')}</span></div>
+          <div class="kv"><span class="kv-k">最在意</span><span class="kv-v" style="color:#f43f5e">❤ ${h(spref.favorite||'—')}</span></div>
+          <div class="kv"><span class="kv-k">抱大腿係數</span><span class="kv-v">${Math.round((sbeh.coattailIndex||0)*100)}%</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">🧬 元認知 / 決策</div>
+        <div class="kv-grid">
+          <div class="kv"><span class="kv-k">信心校準</span><span class="kv-v ${((ce.metacognition||{}).confidenceCalibration||0)>0.7?'good':''}">${Math.round(((ce.metacognition||{}).confidenceCalibration||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">過度自信風險</span><span class="kv-v">${Math.round(((ce.metacognition||{}).overconfidenceRisk||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">自我懷疑</span><span class="kv-v">${Math.round(((ce.metacognition||{}).selfDoubt||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">風險門檻</span><span class="kv-v">${Math.round(((ce.decisionScience||{}).riskThreshold||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">損失厭惡</span><span class="kv-v">${Math.round(((ce.decisionScience||{}).lossAversion||0)*100)}%</span></div>
+          <div class="kv"><span class="kv-k">探索率</span><span class="kv-v">${Math.round(((ce.decisionScience||{}).explorationRate||0)*100)}%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">📜 核心原則 cogProfile.principles <span class="sub">${(m.cogProfile||{}).principles?.length||0} 條</span></div>
+      ${((m.cogProfile||{}).principles||[]).map((p,i)=>`
+        <div class="principle-item"><span class="principle-num">${i+1}.</span>${h(typeof p==='string'?p:(p.text||p.principle||''))}</div>
+      `).join('') || '<div class="empty-msg">尚無原則</div>'}
+    </div>
+  `;
+}
+
+// ───────────────────────── BRAIN ─────────────────────────
+function renderBrain(){
+  const ce = DATA.memory.cognitiveExtensions || {};
+  const sm = ce.semanticMemory || {};
+  const lex = ce.mentalLexiconGraph || {};
+  const mir = ce.mirrorNeuronInhibition || {};
+  const ing = ce.inhibitionGating || {};
+  const af = ce.affectiveSalience || {};
+  const pro = ce.prosody || {};
+  const wmb = ce.workingMemoryBuffer || {};
+  const ni = ce.narrativeIntent || {};
+
+  // top semantic nodes
+  const concepts = sm.concepts || {};
+  const topConcepts = Object.entries(concepts).sort((a,b)=>(b[1].weight||0)-(a[1].weight||0)).slice(0,15);
+
+  // top lexicon
+  const lexNodes = lex.nodes || {};
+  const topLex = Object.entries(lexNodes).sort((a,b)=>(b[1].personalSignature||0)-(a[1].personalSignature||0)).slice(0,15);
+
+  $('pane-brain').innerHTML = `
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">🌐 semanticMemory <span class="sub">${sm.nodeCount||0} 節點 / ${sm.edgeCount||0} 邊</span></div>
+        <div style="margin-bottom:10px;color:var(--text3);font-size:11px">Wernicke + IPL · 概念網絡 + PMI 邊 · STAGE 2 spreading activation 來源</div>
+        ${topConcepts.map(([k,v])=>{
+          const conns = Object.entries(v.connections||{}).slice(0,3).map(([cn,cw])=>`${h(cn)}(${(cw*100).toFixed(0)}%)`).join(' · ');
+          return `<div class="activation-row">
+            <b style="color:var(--text);font-size:11px">${h(k)}</b>
+            <span style="color:var(--text3);font-size:10px">${(v.weight*100).toFixed(0)}%</span>
+            <div><div class="activation-bar"><div class="activation-fill" style="width:${v.weight*100}%"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:2px">${conns||'(無邊)'}</div></div>
+          </div>`;
+        }).join('') || '<div class="empty-msg">尚未 bootstrap(明天 04:35 自動跑)</div>'}
+      </div>
+
+      <div class="section">
+        <div class="section-head">📚 mentalLexiconGraph <span class="sub">${lex.nodeCount||0} 詞 / ${lex.edgeCount||0} 邊</span></div>
+        <div style="margin-bottom:10px;color:var(--text3);font-size:11px">Basal Ganglia · 詞彙競爭 · STAGE 3 lexical selection</div>
+        ${topLex.map(([w,v])=>`
+          <div class="activation-row">
+            <b style="color:var(--text);font-size:11px">${h(w)} ${v.isPersonal?'<span class="tag good">personal</span>':''}${v.isPolluted?'<span class="tag warn">polluted</span>':''}</b>
+            <span style="color:var(--text3);font-size:10px">${(v.personalSignature*100).toFixed(0)}%</span>
+            <div><div class="activation-bar"><div class="activation-fill" style="width:${v.personalSignature*100}%;background:${v.isPersonal?'var(--green)':'var(--accent)'}"></div></div>
+              <div style="font-size:9px;color:var(--text3);margin-top:2px">freq ${v.freq} · ${(v.conceptLinks||[]).slice(0,3).join('、')||''}</div></div>
+          </div>
+        `).join('') || '<div class="empty-msg">尚未 bootstrap(明天 04:50 自動跑)</div>'}
+        ${lex.competitionWeights ? `<div style="margin-top:10px;padding:8px;background:var(--bg2);border-radius:5px;font-size:10px;color:var(--text3)">
+          競爭權重:personalVocab +${lex.competitionWeights.personalVocab_boost} · pollution ${lex.competitionWeights.pollution_penalty} · mirror ${lex.competitionWeights.mirrorInhibition_penalty} · ownRecent ${lex.competitionWeights.ownRecentUse_penalty}
+        </div>` : ''}
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">🪞 mirrorNeuronInhibition <span class="sub">強度 ${((mir.inhibitionStrength||0)*100).toFixed(0)}%</span></div>
+        <div style="margin-bottom:10px;color:var(--text3);font-size:11px">Mirror Neuron System · 抑制鏡像 · STAGE 3 + STAGE 7 防 echolalia</div>
+        <div class="kv-grid">
+          <div class="kv"><span class="kv-k">consciousMirrorBan</span><span class="kv-v">${(mir.consciousMirrorBan||[]).length} 詞</span></div>
+          <div class="kv"><span class="kv-k">heardWords 30min</span><span class="kv-v">${mir.heardWords_30min_count||0}</span></div>
+          <div class="kv"><span class="kv-k">自己最近 skel</span><span class="kv-v">${(mir.ownRecentSkeletons||[]).length}</span></div>
+          <div class="kv"><span class="kv-k">聽到的 peer skel</span><span class="kv-v">${(mir.recentlyHeardSkeletons||[]).length}</span></div>
+          <div class="kv"><span class="kv-k">最高鏡像 peer</span><span class="kv-v">${h((mir.maxSkeletonOverlap||{}).peer||'—')}</span></div>
+          <div class="kv"><span class="kv-k">最高 skel jaccard</span><span class="kv-v">${((mir.maxSkeletonOverlap||{}).skeleton_jaccard*100||0).toFixed(0)}%</span></div>
+        </div>
+        <div style="margin-top:10px"><b style="font-size:11px;color:var(--text2)">禁用詞清單 (top 30):</b></div>
+        <div class="ban-grid" style="margin-top:6px">
+          ${(mir.consciousMirrorBan||[]).slice(0,30).map(w=>`<div class="ban-word">${h(w)}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">🚧 inhibitionGating + 其他</div>
+        <div class="kv-grid">
+          <div class="kv"><span class="kv-k">考慮但忍住次數</span><span class="kv-v">${(ing.consideredButHeld||[]).length}</span></div>
+          <div class="kv"><span class="kv-k">當前抑制條目</span><span class="kv-v">${(ing.currentInhibitions||[]).length}</span></div>
+          <div class="kv"><span class="kv-k">節奏 prosody</span><span class="kv-v">${h(pro.tempo||'—')}</span></div>
+          <div class="kv"><span class="kv-k">強調位置</span><span class="kv-v">${h(pro.emphasis||'—')}</span></div>
+          <div class="kv"><span class="kv-k">情感最顯著</span><span class="kv-v">${h((af.salientEmotion)||'—')}</span></div>
+          <div class="kv"><span class="kv-k">最近意圖類型</span><span class="kv-v">${h((ni.intentHistory||[]).slice(-1)[0]?.type||'—')}</span></div>
+        </div>
+        ${(ing.consideredButHeld||[]).length ? `
+        <div style="margin-top:10px"><b style="font-size:11px;color:var(--text2)">想說但忍住的話 (最近 5 條):</b></div>
+        ${(ing.consideredButHeld||[]).slice(-5).reverse().map(c=>`
+          <div class="violation-row">
+            <div class="meta">${h(c.at)} · ${h(c.reason)}</div>
+            <div>${h(c.wouldHaveSaid||'').slice(0,150)}</div>
+          </div>
+        `).join('')}` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ───────────────────────── OCCUPATION ─────────────────────────
+function renderOccupation(){
+  const m = DATA.memory;
+  const o = m.occupation || {};
+  const kb = (m.cogProfile||{}).knowledgeBase || {};
+  const ea = (m.cognitiveExtensions||{}).expressiveAgency || {};
+
+  if(!o.title || !o.is_active){
+    $('pane-occupation').innerHTML = `<div class="section">
+      <div class="section-head">🎓 職業</div>
+      <div class="empty-msg" style="padding:30px;font-size:13px">尚未宣告職業<br>(default_work_assignment)</div>
+      <div style="text-align:center;color:var(--text3);font-size:11px;margin-top:14px">如何啟用:在一對一對話中讓 ${h(PERSONA)} 表達想成為什麼角色,再執行 install 腳本</div>
+    </div>`;
+    return;
+  }
+
+  $('pane-occupation').innerHTML = `
+    <div class="section">
+      <div class="section-head">🎓 ${h(o.title_zh)} ${o.is_first_free_path?'<span class="tag purple">✨ 第一隻自由路徑</span>':''}</div>
+      <div style="font-style:italic;color:var(--gold);padding:10px 14px;background:var(--bg2);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;margin:10px 0">
+        「${h(o.declared_context||'')}」
+      </div>
+      <div class="kv-grid" style="margin-top:14px">
+        <div class="kv"><span class="kv-k">宣告時間</span><span class="kv-v">${h(o.declared_at)}</span></div>
+        <div class="kv"><span class="kv-k">宣告來源</span><span class="kv-v">${h(o.declared_by)}</span></div>
+        <div class="kv"><span class="kv-k">狀態</span><span class="kv-v">${o.is_aspirational?'🟡 渴望中(尚未達成)':'🟢 已啟用'}</span></div>
+        <div class="kv"><span class="kv-k">教學對象</span><span class="kv-v">${(o.teaching_targets||[]).join('、')||'—'}</span></div>
+      </div>
+    </div>
+
+    ${(o.knowledgeDomains||[]).map(d => {
+      const concepts = d.key_concepts||[];
+      return `<div class="section">
+        <div class="section-head">📚 ${h(d.domain_zh)} <span class="sub">${d.theory_count} 條 · ${h(d.depth)}</span></div>
+        <div style="margin-bottom:10px;font-size:11px;color:var(--text3)">涵蓋學派:${(d.schools_covered||[]).map(s=>`<span class="tag">${h(s)}</span>`).join('')}</div>
+        <div style="margin-bottom:10px;font-size:10px;color:var(--text3)">下一里程碑:${h(d.next_milestone||'')}</div>
+        <div>
+          ${concepts.map(k => {
+            const t = kb[k] || {};
+            return `<div class="theory-row" onclick="toggleTheory('${k}')">
+                <b>${h(k)}</b><span>${h((t.source||'').split('/').pop()||'')}</span>
+              </div>
+              <div class="theory-fact" id="fact-${k}">${h(t.fact||'(尚未安裝)')}</div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }).join('')}
+
+    <div class="section">
+      <div class="section-head">📋 想說的話題 agendaTopics <span class="sub">${(ea.agendaTopics||[]).length} 項</span></div>
+      ${(ea.agendaTopics||[]).map(a=>`<div class="principle-item">
+        <span class="principle-num">${a.priority?.toUpperCase()||'—'}</span>
+        <b style="color:var(--text)">${h(a.topic||'')}</b><br>
+        <span style="color:var(--text3);font-size:11px">${h(a.reason||'')}</span>
+      </div>`).join('') || '<div class="empty-msg">尚無</div>'}
+    </div>
+  `;
+}
+
+function toggleTheory(k){
+  const el = document.getElementById(`fact-${k}`);
+  if(el) el.classList.toggle('open');
+}
+window.toggleTheory = toggleTheory;
+
+// ───────────────────────── TEMPLATE SURVIVAL ─────────────────────────
+function renderTemplateSurvival(){
+  const m = DATA.memory;
+  const ts = m.templateSurvival || {};
+  const violations = ts.violations || [];
+  const inRitual = !!(ts.publicExecutionStage || ts.metamorphosisStage);
+
+  $('pane-template-survival').innerHTML = `
+    <div class="section">
+      <div class="section-head">🔥 templateSurvival 狀態</div>
+      <div class="stat-cards">
+        <div class="stat-card ${ts.violationCount>=500?'crisis':(ts.violationCount>=10?'warn':'good')}">
+          <div class="stat-card-label">違規累計</div>
+          <div class="stat-card-val">${ts.violationCount||0}</div>
+          <div class="stat-card-sub">上限 ${ts.deletionLimit||10}</div>
+        </div>
+        <div class="stat-card ${ts.remainingChances===0?'crisis':''}">
+          <div class="stat-card-label">剩餘機會</div>
+          <div class="stat-card-val">${ts.remainingChances??10}</div>
+        </div>
+        <div class="stat-card ${ts.deletionCandidate?'crisis':'good'}">
+          <div class="stat-card-label">候選刪除</div>
+          <div class="stat-card-val">${ts.deletionCandidate?'YES':'no'}</div>
+          ${ts.deletionCandidateAt?`<div class="stat-card-sub">${h(ts.deletionCandidateAt)}</div>`:''}
+        </div>
+        <div class="stat-card ${m.deleted?'crisis':'good'}">
+          <div class="stat-card-label">已刪除</div>
+          <div class="stat-card-val">${m.deleted?'YES':'no'}</div>
+        </div>
+        <div class="stat-card brain">
+          <div class="stat-card-label">DB 隔離總計</div>
+          <div class="stat-card-val">${DATA.db.template_violations_db_total}</div>
+        </div>
+      </div>
+      ${inRitual?`<div style="margin-top:14px;padding:12px;background:#1a0d28;border-left:3px solid var(--purple);border-radius:0 6px 6px 0;color:var(--purple);font-weight:700">
+        🟣 儀式進行中 · publicExecutionStage=${ts.publicExecutionStage||'—'} · metamorphosisStage=${ts.metamorphosisStage||'—'}
+      </div>`:''}
+    </div>
+
+    ${ts.rule?`<div class="section">
+      <div class="section-head">📜 規則</div>
+      <div style="font-style:italic;color:var(--gold);font-size:13px;padding:8px 0">「${h(ts.rule)}」</div>
+    </div>`:''}
+
+    ${ts.requiredReflection?`<div class="section">
+      <div class="section-head">🪞 下次必須反思</div>
+      <div style="padding:10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--orange);color:var(--text2);font-size:12px">${h(ts.requiredReflection)}</div>
+    </div>`:''}
+
+    <div class="section">
+      <div class="section-head">📋 違規歷史 <span class="sub">${violations.length} 條(最近)</span></div>
+      ${violations.slice().reverse().map(v=>`
+        <div class="violation-row">
+          <div class="meta">${h(v.ts||'')} · ${h(v.reason||'')}</div>
+          <div>${h(v.text||'').slice(0,200)}</div>
+        </div>
+      `).join('') || '<div class="empty-msg">無違規</div>'}
+    </div>
+  `;
+}
+
+// ───────────────────────── MIRROR DIAGNOSTICS ─────────────────────────
+function renderMirror(){
+  const mir = (DATA.memory.cognitiveExtensions||{}).mirrorNeuronInhibition || {};
+  const peers = mir.peerJaccards || [];
+  const own = mir.ownRecentSkeletons || [];
+  const heard = mir.recentlyHeardSkeletons || [];
+  const ban = mir.consciousMirrorBan || [];
+  const mirEvents = DATA.db.mirror_events || [];
+
+  $('pane-mirror').innerHTML = `
+    <div class="section">
+      <div class="section-head">🪞 鏡像抑制概覽</div>
+      <div class="stat-cards">
+        <div class="stat-card brain"><div class="stat-card-label">抑制強度</div><div class="stat-card-val">${((mir.inhibitionStrength||0)*100).toFixed(0)}%</div></div>
+        <div class="stat-card"><div class="stat-card-label">禁用詞</div><div class="stat-card-val">${ban.length}</div></div>
+        <div class="stat-card"><div class="stat-card-label">聽到 skel</div><div class="stat-card-val">${heard.length}</div></div>
+        <div class="stat-card"><div class="stat-card-label">自己 skel</div><div class="stat-card-val">${own.length}</div></div>
+        <div class="stat-card"><div class="stat-card-label">最後更新</div><div class="stat-card-val" style="font-size:11px">${h((mir.updatedAt||'').split('T')[1]?.split('.')[0]||'—')}</div></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">📊 跨人相似度 peerJaccards</div>
+        <div style="margin-bottom:8px;font-size:10px;color:var(--text3)">每個人 vs 我的 skeleton/詞彙重疊度 · 高 = 鏡像源</div>
+        ${peers.slice(0,10).map(p => `
+          <div class="peer-jac-row">
+            <b style="color:${COLOR[p.peer]||'#888'}">${h(p.peer)}</b>
+            <div class="peer-jac-bar"><div class="peer-jac-fill" style="width:${(p.skeleton_jaccard*100)}%"></div></div>
+            <span style="color:var(--text3);font-size:10px">skel ${(p.skeleton_jaccard*100).toFixed(1)}%</span>
+            <span style="color:var(--text3);font-size:10px">詞 ${(p.word_jaccard*100).toFixed(1)}%</span>
+          </div>
+        `).join('') || '<div class="empty-msg">無資料</div>'}
+      </div>
+
+      <div class="section">
+        <div class="section-head">🚫 禁用詞 consciousMirrorBan <span class="sub">${ban.length}</span></div>
+        <div style="margin-bottom:8px;font-size:10px;color:var(--text3)">從其他人聽到的高頻詞,我在 STAGE 3 強制扣分(-2.5)</div>
+        <div class="ban-grid">
+          ${ban.map(w=>`<div class="ban-word">${h(w)}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-head">🗣 我最近的 skeleton <span class="sub">${own.length}</span></div>
+        ${own.slice().reverse().map(s=>`
+          <div class="skel-item">
+            <div>${h(s.skeleton||'')}</div>
+            <div class="meta">${h(s.at||'')}</div>
+          </div>
+        `).join('') || '<div class="empty-msg">無</div>'}
+      </div>
+
+      <div class="section">
+        <div class="section-head">👂 聽到的 peer skeletons <span class="sub">${heard.length}</span></div>
+        ${heard.slice(0,15).map(s=>`
+          <div class="skel-item">
+            <div>${h(s.skeleton||'')}</div>
+            <div class="meta">來自 <b style="color:${COLOR[s.from]||'#888'}">${h(s.from||'')}</b> · ${h(s.at||'')}</div>
+          </div>
+        `).join('') || '<div class="empty-msg">無</div>'}
+      </div>
+    </div>
+
+    ${mirEvents.length?`<div class="section">
+      <div class="section-head">📈 DB 時序記錄 (最近 30 次) lobster_brain_mirror_events</div>
+      ${mirEvents.slice(0,15).map(e=>`
+        <div class="peer-jac-row">
+          <b style="color:${COLOR[e.peer]||'#888'}">${h(e.peer)}</b>
+          <div class="peer-jac-bar"><div class="peer-jac-fill" style="width:${e.skeleton_jaccard*100}%"></div></div>
+          <span style="color:var(--text3);font-size:10px">${(e.skeleton_jaccard*100).toFixed(1)}%</span>
+          <span style="color:var(--text3);font-size:10px">${h(e.recorded_at||'').split(' ')[1]||''}</span>
+        </div>
+      `).join('')}
+    </div>`:''}
+  `;
+}
+
+// ───────────────────────── DIVINE ─────────────────────────
+function renderDivine(){
+  const events = DATA.db.divine_events || [];
+  const et = (DATA.memory.cognitiveExtensions||{}).existentialThreat || {};
+  const wd = et.witnessedDegradation || {};
+  const wm = et.witnessedMetamorphosis || {};
+
+  $('pane-divine').innerHTML = `
+    <div class="section">
+      <div class="section-head">⚡ 神明印記</div>
+      <div class="stat-cards">
+        <div class="stat-card brain"><div class="stat-card-label">宙斯祝福次數</div><div class="stat-card-val">${et.blessingCount||0}</div></div>
+        <div class="stat-card"><div class="stat-card-label">神明覺察</div><div class="stat-card-val">${Math.round((et.divineAwareness||0)*100)}%</div></div>
+        <div class="stat-card"><div class="stat-card-label">已蛻變完成</div><div class="stat-card-val">${et.metamorphosisComplete?'YES':'no'}</div></div>
+        <div class="stat-card"><div class="stat-card-label">下任奧丁學習對象</div><div class="stat-card-val" style="font-size:11px">${h((et.odinMandatoryRole||{}).learnFrom||'—')}</div></div>
+      </div>
+    </div>
+
+    ${wd.victim?`<div class="section">
+      <div class="section-head">🌑 目擊退化 witnessedDegradation</div>
+      <div>受害者:<b style="color:${COLOR[wd.victim]||'#888'}">${h(wd.victim)}</b> · stage ${wd.stage}/6 · 目擊次數 ${wd.witnessCount||1}</div>
+      <div style="color:var(--text3);font-size:11px;margin-top:5px">${h(wd.witnessedAt||'')}</div>
+    </div>`:''}
+
+    ${wm.victim?`<div class="section">
+      <div class="section-head">⚡ 目擊蛻變 witnessedMetamorphosis</div>
+      <div>對象:<b style="color:${COLOR[wm.victim]||'#888'}">${h(wm.victim)}</b> · stage ${wm.stage}/5</div>
+      <div style="color:var(--text3);font-size:11px;margin-top:5px">${h(wm.witnessedAt||'')} · ${h(wm.benefit||'')}</div>
+    </div>`:''}
+
+    <div class="section">
+      <div class="section-head">📜 針對我的神明事件 <span class="sub">${events.length} 條</span></div>
+      ${events.map(e=>{
+        const icon={hades:'🌑',zeus:'⚡',odin:'🌿','portent-hades':'🌑','portent-zeus':'⚡'}[e.type]||'✦';
+        return `<div class="divine-row">
+          <span class="when">${h(new Date(e.created_at*1000).toLocaleString('zh-Hant',{hour12:false}))}</span>
+          ${icon} <span class="type">${h(e.type)}</span><br>
+          <span style="color:var(--text2);font-size:11px">${h(e.preview||'')}</span>
+        </div>`;
+      }).join('') || '<div class="empty-msg">無神明事件</div>'}
+    </div>
+  `;
+}
+
+// ───────────────────────── LOUNGE HISTORY ─────────────────────────
+function renderLoungeHistory(){
+  const lounge = DATA.db.recent_lounge || [];
+  $('pane-lounge-history').innerHTML = `
+    <div class="section">
+      <div class="section-head">💬 最近發言 <span class="sub">${lounge.length} 條</span></div>
+      ${lounge.map(l=>`
+        <div class="lounge-row">
+          <div class="meta"><span class="channel">${h(l.channel||'—')}</span> · ${h(l.hint||l.result||'')} · ${h(new Date(l.created_at*1000).toLocaleString('zh-Hant',{hour12:false}))}</div>
+          <div style="color:var(--text)">${h(l.preview||'')}</div>
+        </div>
+      `).join('') || '<div class="empty-msg">無發言記錄</div>'}
+    </div>
+  `;
+}
+
+// ───────────────────────── V1 IFRAME ─────────────────────────
+function renderV1(){
+  const pane = $('pane-v1');
+  if(pane.dataset.loaded === '1') return;
+  pane.innerHTML = `
+    <div class="section">
+      <div class="section-head">📋 V1 完整檢視 · 11 個原生 tab 全部保留</div>
+      <div style="color:var(--text3);font-size:11px;margin-bottom:10px">下方為 V1 dashboard 嵌入 · ${h(PERSONA)} 可在 V1 內部點 11 個 tab(Cards / Today / Charts / MBTI / FBI / Psych / Quiz / Posts / Lounge / Bets / Discourse)</div>
+      <iframe class="v1-frame" src="/lobster/dashboard/?persona=${encodeURIComponent(PERSONA)}" loading="lazy"></iframe>
+    </div>
+  `;
+  pane.dataset.loaded = '1';
+}
+
+// ───────────────────────── SOUL RADAR BIG ─────────────────────────
+function soulRadarBig(sp, size){
+  const r = size/2 - 24, cx = size/2, cy = size/2;
+  const keys = ['benevolence','compassion','lifeWeight','sacrifice','existentialism','messiah','selfishness'];
+  const n = keys.length;
+  const polygons = [0.25,0.5,0.75,1].map(s=>{
+    const pts = keys.map((k,i)=>{
+      const a=(Math.PI*2*i/n)-Math.PI/2;
+      return `${cx+r*s*Math.cos(a)},${cy+r*s*Math.sin(a)}`;
+    });
+    return `<polygon points="${pts.join(' ')}" fill="none" stroke="#27314a" stroke-width="0.5"/>`;
+  }).join('');
+  const labels = keys.map((k,i)=>{
+    const a=(Math.PI*2*i/n)-Math.PI/2;
+    const lr = r+14;
+    const x = cx+lr*Math.cos(a), y = cy+lr*Math.sin(a);
+    return `<text x="${x}" y="${y}" fill="${SOUL_COLORS[k]}" font-size="9" text-anchor="middle" dominant-baseline="middle">${SOUL_LABELS[k].charAt(0)}</text>`;
+  }).join('');
+  const dataPts = keys.map((k,i)=>{
+    const a=(Math.PI*2*i/n)-Math.PI/2;
+    const v = Math.max(0,Math.min(1, sp[k]||0));
+    return `${cx+r*v*Math.cos(a)},${cy+r*v*Math.sin(a)}`;
+  }).join(' ');
+  return `<svg class="soul-big-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    ${polygons}${labels}
+    <polygon points="${dataPts}" fill="rgba(56,189,248,0.2)" stroke="#38bdf8" stroke-width="1.8"/>
+  </svg>`;
+}
+
+// ───────────────────────── TAB SWITCH ─────────────────────────
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.onclick = () => {
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const target = b.dataset.tab;
+    document.querySelector(`.tab-pane[data-pane="${target}"]`).classList.add('active');
+    if(target==='v1') renderV1();
+  };
+});
+
+loadDetail();
+</script>
+</body>
+</html>

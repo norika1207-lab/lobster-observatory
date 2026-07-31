@@ -1,0 +1,14 @@
+[Unit]
+Description=Lobster Cognitive Worker - Brain Building
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/python3 /root/lobster-cognitive-worker.py
+User=root
+StandardOutput=append:/root/lobster-cognitive-worker.log
+StandardError=append:/root/lobster-cognitive-worker.log
+
+[Install]
+WantedBy=multi-user.target

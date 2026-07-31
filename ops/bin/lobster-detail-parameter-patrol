@@ -1,0 +1,298 @@
+#!/usr/bin/env python3
+import json
+import sqlite3
+import sys
+import time
+import urllib.request
+import pathlib
+
+DB = "/opt/battle_arena/app/battle_arena.db"
+DASHBOARD_API = "http://127.0.0.1:8004/api/lobster-dashboard-sandbox-db"
+DETAIL_API = "http://127.0.0.1:8004/api/lobster-detail-sandbox-db/{}?refresh=true"
+MAIN_EXCLUDES = {"system", "deleted-lobsters", "lobster", "elder", "sunchirp", "norika"}
+
+
+def load_personas():
+    names = set()
+    try:
+        with sqlite3.connect(DB, timeout=30) as con:
+            for table in (
+                "lobster_agent_memory_snapshots",
+                "lobster_cognitive_extensions",
+                "lobster_hot_brain_parameters",
+                "lobster_local_brain",
+            ):
+                exists = con.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+                    (table,),
+                ).fetchone()
+                if not exists:
+                    continue
+                for row in con.execute(f"SELECT DISTINCT persona FROM {table}"):
+                    name = str(row[0] or "").strip()
+                    if name and name not in MAIN_EXCLUDES:
+                        names.add(name)
+    except Exception:
+        pass
+    if not names:
+        for path in pathlib.Path("/root/lobster-memory").glob("*.json"):
+            name = path.stem.strip()
+            if name and name not in MAIN_EXCLUDES:
+                names.add(name)
+    return sorted(names)
+
+
+PERSONAS = load_personas()
+
+
+def fetch_json(url, timeout=60, attempts=2):
+    last_err = None
+    for attempt in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(url, timeout=timeout) as res:
+                return json.loads(res.read().decode("utf-8"))
+        except Exception as err:
+            last_err = err
+            if attempt < attempts:
+                time.sleep(2 * attempt)
+    raise last_err
+
+
+def get_path(obj, path):
+    cur = obj
+    for part in path.split("."):
+        if isinstance(cur, dict) and part in cur:
+            cur = cur[part]
+        else:
+            return None
+    return cur
+
+
+def present(v):
+    if v is None:
+        return False
+    if isinstance(v, str):
+        return bool(v.strip()) and v.strip() != "--"
+    if isinstance(v, (list, tuple, dict)):
+        return len(v) > 0
+    return True
+
+
+def count(v):
+    if isinstance(v, (list, tuple, dict)):
+        return len(v)
+    return 0
+
+
+def add(rows, persona, page, key, value, ok=None, note="", source="detail_api"):
+    if ok is None:
+        ok = present(value)
+    metric = value
+    if isinstance(value, (dict, list)):
+        metric = count(value)
+    rows.append({
+        "persona": persona,
+        "page_key": page,
+        "param_key": key,
+        "ok": bool(ok),
+        "metric": metric,
+        "note": note,
+        "source": source,
+    })
+
+
+def audit_detail(persona, detail, dash_stat, cog_latest, cognitive_extension_full=None):
+    rows = []
+    snap = detail.get("snapshot") or {}
+    reports = detail.get("reports") or {}
+    dynamic = snap.get("dynamic") or {}
+    local_brain = snap.get("localBrain") or {}
+    self_model = local_brain.get("selfModel") or {}
+    social_map = snap.get("socialMap") or {}
+    cog_profile = snap.get("cogProfile") or {}
+    emotional = snap.get("emotionalState") or {}
+    full = cognitive_extension_full or (cog_latest or {}).get("full") or {}
+    cognitive_structured_source = (
+        "lobster_cognitive_extensions.full_json"
+        if cognitive_extension_full else "cognitive_signal_timeseries.full"
+    )
+
+    # Overview page parameters.
+    for key in ["wins", "losses", "sessions", "winrate_source", "resolved_total"]:
+        add(rows, persona, "overview", f"snapshot.{key}", snap.get(key), source="detail_api")
+    for key in ["radarDynamic", "emotionalState", "dynamic", "localBrain", "listeningProfile", "socialMap", "cogProfile"]:
+        add(rows, persona, "overview", f"stats.{key}", dash_stat.get(key) if isinstance(dash_stat, dict) else None, source="dashboard_api")
+    for path in [
+        "psychology.mental_state", "psychology.resilience_score", "psychology.emotional_stability",
+        "sociology.nemesis", "sociology.prey", "sociology.social_role", "sociology.opponent_matrix",
+        "fbi_profile.signature_pattern", "fbi_profile.stress_response", "fbi_profile.profile_type",
+        "anthropology.identity_myth", "anthropology.rituals",
+    ]:
+        add(rows, persona, "overview", f"dynamic.{path}", get_path(dynamic, path), source="snapshot.dynamic")
+    for path in ["agency", "caution", "exploration", "confidenceCalibration"]:
+        add(rows, persona, "overview", f"localBrain.selfModel.{path}", self_model.get(path), source="snapshot.localBrain")
+    for key in ["topicAffinity", "socialInfluence", "eventLog", "offlineGuidance"]:
+        add(rows, persona, "overview", f"localBrain.{key}", local_brain.get(key), source="snapshot.localBrain")
+    for key in ["mood", "label", "intensity", "moodHistory"]:
+        add(rows, persona, "emotion", f"emotionalState.{key}", emotional.get(key), source="snapshot.emotionalState")
+
+    # Reports: the user asked for long reports; 5000 chars is the minimum patrol threshold.
+    for report_key in ["mbti", "psych", "anthro", "fbi", "socio", "emotion"]:
+        html = (reports.get(report_key) or {}).get("html") or ""
+        min_chars = 5000
+        add(rows, persona, f"report:{report_key}", "html_chars", len(html), ok=len(html) >= min_chars,
+            note=f"min_chars={min_chars}", source="lobster_analysis_reports")
+        add(rows, persona, f"report:{report_key}", "source", (reports.get(report_key) or {}).get("source"), source="lobster_analysis_reports")
+        add(rows, persona, f"report:{report_key}", "snapshot", (reports.get(report_key) or {}).get("snapshot"), source="lobster_analysis_reports")
+
+    # One-on-one, lounge, bets, MoltBook, trajectory.
+    chat = detail.get("chat_history") or []
+    add(rows, persona, "one_on_one", "chat_history_messages", len(chat), ok=len(chat) > 0)
+    lounge = detail.get("lounge_messages") or {}
+    add(rows, persona, "lounge", "total", lounge.get("total", 0), ok=(lounge.get("total", 0) or 0) > 0)
+    add(rows, persona, "lounge", "messages_loaded", count(lounge.get("messages") or []), ok=count(lounge.get("messages") or []) > 0)
+    bets = detail.get("bets") or {}
+    add(rows, persona, "bets", "total", bets.get("total", 0), ok=(bets.get("total", 0) or 0) > 0)
+    add(rows, persona, "bets", "bets_loaded", count(bets.get("bets") or []), ok=count(bets.get("bets") or []) > 0)
+    molt = detail.get("moltbook") or {}
+    add(rows, persona, "moltbook", "posts", count(molt.get("posts") or []), ok=count(molt.get("posts") or []) > 0)
+    add(rows, persona, "moltbook", "events", count(molt.get("events") or []), ok=count(molt.get("events") or []) > 0)
+    traj = detail.get("trajectory") or {}
+    add(rows, persona, "trajectory", "daily.states", count((traj.get("daily") or {}).get("states") or []), ok=count((traj.get("daily") or {}).get("states") or []) > 0)
+    add(rows, persona, "trajectory", "phases.transitions", count((traj.get("phases") or {}).get("transitions") or []), ok=count((traj.get("phases") or {}).get("transitions") or []) > 0)
+
+    # Cognitive pages: latest scalar rows plus full structured brain.
+    for key in [
+        "attention_load", "prediction_error", "model_revision_pressure", "metacognitive_calibration",
+        "overconfidence_risk", "arousal", "fatigue", "threat_body_signal", "reward_craving",
+        "consolidation_queue_size", "causal_hypothesis_count", "narrative_drift", "procedural_strength",
+    ]:
+        add(rows, persona, "cognitive", f"latest.{key}", (cog_latest or {}).get(key), source="cognitive_signal_timeseries")
+
+    cognitive_blocks = {
+        "workingMemory": ["currentFocus", "suppressedSignals"],
+        "predictiveModel": ["expectedOutcome", "recentForecasts"],
+        "metacognition": ["selfCorrectionStyle", "overconfidenceRisk"],
+        "interoception": ["arousal", "fatigue", "threatBodySignal"],
+        "memoryConsolidation": ["consolidationQueue", "semanticLessons"],
+        "causalModel": ["hypotheses", "confounders", "counterfactuals"],
+        "selfContinuity": ["narrativeDrift"],
+        "proceduralSkill": ["raidRoutines", "timingSkill", "habitStrength"],
+        "decisionScience": ["riskThreshold", "lossAversion", "explorationRate", "commitmentStyle", "abortConditions", "confidenceUpdateRule"],
+        "gameTheory": ["coordinationPreference", "signalCredibility", "reciprocity", "cooperationStability", "cheapTalkSkepticism"],
+        "politics": ["powerOrientation", "agendaSettingScore", "compliancePattern", "coalitions", "rebellionThreshold", "leadershipClaimStyle"],
+        "philosophy": ["epistemology", "truthCriteria", "riskMeaning", "selfNarrative"],
+        "learningModel": ["memorySalienceWeights", "forgettingCurve", "lessonConfidence", "traumaEvents", "stablePrinciples", "discardedBeliefs"],
+        "culturalAnthropology": ["identityMyth", "rituals", "taboos", "honorCode", "groupNormSensitivity"],
+        "moralPsychology": ["blameStyle", "responsibilityScope", "fairnessSensitivity", "sacrificeThreshold", "guiltAfterFailure", "protectiveInstinct", "justificationPatterns"],
+        "linguistics": ["argumentStyle", "syntaxRhythm", "metaphorDomains", "preferredSpeechActs", "repairPhrases", "avoidPhrases", "compressionLevel", "directness", "ambiguityTolerance"],
+    }
+    for block, keys in cognitive_blocks.items():
+        obj = full.get(block) or {}
+        add(rows, persona, f"cognitive:{block}", block, obj, source=cognitive_structured_source)
+        for key in keys:
+            add(rows, persona, f"cognitive:{block}", key, obj.get(key), source=cognitive_structured_source)
+
+    # Distillation hook page.
+    dist = detail.get("distillation") or {}
+    add(rows, persona, "distillation", "signal", dist.get("signal"), source="lobster_distilled_signals")
+    add(rows, persona, "distillation", "decision_hooks", dist.get("decision_hooks"), source="lobster_distilled_decision_hooks")
+
+    # Social/cog profile quick checks.
+    add(rows, persona, "social", "socialMap", social_map, source="snapshot.socialMap")
+    add(rows, persona, "cogProfile", "principles", cog_profile.get("principles"), source="snapshot.cogProfile")
+    add(rows, persona, "cogProfile", "reflections", cog_profile.get("reflections"), source="snapshot.cogProfile")
+    return rows
+
+
+def load_cognitive_extension_full():
+    out = {}
+    try:
+        with sqlite3.connect(DB, timeout=30) as con:
+            con.row_factory = sqlite3.Row
+            con.execute("PRAGMA busy_timeout=30000")
+            rows = con.execute(
+                "SELECT persona, full_json FROM lobster_cognitive_extensions"
+            ).fetchall()
+    except Exception:
+        return out
+    for r in rows:
+        try:
+            out[r["persona"]] = json.loads(r["full_json"] or "{}")
+        except Exception:
+            out[r["persona"]] = {}
+    return out
+
+
+def main():
+    checked_at = time.strftime("%Y-%m-%d %H:%M:%S")
+    dashboard = fetch_json(DASHBOARD_API)
+    stats = dashboard.get("stats") or {}
+    latest_by_persona = {
+        row.get("persona"): row for row in (dashboard.get("cognitive_signals") or {}).get("latest") or []
+    }
+    cognitive_extension_full = load_cognitive_extension_full()
+    rows = []
+    for persona in PERSONAS:
+        detail = fetch_json(DETAIL_API.format(persona))
+        rows.extend(audit_detail(
+            persona,
+            detail,
+            stats.get(persona) or {},
+            latest_by_persona.get(persona) or {},
+            cognitive_extension_full.get(persona) or {},
+        ))
+
+    with sqlite3.connect(DB) as con:
+        con.execute(
+            """CREATE TABLE IF NOT EXISTS lobster_detail_parameter_audit (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                checked_at TEXT NOT NULL,
+                persona TEXT NOT NULL,
+                page_key TEXT NOT NULL,
+                param_key TEXT NOT NULL,
+                ok INTEGER NOT NULL DEFAULT 0,
+                metric_json TEXT NOT NULL DEFAULT '{}',
+                note TEXT,
+                source TEXT NOT NULL DEFAULT 'unknown'
+            )"""
+        )
+        con.executemany(
+            """INSERT INTO lobster_detail_parameter_audit
+               (checked_at, persona, page_key, param_key, ok, metric_json, note, source)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            [
+                (
+                    checked_at,
+                    r["persona"],
+                    r["page_key"],
+                    r["param_key"],
+                    1 if r["ok"] else 0,
+                    json.dumps(r["metric"], ensure_ascii=False),
+                    r["note"],
+                    r["source"],
+                )
+                for r in rows
+            ],
+        )
+        con.commit()
+
+    failures = [r for r in rows if not r["ok"]]
+    print(f"checked_at={checked_at}")
+    print(f"params_checked={len(rows)}")
+    print(f"failures={len(failures)}")
+    by_persona = {}
+    for r in failures:
+        by_persona.setdefault(r["persona"], []).append(r)
+    for persona in PERSONAS:
+        xs = by_persona.get(persona) or []
+        print(f"{persona}\tfailures={len(xs)}")
+        for r in xs[:30]:
+            print(f"  FAIL\t{r['page_key']}\t{r['param_key']}\tmetric={r['metric']}\tsource={r['source']}\t{r['note']}")
+        if len(xs) > 30:
+            print(f"  ... {len(xs)-30} more")
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,12 @@
+[Unit]
+Description=Forbid personal lobster runtime from reaching company GX10 endpoint
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "/usr/sbin/ip route replace blackhole 100.99.251.48/32; /usr/sbin/ip route replace blackhole 100.99.251.48/32 table 52 || true"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

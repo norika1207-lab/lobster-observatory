@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Lobster detail parameter patrol daily
+
+[Timer]
+OnCalendar=*-*-* 06:20:00
+RandomizedDelaySec=900
+Persistent=true
+Unit=lobster-daily-detail-patrol.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lobster Cognition Map · Agent Cognition Cartography</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#050814;
+      --panel:#091225;
+      --panel2:#0d1930;
+      --line:rgba(96,165,250,.24);
+      --line2:rgba(148,163,184,.16);
+      --text:#dbeafe;
+      --muted:#8aa4c7;
+      --blue:#38bdf8;
+      --blue2:#2563eb;
+      --cyan:#67e8f9;
+      --hot:#fbbf24;
+      --warm:#fb7185;
+      --violet:#a78bfa;
+      --green:#34d399;
+      --mentor:#38bdf8;
+      --student:#fbbf24;
+      --shadow:0 24px 80px rgba(0,0,0,.36);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 22% 5%, rgba(37,99,235,.28), transparent 34%),
+        radial-gradient(circle at 82% 10%, rgba(14,165,233,.16), transparent 30%),
+        linear-gradient(180deg,#040711 0%,#07101f 46%,#040711 100%);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
+      letter-spacing:0;
+    }
+    .page{padding:22px;max-width:1680px;margin:0 auto}
+    .top{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:18px;
+      align-items:end;
+      margin-bottom:16px;
+    }
+    h1{margin:0;font-size:28px;line-height:1.15;font-weight:850}
+    .subtitle{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.7;max-width:980px}
+    .badge{
+      border:1px solid rgba(56,189,248,.28);
+      background:rgba(8,47,73,.48);
+      color:#bae6fd;
+      padding:9px 12px;
+      border-radius:8px;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .modebar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:0 0 14px;
+    }
+    .mode{
+      height:36px;
+      border:1px solid rgba(96,165,250,.26);
+      background:linear-gradient(180deg,rgba(15,23,42,.94),rgba(8,13,28,.94));
+      color:#c7d2fe;
+      border-radius:8px;
+      padding:0 12px;
+      font-weight:760;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    .mode:hover{border-color:rgba(103,232,249,.62);color:#f8fafc}
+    .mode.active{
+      border-color:rgba(56,189,248,.88);
+      background:linear-gradient(180deg,rgba(14,116,144,.64),rgba(30,64,175,.45));
+      box-shadow:0 0 0 1px rgba(56,189,248,.16),0 12px 30px rgba(37,99,235,.22);
+      color:#fff;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 340px;
+      gap:14px;
+    }
+    .panel{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(9,18,37,.88),rgba(4,9,21,.96));
+      box-shadow:var(--shadow);
+      border-radius:8px;
+      overflow:hidden;
+    }
+    .mapPanel{position:relative;min-height:760px}
+    .lineageBand{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin:0 0 14px;
+    }
+    .lineageTitle{
+      border:1px solid rgba(96,165,250,.24);
+      background:linear-gradient(180deg,rgba(13,25,48,.86),rgba(7,13,28,.92));
+      border-radius:8px;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:52px;
+    }
+    .lineageTitle b{font-size:18px;color:#e8f4ff}.lineageTitle span{font-size:12px;color:#7f93b2}
+    .mentorHeader{border-color:rgba(56,189,248,.42)}.studentHeader{border-color:rgba(251,191,36,.38)}
+    .mentorNode,.studentNode{filter:drop-shadow(0 12px 22px rgba(0,0,0,.28))}
+    .mentorBox,.studentBox{rx:8;ry:8;stroke-width:1.3}
+    .mentorBox{fill:rgba(8,47,73,.78);stroke:rgba(56,189,248,.58)}
+    .studentBox{fill:rgba(67,46,10,.78);stroke:rgba(251,191,36,.62)}
+    .nodeName{fill:#e0f2fe;font-size:12px;font-weight:900;paint-order:stroke;stroke:#020617;stroke-width:3px;stroke-linejoin:round}
+    .nodeMeta{fill:#8aa4c7;font-size:10px;font-weight:760}
+    .nodeScore{fill:#fff7ad;font-size:18px;font-weight:950}
+    .mentorArrow{stroke:rgba(251,191,36,.64);stroke-width:2.2;fill:none;marker-end:url(#arrowHead)}
+    .mentorArrow.weak{stroke:rgba(96,165,250,.38);stroke-dasharray:5 5}
+    .rolePill{fill:rgba(2,6,23,.62);stroke:rgba(148,163,184,.22);stroke-width:1}
+    .roleText{font-size:9px;font-weight:950;fill:#bae6fd;text-transform:uppercase;letter-spacing:.6px}
+    .mapHead{
+      position:absolute;left:16px;right:16px;top:14px;z-index:3;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+      pointer-events:none;
+    }
+    .mapTitle{font-size:17px;font-weight:880}
+    .mapDesc{margin-top:5px;color:#9fb5d4;font-size:12px;line-height:1.55;max-width:720px}
+    .legend{
+      display:flex;align-items:center;gap:9px;
+      padding:8px 10px;border:1px solid rgba(148,163,184,.2);border-radius:8px;
+      background:rgba(2,6,23,.58);font-size:11px;color:#b6c7df;
+    }
+    .ramp{width:116px;height:8px;border-radius:999px;background:linear-gradient(90deg,#1e1b4b,#1d4ed8,#06b6d4,#f59e0b,#fff7ad)}
+    #terrainCanvas,#overlaySvg{position:absolute;inset:0;width:100%;height:100%}
+    #terrainCanvas{background:radial-gradient(circle at 50% 54%,rgba(15,23,42,.48),rgba(2,6,23,.92) 70%)}
+    #overlaySvg{z-index:2;overflow:visible}
+    .side{display:flex;flex-direction:column;gap:14px}
+    .statGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px}
+    .stat{
+      border:1px solid var(--line2);
+      background:rgba(15,23,42,.58);
+      border-radius:8px;
+      padding:12px;
+      min-height:74px;
+    }
+    .stat .k{color:#87a2c7;font-size:11px;text-transform:uppercase;font-weight:760}
+    .stat .v{font-size:24px;font-weight:900;margin-top:4px}
+    .stat .s{font-size:11px;color:#7f93b2;margin-top:3px;line-height:1.35}
+    .cardHead{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(148,163,184,.13);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .cardHead strong{font-size:13px}
+    .cardHead span{font-size:11px;color:#7f93b2}
+    .agentDetail{padding:14px}
+    .agentName{font-size:22px;font-weight:900;margin:0 0 4px}
+    .agentMood{font-size:12px;color:#94a3b8;margin-bottom:12px}
+    .meter{margin:10px 0}
+    .meterTop{display:flex;justify-content:space-between;font-size:12px;color:#aec2dd;margin-bottom:5px}
+    .bar{height:8px;background:#0f172a;border-radius:999px;overflow:hidden;border:1px solid rgba(148,163,184,.14)}
+    .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue2),var(--cyan),var(--hot))}
+    .list{padding:10px 14px 14px;margin:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+    .list li{
+      display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
+      border:1px solid rgba(148,163,184,.13);
+      background:rgba(15,23,42,.38);
+      border-radius:8px;
+      padding:9px 10px;
+      font-size:12px;
+      color:#cbd5e1;
+    }
+    .list em{font-style:normal;color:#7dd3fc;font-weight:800}
+    .note{padding:12px 14px;color:#95aac8;font-size:12px;line-height:1.65;border-top:1px solid rgba(148,163,184,.12)}
+    .axisLabel{fill:#8fb3dc;font-size:11px;font-weight:750}
+    .agentLabel{fill:#e0f2fe;font-size:12px;font-weight:850;paint-order:stroke;stroke:#020617;stroke-width:4px;stroke-linejoin:round}
+    .edge{stroke:rgba(103,232,249,.24);stroke-linecap:round}
+    .edge.strong{stroke:rgba(251,191,36,.42)}
+    .point{cursor:pointer;stroke:#dff8ff;stroke-width:1.2px}
+    .point.active{stroke:#fff7ad;stroke-width:2.5px}
+    .halo{fill:none;stroke:rgba(103,232,249,.18);stroke-width:1px}
+    .loading{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      color:#93c5fd;font-size:13px;background:rgba(2,6,23,.48);z-index:4;
+    }
+    .err{color:#fecaca;padding:16px;font-size:13px;line-height:1.65}
+    @media (max-width:980px){
+      .page{padding:14px}
+      .top{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .mapPanel{min-height:620px}
+      .badge{white-space:normal}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="top">
+      <div>
+        <h1>AI Agent Cognition & Social Map</h1>
+        <p class="subtitle">This is not a chat-log table. It turns 20 lobster agents into explorable terrain: social perception, emotional peaks, cognitive drift, memory continuity, mentorship lineage, and relationship gravity. This is Charenix's first agent cognition cartography layer.</p>
+      </div>
+      <div class="badge" id="dataBadge">Loading live cognition data...</div>
+    </section>
+
+    <nav class="modebar" aria-label="cartography modes">
+      <button class="mode active" data-mode="social">Social Perception Terrain</button>
+      <button class="mode" data-mode="emotion">Emotion Terrain</button>
+      <button class="mode" data-mode="drift">Cognitive Drift Terrain</button>
+      <button class="mode" data-mode="memory">Memory Continuity Map</button>
+      <button class="mode" data-mode="galaxy">Agent Galaxy</button>
+      <button class="mode" data-mode="lineage">Mentor / Student Lineage</button>
+    </nav>
+
+    <section class="lineageBand" id="lineageBand">
+      <div class="lineageTitle mentorHeader"><b>Mentors</b><span>10 core mentors · original cohort</span></div>
+      <div class="lineageTitle studentHeader"><b>Students</b><span>10 apprentices · separate growth cohort</span></div>
+    </section>
+
+    <section class="grid">
+      <div class="panel mapPanel">
+        <canvas id="terrainCanvas"></canvas>
+        <svg id="overlaySvg" role="img" aria-label="lobster cognition terrain"></svg>
+        <div class="mapHead">
+          <div>
+            <div class="mapTitle" id="modeTitle">Social Perception Terrain</div>
+            <div class="mapDesc" id="modeDesc">Which relationships have real back-and-forth, and which are just passing contact?</div>
+          </div>
+          <div class="legend"><span>valley</span><span class="ramp"></span><span>peak</span></div>
+        </div>
+        <div class="loading" id="loading">Generating cognition terrain...</div>
+      </div>
+
+      <aside class="side">
+        <div class="panel">
+          <div class="statGrid" id="statGrid"></div>
+        </div>
+        <div class="panel">
+          <div class="cardHead"><strong id="detailHead">Selected Agent</strong><span>click a peak</span></div>
+          <div class="agentDetail" id="agentDetail"></div>
+        </div>
+        <div class="panel">
+          <div class="cardHead"><strong>Terrain Signals</strong><span id="signalHint">top peaks</span></div>
+          <ul class="list" id="signalList"></ul>
+          <div class="note" id="modeNote"></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const LANG = new URLSearchParams(location.search).get('lang') || localStorage.getItem('lobsterDashboardLang') || 'en';
+    document.documentElement.lang = LANG === 'zh' ? 'zh-TW' : 'en';
+    const ui = (en, zh) => LANG === 'zh' ? zh : en;
+    const API_SOCIAL = '/api/lobster-social-intelligence-dashboard?limit_evidence=3';
+    const API_DASH = '/api/lobster-dashboard-sandbox-db?limit_events=240&limit_cognitive=1000';
+    const API_MENTOR = '/api/lobster-mentorships';
+    const canvas = document.getElementById('terrainCanvas');
+    const ctx = canvas.getContext('2d');
+    const svg = document.getElementById('overlaySvg');
+    const loading = document.getElementById('loading');
+    let state = {mode:'social', agents:[], edges:[], selected:null, social:null, dash:null, mentorships:[]};
+
+    const modes = {
+      lineage: {
+        title:'Mentor / Student Lineage Map',
+        desc:'Mentors are on the left and students on the right. Each arrow points from student to mentor, with width and brightness derived from trust / authority. All 20 agents remain visible, with cohorts separated.',
+        note:'How to read: arrows are training paths, not obedience. Students should learn their mentor’s reasoning frame without copying the voice. If scores move toward the mentor while unique phrase rate drops, watch for homogenization.'
+      },
+      social: {
+        title:'Social Perception Terrain',
+        desc:'X=social perception, Y=listening / relationship depth. Bright peaks indicate real back-and-forth; dark valleys indicate passing contact or broadcast-style monologue.',
+        note:'How to read: the upper-right is the strongest evidence of social awareness. The lower-left may still have volume, but lacks real uptake.'
+      },
+      emotion: {
+        title:'Emotion Terrain',
+        desc:'X=persona / voice distinctiveness, Y=emotional intensity. Bright peaks show where emotion is likely to change rhythm and wording.',
+        note:'How to read: a peak is not good or bad; it means high emotional energy. These peaks should feed response generation so emotion changes language, not only numbers.'
+      },
+      drift: {
+        title:'Cognitive Drift Terrain',
+        desc:'X=model drift / revision pressure, Y=body pressure. Dot size=cognitive load; the upper-right is the highest-intervention drift zone.',
+        note:'How to read: the left side means the model is more stable, not more stressed. Drift increases to the right; body pressure increases upward.'
+      },
+      memory: {
+        title:'Memory Continuity Map',
+        desc:'X=memory continuity, Y=learning velocity. Bright peaks show topics that survive across days; dark valleys reset like broken continuity.',
+        note:'How to read: the upper-right is the long-term growth zone. The lower-left is where social or strategic memory breaks easily.'
+      },
+      galaxy: {
+        title:'Agent Galaxy',
+        desc:'Each lobster forms a cluster; lines show interaction gravity. Brighter clusters are closer to measurable social intelligence.',
+        note:'How to read: brighter lines mean denser, higher-confidence interaction. An island is not wrong, but it does not form a society.'
+      }
+    };
+
+    function clamp(n,min,max){ return Math.max(min, Math.min(max, Number.isFinite(n) ? n : min)); }
+    function asArray(value){
+      if (Array.isArray(value)) return value;
+      if (value && typeof value === 'object') return Object.values(value);
+      return [];
+    }
+    function scoreMetric(agent, key){
+      return clamp(agent?.metrics?.[key]?.score ?? 0, 0, 100);
+    }
+    function signal(agent, key){
+      return Number(agent?.distilled_signals?.[key] ?? 0);
+    }
+    function latest(agent, key){
+      return Number(agent?.latest_cognitive?.[key] ?? 0);
+    }
+    function hashUnit(str){
+      let h = 2166136261;
+      for (let i=0;i<str.length;i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+      return ((h >>> 0) % 10000) / 10000;
+    }
+    function pct(n){ return Math.round(clamp(n,0,100)); }
+    function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+    function buildAgents(social, dash){
+      const byName = new Map();
+      const cognitiveRows = Array.isArray(dash?.cognitive_signals)
+        ? dash.cognitive_signals
+        : Array.isArray(dash?.cognitive_signals?.rows)
+          ? dash.cognitive_signals.rows
+          : [];
+      const cognitiveLatestRaw = dash?.cognitive_signals?.latest;
+      const cognitiveLatestValues = asArray(cognitiveLatestRaw);
+      const cognitiveLatest = {};
+      cognitiveLatestValues.forEach(r => { if (r && r.persona) cognitiveLatest[r.persona] = r; });
+      asArray(social?.agents).forEach(a => { if (a && a.persona) byName.set(a.persona, {...a}); });
+      Object.entries(dash?.stats || {}).forEach(([name, st]) => {
+        const item = byName.get(name) || {persona:name, metrics:{}, raw:{}, relationships:[]};
+        item.dashboard = st;
+        item.personaMeta = dash?.personas?.[name] || {};
+        const latestRow = cognitiveLatest[name] ? [cognitiveLatest[name]] : [];
+        item.latestSeries = cognitiveRows.filter(r => r && r.persona === name);
+        if (!item.latestSeries.length && latestRow.length) item.latestSeries = latestRow;
+        byName.set(name, item);
+      });
+      return [...byName.values()].filter(a => !String(a.persona).includes('test_lobster'));
+    }
+
+    function buildEdges(social, agents){
+      const names = new Set(agents.map(a => a.persona));
+      return asArray(social?.network?.edges)
+        .filter(e => names.has(e.speaker) && names.has(e.target))
+        .slice(0, 45);
+    }
+
+    function agentByName(name){ return state.agents.find(a => a.persona === name) || {persona:name, metrics:{}, raw:{}, relationships:[]}; }
+    function roleOf(name){
+      if (state.mentorships.some(p => p.mentor === name)) return 'mentor';
+      if (state.mentorships.some(p => p.apprentice === name)) return 'student';
+      return 'agent';
+    }
+    function agentScore(a){ return Math.round(Number(a.score ?? scoreMetric(a,'social_perception') ?? 0)); }
+
+    function emotionalIntensity(agent){
+      const e = agent.dashboard?.emotionalState || agent.dashboard?.dynamic?.emotionalState || {};
+      const vals = [
+        e.intensity, e.arousal, e.frustration, e.excitement, e.pressure,
+        agent.dashboard?.dynamic?.emotionIntensity,
+        signal(agent,'pressure_reactivity') * 100
+      ].map(Number).filter(Number.isFinite);
+      if (!vals.length) return Math.round((0.35 + hashUnit(agent.persona) * 0.45) * 100);
+      return pct(vals.reduce((a,b)=>a+b,0) / vals.length);
+    }
+
+    function moodLabel(agent){
+      const e = agent.dashboard?.emotionalState || agent.dashboard?.dynamic?.emotionalState || {};
+      return e.mood || e.label || e.primary || agent.personaMeta?.mbti || agent.growth_state || 'observing';
+    }
+
+    function cognitivePressure(agent){
+      const row = agent.latestSeries?.[0] || {};
+      const drift = (latest(agent,'prediction_error') + latest(agent,'model_revision_pressure') + Number(row.prediction_error || 0) + Number(row.model_revision_pressure || 0)) * 50;
+      const risk = Number(row.overconfidence_risk || 0) * 35;
+      return pct(drift + risk);
+    }
+
+    function bodyPressure(agent){
+      const row = agent.latestSeries?.[0] || {};
+      const v = (Number(row.arousal || 0) + Number(row.fatigue || 0) + Number(row.threat_body_signal || 0)) / 3;
+      return pct(v * 100);
+    }
+
+    function attention(agent){
+      const row = agent.latestSeries?.[0] || {};
+      return pct(((latest(agent,'attention_load') || Number(row.attention_load || 0)) || .25) * 100);
+    }
+
+    function lineageLayout(width, height){
+      const mentorNames = state.mentorships.map(p => p.mentor);
+      const studentNames = state.mentorships.map(p => p.apprentice);
+      const mentors = mentorNames.map(agentByName);
+      const students = studentNames.map(agentByName);
+      const top = 112;
+      const rowH = Math.max(48, Math.min(62, (height - 170) / Math.max(10, state.mentorships.length)));
+      const mentorX = Math.max(98, width * 0.25);
+      const studentX = Math.min(width - 120, width * 0.73);
+      const nodes = [];
+      mentors.forEach((a,i) => nodes.push({agent:a, role:'mentor', x:mentorX, y:top+i*rowH, w:230, h:42, heat:agentScore(a), label:ui('Mentor','導師')}));
+      students.forEach((a,i) => nodes.push({agent:a, role:'student', x:studentX, y:top+i*rowH, w:230, h:42, heat:agentScore(a), label:ui('Student','學生')}));
+      return {nodes, rowH, mentorX, studentX};
+    }
+
+    function projection(agent, index, total, mode, width, height){
+      const padX = 82, padTop = 94, padBottom = 70;
+      const innerW = Math.max(240, width - padX * 2);
+      const innerH = Math.max(260, height - padTop - padBottom);
+      const toX = v => padX + clamp(v,0,100) / 100 * innerW;
+      const toY = v => padTop + (1 - clamp(v,0,100) / 100) * innerH;
+      let xVal = 50, yVal = 50, heat = 50, size = 12, label = '';
+      if (mode === 'social'){
+        xVal = scoreMetric(agent,'interaction_authenticity');
+        yVal = (scoreMetric(agent,'listening') + scoreMetric(agent,'relationship_depth')) / 2;
+        heat = (xVal + yVal + scoreMetric(agent,'proactive_collaboration')) / 3;
+        size = 8 + (agent.score || 50) / 5;
+        label = 'social ' + pct(heat);
+      } else if (mode === 'emotion'){
+        xVal = 15 + hashUnit(agent.persona + moodLabel(agent)) * 70;
+        yVal = emotionalIntensity(agent);
+        heat = (yVal * .72) + (signal(agent,'pressure_reactivity') * 28);
+        size = 10 + yVal / 4;
+        label = moodLabel(agent);
+      } else if (mode === 'drift'){
+        xVal = cognitivePressure(agent);
+        yVal = bodyPressure(agent);
+        heat = (xVal * .56) + (yVal * .44);
+        size = 9 + attention(agent) / 3.8;
+        label = 'load ' + attention(agent);
+      } else if (mode === 'memory'){
+        xVal = scoreMetric(agent,'memory_continuity');
+        yVal = clamp(signal(agent,'learning_velocity') * 100, 0, 100);
+        heat = (xVal * .65) + (scoreMetric(agent,'self_correction') * .35);
+        size = 9 + scoreMetric(agent,'relationship_depth') / 5;
+        label = 'memory ' + pct(xVal);
+      } else {
+        const angle = (-Math.PI / 2) + (index / Math.max(1,total)) * Math.PI * 2;
+        const orbit = Math.min(innerW, innerH) * (.31 + hashUnit(agent.persona) * .18);
+        const cx = width / 2, cy = padTop + innerH / 2;
+        xVal = 50 + Math.cos(angle) * 38;
+        yVal = 50 + Math.sin(angle) * 38;
+        heat = agent.score || (scoreMetric(agent,'listening') + scoreMetric(agent,'memory_continuity')) / 2;
+        size = 13 + scoreMetric(agent,'relationship_depth') / 4.5;
+        label = 'gravity ' + pct(heat);
+        return {agent, x:cx + Math.cos(angle) * orbit, y:cy + Math.sin(angle) * orbit, xVal, yVal, heat, size, label};
+      }
+      const jitterX = (hashUnit(agent.persona + mode) - .5) * 32;
+      const jitterY = (hashUnit(mode + agent.persona) - .5) * 24;
+      return {agent, x:toX(xVal) + jitterX, y:toY(yVal) + jitterY, xVal, yVal, heat:clamp(heat,0,100), size, label};
+    }
+
+    function resizeCanvas(){
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
+      svg.setAttribute('width', rect.width);
+      svg.setAttribute('height', rect.height);
+      return rect;
+    }
+
+    function drawTerrain(points, rect){
+      ctx.clearRect(0,0,rect.width,rect.height);
+      const base = ctx.createLinearGradient(0,0,0,rect.height);
+      base.addColorStop(0,'#020617');
+      base.addColorStop(.42,'#07152d');
+      base.addColorStop(1,'#050814');
+      ctx.fillStyle = base;
+      ctx.fillRect(0,0,rect.width,rect.height);
+
+      ctx.globalCompositeOperation = 'lighter';
+      points.forEach(p => {
+        const r = 92 + p.heat * 1.55;
+        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+        g.addColorStop(0, `rgba(255,247,173,${.28 + p.heat/240})`);
+        g.addColorStop(.20, `rgba(251,191,36,${.20 + p.heat/340})`);
+        g.addColorStop(.48, `rgba(236,72,153,${.13 + p.heat/520})`);
+        g.addColorStop(.72, `rgba(37,99,235,${.09 + p.heat/800})`);
+        g.addColorStop(1, 'rgba(2,6,23,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,r,0,Math.PI*2);
+        ctx.fill();
+      });
+      ctx.globalCompositeOperation = 'source-over';
+
+      ctx.strokeStyle = 'rgba(125,211,252,.07)';
+      ctx.lineWidth = 1;
+      for (let y=110; y<rect.height; y+=62){
+        ctx.beginPath();
+        for (let x=0; x<=rect.width; x+=18){
+          const wave = Math.sin((x+y)*.012) * 7 + Math.sin((x-y)*.007) * 5;
+          if (x===0) ctx.moveTo(x,y+wave); else ctx.lineTo(x,y+wave);
+        }
+        ctx.stroke();
+      }
+    }
+
+    function drawLineageOverlay(layout, rect){
+      const byName = new Map(layout.nodes.map(n => [n.agent.persona, n]));
+      let html = `<defs><marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="rgba(251,191,36,.82)"></path></marker></defs>`;
+      html += `<text class="axisLabel" x="${layout.mentorX-115}" y="76">${ui('Mentors','導師')}</text>`;
+      html += `<text class="axisLabel" x="${layout.studentX-115}" y="76">${ui('Students','學生')}</text>`;
+      state.mentorships.forEach(pair => {
+        const m = byName.get(pair.mentor), s = byName.get(pair.apprentice);
+        if (!m || !s) return;
+        const trust = clamp(Number(pair.trust ?? .5) * 100, 0, 100);
+        const weak = trust < 55;
+        const sx = s.x - s.w/2 - 4, sy = s.y;
+        const mx = m.x + m.w/2 + 4, my = m.y;
+        const c1 = sx - Math.max(60, rect.width*.08);
+        const c2 = mx + Math.max(60, rect.width*.08);
+        html += `<path class="mentorArrow ${weak?'weak':''}" d="M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${c1.toFixed(1)} ${sy.toFixed(1)}, ${c2.toFixed(1)} ${my.toFixed(1)}, ${mx.toFixed(1)} ${my.toFixed(1)}" stroke-width="${(1.4 + trust/42).toFixed(1)}"></path>`;
+      });
+      layout.nodes.forEach(n => {
+        const active = state.selected === n.agent.persona;
+        const x = n.x - n.w/2, y = n.y - n.h/2;
+        const boxClass = n.role === 'mentor' ? 'mentorBox' : 'studentBox';
+        const nodeClass = n.role === 'mentor' ? 'mentorNode' : 'studentNode';
+        const meta = n.role === 'mentor' ? `${(state.mentorships.find(p=>p.mentor===n.agent.persona)||{}).apprentice || ''}` : `${(state.mentorships.find(p=>p.apprentice===n.agent.persona)||{}).mentor || ''}`;
+        html += `<g class="${nodeClass}" data-agent="${escapeAttr(n.agent.persona)}" style="cursor:pointer">`;
+        html += `<rect class="${boxClass}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${n.w}" height="${n.h}" ${active?'stroke="#fff7ad" stroke-width="2.4"':''}></rect>`;
+        html += `<rect class="rolePill" x="${(x+10).toFixed(1)}" y="${(y+8).toFixed(1)}" width="52" height="18" rx="8" ry="8"></rect>`;
+        html += `<text class="roleText" x="${(x+19).toFixed(1)}" y="${(y+21).toFixed(1)}">${n.role === 'mentor' ? ui('Mentor','導師') : ui('Student','學生')}</text>`;
+        html += `<text class="nodeName" x="${(x+70).toFixed(1)}" y="${(y+19).toFixed(1)}">${escapeHtml(n.agent.persona)}</text>`;
+        html += `<text class="nodeMeta" x="${(x+70).toFixed(1)}" y="${(y+34).toFixed(1)}">${n.role === 'mentor' ? 'student: ' : 'mentor: '}${escapeHtml(meta || '--')}</text>`;
+        html += `<text class="nodeScore" x="${(x+n.w-44).toFixed(1)}" y="${(y+28).toFixed(1)}">${agentScore(n.agent)}</text>`;
+        html += `</g>`;
+      });
+      svg.innerHTML = html;
+      svg.querySelectorAll('g[data-agent]').forEach(el => el.addEventListener('click', () => { state.selected = el.dataset.agent; render(); }));
+    }
+
+    function drawOverlay(points, rect){
+      const pos = new Map(points.map(p => [p.agent.persona, p]));
+      const mode = state.mode;
+      let html = `<defs><marker id="mentorMapArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="rgba(251,191,36,.72)"></path></marker></defs>`;
+      html += `<text class="axisLabel" x="24" y="${rect.height-24}">${axisLabels(mode).xLow}</text>`;
+      html += `<text class="axisLabel" x="${rect.width-210}" y="${rect.height-24}">${axisLabels(mode).xHigh}</text>`;
+      html += `<text class="axisLabel" x="24" y="84">${axisLabels(mode).yHigh}</text>`;
+      html += `<text class="axisLabel" x="24" y="${rect.height-76}">${axisLabels(mode).yLow}</text>`;
+      if (mode !== 'emotion'){
+        state.edges.slice(0, mode === 'galaxy' ? 34 : 18).forEach(e => {
+          const a = pos.get(e.speaker), b = pos.get(e.target);
+          if (!a || !b) return;
+          const strong = Number(e.avg_confidence || 0) > .62;
+          const w = 1 + Math.min(5, Number(e.count || 0) / 1100);
+          html += `<line class="edge ${strong?'strong':''}" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke-width="${w.toFixed(1)}" />`;
+        });
+      }
+      if (mode !== 'lineage'){
+        state.mentorships.forEach(pair => {
+          const s = pos.get(pair.apprentice), m = pos.get(pair.mentor);
+          if (!s || !m) return;
+          const trust = clamp(Number(pair.trust ?? .5) * 100, 0, 100);
+          const c1x = s.x + (m.x - s.x) * .38;
+          const c2x = s.x + (m.x - s.x) * .62;
+          const lift = (hashUnit(pair.apprentice + pair.mentor) - .5) * 80;
+          html += `<path class="mentorArrow ${trust<55?'weak':''}" d="M ${s.x.toFixed(1)} ${s.y.toFixed(1)} C ${c1x.toFixed(1)} ${(s.y+lift).toFixed(1)}, ${c2x.toFixed(1)} ${(m.y-lift).toFixed(1)}, ${m.x.toFixed(1)} ${m.y.toFixed(1)}" stroke-width="${(1.1 + trust/55).toFixed(1)}" marker-end="url(#mentorMapArrow)"></path>`;
+        });
+      }
+      points.forEach((p, i) => {
+        const active = state.selected === p.agent.persona || (!state.selected && i === 0);
+        const color = colorFor(p.heat);
+        html += `<circle class="halo" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${(p.size+12).toFixed(1)}"></circle>`;
+        html += `<circle class="point ${active?'active':''}" data-agent="${escapeAttr(p.agent.persona)}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.size.toFixed(1)}" fill="${color}"></circle>`;
+        html += `<text class="agentLabel" x="${(p.x+p.size+7).toFixed(1)}" y="${(p.y+4).toFixed(1)}">${escapeHtml(p.agent.persona)}</text>`;
+        html += `<text class="axisLabel" x="${(p.x+p.size+7).toFixed(1)}" y="${(p.y+19).toFixed(1)}">${escapeHtml(p.label)}</text>`;
+      });
+      svg.innerHTML = html;
+      svg.querySelectorAll('.point').forEach(el => el.addEventListener('click', () => {
+        state.selected = el.dataset.agent;
+        render();
+      }));
+    }
+
+    function axisLabels(mode){
+      if (mode === 'social') return {xLow:ui('Low authenticity','低互動真實度'), xHigh:ui('High authenticity','高互動真實度'), yLow:ui('Low listening / shallow ties','低聆聽/淺關係'), yHigh:ui('High listening / deep ties','高聆聽/深關係')};
+      if (mode === 'emotion') return {xLow:ui('Calm / inward voice','冷靜/內收語氣'), xHigh:ui('Expressive / distinct voice','外放/特殊語氣'), yLow:ui('Low emotion','情緒低谷'), yHigh:ui('Emotion peak','情緒高峰')};
+      if (mode === 'drift') return {xLow:ui('Model stable','模型穩定'), xHigh:ui('High model drift','模型失準高'), yLow:ui('Low body pressure','身體壓力低'), yHigh:ui('High body pressure','身體壓力高')};
+      if (mode === 'memory') return {xLow:ui('Fragile memory','記憶易斷'), xHigh:ui('Strong continuity','記憶延續強'), yLow:ui('Low learning velocity','學習速度低'), yHigh:ui('High learning velocity','學習速度高')};
+      return {xLow:ui('Outer island','外圍孤島'), xHigh:ui('Interaction arm','互動星臂'), yLow:ui('Low gravity zone','低引力區'), yHigh:ui('High gravity zone','高引力區')};
+    }
+
+    function colorFor(v){
+      if (v > 78) return '#fff7ad';
+      if (v > 62) return '#fbbf24';
+      if (v > 46) return '#fb7185';
+      if (v > 30) return '#38bdf8';
+      return '#2563eb';
+    }
+
+    function renderStats(points){
+      const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0) / arr.length : 0;
+      const socialAvg = avg(state.agents.map(a => a.score || 0));
+      const perceptionAvg = avg(state.agents.map(a => scoreMetric(a,'interaction_authenticity')));
+      const emotionAvg = avg(state.agents.map(emotionalIntensity));
+      const driftAvg = avg(state.agents.map(a => (cognitivePressure(a)+bodyPressure(a))/2));
+      const top = [...points].sort((a,b)=>b.heat-a.heat)[0];
+      document.getElementById('statGrid').innerHTML = [
+        ['Agents', state.agents.length, 'tracked in live dashboard'],
+        ['Avg Social IQ', Math.round(socialAvg), 'engine score'],
+        ['Perception', Math.round(perceptionAvg), 'real reply / target quality'],
+        ['Emotion', Math.round(emotionAvg), 'language pressure potential'],
+        ['Drift', Math.round(driftAvg), 'model + body pressure'],
+        ['Top Peak', top?.agent?.persona || '-', modes[state.mode].title]
+      ].map(([k,v,s]) => `<div class="stat"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+    }
+
+    function renderDetail(points){
+      const selected = points.find(p => p.agent.persona === state.selected) || points[0];
+      if (!selected) return;
+      state.selected = selected.agent.persona;
+      const a = selected.agent;
+      document.getElementById('detailHead').textContent = a.persona;
+      const rows = [
+        ['Social Perception', scoreMetric(a,'interaction_authenticity')],
+        [ui('Listening Ability','聆聽能力'), scoreMetric(a,'listening')],
+        [ui('Relationship Depth','關係深度'), scoreMetric(a,'relationship_depth')],
+        [ui('Memory Continuity','記憶延續'), scoreMetric(a,'memory_continuity')],
+        [ui('Self-Correction','自我修正'), scoreMetric(a,'self_correction')],
+        [ui('Emotional Intensity','情緒強度'), emotionalIntensity(a)],
+        [ui('Model Drift','模型失準'), cognitivePressure(a)],
+        [ui('Body Pressure','身體壓力'), bodyPressure(a)]
+      ];
+      const role = roleOf(a.persona);
+      const pair = state.mentorships.find(p => p.mentor === a.persona || p.apprentice === a.persona) || {};
+      const roleLine = role === 'mentor' ? `${ui('Mentor','導師')} · ${ui('student','學生')} ${pair.apprentice || '--'}` : role === 'student' ? `${ui('Student','學生')} · ${ui('mentor','導師')} ${pair.mentor || '--'}` : ui('unpaired','未配對');
+      document.getElementById('agentDetail').innerHTML =
+        `<div class="agentName">${escapeHtml(a.persona)}</div>` +
+        `<div class="agentMood">${escapeHtml(roleLine)} · ${escapeHtml(moodLabel(a))} · ${escapeHtml(a.growth_state || 'observed')} · peak ${pct(selected.heat)}</div>` +
+        rows.map(([k,v]) => `<div class="meter"><div class="meterTop"><span>${k}</span><b>${pct(v)}</b></div><div class="bar"><div class="fill" style="width:${pct(v)}%"></div></div></div>`).join('');
+    }
+
+    function renderSignals(points){
+      const ranked = [...points].sort((a,b)=>b.heat-a.heat).slice(0, 7);
+      document.getElementById('signalList').innerHTML = ranked.map(p => {
+        const second = state.mode === 'galaxy'
+          ? `${asArray(p.agent.relationships).length} relations`
+          : `${axisLabels(state.mode).xHigh}: ${pct(p.xVal)} / ${axisLabels(state.mode).yHigh}: ${pct(p.yVal)}`;
+        return `<li><span>${escapeHtml(p.agent.persona)}<br><small>${escapeHtml(second)}</small></span><em>${pct(p.heat)}</em></li>`;
+      }).join('');
+      document.getElementById('modeNote').textContent = modes[state.mode].note;
+    }
+
+    function render(){
+      if (!state.agents.length) return;
+      const rect = resizeCanvas();
+      document.getElementById('modeTitle').textContent = modes[state.mode].title;
+      document.getElementById('modeDesc').textContent = modes[state.mode].desc;
+      const lineageBand = document.getElementById('lineageBand');
+      if (lineageBand) lineageBand.style.display = state.mode === 'lineage' ? 'grid' : 'none';
+      if (state.mode === 'lineage') {
+        const layout = lineageLayout(rect.width, rect.height);
+        drawTerrain(layout.nodes.map(n => ({x:n.x,y:n.y,heat:n.heat,size:18,agent:n.agent,xVal:n.role==='mentor'?85:55,yVal:n.heat,label:n.label})), rect);
+        drawLineageOverlay(layout, rect);
+        renderStats(layout.nodes.map(n => ({...n, xVal:n.role==='mentor'?100:60, yVal:n.heat, size:18})));
+        renderDetail(layout.nodes.map(n => ({...n, xVal:n.role==='mentor'?100:60, yVal:n.heat, size:18})));
+        renderSignals(layout.nodes.map(n => ({...n, xVal:n.role==='mentor'?100:60, yVal:n.heat, size:18})));
+        return;
+      }
+      const points = state.agents.map((a,i) => projection(a, i, state.agents.length, state.mode, rect.width, rect.height));
+      drawTerrain(points, rect);
+      drawOverlay(points, rect);
+      renderStats(points);
+      renderDetail(points);
+      renderSignals(points);
+    }
+
+    async function load(){
+      try{
+        const [social, dash, mentor] = await Promise.all([
+          fetch(API_SOCIAL, {cache:'no-store'}).then(r => r.json()),
+          fetch(API_DASH, {cache:'no-store'}).then(r => r.json()),
+          fetch(API_MENTOR, {cache:'no-store'}).then(r => r.json()).catch(() => ({pairs:[]}))
+        ]);
+        state.social = social;
+        state.dash = dash;
+        state.mentorships = Array.isArray(mentor?.pairs) ? mentor.pairs : [];
+        state.agents = buildAgents(social, dash);
+        state.edges = buildEdges(social, state.agents);
+        state.selected = state.agents[0]?.persona || state.mentorships[0]?.mentor || null;
+        document.getElementById('dataBadge').textContent = `Live · ${state.agents.length} agents · ${state.mentorships.length} mentor arrows · ${state.edges.length} social edges · ${new Date().toLocaleString('zh-TW')}`;
+        loading.style.display = 'none';
+        render();
+      }catch(err){
+        loading.innerHTML = `<div class="err">Cognition map load failed: ${escapeHtml(String(err.message || err))}</div>`;
+      }
+    }
+
+    function escapeHtml(s){
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function escapeAttr(s){ return escapeHtml(s).replace(/`/g,'&#96;'); }
+
+    document.querySelectorAll('.mode').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.mode').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.mode = btn.dataset.mode;
+      render();
+    }));
+    window.addEventListener('resize', () => requestAnimationFrame(render));
+    load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+[Unit]
+Description=Lobster persona agents scheduler
+After=network-online.target lobster-report-worker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+ExecStartPre=/bin/mkdir -p /var/log/lobster-agents
+ExecStartPre=/bin/sh -c '/usr/bin/pkill -f "^node /root/lobster-agent.js$" 2>/dev/null || true'
+ExecStart=/usr/bin/flock -n /run/lobster-agents.lock /bin/bash /root/lobster-agents-supervisor.sh
+Restart=always
+RestartSec=20
+KillMode=control-group
+TimeoutStopSec=20
+CPUQuota=70%
+MemoryMax=1200M
+TasksMax=180
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=Mayor watchdog: service-watchdog
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/service_watchdog.py
+StandardOutput=append:/root/lobster-memory/_town/alerts/service-watchdog.systemd.log
+StandardError=append:/root/lobster-memory/_town/alerts/service-watchdog.systemd.log
+TimeoutSec=120

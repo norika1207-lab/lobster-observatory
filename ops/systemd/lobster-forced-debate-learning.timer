@@ -1,0 +1,12 @@
+[Unit]
+Description=Run forced math and philosophy learning for every lobster every 10 minutes
+
+[Timer]
+OnBootSec=2min
+OnCalendar=*:0/10
+AccuracySec=30s
+Persistent=true
+Unit=lobster-forced-debate-learning.service
+
+[Install]
+WantedBy=timers.target

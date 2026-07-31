@@ -1,0 +1,12 @@
+[Unit]
+Description=Run lobster learning watchdog every 5 minutes
+
+[Timer]
+OnBootSec=3min
+OnCalendar=*:0/5
+AccuracySec=30s
+Persistent=true
+Unit=lobster-learning-watchdog.service
+
+[Install]
+WantedBy=timers.target

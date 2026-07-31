@@ -1,0 +1,8 @@
+[Unit]
+Description=Sports endpoint watchdog for lobster betting sites
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/sports-endpoint-watchdog.sh

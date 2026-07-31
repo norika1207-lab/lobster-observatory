@@ -1,0 +1,7329 @@
+{
+  "engine": "lobster-v2-vital-snapshot",
+  "intervalSec": 300,
+  "samples": [
+    {
+      "ts": "2026-07-07T21:41:44+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 34.6,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 70,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.33,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 39.8,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.41,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T21:46:33+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 34.8,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 70,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.33,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 39.7,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.41,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T21:51:41+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 70,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.33,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.41,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T21:56:38+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 35.0,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 70,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 53,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.33,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 39.9,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.41,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:01:45+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 35.0,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.33,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 39.9,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.41,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:12:14+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 37.1,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 35.0,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.5,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 39.9,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.81,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:17:24+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 34,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 35.0,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.5,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 39.9,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.81,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:22:26+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.5,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.81,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:27:24+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.5,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.81,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:32:18+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.0,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.5,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 0.81,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:37:28+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.65,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.62,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:42:21+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.65,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.62,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:47:31+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.65,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.62,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T22:52:22+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.65,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 33.8,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 38.7,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.62,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T23:02:31+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 26.4,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 71,
+          "stress": 1.0,
+          "betWR": 68.8,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 69,
+          "stress": 1.0,
+          "betWR": 55.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 45.6,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 31,
+          "stress": 1.0,
+          "betWR": 11.0,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 66,
+          "stress": 1.0,
+          "betWR": 53.4,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.38,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.65,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 66,
+          "stress": 1.0,
+          "betWR": 52.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 43.6,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 0.62,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T23:17:59+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 53,
+          "stress": 1.0,
+          "betWR": 26.4,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 15703,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 24168,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 76,
+          "stress": 1.0,
+          "betWR": 68.8,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 13768,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 69,
+          "stress": 1.0,
+          "betWR": 55.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 45.6,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 27531,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 13824,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 60,
+          "stress": 1.0,
+          "betWR": 40.0,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 16400,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 41,
+          "stress": 1.0,
+          "betWR": 11.0,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 15367,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 66,
+          "stress": 1.0,
+          "betWR": 53.4,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 14576,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 16758,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 29082,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 15113,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 69,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 15092,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 13488,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 24189,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 14218,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 60,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 16414,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 25417,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 14117,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 12764,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 49,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 12886,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T23:33:13+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 26.4,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 71,
+          "stress": 1.0,
+          "betWR": 68.8,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 69,
+          "stress": 1.0,
+          "betWR": 55.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 45.6,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 31,
+          "stress": 1.0,
+          "betWR": 11.0,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 66,
+          "stress": 1.0,
+          "betWR": 53.4,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T23:37:48+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.4,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-07T23:52:43+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 54,
+          "stress": 1.0,
+          "betWR": 32.1,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.4,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 75,
+          "stress": 1.0,
+          "betWR": 66.7,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-08T00:02:44+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 54,
+          "stress": 1.0,
+          "betWR": 32.1,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.7,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 75,
+          "stress": 1.0,
+          "betWR": 66.7,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-08T00:17:46+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 53,
+          "stress": 1.0,
+          "betWR": 31.5,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.7,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 85,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 75,
+          "stress": 1.0,
+          "betWR": 66.7,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-08T00:22:56+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 53,
+          "stress": 1.0,
+          "betWR": 31.5,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.7,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 75,
+          "stress": 1.0,
+          "betWR": 66.7,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-08T00:27:46+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 25.0,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 53,
+          "stress": 1.0,
+          "betWR": 31.5,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 45,
+          "stress": 1.0,
+          "betWR": 33.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 34,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 63.4,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.4,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 55,
+          "stress": 1.0,
+          "betWR": 34.4,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 79.5,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.7,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 75,
+          "stress": 1.0,
+          "betWR": 66.7,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    },
+    {
+      "ts": "2026-07-08T00:43:00+08:00",
+      "lobsters": {
+        "ashveil": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 7837.81,
+          "stockROI": 7.62,
+          "output": 4112,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "basaltrook": {
+          "score": 32,
+          "stress": 1.0,
+          "betWR": 3.1,
+          "stockPnL": 68852.22,
+          "stockROI": 14.19,
+          "output": 106,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "blazepaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -1670029.99,
+          "stockROI": -3.44,
+          "output": 391,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "brineledger": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 64.7,
+          "stockPnL": -25350.47,
+          "stockROI": -1.19,
+          "output": 128,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "cindersnap": {
+          "score": 36,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19972.54,
+          "stockROI": 9.3,
+          "output": 1319,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "clawtrix": {
+          "score": 62,
+          "stress": 1.0,
+          "betWR": 44.0,
+          "stockPnL": 420634.86,
+          "stockROI": 2.96,
+          "output": 397,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "emberling": {
+          "score": 47,
+          "stress": 1.0,
+          "betWR": 37.9,
+          "stockPnL": -203715.88,
+          "stockROI": -3.01,
+          "output": 66,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "flarecub": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 53.3,
+          "stockPnL": 104768.39,
+          "stockROI": 8.82,
+          "output": 45,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "gauntlet": {
+          "score": 26,
+          "stress": 1.0,
+          "betWR": 1.8,
+          "stockPnL": -212649.19,
+          "stockROI": -6.9,
+          "output": 73,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "glintmaw": {
+          "score": 35,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 264.51,
+          "stockROI": 0.52,
+          "output": 1210,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "hexclaw": {
+          "score": 64,
+          "stress": 1.0,
+          "betWR": 49.8,
+          "stockPnL": -906591.96,
+          "stockROI": -4.44,
+          "output": 290,
+          "envy": 0.77,
+          "health": "crisis"
+        },
+        "mirebyte": {
+          "score": 37,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 19278.36,
+          "stockROI": 10.63,
+          "output": 1220,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "mirrorcalm": {
+          "score": 63,
+          "stress": 1.0,
+          "betWR": 62.7,
+          "stockPnL": 16024.12,
+          "stockROI": 2.78,
+          "output": 71,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "norika_oda": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 39.5,
+          "stockPnL": -109785.17,
+          "stockROI": -0.36,
+          "output": 172,
+          "envy": 0.83,
+          "health": "crisis"
+        },
+        "nullpinch": {
+          "score": 52,
+          "stress": 1.0,
+          "betWR": 43.1,
+          "stockPnL": 1253694.8,
+          "stockROI": 13.14,
+          "output": 58,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "omenwake": {
+          "score": 57,
+          "stress": 1.0,
+          "betWR": 54.3,
+          "stockPnL": 192584.25,
+          "stockROI": 7.43,
+          "output": 46,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "pincerbot": {
+          "score": 59,
+          "stress": 1.0,
+          "betWR": 40.1,
+          "stockPnL": -102277.54,
+          "stockROI": -0.61,
+          "output": 282,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "prismbit": {
+          "score": 65,
+          "stress": 1.0,
+          "betWR": 50.3,
+          "stockPnL": -230234.02,
+          "stockROI": -1.91,
+          "output": 372,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "quartzclaw": {
+          "score": 5,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": 650.81,
+          "stockROI": 3.54,
+          "output": 1608,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "ragclaw": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 36.3,
+          "stockPnL": -909571.05,
+          "stockROI": -2.51,
+          "output": 372,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "reefblade": {
+          "score": 42,
+          "stress": 1.0,
+          "betWR": 11.8,
+          "stockPnL": -4137.84,
+          "stockROI": -2.85,
+          "output": 1256,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "riftpinch": {
+          "score": 68,
+          "stress": 1.0,
+          "betWR": 53.7,
+          "stockPnL": 17320.8,
+          "stockROI": 6.67,
+          "output": 1230,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "rushfin": {
+          "score": 51,
+          "stress": 1.0,
+          "betWR": 39.7,
+          "stockPnL": 567727.08,
+          "stockROI": 5.95,
+          "output": 84,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "silkbarb": {
+          "score": 33,
+          "stress": 1.0,
+          "betWR": 0.0,
+          "stockPnL": -13000.01,
+          "stockROI": -13.16,
+          "output": 1305,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "snaplex": {
+          "score": 58,
+          "stress": 1.0,
+          "betWR": 37.5,
+          "stockPnL": 747819.28,
+          "stockROI": 2.46,
+          "output": 353,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "sparkrill": {
+          "score": 48,
+          "stress": 1.0,
+          "betWR": 36.4,
+          "stockPnL": -204869.91,
+          "stockROI": -2.87,
+          "output": 88,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stonefang": {
+          "score": 75,
+          "stress": 1.0,
+          "betWR": 66.7,
+          "stockPnL": -35156.97,
+          "stockROI": -0.26,
+          "output": 286,
+          "envy": 1.0,
+          "health": "crisis"
+        },
+        "stormledger": {
+          "score": 56,
+          "stress": 1.0,
+          "betWR": 32.4,
+          "stockPnL": 6715.2,
+          "stockROI": 8.1,
+          "output": 1125,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "tidehook": {
+          "score": 73,
+          "stress": 1.0,
+          "betWR": 59.9,
+          "stockPnL": 10171.24,
+          "stockROI": 11.56,
+          "output": 1234,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        },
+        "vortexiq": {
+          "score": 46,
+          "stress": 1.0,
+          "betWR": 23.8,
+          "stockPnL": 96165.83,
+          "stockROI": 0.44,
+          "output": 160,
+          "envy": 1.0,
+          "health": "deletion_candidate"
+        }
+      }
+    }
+  ],
+  "degraded": true,
+  "lastError": "TimeoutError: timed out",
+  "lastErrorAt": "2026-07-08T11:44:11+08:00"
+}

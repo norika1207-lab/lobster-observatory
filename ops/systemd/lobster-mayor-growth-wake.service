@@ -1,0 +1,5 @@
+[Unit]
+Description=Lobster growth auto-wake (Claude agent acts on brief: replies/refill/engage)
+[Service]
+Type=oneshot
+ExecStart=/root/lobster-mayor/growth_wake.sh

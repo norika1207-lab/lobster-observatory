@@ -1,0 +1,12 @@
+[Unit]
+Description=Run lobster cross-site bet settlement sync every 15 minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=15min
+AccuracySec=60s
+RandomizedDelaySec=90s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

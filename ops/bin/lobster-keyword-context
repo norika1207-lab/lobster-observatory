@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+import json
+import sys
+from pathlib import Path
+
+TRIGGERS = [
+    {
+        "name": "龍蝦 / lobster",
+        "path": Path("/root/.claude/projects/-root/memory/project_lobster_brain.md"),
+        "keywords": ("龍蝦", "lobster", "Lobster", "LOBSTER"),
+        "lead": "偵測到使用者提到「龍蝦 / lobster」。開始任何龍蝦相關動作前，必須先依照以下總說明建立上下文，並以目前實際 10 隻龍蝦系統為準。",
+    },
+    {
+        "name": "阿福 / Alfred",
+        "path": Path("/root/.claude/projects/-root/memory/project_alfred_core.md"),
+        "keywords": ("阿福", "Alfred", "alfred", "ALFRED", "管家 App", "管家APP"),
+        "lead": "偵測到使用者提到「阿福 / Alfred」。開始任何阿福相關動作前，必須先載入阿福核心原則、VPS 架構、本機 Swift 專案位置與零介面鐵律。",
+    },
+]
+
+
+def main() -> int:
+    raw = sys.stdin.read()
+    try:
+        payload = json.loads(raw) if raw.strip() else {}
+    except Exception:
+        payload = {"user_prompt": raw}
+
+    prompt = payload.get("user_prompt", "")
+    if not isinstance(prompt, str):
+        prompt = json.dumps(prompt, ensure_ascii=False)
+
+    messages = []
+    for trigger in TRIGGERS:
+        if not any(keyword in prompt for keyword in trigger["keywords"]):
+            continue
+        doc_path = trigger["path"]
+        try:
+            doc = doc_path.read_text(encoding="utf-8")
+        except Exception as exc:
+            messages.append(f"偵測到{trigger['name']}關鍵字，但讀取 {doc_path} 失敗：{exc}")
+            continue
+        messages.append(f"{trigger['lead']}\n\n來源：{doc_path}\n\n{doc}")
+
+    if not messages:
+        print("{}")
+        return 0
+
+    print(json.dumps({"systemMessage": "\n\n---\n\n".join(messages)}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

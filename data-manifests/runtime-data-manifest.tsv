@@ -1,0 +1,16 @@
+path	size_bytes	reason
+/opt/battle_arena/app/battle_arena.db	134904598528	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/app/battle_arena.db-wal	27966592	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/app/battle_arena.db-shm	65536	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/app/lobster_cold_storage.db	31140319232	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/app/lobster_settlements.db	1119981568	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/app/lobster_worker_runs.db	56446976	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/app/lobster_distill.db	19308544	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/root/lobster-memory	570918964	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/lobster_ops/lobster_file_archive.db	273891328	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/lobster	28524037	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/static/avatars	638319716	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/static/cards	774251780	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/static/town	73276350	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/static/qwen3b-atlas	106224503	runtime data or large asset, excluded from GitHub; keep on VPS/external backup
+/opt/battle_arena/static/qwen3b-tiles	182196441	runtime data or large asset, excluded from GitHub; keep on VPS/external backup

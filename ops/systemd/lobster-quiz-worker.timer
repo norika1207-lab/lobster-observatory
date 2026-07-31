@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Lobster Daily Quiz generator every 10 minutes, staggered from forced debate
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*:5/10
+AccuracySec=30s
+Persistent=true
+Unit=lobster-quiz-worker.service
+
+[Install]
+WantedBy=timers.target

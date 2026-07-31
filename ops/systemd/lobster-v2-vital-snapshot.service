@@ -1,0 +1,11 @@
+[Unit]
+Description=Lobster Dashboard V2 vital snapshot writer
+After=charenix-dashboard.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lobster-worker-guard --db /opt/battle_arena/app/lobster_worker_runs.db --name lobster-v2-vital-snapshot --lock-key lobster-v2-vital-snapshot --min-interval-sec 240 --timeout-sec 90 -- /usr/bin/python3 /root/lobster-v2-vital-snapshot.py
+Nice=10
+IOSchedulingClass=best-effort
+CPUQuota=25%
+MemoryMax=220M

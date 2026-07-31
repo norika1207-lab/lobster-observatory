@@ -1,0 +1,12 @@
+[Unit]
+Description=Lobster vs Lobster board match recorder
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_vs_lobster_board_matches.py
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=6
+

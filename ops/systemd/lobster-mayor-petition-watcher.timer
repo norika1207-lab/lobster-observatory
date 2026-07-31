@@ -1,0 +1,8 @@
+[Unit]
+Description=Petition watcher every 15min
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=15min
+Persistent=true
+[Install]
+WantedBy=timers.target

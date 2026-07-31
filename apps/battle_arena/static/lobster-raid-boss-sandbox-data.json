@@ -1,0 +1,3441 @@
+{
+  "generated_at": 1777803974,
+  "lobsters": [
+    "norika_oda",
+    "clawtrix",
+    "pincerbot",
+    "ragclaw",
+    "hexclaw",
+    "vortexiq",
+    "prismbit",
+    "blazepaw",
+    "stonefang",
+    "snaplex"
+  ],
+  "samples_per_team": 12,
+  "summary": {
+    "teams": 120,
+    "simulated_games": 1440,
+    "observed_games": 7
+  },
+  "simulated": {
+    "teams": [
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "norika_oda + vortexiq + stonefang",
+        "games": 12,
+        "wins": 6,
+        "losses": 6,
+        "win_rate": 0.5,
+        "avg_round": 8.8,
+        "avg_boss_hp": 81.8,
+        "avg_alive": 0.67
+      },
+      {
+        "team": [
+          "hexclaw",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "hexclaw + stonefang + snaplex",
+        "games": 12,
+        "wins": 4,
+        "losses": 8,
+        "win_rate": 0.3333333333333333,
+        "avg_round": 8.6,
+        "avg_boss_hp": 82.6,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "snaplex"
+        ],
+        "key": "pincerbot + ragclaw + snaplex",
+        "games": 12,
+        "wins": 4,
+        "losses": 8,
+        "win_rate": 0.3333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 93.5,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "hexclaw"
+        ],
+        "key": "clawtrix + ragclaw + hexclaw",
+        "games": 12,
+        "wins": 4,
+        "losses": 8,
+        "win_rate": 0.3333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 109.4,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "norika_oda + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.8,
+        "avg_boss_hp": 87.7,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "stonefang"
+        ],
+        "key": "norika_oda + clawtrix + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.2,
+        "avg_boss_hp": 97.4,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "hexclaw",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "hexclaw + vortexiq + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.2,
+        "avg_boss_hp": 100.1,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "pincerbot + ragclaw + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.8,
+        "avg_boss_hp": 101.4,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "blazepaw"
+        ],
+        "key": "ragclaw + hexclaw + blazepaw",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.1,
+        "avg_boss_hp": 102.8,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "pincerbot",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "pincerbot + blazepaw + snaplex",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.3,
+        "avg_boss_hp": 104.2,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "vortexiq + prismbit + blazepaw",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.2,
+        "avg_boss_hp": 114.9,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "ragclaw",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "ragclaw + prismbit + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.4,
+        "avg_boss_hp": 115.3,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "stonefang"
+        ],
+        "key": "ragclaw + hexclaw + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.7,
+        "avg_boss_hp": 126.2,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "prismbit",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "prismbit + blazepaw + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.2,
+        "avg_boss_hp": 156.7,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "vortexiq"
+        ],
+        "key": "clawtrix + ragclaw + vortexiq",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 97.0,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "vortexiq"
+        ],
+        "key": "norika_oda + ragclaw + vortexiq",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.7,
+        "avg_boss_hp": 98.5,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "pincerbot",
+          "vortexiq",
+          "snaplex"
+        ],
+        "key": "pincerbot + vortexiq + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.3,
+        "avg_boss_hp": 99.2,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "ragclaw",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "ragclaw + stonefang + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.0,
+        "avg_boss_hp": 100.6,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "stonefang"
+        ],
+        "key": "norika_oda + hexclaw + stonefang",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.3,
+        "avg_boss_hp": 101.2,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "blazepaw"
+        ],
+        "key": "clawtrix + pincerbot + blazepaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.2,
+        "avg_boss_hp": 103.5,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "hexclaw",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "hexclaw + vortexiq + prismbit",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.0,
+        "avg_boss_hp": 106.1,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "blazepaw"
+        ],
+        "key": "pincerbot + ragclaw + blazepaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.0,
+        "avg_boss_hp": 107.6,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "ragclaw"
+        ],
+        "key": "norika_oda + pincerbot + ragclaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.7,
+        "avg_boss_hp": 108.8,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "clawtrix",
+          "vortexiq",
+          "snaplex"
+        ],
+        "key": "clawtrix + vortexiq + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 112.5,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "hexclaw",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "hexclaw + blazepaw + stonefang",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.6,
+        "avg_boss_hp": 118.9,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "ragclaw",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "ragclaw + blazepaw + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.3,
+        "avg_boss_hp": 119.4,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "pincerbot + prismbit + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.9,
+        "avg_boss_hp": 123.2,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "prismbit"
+        ],
+        "key": "ragclaw + hexclaw + prismbit",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 9.0,
+        "avg_boss_hp": 123.2,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "hexclaw"
+        ],
+        "key": "clawtrix + pincerbot + hexclaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 123.5,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "clawtrix",
+          "hexclaw",
+          "snaplex"
+        ],
+        "key": "clawtrix + hexclaw + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 124.2,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "prismbit"
+        ],
+        "key": "norika_oda + hexclaw + prismbit",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.7,
+        "avg_boss_hp": 124.4,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "blazepaw"
+        ],
+        "key": "norika_oda + hexclaw + blazepaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.7,
+        "avg_boss_hp": 125.1,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "snaplex"
+        ],
+        "key": "norika_oda + clawtrix + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 127.1,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "hexclaw",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "hexclaw + blazepaw + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 128.7,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "prismbit"
+        ],
+        "key": "clawtrix + ragclaw + prismbit",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.2,
+        "avg_boss_hp": 130.4,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "vortexiq + prismbit + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.4,
+        "avg_boss_hp": 138.3,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "blazepaw"
+        ],
+        "key": "clawtrix + ragclaw + blazepaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.8,
+        "avg_boss_hp": 139.2,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "blazepaw"
+        ],
+        "key": "norika_oda + clawtrix + blazepaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.6,
+        "avg_boss_hp": 140.5,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "prismbit"
+        ],
+        "key": "clawtrix + pincerbot + prismbit",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.4,
+        "avg_boss_hp": 146.9,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "ragclaw"
+        ],
+        "key": "norika_oda + clawtrix + ragclaw",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.2,
+        "avg_boss_hp": 162.0,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "hexclaw",
+          "vortexiq",
+          "snaplex"
+        ],
+        "key": "hexclaw + vortexiq + snaplex",
+        "games": 12,
+        "wins": 2,
+        "losses": 10,
+        "win_rate": 0.16666666666666666,
+        "avg_round": 8.4,
+        "avg_boss_hp": 172.2,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "pincerbot"
+        ],
+        "key": "norika_oda + clawtrix + pincerbot",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.0,
+        "avg_boss_hp": 91.8,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "norika_oda + prismbit + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 98.9,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "clawtrix + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 100.3,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "snaplex"
+        ],
+        "key": "ragclaw + hexclaw + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.2,
+        "avg_boss_hp": 101.9,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "snaplex"
+        ],
+        "key": "norika_oda + pincerbot + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.1,
+        "avg_boss_hp": 102.0,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "clawtrix + prismbit + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 102.5,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "hexclaw",
+          "prismbit"
+        ],
+        "key": "clawtrix + hexclaw + prismbit",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.1,
+        "avg_boss_hp": 104.0,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "blazepaw"
+        ],
+        "key": "norika_oda + pincerbot + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.2,
+        "avg_boss_hp": 104.4,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "snaplex"
+        ],
+        "key": "norika_oda + ragclaw + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.2,
+        "avg_boss_hp": 108.3,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "prismbit"
+        ],
+        "key": "norika_oda + clawtrix + prismbit",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.2,
+        "avg_boss_hp": 109.1,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "vortexiq"
+        ],
+        "key": "pincerbot + ragclaw + vortexiq",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.6,
+        "avg_boss_hp": 114.6,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "prismbit",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "prismbit + stonefang + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 116.3,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "hexclaw",
+          "blazepaw"
+        ],
+        "key": "clawtrix + hexclaw + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.2,
+        "avg_boss_hp": 119.4,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "hexclaw",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "hexclaw + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 120.8,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "norika_oda",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "norika_oda + prismbit + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.9,
+        "avg_boss_hp": 122.4,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "ragclaw"
+        ],
+        "key": "clawtrix + pincerbot + ragclaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 122.8,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "clawtrix",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "clawtrix + prismbit + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 123.9,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "clawtrix + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 124.1,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "blazepaw"
+        ],
+        "key": "pincerbot + hexclaw + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 124.1,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "vortexiq",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "vortexiq + blazepaw + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 124.3,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "prismbit"
+        ],
+        "key": "norika_oda + ragclaw + prismbit",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.0,
+        "avg_boss_hp": 124.7,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "norika_oda + vortexiq + prismbit",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.0,
+        "avg_boss_hp": 125.2,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "pincerbot + vortexiq + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 126.0,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "clawtrix + stonefang + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 128.9,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "hexclaw"
+        ],
+        "key": "norika_oda + ragclaw + hexclaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 9.0,
+        "avg_boss_hp": 129.2,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "pincerbot",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "pincerbot + blazepaw + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.6,
+        "avg_boss_hp": 129.5,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "stonefang"
+        ],
+        "key": "clawtrix + pincerbot + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.3,
+        "avg_boss_hp": 130.1,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "clawtrix + blazepaw + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.9,
+        "avg_boss_hp": 130.1,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "ragclaw",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "ragclaw + prismbit + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 134.2,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "norika_oda + blazepaw + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 139.2,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "hexclaw"
+        ],
+        "key": "norika_oda + pincerbot + hexclaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.4,
+        "avg_boss_hp": 140.2,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "pincerbot + stonefang + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 140.7,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "norika_oda",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "norika_oda + blazepaw + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.3,
+        "avg_boss_hp": 141.6,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "hexclaw + prismbit + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 142.7,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "ragclaw + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 144.3,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "snaplex"
+        ],
+        "key": "clawtrix + pincerbot + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.9,
+        "avg_boss_hp": 144.7,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "pincerbot + vortexiq + prismbit",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 144.8,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "snaplex"
+        ],
+        "key": "pincerbot + hexclaw + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 7.5,
+        "avg_boss_hp": 145.2,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "vortexiq",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "vortexiq + stonefang + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 145.8,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "pincerbot",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "pincerbot + prismbit + blazepaw",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 149.2,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "clawtrix + prismbit + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.6,
+        "avg_boss_hp": 149.6,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "norika_oda",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "norika_oda + prismbit + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 150.2,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "snaplex"
+        ],
+        "key": "clawtrix + ragclaw + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.4,
+        "avg_boss_hp": 150.2,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "clawtrix",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "clawtrix + vortexiq + stonefang",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.9,
+        "avg_boss_hp": 152.8,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "snaplex"
+        ],
+        "key": "norika_oda + vortexiq + snaplex",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.7,
+        "avg_boss_hp": 162.1,
+        "avg_alive": 0.08
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "prismbit"
+        ],
+        "key": "pincerbot + ragclaw + prismbit",
+        "games": 12,
+        "wins": 1,
+        "losses": 11,
+        "win_rate": 0.08333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 166.5,
+        "avg_alive": 0.17
+      },
+      {
+        "team": [
+          "pincerbot",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "pincerbot + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.9,
+        "avg_boss_hp": 91.1,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "norika_oda + stonefang + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 9.0,
+        "avg_boss_hp": 106.1,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "stonefang"
+        ],
+        "key": "pincerbot + hexclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 116.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "blazepaw",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "blazepaw + stonefang + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 121.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "clawtrix + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 125.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "prismbit"
+        ],
+        "key": "pincerbot + hexclaw + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 9.2,
+        "avg_boss_hp": 132.4,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "clawtrix + vortexiq + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 9.0,
+        "avg_boss_hp": 135.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "pincerbot + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.6,
+        "avg_boss_hp": 135.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "prismbit"
+        ],
+        "key": "norika_oda + pincerbot + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 137.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "prismbit",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "prismbit + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 139.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "blazepaw"
+        ],
+        "key": "norika_oda + ragclaw + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 140.6,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "norika_oda + ragclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 140.9,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "hexclaw"
+        ],
+        "key": "pincerbot + ragclaw + hexclaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 141.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "vortexiq"
+        ],
+        "key": "clawtrix + pincerbot + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 142.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "hexclaw"
+        ],
+        "key": "norika_oda + clawtrix + hexclaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 143.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "snaplex"
+        ],
+        "key": "norika_oda + hexclaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 146.4,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "vortexiq"
+        ],
+        "key": "norika_oda + clawtrix + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.6,
+        "avg_boss_hp": 148.2,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "snaplex"
+        ],
+        "key": "ragclaw + vortexiq + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 149.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "ragclaw + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.7,
+        "avg_boss_hp": 150.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "pincerbot + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.1,
+        "avg_boss_hp": 154.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "hexclaw",
+          "stonefang"
+        ],
+        "key": "clawtrix + hexclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 155.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "hexclaw + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.7,
+        "avg_boss_hp": 157.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "clawtrix + ragclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 162.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "ragclaw + blazepaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 164.5,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "stonefang"
+        ],
+        "key": "norika_oda + pincerbot + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.0,
+        "avg_boss_hp": 165.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "ragclaw + vortexiq + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 165.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "vortexiq",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "vortexiq + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 167.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "vortexiq + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 168.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "ragclaw + prismbit + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 172.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "vortexiq"
+        ],
+        "key": "norika_oda + pincerbot + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 174.6,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "norika_oda + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 7.8,
+        "avg_boss_hp": 176.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "hexclaw + prismbit + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.1,
+        "avg_boss_hp": 177.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "ragclaw + vortexiq + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 178.2,
+        "avg_alive": 0.0
+      }
+    ],
+    "best_teams": [
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "norika_oda + vortexiq + stonefang",
+        "games": 12,
+        "wins": 6,
+        "losses": 6,
+        "win_rate": 0.5,
+        "avg_round": 8.8,
+        "avg_boss_hp": 81.8,
+        "avg_alive": 0.67
+      },
+      {
+        "team": [
+          "hexclaw",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "hexclaw + stonefang + snaplex",
+        "games": 12,
+        "wins": 4,
+        "losses": 8,
+        "win_rate": 0.3333333333333333,
+        "avg_round": 8.6,
+        "avg_boss_hp": 82.6,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "snaplex"
+        ],
+        "key": "pincerbot + ragclaw + snaplex",
+        "games": 12,
+        "wins": 4,
+        "losses": 8,
+        "win_rate": 0.3333333333333333,
+        "avg_round": 8.8,
+        "avg_boss_hp": 93.5,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "hexclaw"
+        ],
+        "key": "clawtrix + ragclaw + hexclaw",
+        "games": 12,
+        "wins": 4,
+        "losses": 8,
+        "win_rate": 0.3333333333333333,
+        "avg_round": 8.5,
+        "avg_boss_hp": 109.4,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "norika_oda + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.8,
+        "avg_boss_hp": 87.7,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "stonefang"
+        ],
+        "key": "norika_oda + clawtrix + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.2,
+        "avg_boss_hp": 97.4,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "hexclaw",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "hexclaw + vortexiq + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.2,
+        "avg_boss_hp": 100.1,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "pincerbot + ragclaw + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.8,
+        "avg_boss_hp": 101.4,
+        "avg_alive": 0.33
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "blazepaw"
+        ],
+        "key": "ragclaw + hexclaw + blazepaw",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.1,
+        "avg_boss_hp": 102.8,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "pincerbot",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "pincerbot + blazepaw + snaplex",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.3,
+        "avg_boss_hp": 104.2,
+        "avg_alive": 0.42
+      },
+      {
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "blazepaw"
+        ],
+        "key": "vortexiq + prismbit + blazepaw",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 9.2,
+        "avg_boss_hp": 114.9,
+        "avg_alive": 0.25
+      },
+      {
+        "team": [
+          "ragclaw",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "ragclaw + prismbit + stonefang",
+        "games": 12,
+        "wins": 3,
+        "losses": 9,
+        "win_rate": 0.25,
+        "avg_round": 8.4,
+        "avg_boss_hp": 115.3,
+        "avg_alive": 0.42
+      }
+    ],
+    "worst_teams": [
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "ragclaw + vortexiq + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 178.2,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "hexclaw + prismbit + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.1,
+        "avg_boss_hp": 177.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "norika_oda + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 7.8,
+        "avg_boss_hp": 176.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "vortexiq"
+        ],
+        "key": "norika_oda + pincerbot + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 174.6,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "ragclaw + prismbit + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 172.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "vortexiq + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 168.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "vortexiq",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "vortexiq + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 167.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "stonefang"
+        ],
+        "key": "norika_oda + pincerbot + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.0,
+        "avg_boss_hp": 165.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "ragclaw + vortexiq + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 165.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "ragclaw + blazepaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 164.5,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "clawtrix + ragclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 162.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "hexclaw + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.7,
+        "avg_boss_hp": 157.3,
+        "avg_alive": 0.0
+      }
+    ],
+    "never_win": [
+      {
+        "team": [
+          "pincerbot",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "pincerbot + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.9,
+        "avg_boss_hp": 91.1,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "norika_oda + stonefang + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 9.0,
+        "avg_boss_hp": 106.1,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "stonefang"
+        ],
+        "key": "pincerbot + hexclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 116.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "blazepaw",
+          "stonefang",
+          "snaplex"
+        ],
+        "key": "blazepaw + stonefang + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 121.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "clawtrix + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 125.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "prismbit"
+        ],
+        "key": "pincerbot + hexclaw + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 9.2,
+        "avg_boss_hp": 132.4,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "clawtrix + vortexiq + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 9.0,
+        "avg_boss_hp": 135.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "pincerbot + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.6,
+        "avg_boss_hp": 135.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "prismbit"
+        ],
+        "key": "norika_oda + pincerbot + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 137.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "prismbit",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "prismbit + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 139.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "blazepaw"
+        ],
+        "key": "norika_oda + ragclaw + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 140.6,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "norika_oda + ragclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 140.9,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "ragclaw",
+          "hexclaw"
+        ],
+        "key": "pincerbot + ragclaw + hexclaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 141.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "pincerbot",
+          "vortexiq"
+        ],
+        "key": "clawtrix + pincerbot + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 142.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "hexclaw"
+        ],
+        "key": "norika_oda + clawtrix + hexclaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 143.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "hexclaw",
+          "snaplex"
+        ],
+        "key": "norika_oda + hexclaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 146.4,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "clawtrix",
+          "vortexiq"
+        ],
+        "key": "norika_oda + clawtrix + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.6,
+        "avg_boss_hp": 148.2,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "snaplex"
+        ],
+        "key": "ragclaw + vortexiq + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.8,
+        "avg_boss_hp": 149.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "ragclaw + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.7,
+        "avg_boss_hp": 150.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "vortexiq"
+        ],
+        "key": "pincerbot + hexclaw + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.1,
+        "avg_boss_hp": 154.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "hexclaw",
+          "stonefang"
+        ],
+        "key": "clawtrix + hexclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 155.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "hexclaw + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.7,
+        "avg_boss_hp": 157.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "clawtrix",
+          "ragclaw",
+          "stonefang"
+        ],
+        "key": "clawtrix + ragclaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 162.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "blazepaw",
+          "stonefang"
+        ],
+        "key": "ragclaw + blazepaw + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 164.5,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "stonefang"
+        ],
+        "key": "norika_oda + pincerbot + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.0,
+        "avg_boss_hp": 165.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "stonefang"
+        ],
+        "key": "ragclaw + vortexiq + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 165.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "vortexiq",
+          "blazepaw",
+          "snaplex"
+        ],
+        "key": "vortexiq + blazepaw + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.4,
+        "avg_boss_hp": 167.7,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "stonefang"
+        ],
+        "key": "vortexiq + prismbit + stonefang",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.2,
+        "avg_boss_hp": 168.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "ragclaw + prismbit + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.5,
+        "avg_boss_hp": 172.8,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "pincerbot",
+          "vortexiq"
+        ],
+        "key": "norika_oda + pincerbot + vortexiq",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 174.6,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "blazepaw"
+        ],
+        "key": "norika_oda + vortexiq + blazepaw",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 7.8,
+        "avg_boss_hp": 176.0,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "hexclaw",
+          "prismbit",
+          "snaplex"
+        ],
+        "key": "hexclaw + prismbit + snaplex",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.1,
+        "avg_boss_hp": 177.3,
+        "avg_alive": 0.0
+      },
+      {
+        "team": [
+          "ragclaw",
+          "vortexiq",
+          "prismbit"
+        ],
+        "key": "ragclaw + vortexiq + prismbit",
+        "games": 12,
+        "wins": 0,
+        "losses": 12,
+        "win_rate": 0.0,
+        "avg_round": 8.3,
+        "avg_boss_hp": 178.2,
+        "avg_alive": 0.0
+      }
+    ],
+    "perfect": [],
+    "pairs": [
+      {
+        "key": "pincerbot + snaplex",
+        "games": 96,
+        "wins": 15,
+        "losses": 81,
+        "win_rate": 0.15625
+      },
+      {
+        "key": "clawtrix + ragclaw",
+        "games": 96,
+        "wins": 14,
+        "losses": 82,
+        "win_rate": 0.14583333333333334
+      },
+      {
+        "key": "pincerbot + ragclaw",
+        "games": 96,
+        "wins": 14,
+        "losses": 82,
+        "win_rate": 0.14583333333333334
+      },
+      {
+        "key": "hexclaw + ragclaw",
+        "games": 96,
+        "wins": 14,
+        "losses": 82,
+        "win_rate": 0.14583333333333334
+      },
+      {
+        "key": "hexclaw + stonefang",
+        "games": 96,
+        "wins": 14,
+        "losses": 82,
+        "win_rate": 0.14583333333333334
+      },
+      {
+        "key": "norika_oda + vortexiq",
+        "games": 96,
+        "wins": 13,
+        "losses": 83,
+        "win_rate": 0.13541666666666666
+      },
+      {
+        "key": "norika_oda + stonefang",
+        "games": 96,
+        "wins": 13,
+        "losses": 83,
+        "win_rate": 0.13541666666666666
+      },
+      {
+        "key": "blazepaw + hexclaw",
+        "games": 96,
+        "wins": 13,
+        "losses": 83,
+        "win_rate": 0.13541666666666666
+      },
+      {
+        "key": "stonefang + vortexiq",
+        "games": 96,
+        "wins": 13,
+        "losses": 83,
+        "win_rate": 0.13541666666666666
+      },
+      {
+        "key": "hexclaw + vortexiq",
+        "games": 96,
+        "wins": 12,
+        "losses": 84,
+        "win_rate": 0.125
+      },
+      {
+        "key": "hexclaw + snaplex",
+        "games": 96,
+        "wins": 12,
+        "losses": 84,
+        "win_rate": 0.125
+      },
+      {
+        "key": "clawtrix + norika_oda",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "hexclaw + norika_oda",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "clawtrix + hexclaw",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "blazepaw + pincerbot",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "blazepaw + ragclaw",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "ragclaw + stonefang",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "ragclaw + snaplex",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "blazepaw + prismbit",
+        "games": 96,
+        "wins": 11,
+        "losses": 85,
+        "win_rate": 0.11458333333333333
+      },
+      {
+        "key": "clawtrix + pincerbot",
+        "games": 96,
+        "wins": 10,
+        "losses": 86,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "key": "blazepaw + clawtrix",
+        "games": 96,
+        "wins": 10,
+        "losses": 86,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "key": "clawtrix + snaplex",
+        "games": 96,
+        "wins": 10,
+        "losses": 86,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "key": "prismbit + ragclaw",
+        "games": 96,
+        "wins": 10,
+        "losses": 86,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "key": "snaplex + vortexiq",
+        "games": 96,
+        "wins": 10,
+        "losses": 86,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "key": "snaplex + stonefang",
+        "games": 96,
+        "wins": 10,
+        "losses": 86,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "key": "norika_oda + ragclaw",
+        "games": 96,
+        "wins": 9,
+        "losses": 87,
+        "win_rate": 0.09375
+      },
+      {
+        "key": "clawtrix + prismbit",
+        "games": 96,
+        "wins": 9,
+        "losses": 87,
+        "win_rate": 0.09375
+      },
+      {
+        "key": "prismbit + vortexiq",
+        "games": 96,
+        "wins": 9,
+        "losses": 87,
+        "win_rate": 0.09375
+      },
+      {
+        "key": "prismbit + stonefang",
+        "games": 96,
+        "wins": 9,
+        "losses": 87,
+        "win_rate": 0.09375
+      },
+      {
+        "key": "blazepaw + stonefang",
+        "games": 96,
+        "wins": 9,
+        "losses": 87,
+        "win_rate": 0.09375
+      },
+      {
+        "key": "norika_oda + prismbit",
+        "games": 96,
+        "wins": 8,
+        "losses": 88,
+        "win_rate": 0.08333333333333333
+      },
+      {
+        "key": "blazepaw + norika_oda",
+        "games": 96,
+        "wins": 8,
+        "losses": 88,
+        "win_rate": 0.08333333333333333
+      },
+      {
+        "key": "clawtrix + stonefang",
+        "games": 96,
+        "wins": 8,
+        "losses": 88,
+        "win_rate": 0.08333333333333333
+      },
+      {
+        "key": "hexclaw + prismbit",
+        "games": 96,
+        "wins": 8,
+        "losses": 88,
+        "win_rate": 0.08333333333333333
+      },
+      {
+        "key": "blazepaw + snaplex",
+        "games": 96,
+        "wins": 8,
+        "losses": 88,
+        "win_rate": 0.08333333333333333
+      },
+      {
+        "key": "clawtrix + vortexiq",
+        "games": 96,
+        "wins": 7,
+        "losses": 89,
+        "win_rate": 0.07291666666666667
+      },
+      {
+        "key": "norika_oda + snaplex",
+        "games": 96,
+        "wins": 7,
+        "losses": 89,
+        "win_rate": 0.07291666666666667
+      },
+      {
+        "key": "pincerbot + prismbit",
+        "games": 96,
+        "wins": 7,
+        "losses": 89,
+        "win_rate": 0.07291666666666667
+      },
+      {
+        "key": "pincerbot + stonefang",
+        "games": 96,
+        "wins": 7,
+        "losses": 89,
+        "win_rate": 0.07291666666666667
+      },
+      {
+        "key": "blazepaw + vortexiq",
+        "games": 96,
+        "wins": 7,
+        "losses": 89,
+        "win_rate": 0.07291666666666667
+      },
+      {
+        "key": "prismbit + snaplex",
+        "games": 96,
+        "wins": 7,
+        "losses": 89,
+        "win_rate": 0.07291666666666667
+      },
+      {
+        "key": "norika_oda + pincerbot",
+        "games": 96,
+        "wins": 6,
+        "losses": 90,
+        "win_rate": 0.0625
+      },
+      {
+        "key": "ragclaw + vortexiq",
+        "games": 96,
+        "wins": 6,
+        "losses": 90,
+        "win_rate": 0.0625
+      },
+      {
+        "key": "hexclaw + pincerbot",
+        "games": 96,
+        "wins": 5,
+        "losses": 91,
+        "win_rate": 0.052083333333333336
+      },
+      {
+        "key": "pincerbot + vortexiq",
+        "games": 96,
+        "wins": 5,
+        "losses": 91,
+        "win_rate": 0.052083333333333336
+      }
+    ],
+    "lobsters": [
+      {
+        "name": "ragclaw",
+        "games": 432,
+        "wins": 50,
+        "losses": 382,
+        "win_rate": 0.11574074074074074
+      },
+      {
+        "name": "hexclaw",
+        "games": 432,
+        "wins": 50,
+        "losses": 382,
+        "win_rate": 0.11574074074074074
+      },
+      {
+        "name": "stonefang",
+        "games": 432,
+        "wins": 47,
+        "losses": 385,
+        "win_rate": 0.1087962962962963
+      },
+      {
+        "name": "clawtrix",
+        "games": 432,
+        "wins": 45,
+        "losses": 387,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "name": "snaplex",
+        "games": 432,
+        "wins": 45,
+        "losses": 387,
+        "win_rate": 0.10416666666666667
+      },
+      {
+        "name": "blazepaw",
+        "games": 432,
+        "wins": 44,
+        "losses": 388,
+        "win_rate": 0.10185185185185185
+      },
+      {
+        "name": "norika_oda",
+        "games": 432,
+        "wins": 43,
+        "losses": 389,
+        "win_rate": 0.09953703703703703
+      },
+      {
+        "name": "vortexiq",
+        "games": 432,
+        "wins": 41,
+        "losses": 391,
+        "win_rate": 0.09490740740740741
+      },
+      {
+        "name": "pincerbot",
+        "games": 432,
+        "wins": 40,
+        "losses": 392,
+        "win_rate": 0.09259259259259259
+      },
+      {
+        "name": "prismbit",
+        "games": 432,
+        "wins": 39,
+        "losses": 393,
+        "win_rate": 0.09027777777777778
+      }
+    ],
+    "histogram": [
+      {
+        "wins": 0,
+        "teams": 33
+      },
+      {
+        "wins": 1,
+        "teams": 46
+      },
+      {
+        "wins": 2,
+        "teams": 27
+      },
+      {
+        "wins": 3,
+        "teams": 10
+      },
+      {
+        "wins": 4,
+        "teams": 3
+      },
+      {
+        "wins": 6,
+        "teams": 1
+      }
+    ]
+  },
+  "observed": {
+    "runs": [
+      {
+        "id": "fac679362481",
+        "team": [
+          "snaplex",
+          "ragclaw",
+          "pincerbot"
+        ],
+        "winner": "boss",
+        "won": false
+      },
+      {
+        "id": "d0f1a9cef622",
+        "team": [
+          "hexclaw",
+          "clawtrix",
+          "norika_oda"
+        ],
+        "winner": "boss",
+        "won": false
+      },
+      {
+        "id": "90a7a0e5494c",
+        "team": [
+          "vortexiq",
+          "prismbit",
+          "blazepaw"
+        ],
+        "winner": "boss",
+        "won": false
+      },
+      {
+        "id": "bd3ca4c72c1d",
+        "team": [
+          "stonefang",
+          "snaplex",
+          "ragclaw"
+        ],
+        "winner": "boss",
+        "won": false
+      },
+      {
+        "id": "1e3c3c46befa",
+        "team": [
+          "pincerbot",
+          "hexclaw",
+          "clawtrix"
+        ],
+        "winner": "boss",
+        "won": false
+      },
+      {
+        "id": "4a0b895c846c",
+        "team": [
+          "norika_oda",
+          "vortexiq",
+          "prismbit"
+        ],
+        "winner": "boss",
+        "won": false
+      },
+      {
+        "id": "73802267cb80",
+        "team": [
+          "blazepaw",
+          "stonefang",
+          "snaplex"
+        ],
+        "winner": "boss",
+        "won": false
+      }
+    ],
+    "teams": [
+      {
+        "key": "pincerbot + ragclaw + snaplex",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "fac679362481"
+        ]
+      },
+      {
+        "key": "clawtrix + hexclaw + norika_oda",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "d0f1a9cef622"
+        ]
+      },
+      {
+        "key": "blazepaw + prismbit + vortexiq",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "90a7a0e5494c"
+        ]
+      },
+      {
+        "key": "ragclaw + snaplex + stonefang",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "bd3ca4c72c1d"
+        ]
+      },
+      {
+        "key": "clawtrix + hexclaw + pincerbot",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "1e3c3c46befa"
+        ]
+      },
+      {
+        "key": "norika_oda + prismbit + vortexiq",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "4a0b895c846c"
+        ]
+      },
+      {
+        "key": "blazepaw + snaplex + stonefang",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0,
+        "ids": [
+          "73802267cb80"
+        ]
+      }
+    ],
+    "pairs": [
+      {
+        "key": "ragclaw + snaplex",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "key": "clawtrix + hexclaw",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "key": "prismbit + vortexiq",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "key": "snaplex + stonefang",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "key": "pincerbot + ragclaw",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "pincerbot + snaplex",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "clawtrix + norika_oda",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "hexclaw + norika_oda",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "blazepaw + prismbit",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "blazepaw + vortexiq",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "ragclaw + stonefang",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "clawtrix + pincerbot",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "hexclaw + pincerbot",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "norika_oda + prismbit",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "norika_oda + vortexiq",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "blazepaw + snaplex",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      },
+      {
+        "key": "blazepaw + stonefang",
+        "games": 1,
+        "wins": 0,
+        "losses": 1,
+        "win_rate": 0.0
+      }
+    ],
+    "lobsters": [
+      {
+        "name": "snaplex",
+        "games": 3,
+        "wins": 0,
+        "losses": 3,
+        "win_rate": 0.0
+      },
+      {
+        "name": "pincerbot",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "ragclaw",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "clawtrix",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "hexclaw",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "norika_oda",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "blazepaw",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "prismbit",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "vortexiq",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      },
+      {
+        "name": "stonefang",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "win_rate": 0.0
+      }
+    ]
+  }
+}

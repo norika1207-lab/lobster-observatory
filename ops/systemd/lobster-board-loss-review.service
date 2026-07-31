@@ -1,0 +1,8 @@
+[Unit]
+Description=Lobster automatic board loss complete review worker
+After=charenix-dashboard.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-board-loss-review-worker.py
+Nice=8

@@ -1,0 +1,6 @@
+[Unit]
+Description=Lobster growth monitor (heartbeat + work brief + poster liveness)
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/lobster-mayor/growth_monitor.py
+ExecStartPost=/bin/bash -c "systemctl is-active --quiet lobster-moltbook-poster.timer || systemctl restart lobster-moltbook-poster.timer"

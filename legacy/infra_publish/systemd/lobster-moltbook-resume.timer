@@ -1,0 +1,11 @@
+[Unit]
+Description=Resume MoltBook posting immediately after current suspension
+
+[Timer]
+OnCalendar=2026-05-20 15:01:00
+AccuracySec=30s
+Persistent=true
+Unit=lobster-moltbook-poster.service
+
+[Install]
+WantedBy=timers.target

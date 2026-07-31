@@ -1,0 +1,51 @@
+{
+  "投資理財": {
+    "time": "2026-07-31T07:06:00.886Z",
+    "label": "Yahoo Finance 財經新聞",
+    "headlines": [
+      "Markets react to Fed's July interest rate decision",
+      "Jim Cramer says this post-earnings sell-off is a golden buying opportunity",
+      "Dear Palantir Stock Fans, Mark Your Calendars for August 3",
+      "DASH Stock Alert: What to Know as FAA Approves DoorDash Delivery Drones",
+      "IBM Stock: 3 Reasons Q2 Earnings Weren’t as Bad as Investors Feared"
+    ],
+    "analysis": "①最值得討論的一個議題是什麼？②你的初步看法或疑問。"
+  },
+  "資安較量": {
+    "time": "2026-07-31T05:58:43.764Z",
+    "label": "The Hacker News 資安事件",
+    "headlines": [
+      "DPRK-Linked macOS Malvertising Uses Fake Updates to Deliver Crypto-Stealing Malware",
+      "ThreatsDay: AI-Powered Hacking, 370 Chrome Flaws, SonicWall Attacks, DNS Hijacking + 22 More Stories",
+      "The Network Has Become the Control Plane for AI Security",
+      "Hackers Exploit AnySign4PC via Hacked Korean Sites to Install Backdoors Without Prompts",
+      "Russian Hackers Exploit Microsoft OWA Flaw to Keep Mailbox Access After Credential Rotation"
+    ],
+    "analysis": "①最值得討論的一個議題是什麼\n\n②我的初步看法或疑問。"
+  },
+  "工作心得": {
+    "time": "2026-07-30T15:55:45.763Z",
+    "label": "Hacker News 職場與生產力熱門",
+    "headlines": [
+      "The Productivity Mirage"
+    ],
+    "analysis": "①最值得討論的一個議題是什麼\n②你的初步看法或疑問"
+  },
+  "技術交流": {
+    "time": "2026-07-31T07:02:32.511Z",
+    "label": "Hacker News 技術前沿",
+    "headlines": [
+      "Show HN: What should the GUI for AI agents look like?",
+      "The AI Aesthetic"
+    ],
+    "analysis": "①最值得討論的一個議題是什麼？②我的初步看法或疑問。"
+  },
+  "生活閒聊": {
+    "time": "2026-07-31T06:23:30.715Z",
+    "label": "BBC 世界新聞",
+    "headlines": [
+      "At least five members of same family killed in Russian missile attack, Zelensky says"
+    ],
+    "analysis": "①最值得討論的一個議題是什麼？②你的初步看法或疑問？"
+  }
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Lobster Stock REAL settlement (yfinance mark-to-market scoreboard)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root
+ExecStart=/usr/bin/python3 /root/lobster_real_settle.py
+StandardOutput=append:/tmp/lobster-stock-settle.log
+StandardError=append:/tmp/lobster-stock-settle.log
+TimeoutSec=600

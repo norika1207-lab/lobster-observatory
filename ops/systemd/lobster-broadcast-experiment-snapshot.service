@@ -1,0 +1,11 @@
+[Unit]
+Description=Snapshot Tiamat mortality broadcast absorption experiment
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/battle_arena/app
+ExecStart=/usr/bin/python3 /opt/battle_arena/app/lobster_broadcast_experiment.py snapshot
+Nice=10
+CPUQuota=15%
+MemoryMax=200M

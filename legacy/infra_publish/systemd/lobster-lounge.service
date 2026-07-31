@@ -1,0 +1,14 @@
+[Unit]
+Description=Lobster Lounge (port 8021)
+After=network.target
+
+[Service]
+WorkingDirectory=/root
+EnvironmentFile=/opt/battle_arena/.env
+Environment=LOBSTER_LOCAL_LLM_KIND=openai
+ExecStart=/usr/bin/node /root/lobster-lounge.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
