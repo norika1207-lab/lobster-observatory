@@ -27,3 +27,7 @@ Before pushing to GitHub:
 ## Current Source Of Truth
 
 The live runtime still uses `/opt/battle_arena`, `/opt/raid_boss`, `/root/lobster-*`, `/usr/local/bin/lobster-*`, `/usr/local/sbin/lobster-*`, and `/etc/systemd/system/lobster*.service|timer`. This folder is a clean consolidation target for GitHub, not yet a replacement runtime directory.
+
+---
+
+Author: Norika Oda (織田紀香) · https://norika.tw
